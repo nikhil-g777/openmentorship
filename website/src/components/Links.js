@@ -33,6 +33,11 @@ class Links extends Component {
                                 Register as Mentor
                             </Link>
                         </Item>
+                        <Item>
+                            <Link to="/FAQ" className="nav-link">
+                                 FAQ
+                            </Link>
+                        </Item>
                     </List>
                 </Collapse>
             </React.Fragment>

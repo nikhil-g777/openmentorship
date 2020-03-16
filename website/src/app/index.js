@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { NavBar } from '../components'
-import { CreateMentee, CreateMentor } from '../pages'
+import { CreateMentee, CreateMentor, FAQ } from '../pages'
+
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -44,6 +45,7 @@ function App() {
             <Switch>
               <Route path='/mentees/create' exact component={CreateMentee} />
               <Route path='/mentors/create' exact component={CreateMentor} />
+              <Route path="/FAQ" exact component = {FAQ}/>
             </Switch>
         </Router>
             <Body>
