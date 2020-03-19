@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Router, Route } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Collapse = styled.div.attrs({
@@ -18,6 +18,7 @@ class Links extends Component {
     render() {
         return (
             <React.Fragment>
+
                 <Link to="/" className="navbar-brand">
                     OpenMentorShip
                 </Link>
@@ -35,7 +36,7 @@ class Links extends Component {
                         </Item>
                         <Item>
                             <Link to="/FAQ" className="nav-link">
-                                 FAQ
+                                FAQ
                             </Link>
                         </Item>
                     </List>

@@ -1,0 +1,49 @@
+section{
+    display:flex !important;
+    justify-content: center;
+    background: rgba(0,0,0,.1);
+    
+}
+.FAQ-box{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    height:200px;
+    background: #9198e5;
+    width:100%;
+    color:white;
+}
+
+/*  */
+
+.Content-box .container{
+    
+    margin:20px 0;
+    transition: .5s ease;
+    padding: 10px 0 10px 10px;
+    background:white;
+    
+}
+
+.Content-box .content-box-title{
+    margin:0;
+    align-content: center;
+    text-transform: uppercase;
+}
+
+.Content-box .container:hover{
+    box-shadow: 4px 3px 5px 2px black;
+
+}
+
+.Content-box .container .paragraph{
+    opacity: 0;
+    height: 0;
+    transition: opacity .5s ease, height .5s ease;
+}
+
+.Content-box .container:hover .paragraph{
+    height: 30px;
+    opacity: 1;
+}
+

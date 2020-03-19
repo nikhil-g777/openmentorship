@@ -34,8 +34,11 @@ const MainCaption = styled.div.attrs({
 const Caption = styled.div.attrs({})`
     display: inline-block;
     margin: 0 auto;
-    vertical-align: middke;
+    vertical-align: middle;
 `
+
+
+
 
 function App() {
     return (
@@ -43,20 +46,27 @@ function App() {
         <Router>
             <NavBar />
             <Switch>
-              <Route path='/mentees/create' exact component={CreateMentee} />
-              <Route path='/mentors/create' exact component={CreateMentor} />
+              <Route path='/mentees/create'  component={CreateMentee} />
+              <Route path='/mentors/create'  component={CreateMentor} />
               <Route path="/FAQ" exact component = {FAQ}/>
+              <Route path="/" component = {Home} />
             </Switch>
         </Router>
-            <Body>
-                <MainCaption>
-                    <Caption>
-                        Openmentorship
-                    </Caption>
-                </MainCaption>
-            </Body>
+
+         
         </div>
     )
-}
+};
 
-export default App
+const Home = ()=>
+     (
+        <Body>
+        <MainCaption>
+            <Caption>
+                Openmentorship
+            </Caption>
+        </MainCaption>
+     </Body>
+    );
+
+export default App;
