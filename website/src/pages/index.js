@@ -1,6 +1,6 @@
 import CreateMentee from './CreateMentee'
 import CreateMentor from './CreateMentor'
-import FAQ  from './FAQ'
+import FAQ  from '../components/FAQ/FAQ'
 
 export {
     CreateMentee,

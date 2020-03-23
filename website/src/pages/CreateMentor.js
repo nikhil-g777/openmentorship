@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import  './css/styles.css';
 
 class CreateMentor extends Component {
     render() {
