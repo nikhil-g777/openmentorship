@@ -31,7 +31,9 @@ const MainCaption = styled.div.attrs({
     overflow: hidden;
 `
 
-const Caption = styled.div.attrs({})`
+const Caption = styled.div.attrs({
+    className: 'text-center'
+})`
     display: inline-block;
     margin: 0 auto;
     vertical-align: middle;
