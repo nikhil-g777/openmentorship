@@ -9,7 +9,7 @@ createMentee = (req, res) => {
 
     const mentee = new Mentee(body)
 
-    if(!movie) {
+    if(!mentee) {
         res.status(400).json({success: false, error: err})
     }
 
