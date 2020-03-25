@@ -186,7 +186,7 @@ const Home = () => {
             <TestimonialsCite>- Mike Murdock</TestimonialsCite>
           </TestimonialsBlockquote>
           <TestimonialsBlockquote>
-            <TestimonialsP>Every great achiever is inspired by a great</TestimonialsP> 
+            <TestimonialsP>Every great achiever is inspired by a great mentor</TestimonialsP> 
             <TestimonialsCite>- Laila Gifty Akita</TestimonialsCite>
           </TestimonialsBlockquote>
         </TestimonialsContainer>
