@@ -104,7 +104,50 @@ const InformationWrapper = styled.div`
   color:#838C95;
   padding-bottom:30px;
 `
+const TestimonialsSection = styled.div`
+  background:#1F1F1F url(../images/testimonials-bg.jpg) no-repeat center center;
+  background-attachment: fixed;
+  background-size: cover !important;
+  -webkit-background-size: cover !important;
+  position: relative;
+  height:400px;
+  min-height: 200px;
+  width: 100%;
+  overflow: hidden;
+`
+const TestimonialsContainer = styled.div`
+  padding-top: 96px;
+  padding-bottom: 66px;
+`
+const TestimonialsHeader = styled.h1`
+  font-family: sans-serif;
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 1);
+  margin-bottom:30px;
+  color:white;
+  letter-spacing:3px;
+  font-size:15px;
+`
 
+const TestimonialsBlockquote = styled.blockquote`
+  margin: 0 0px 30px 0px;
+  padding-left: 0;
+  position: relative;
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 1);
+`
+const TestimonialsP = styled.p`
+  padding: 0;
+  font-size: 24px;
+  line-height: 48px;
+  color: #fff;
+  font-family:'Libre Baskerville', serif; 
+`
+const TestimonialsCite = styled.cite`
+  display: block;
+  font-size: 15px;
+  font-style: normal;
+  line-height: 18px;
+  color: #fff;
+`
 const Home = () => {
   return(
     <Body>
@@ -135,6 +178,19 @@ const Home = () => {
           <img style={{maxWidth: '100', height: 'auto'}} src="/images/steps.jpg"/>
         </SlideImageWrapper>
       </SlideImageSection>
+      <TestimonialsSection>
+        <TestimonialsContainer>
+          <TestimonialsHeader>CLIENT TESTIMONIALS</TestimonialsHeader>
+          <TestimonialsBlockquote>
+            <TestimonialsP>Mentorship is the key to extraordinary success</TestimonialsP> 
+            <TestimonialsCite>- Mike Murdock</TestimonialsCite>
+          </TestimonialsBlockquote>
+          <TestimonialsBlockquote>
+            <TestimonialsP>Every great achiever is inspired by a great</TestimonialsP> 
+            <TestimonialsCite>- Laila Gifty Akita</TestimonialsCite>
+          </TestimonialsBlockquote>
+        </TestimonialsContainer>
+      </TestimonialsSection>
     </Body>
   )
 }
