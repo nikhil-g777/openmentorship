@@ -18,10 +18,6 @@ class Links extends Component {
     render() {
         return (
             <React.Fragment>
-
-                <Link to="/" className="navbar-brand">
-                    OpenMentorShip
-                </Link>
                 <Collapse>
                     <List>
                         <Item>
