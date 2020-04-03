@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { NavBar } from '../components'
@@ -64,9 +64,9 @@ const Home = ()=>
      (
         <Body>
         <MainCaption>
-            <Caption>
-                Openmentorship
-            </Caption>
+                <Caption>
+                    Openmentorship
+                </Caption>
         </MainCaption>
      </Body>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link, Router, Route } from 'react-router-dom'
 import styled from 'styled-components'
+import CreateMentee from "../pages/CreateMentee"
 
 const Collapse = styled.div.attrs({
     className: 'collapse navbar-collapse '
@@ -25,9 +26,9 @@ class Links extends Component {
                 <Collapse>
                     <List>
                         <Item>
-                            <Link to="/mentees/create" className="nav-link">
-                                Register as Menteee
-                            </Link>
+                                <CreateMentee className="nav-link">
+                                    Register as Mentee
+                                </CreateMentee>
                         </Item>
                         <Item>
                             <Link to="/mentors/create" className="nav-link">
