@@ -33,7 +33,9 @@ registerUser = (req, res) => {
             client_id: process.env.LINKEDIN_CLIENT_ID,
             client_secret: process.env.LINKEDIN_CLIENT_SECRET
         }
-    })
+    })   //=> /oauth/v2/accessToken?grant_type=authorization_code&code=body.authCode...
+
+ 
     
     const profileUrl = '/v2/me'
 
