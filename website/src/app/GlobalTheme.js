@@ -20,6 +20,25 @@ export const theme = createMuiTheme({
         width:'100%',
       },
     },
+    MuiMobileStepper: {
+      root: {
+        width:"90%",
+        maxWidth: 500,
+        flexGrow: 1,
+        position: 'absolute',
+        bottom: 0,
+        display: 'flex',
+        flexDirection: 'column-reverse'
+      },
+      dots: {
+        padding: "2em"
+      },
+      dot: {
+        width:"15px",
+        height:"15px",
+        margin: "0 8px"
+      }
+    }
   },
   palette: {
     primary: {

@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { CreateMentee, CreateMentor, FAQ, Home, RegisterMain } from '../pages'
+import { CreateMentee, CreateMentor, FAQ, Home, RegisterForm } from '../pages'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles'
@@ -19,7 +19,7 @@ function App() {
             <Route path='/mentees/create' component={CreateMentee} />
             <Route path='/mentors/create' component={CreateMentor} />
             <Route path="/FAQ" exact component={FAQ}/>
-            <Route path="/register" component={RegisterMain} />
+            <Route path="/register" component={RegisterForm} />
           </Switch>
         </ThemeProvider>
       </Router>

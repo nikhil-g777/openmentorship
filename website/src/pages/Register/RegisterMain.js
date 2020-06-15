@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import PlaceholderLogo from '../../logo.svg'
-
+import { Container, Title } from "../../components"
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,19 +15,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Container = styled.div`
-  width:90%;
-  max-width:500px;
-  margin:0 auto;
-  text-align:center;
-  padding-top:2em;
-
-  h3 {
-    padding-top:.5em;
-  }
-  p {
-    padding:1em 3em 1em 3em;
-  }
+const Info = styled.p`
+  padding:1em 3em 1em 3em;
 `
 
 const Divider = styled.div`
@@ -48,32 +36,24 @@ const Divider = styled.div`
     margin: 0 10px;
   }
 `
-const RegisterMain = () => {
-  const [ state, setState ] = useState({
-    name: "",
-    email: "",
-    password: ""
-  })
+const RegisterMain = props => {
 
   const classes = useStyles();
-  const history = useHistory();
 
-  const handleInput = e => {
-    const { name, value } = e.target
-    setState({ ...state, [name]:value})
-  }
-  const handleRegisterUser = () => {
-    if(!state.name || !state.email || !state.password){
+  const continueStep = e => {
+    if(!props.values.name || !props.values.email || !props.values.password){
       alert("fill out all fields plz")
     }else {
       //api call --> if success, redirect to registerFlow
+      // e.preventDefault()
     } 
+    props.handleNext()
   }
   return (
     <Container>
-      <img src={PlaceholderLogo} style={{height:50}} alt="open mentorship logo"/>
-      <h3>Open Mentorship</h3>
-      <p>Find a Mentor who can help guide you to success.</p>
+      <img src={PlaceholderLogo} style={{height:80}} alt="open mentorship logo"/>
+      <Title>Open Mentorship</Title>
+      <Info>Find a Mentor who can help guide you to success.</Info>
       <button>Sign In with LinkedIn</button>
       <Divider>or</Divider>
       <form className={classes.root}>
@@ -84,7 +64,7 @@ const RegisterMain = () => {
           fullWidth={true}
           type="text"
           name="name"
-          onChange={handleInput}
+          onChange={props.handleInput}
         />
         <TextField 
           id="outlined-basic" 
@@ -93,7 +73,7 @@ const RegisterMain = () => {
           fullWidth={true}
           type="email"
           name="email"
-          onChange={handleInput}
+          onChange={props.handleInput}
         />
         <TextField 
           id="outlined-basic" 
@@ -102,10 +82,10 @@ const RegisterMain = () => {
           fullWidth={true}
           type="password"
           name="password"
-          onChange={handleInput}
+          onChange={props.handleInput}
         />
       </form>
-      <Button onClick={handleRegisterUser}>Continue</Button>
+      <Button onClick={continueStep}>Continue</Button>
     </Container>
   )
 }
