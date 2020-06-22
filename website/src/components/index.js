@@ -5,6 +5,6 @@ import Links from './Links'
 import Logo from './Logo'
 import NavBar from './NavBar'
 import SignUp from './SignUp'
-import { Title, TitleWrapper } from './Title'
+import { Title, TitleWrapper, FormItem } from './StyledForm'
 
-export { BackButton, Container, DotStepper, Links, Logo, NavBar, SignUp, Title, TitleWrapper }
+export { BackButton, Container, DotStepper, Links, Logo, NavBar, SignUp, Title, TitleWrapper, FormItem }

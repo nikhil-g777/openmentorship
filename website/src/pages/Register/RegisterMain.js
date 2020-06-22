@@ -41,16 +41,16 @@ const RegisterMain = props => {
   const classes = useStyles();
 
   const continueStep = e => {
-    if(!props.values.name || !props.values.email || !props.values.password){
-      alert("fill out all fields plz")
-    }else {
-      //api call --> if success, redirect to registerFlow
-      // e.preventDefault()
-    } 
+    // if(!props.values.name || !props.values.email || !props.values.password){
+    //   alert("fill out all fields plz")
+    // }else {
+    //   //api call --> if success, redirect to registerFlow
+    //   // e.preventDefault()
+    // } 
     props.handleNext()
   }
   return (
-    <Container>
+    <Container style={{textAlign:"center"}}>
       <img src={PlaceholderLogo} style={{height:80}} alt="open mentorship logo"/>
       <Title>Open Mentorship</Title>
       <Info>Find a Mentor who can help guide you to success.</Info>
@@ -64,6 +64,7 @@ const RegisterMain = props => {
           fullWidth={true}
           type="text"
           name="name"
+          defaultValue={props.values.name}
           onChange={props.handleInput}
         />
         <TextField 
@@ -73,6 +74,7 @@ const RegisterMain = props => {
           fullWidth={true}
           type="email"
           name="email"
+          defaultValue={props.values.email}
           onChange={props.handleInput}
         />
         <TextField 
@@ -82,6 +84,7 @@ const RegisterMain = props => {
           fullWidth={true}
           type="password"
           name="password"
+          defaultValue={props.values.password}
           onChange={props.handleInput}
         />
       </form>

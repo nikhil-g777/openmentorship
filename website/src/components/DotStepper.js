@@ -5,6 +5,7 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 const DotStepper = props => {
   return(
     <MobileStepper
+      style={props.positionBottom ? {} : {bottom: 0}}
       variant="dots"
       steps={5}
       position="static"

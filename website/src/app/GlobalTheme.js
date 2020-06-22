@@ -1,15 +1,11 @@
 import React from 'react'
 import { createMuiTheme } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { FormControl, InputBase, InputLabel, MenuItem, Select } from '@material-ui/core'
+
 
 export const theme = createMuiTheme({
   overrides: {
-    MuiCssBaseline: {
-      '@global': {
-        html: {
-          WebkitFontSmoothing: 'auto',
-        },
-      },
-    },
     MuiButton: {
       text: {
         border:'2px solid lightgreen',
@@ -20,13 +16,40 @@ export const theme = createMuiTheme({
         width:'100%',
       },
     },
+    MuiCssBaseline: {
+      '@global': {
+        html: {
+          WebkitFontSmoothing: 'auto',
+        },
+        h6: {
+          marginBottom:"1.5rem"
+        }
+      },
+    },
+    MuiFormControl: {
+      root: {
+        margin:'1em 0',
+        display:'flex',
+        flexDirection:'column'
+      }
+    },
+    MuiInputBase:{
+      root: {
+        width: '100%'
+      }
+    },
+    MuiList: {
+      root: {
+        display:'flex',
+        flexDirection:'column'
+      }
+    },
     MuiMobileStepper: {
       root: {
         width:"90%",
         maxWidth: 500,
         flexGrow: 1,
         position: 'absolute',
-        bottom: 0,
         display: 'flex',
         flexDirection: 'column-reverse'
       },
@@ -52,3 +75,38 @@ export const theme = createMuiTheme({
     } 
   },
 });
+
+export const BootstrapInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: "1em",
+    },
+  },
+  input: {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '18.5px 14px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+}))(InputBase);

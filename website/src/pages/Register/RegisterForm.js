@@ -9,12 +9,22 @@ import RegisterNextSteps from "./RegisterNextSteps"
 import RegisterAccepts from "./RegisterAccepts"
 import RegisterWaits from "./RegisterWaits"
 
-
 export default function RegisterForm() {
   const [ state, setState ] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    userType: "mentee",
+    jobStatus: "Looking for a job",
+    jobTitle: "",
+    company: "",
+    location: "",
+    industry: "-",
+    currentRole: false,
+    startMonth: "",
+    startYear: "",  
+    endMonth: "",
+    endYear: ""
   })
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -31,9 +41,28 @@ export default function RegisterForm() {
     const { name, value } = e.target
     setState({ ...state, [name]:value})
   }
-  const { name, email, password } = state
-  const values = { name, email, password }
-  console.log(activeStep)
+
+  const handleUserType = type => {
+    setState({...state, userType:type})
+  }
+
+  const handleJobStatus = status => {
+    setState({...state, jobStatus:status})
+  }
+
+  const handleIndustry = industry => {
+    setState({...state, industry:industry})
+  }
+  const handleCheckbox = e => {
+    console.log(e)
+    setState({...state, [e.target.name]: e.target.checked})
+  }
+
+  const { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear } = state
+  const values = { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear }
+  
+  console.log(state)
+
   switch(activeStep) {
     case 0:
       return (
@@ -46,19 +75,22 @@ export default function RegisterForm() {
     case 1:
       return (
         <RegisterStep1 
-          handleNext={handleNext}
-          handleInput={handleInput}
+          handleUserType={handleUserType}
+          handleJobStatus={handleJobStatus}
           values={values}
+          handleNext={handleNext}
           handleBack={handleBack}
         />
       )
     case 2:
       return (
         <RegisterStep2 
-          handleNext={handleNext}
           handleInput={handleInput}
+          handleIndustry={handleIndustry}
+          handleCheckbox={handleCheckbox}
           values={values}
           handleBack={handleBack}
+          handleNext={handleNext}
         />
       )
     case 3:
