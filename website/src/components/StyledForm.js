@@ -6,7 +6,7 @@ export const TitleWrapper = styled.div`
 `
 
 export const Title = styled.h5`
-  padding-top:.5em;
+  padding: .75em 0;
   width:80%;
   margin: 0 auto;
   font-weight:700;

@@ -8,12 +8,12 @@ export const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       text: {
-        border:'2px solid lightgreen',
-        background:'white',
-        borderRadius:'30px',
-        color:'lightgreen',
-        padding: '1em',
-        width:'100%',
+        border:'2px solid lightgreen !important',
+        background:'white !important',
+        borderRadius:'30px !important',
+        color:'lightgreen !important',
+        padding: '1em !important',
+        width:'100% !important',
       },
     },
     MuiCssBaseline: {

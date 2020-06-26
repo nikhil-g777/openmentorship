@@ -8,13 +8,16 @@ import styled from 'styled-components'
 const LinkedInButton = styled.button`
   width:135px;
   display:flex;
-  margin: 2em auto;
+  margin: 0 auto;
 `
 
 const AddExperience = styled.p`
   font-weight: 600;
   text-decoration:underline;
   margin-top:1em;
+  &:hover {
+    cursor:pointer;
+  }
 `
 
 const RegisterStep2 = props => {
@@ -26,7 +29,9 @@ const RegisterStep2 = props => {
     endMonth: "",
     endYear: ""
   })
- 
+  const emptyJob = { jobTitle: "", company: "" }
+  const [ jobs, setJobs ] = useState([{...emptyJob}])
+
   const handleChange = (event) => {
     setIndustry(event.target.value)
     props.handleIndustry(event.target.value)
@@ -37,11 +42,23 @@ const RegisterStep2 = props => {
     props.handleCheckbox(event)
   }
 
+  const handleJobExperience = e => {
+    console.log(e)
+    const updatedJobs = [...jobs]
+    updatedJobs[e.target.dataset.idx][e.target.className] = e.target.value
+    setJobs(updatedJobs)
+  }
+
+  const handleAddNewExperience = (e) => {
+    setJobs([...jobs, {...emptyJob}])
+  }
+
   const handleDates = (event) => {
     setDates({...dates, [event.target.name]: event.target.value})
   }
   let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   let years = [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000]
+  
   return (
     <Container>
       <TitleWrapper>
@@ -50,26 +67,39 @@ const RegisterStep2 = props => {
       </TitleWrapper>
       <LinkedInButton>Sync with LinkedIn</LinkedInButton>
       <FormItem>
-        <h6 style={{fontWeight:'600'}}>Work Experience #1</h6>
-        <InputLabel>Job Title</InputLabel>
+      {jobs.map((val, idx) => {
+        const jobTitleId = `jobTitle-${idx}`
+        const companyId = `company-${idx}`
+        return (
+          <>
+          <h6 style={{fontWeight:'600', marginTop:"2em"}}>{`Work Experience #${idx + 1}`} </h6>
+          <InputLabel>Job Title</InputLabel>
         <TextField 
           variant="outlined" 
           fullWidth={true}
           type="text"
-          name="jobTitle"
-          defaultValue={props.values.jobTitle}
+          className="jobTitle"
+          id={jobTitleId}
+          name={jobTitleId}
+          data-idx={idx}
+          value={jobs[idx].jobTitle}
+          // defaultValue={props.values.jobTitle}
           placeholder="Ex: Marketing Manager"
-          onChange={props.handleInput}
+          onChange={handleJobExperience}
         />
         <InputLabel htmlFor="component-simple">Company</InputLabel>
         <TextField  
           variant="outlined" 
           fullWidth={true}
           type="text"
-          name="company"
-          defaultValue={props.values.company}
+          className="company"
+          id={companyId}
+          name={companyId}
+          data-idx={idx}
+          value={jobs[idx].company}
+          // defaultValue={props.values.company}
           placeholder="Ex: Google"
-          onChange={props.handleInput}
+          onChange={handleJobExperience}
         />
         <InputLabel htmlFor="component-simple">Location</InputLabel>
         <TextField  
@@ -105,7 +135,7 @@ const RegisterStep2 = props => {
         label="I am currently in this role."
       />
        <InputLabel>Start Date</InputLabel>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <div style={{display: 'flex'}}>
           <Select
             value={dates.startMonth}
             name="startMonth"
@@ -116,6 +146,7 @@ const RegisterStep2 = props => {
             <MenuItem value={month}>{month}</MenuItem>
           ))}
           </Select>
+          <div style={{width: "50px"}}></div>
           <Select
             value={dates.startYear}
             name="startYear"
@@ -128,7 +159,7 @@ const RegisterStep2 = props => {
           </Select>
         </div>
         <InputLabel style={{ marginTop:"1em"}}>End Date</InputLabel>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <div style={{display: 'flex'}}>
           <Select
             value={dates.endMonth}
             name="startMonth"
@@ -139,6 +170,7 @@ const RegisterStep2 = props => {
             <MenuItem value={month}>{month}</MenuItem>
           ))}
           </Select>
+          <div style={{width: "50px"}}></div>
           <Select
             value={dates.endYear}
             name="startYear"
@@ -150,7 +182,10 @@ const RegisterStep2 = props => {
           ))}
           </Select>
         </div>
-        <AddExperience>Add another experience</AddExperience>
+          </>
+        )
+      })}
+        <AddExperience onClick={handleAddNewExperience}>Add another experience</AddExperience>
       </FormItem>
       <DotStepper
         activeStep={1}
