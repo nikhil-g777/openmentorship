@@ -23,6 +23,9 @@ export const theme = createMuiTheme({
         },
         h6: {
           marginBottom:"1.5rem"
+        },
+        body:{
+          fontSize:'1em'
         }
       },
     },
@@ -44,6 +47,11 @@ export const theme = createMuiTheme({
         flexDirection:'column'
       }
     },
+    // MuiTypography: {
+    //   body1: {
+    //     fontSize:'.9em'
+    //   }
+    // },
     MuiMobileStepper: {
       root: {
         width:"90%",

@@ -27,7 +27,10 @@ export default function RegisterForm() {
     endYear: "",
     jobs: [],
     skills: [],
-    interests: []
+    interests: [],
+    mentorship:{
+      frequency: ""
+    },
   })
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -67,8 +70,12 @@ export default function RegisterForm() {
   const handleInterests = value => {
     setState({...state, interests:value})
   }
-  const { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests } = state
-  const values = { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests }
+
+  const handleMentorship = values => {
+    setState({...state, mentorship:values})
+  }
+  const { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship } = state
+  const values = { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship }
   
   console.log(state)
 
@@ -117,6 +124,7 @@ export default function RegisterForm() {
         <RegisterStep4
           handleNext={handleNext}
           handleInput={handleInput}
+          handleMentorship={handleMentorship}
           values={values}
           handleBack={handleBack}
         />
