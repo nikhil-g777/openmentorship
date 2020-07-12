@@ -1,62 +1,30 @@
 
 import React from 'react'
+import { CreateMentee, CreateMentor, FAQ, Home, RegisterForm } from '../pages'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import styled from 'styled-components'
-
-import { NavBar } from '../components'
-import { CreateMentee, CreateMentor } from '../pages'
-
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-const Body = styled.div.attrs({
-    className: 'container-fluid'
-})`
-    padding: 0;
-`
-
-const MainCaption = styled.div.attrs({
-    className: 'row'
-})`
-    margin: 0;
-    color: white;    
-    position: relative;
-    height: 600px;
-    min-height: 400px;
-    width: 100%;
-    background: #161415 url(../images/header-background.jpg) no-repeat top center;
-    background-size: cover !important;
-    -webkit-background-size: cover !important;
-    text-align: center;
-    overflow: hidden;
-`
-
-const Caption = styled.div.attrs({
-    className: 'text-center'
-})`
-    display: inline-block;
-    margin: 0 auto;
-    vertical-align: middle;
-`
+import { theme }  from "./GlobalTheme"
 
 function App() {
-    return (
-        <div>
-        <Router>
-            <NavBar />
-            <Switch>
-              <Route path='/mentees/create' exact component={CreateMentee} />
-              <Route path='/mentors/create' exact component={CreateMentor} />
-            </Switch>
-        </Router>
-            <Body>
-                <MainCaption>
-                    <Caption>
-                        Openmentorship
-                    </Caption>
-                </MainCaption>
-            </Body>
-        </div>
-    )
-}
+  return (
+      <>
+      <Router>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path='/mentees/create' component={CreateMentee} />
+            <Route path='/mentors/create' component={CreateMentor} />
+            <Route path="/FAQ" exact component={FAQ}/>
+            <Route path="/register" component={RegisterForm} />
+          </Switch>
+        </ThemeProvider>
+      </Router>
+      </>
+  )
+};
 
-export default App
+export default App;
