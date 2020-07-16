@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
+import PostRegistration from "../registration/PostRegistration";
 
 
 class CreateMentee extends Component {
     render() {
         return (
             <div>
-                <p>Create Mentee Form Submission</p>
+                <PostRegistration />
             </div>
+            
         )
     }
 }
