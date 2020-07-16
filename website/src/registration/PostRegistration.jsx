@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Button,
   BackArrowTop,
@@ -15,24 +16,33 @@ import {
   PictureFive,
   ButtonText,
   ContentWrapper,
-  ButtonWrapper
+  ButtonWrapper,
 } from "./PostRegistrationStyling";
 
 /*
-Style for phone size 
-Make button StyledComp - copy style from Figma
-Place Images + Text 
 Create back button to previous page 
 Add two display components that render based off Submit/Wait button click 
 Add backend call to send email to user+save user data or just save user data
 */
 
+function BackButton() {
+  let history = useHistory();
+  function handleClick(){
+    history.goBack()
+  }
+  return (
+    <button type="button" onClick={handleClick}>
+      <BackArrowTop />
+      <BackArrowBottom />
+    </button>
+  );
+}
+
 export default class PostRegistration extends Component {
   render() {
     return (
       <Wrapper>
-        <BackArrowTop />
-        <BackArrowBottom />
+        <BackButton/>
         <TitleText>Thanks for signing up with Open Mentorship!</TitleText>
         <BodyText>
           Please read through these steps, and indicate whether you want to
