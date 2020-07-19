@@ -143,7 +143,7 @@ const ConfirmationTitle = styled.p`
 `;
 
 const ConfirmationText = styled.p`
-margin-top:46px;
+  margin-top: 46px;
   width: 343px;
   height: 41px;
   font-family: Proxima Nova;
@@ -156,28 +156,28 @@ margin-top:46px;
 `;
 
 const WaitTitle = styled.p`
-width: 273px;
-height: 48px;
-font-family: Proxima Nova;
-font-style: normal;
-font-weight: 500;
-font-size: 20px;
-line-height: 24px;
-text-align: center;
-color: #000000;
+  width: 273px;
+  height: 48px;
+  font-family: Proxima Nova;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: #000000;
 `;
 
 const WaitText = styled.p`
-margin-top:20px;
-width: 343px;
-height: 41px;
-font-family: Proxima Nova;
-font-style: normal;
-font-weight: normal;
-font-size: 16px;
-line-height: 19px;
-text-align: center;
-color: #000000;
+  margin-top: 20px;
+  width: 343px;
+  height: 41px;
+  font-family: Proxima Nova;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #000000;
 `;
 
 const ButtonText = styled.p`
@@ -246,5 +246,5 @@ export {
   ContentWrapper,
   ButtonWrapper,
   WaitTitle,
-  WaitText
+  WaitText,
 };

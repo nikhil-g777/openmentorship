@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { useHistory } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import {
   Button,
   BackArrowTop,
@@ -23,7 +23,7 @@ import {
   ContentWrapper,
   ButtonWrapper,
   WaitTitle,
-  WaitText
+  WaitText,
 } from "./PostRegistrationStyling";
 
 /*
@@ -80,10 +80,6 @@ export default class PostRegistration extends Component {
     //   console.log(res.data);
     // })
   }
-
-
-
-
   render() {
     return {
       CONTINUE: (
@@ -93,7 +89,8 @@ export default class PostRegistration extends Component {
             An email confirmation is on its way.
           </ConfirmationTitle>
           <ConfirmationText>
-            Thanks for joining OpenMentorshop. We’re excited for you to gain success in your career.
+            Thanks for joining OpenMentorshop. We’re excited for you to gain
+            success in your career.
           </ConfirmationText>
         </Wrapper>
       ),
