@@ -4,6 +4,8 @@ import Rectangle16 from "./images/Rectangle16.png";
 import Rectangle17 from "./images/Rectangle17.png";
 import Rectangle21 from "./images/Rectangle21.png";
 import Rectangle22 from "./images/Rectangle22.png";
+import image22 from "./images/image22.png";
+import image23 from "./images/image23.png";
 
 const Wrapper = styled.section`
   display: flex;
@@ -95,22 +97,89 @@ const Picture = styled.div`
   height: 65px;
 `;
 
-const PictureOne = styled(Picture)`
+const MailPicture = styled(Picture)`
   background-image: url(${Rectangle15});
 `;
 
-const PictureTwo = styled(Picture)`
+const HumansPicture = styled(Picture)`
   background: url(${Rectangle16});
 `;
-const PictureThree = styled(Picture)`
+const PenPaperPicture = styled(Picture)`
   background: url(${Rectangle17});
 `;
-const PictureFour = styled(Picture)`
+const MagnifyPicture = styled(Picture)`
   background: url(${Rectangle21});
 `;
-const PictureFive = styled(Picture)`
+const HandShakePicture = styled(Picture)`
   background: url(${Rectangle22});
 `;
+
+const AirplanePicture = styled.div`
+  margin-top: 185px;
+  margin-bottom: 58px;
+  width: 94px;
+  height: 94px;
+  background: url(${image22});
+`;
+
+const ThumbsUpPicture = styled.div`
+  margin-top: 185px;
+  margin-bottom: 57px;
+  width: 94px;
+  height: 94px;
+  background: url(${image23});
+`;
+
+const ConfirmationTitle = styled.p`
+  width: 203px;
+  height: 22px;
+  font-family: Proxima Nova;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: #000000;
+`;
+
+const ConfirmationText = styled.p`
+margin-top:46px;
+  width: 343px;
+  height: 41px;
+  font-family: Proxima Nova;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #000000;
+`;
+
+const WaitTitle = styled.p`
+width: 273px;
+height: 48px;
+font-family: Proxima Nova;
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+text-align: center;
+color: #000000;
+`;
+
+const WaitText = styled.p`
+margin-top:20px;
+width: 343px;
+height: 41px;
+font-family: Proxima Nova;
+font-style: normal;
+font-weight: normal;
+font-size: 16px;
+line-height: 19px;
+text-align: center;
+color: #000000;
+`;
+
 const ButtonText = styled.p`
   height: 11px;
   font-family: Proxima Nova;
@@ -162,14 +231,20 @@ export {
   Wrapper,
   TitleText,
   BodyText,
-  PictureOne,
-  PictureTwo,
-  PictureThree,
-  PictureFour,
+  MailPicture,
+  HumansPicture,
+  PenPaperPicture,
+  MagnifyPicture,
   PictureText,
-  PictureFive,
+  HandShakePicture,
+  AirplanePicture,
+  ThumbsUpPicture,
+  ConfirmationText,
+  ConfirmationTitle,
   ButtonText,
   PictureTextWrapper,
   ContentWrapper,
   ButtonWrapper,
+  WaitTitle,
+  WaitText
 };
