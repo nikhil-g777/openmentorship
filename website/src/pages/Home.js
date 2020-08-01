@@ -1,7 +1,10 @@
 import React from 'react'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { NavBar } from '../components'
 import styled from 'styled-components'
+
+
 
 
 const Body = styled.div.attrs({
@@ -150,6 +153,8 @@ const TestimonialsCite = styled.cite`
 `
 const Home = () => {
   return(
+    <>
+    <NavBar />
     <Body>
       <MainCaption>
           <Caption>
@@ -157,13 +162,13 @@ const Home = () => {
             <CaptionDescription><span style={{color:'white'}}>Smart Work is more valuable than Hard Work!</span> With the help of this open source project, Find a Mentor who can guide you to success. We are still in the initial development phase of the platform and if you are intersted in contributing towards project, mentoring or looking for a mentor, please send an email to nikhil.g777@gmail.com.</CaptionDescription>
             <LineBreak></LineBreak>
             <GithubButtonContainer>
-              <a style={{color:"white"}}href="https://github.com/nikhil-g777/openmentorship" target="_blank"><FontAwesomeIcon icon={faGithub}/></a> 
+              <a style={{color:"white"}} href="https://github.com/nikhil-g777/openmentorship" target="_blank"><FontAwesomeIcon icon={faGithub}/></a> 
             </GithubButtonContainer>
           </Caption>
       </MainCaption>
       <SlideImageSection>
         <SlideImageWrapper>
-          <img style={{maxWidth: '100', height: 'auto'}} src="/images/mentoring_advantages.jpg"/>
+          <img style={{maxWidth: '100', height: 'auto'}} src="/images/mentoring_advantages.jpg" alt="open mentorship"/>
         </SlideImageWrapper>
       </SlideImageSection>
       <InformationSection>
@@ -175,7 +180,7 @@ const Home = () => {
       </InformationSection>
       <SlideImageSection>
         <SlideImageWrapper>
-          <img style={{maxWidth: '100', height: 'auto'}} src="/images/steps.jpg"/>
+          <img style={{maxWidth: '100', height: 'auto'}} src="/images/steps.jpg" alt="open mentorship steps"/>
         </SlideImageWrapper>
       </SlideImageSection>
       <TestimonialsSection>
@@ -192,6 +197,7 @@ const Home = () => {
         </TestimonialsContainer>
       </TestimonialsSection>
     </Body>
+    </>
   )
 }
 
