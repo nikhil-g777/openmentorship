@@ -8,8 +8,6 @@ const db = require('./db')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const menteeRouter = require('./routes/mentee-router');
-const mentorRouter = require('./routes/mentor-router');
 
 const app = express();
 
@@ -29,8 +27,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/mentees', menteeRouter);
-app.use('/mentors', mentorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
