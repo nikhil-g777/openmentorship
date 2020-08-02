@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { LinkedInPopUp } from 'react-linkedin-login-oauth2'
 
 import { theme }  from "./GlobalTheme"
 
@@ -20,6 +21,7 @@ function App() {
             <Route path='/mentors/create' component={CreateMentor} />
             <Route path="/FAQ" exact component={FAQ}/>
             <Route path="/register" component={RegisterForm} />
+            <Route exact path='/linkedin' component={LinkedInPopUp} />
           </Switch>
         </ThemeProvider>
       </Router>
