@@ -31,6 +31,7 @@ export default function RegisterForm() {
     mentorship:{
       frequency: ""
     },
+    socialMedia: {}
   })
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -74,8 +75,19 @@ export default function RegisterForm() {
   const handleMentorship = values => {
     setState({...state, mentorship:values})
   }
-  const { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship } = state
-  const values = { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship }
+
+  const handleSocialMedia = event => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setState((prevState) => ({ 
+      ...prevState, 
+      socialMedia: {
+        ...prevState.socialMedia,
+        [name]:value
+    }  }))
+  }
+  const { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship, socialMedia } = state
+  const values = { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship, socialMedia }
   
   console.log(state)
 
@@ -133,7 +145,7 @@ export default function RegisterForm() {
       return (
         <RegisterStep5
           handleNext={handleNext}
-          handleInput={handleInput}
+          handleSocialMedia={handleSocialMedia}
           values={values}
           handleBack={handleBack}
         />

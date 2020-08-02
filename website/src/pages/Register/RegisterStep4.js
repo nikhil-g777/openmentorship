@@ -12,7 +12,6 @@ const RegisterStep4 = props => {
   const [ mentorNeeds, setMentorNeeds ] = useState(props.values.mentorship)
 
   const handleChange = (event) => {
-    console.log(event.target.name)
     setMentorNeeds(prev => ({...prev, [event.target.name]: event.target.checked }))
     props.handleMentorship(mentorNeeds)
   };
@@ -22,7 +21,6 @@ const RegisterStep4 = props => {
     props.handleMentorship(mentorNeeds)
   }
 
-  console.log(mentorNeeds)
   return (
     <Container>
       <TitleWrapper>
