@@ -24,23 +24,6 @@ registerUser = (req, res) => {
         })
 
     });
-
-    // mentee
-    //     .save()
-    //     .then(() => {
-    //         return res.status(201).json({
-    //             success: true,
-    //             id: mentee._id,
-    //             message: 'Mentee Created'
-    //         })
-    //     })
-    //     .catch(error => {
-    //         return res.status(400).json({
-    //             success: false,
-    //             error,
-    //             message: 'Mentee not created'
-    //         })
-    //     });
 }
 
 updateUser = (req, res) => {
