@@ -40,15 +40,11 @@ updateUser = (req, res) => {
         return res.status(400).json({ success: false, error: 'request body is empty'});
     }
 
-    if(!body._id) {
-        return res.status(400).json({ success: false, error: 'request body does not have an _id'});
-    }
-
     if(!body.user) {
         return res.status(400).json({ success: false, error: 'request body does not have user object'});
     }
 
-    User.findByIdAndUpdate(body._id, body.user, {new: true}, function(err, user) {
+    User.findByIdAndUpdate(_id, body.user, {new: true}, function(err, user) {
         if (err) {
             console.log(err);
             return res.status(500).json({ success: false, error: err});
