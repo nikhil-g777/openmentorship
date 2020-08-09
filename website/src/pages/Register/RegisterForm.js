@@ -16,6 +16,7 @@ export default function RegisterForm() {
     password: "",
     userType: "mentee",
     jobStatus: "Looking for a job",
+    workExperience:{},
     jobTitle: "",
     company: "",
     location: "",
@@ -57,9 +58,6 @@ export default function RegisterForm() {
     setState({...state, jobStatus:status})
   }
 
-  const handleIndustry = industry => {
-    setState({...state, industry:industry})
-  }
   const handleCheckbox = e => {
     setState({...state, [e.target.name]: e.target.checked})
   }
@@ -86,9 +84,11 @@ export default function RegisterForm() {
         [name]:value
     }  }))
   }
-  const { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship, socialMedia } = state
-  const values = { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship, socialMedia }
+  const { name, email, password, userType, jobStatus, workExperience, jobTitle, company, location, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, mentorship, socialMedia } = state
+  const values = { name, email, password, userType, jobStatus, workExperience, jobTitle, company, location, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, mentorship, socialMedia }
   
+  console.log(state)
+
   switch(activeStep) {
     case 0:
       return (
@@ -112,7 +112,6 @@ export default function RegisterForm() {
       return (
         <RegisterStep2 
           handleInput={handleInput}
-          handleIndustry={handleIndustry}
           handleCheckbox={handleCheckbox}
           values={values}
           handleBack={handleBack}
