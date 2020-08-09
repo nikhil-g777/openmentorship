@@ -12,6 +12,7 @@
     "ejs": "~2.5.7",
     "express": "~4.16.0",
     "http-errors": "^1.8.0",
+    "lodash": "^4.17.19",
     "mongoose": "^5.8.9",
     "morgan": "~1.9.0"
   }
