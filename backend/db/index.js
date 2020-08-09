@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
+require('dotenv').config({path:__dirname+"/../config/.env"});
+
+// console.log(process.env.MONGODB_URI)
 
 mongoose
-    .connect('mongodb://127.0.0.1:27017/openmentorship', {useNewUrlParser: true})
+    .connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
     .catch(err => {
         console.error('Connection Error', err.message)
     })

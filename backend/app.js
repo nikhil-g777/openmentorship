@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
+
 const db = require('./db')
 
 const indexRouter = require('./routes/index');
@@ -14,9 +15,10 @@ const mentorRouter = require('./routes/mentor-router');
 
 const app = express();
 
-const port = process.env.port || 3010;
 
-require('dotenv').config();
+// require('dotenv').config({path:__dirname+"/./config/.env"});
+require('dotenv').config()
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,9 +29,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
+app.use(cors({origin:'http://localhost:3000', credentials:true}));
+
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
@@ -38,7 +42,7 @@ app.use('/mentors', mentorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  next(createError(404))
 });
 
 // error handler
@@ -52,6 +56,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(port, () => console.log('Server listening on port ' + port + '!'))
+app.listen(process.env.APP_PORT, () => console.log('Server listening on port ' + process.env.APP_PORT + '!'))
 
 module.exports = app;

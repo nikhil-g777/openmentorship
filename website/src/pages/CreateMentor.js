@@ -5,7 +5,8 @@ const queryString = require('query-string');
 const axios = require('axios');
 
 const backendApi = axios.create({
-    baseURL: 'http://localhost:3010'
+    baseURL: 'http://localhost:3010',
+    withCredentials:true //this option is essential to receive the cookie from the backend
 })
 
 class CreateMentor extends Component {
@@ -60,6 +61,7 @@ class CreateMentor extends Component {
                 >
                 <img src='../images/linkedin-button.png' />
                 </LinkedIn>
+                <a href="http://localhost:3010/users/auth">Auth</a>
                 {!code && <div>No code</div>}
                 {code && <div>Code: {code}</div>}
                 {errorMessage && <div>{errorMessage}</div>}

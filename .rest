@@ -1,0 +1,13 @@
+POST http://localhost:3000/mentors/getAccessToken
+
+###
+
+PUT http://localhost:3010/users/update/123
+
+###
+
+POST http://localhost:3010/users/login
+
+###
+
+POST http://localhost:3010/users/register
