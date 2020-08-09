@@ -89,8 +89,6 @@ export default function RegisterForm() {
   const { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship, socialMedia } = state
   const values = { name, email, password, userType, jobStatus, jobTitle, company, location, industry, currentRole, startMonth, startYear, skills, interests, mentorship, socialMedia }
   
-  console.log(state)
-
   switch(activeStep) {
     case 0:
       return (

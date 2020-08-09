@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 
 import { registerUser } from '../../api';
+import RegisterStep1 from './RegisterStep1';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,39 +40,43 @@ const Divider = styled.div`
     margin: 0 10px;
   }
 `
-const RegisterMain = props => {
 
+const LindkedInButton = styled.img`
+  width:200px;
+
+`
+
+const RegisterMain = props => {
   const classes = useStyles();
+  const [ userRegistered, setUserRegistered ] = useState(false)
 
   const continueStep = e => {
-    // if(!props.values.name || !props.values.email || !props.values.password){
-    //   alert("fill out all fields plz")
-    // }else {
-    //   //api call --> if success, redirect to registerFlow
-    //   // e.preventDefault()
-    // } 
-    props.handleNext()
+    if(!props.values.name || !props.values.email || !props.values.password){
+      alert("fill out all fields plz")
+    }else {
+      //api call to register user with no LinkedIn
+      props.handleNext()
+    } 
   }
 
   const handleSuccess = (data) => {
-    // API call for getting access token and saving user profile
-    console.log(data.code);
-
-    // use this auth code and call the register user API
-
-    // registerUser({
-    //   authCode: data.code
-    // }).then((response) => {
-    //   console.log(response.data);
-    // }).catch((error) => {
-    //   console.log(error);
-    // })
+    console.log(data.code)
+    registerUser({
+      authCode: data.code
+    }).then((response) => {
+      console.log(response.data);
+    }).catch((error) => {
+      // setUserRegistered(true)
+      props.handleNext()
+      console.log(error);
+    })
   }
 
   const handleFailure = (error) => {
   }
-
+  
   return (
+    <>
     <Container style={{ textAlign: "center" }}>
       <img src={PlaceholderLogo} style={{ height: 80 }} alt="open mentorship logo" />
       <Title>Open Mentorship</Title>
@@ -84,7 +89,7 @@ const RegisterMain = props => {
         scope='r_emailaddress r_liteprofile'
         redirectPath='/register'
       >
-        <img src='/images/linkedin-button.png' />
+        <LindkedInButton src='/images/linkedin-button.png' />
       </LinkedIn>
 
       <Divider>or</Divider>
@@ -122,6 +127,7 @@ const RegisterMain = props => {
       </form>
       <Button onClick={continueStep}>Continue</Button>
     </Container>
+  </>
   )
 }
 

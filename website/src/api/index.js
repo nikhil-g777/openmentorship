@@ -1,9 +1,10 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseUrl: 'http://localhost:3000/api'
-})
-
+    baseURL: 'http://www.openmentorship.com:3000'
+    
+  })
+  
 //Mentees
 export const createMentee = (payload) => api.post('/mentees/createMentee', payload)
 
