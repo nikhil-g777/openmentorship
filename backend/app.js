@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+var cors = require('cors');
 const logger = require('morgan');
 const dotenv = require('dotenv');
 
@@ -10,6 +11,7 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
+app.use(cors());
 const port = process.env.port || 3000;
 
 dotenv.config();
