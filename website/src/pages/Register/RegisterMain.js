@@ -23,108 +23,126 @@ const Info = styled.p`
   padding:1em 3em 1em 3em;
 `
 
-const Divider = styled.div`
-  padding: 2em 0 1em 0;
-  display:flex;
-  justify-content:center;
-  align-items: center;
-  color:grey;
-
-  &:after,
-  &:before {
-    content: "";
-    display: block;
-    background: #ccc;
-    width: 90%;
-    height:1px;
-    margin: 0 10px;
-  }
-`
-
 const LindkedInButton = styled.img`
   width:200px;
+`
 
+const Wrapper = styled.div`
+  margin:3em auto;
 `
 
 const RegisterMain = props => {
   const classes = useStyles();
-  const [ userRegistered, setUserRegistered ] = useState(false)
+  const [ showUserFields, setShowUserFields ] = useState(false)
+  const [ firstName, setFirstName ] = useState("")
+  const [ email, setEmail ] = useState("")
+  const [ lastName, setLastName ] = useState("")
+  const [ headline, setHeadline ] = useState("")
+  const [ bio, setBio ] = useState("")
+  const [ linkedInId, setLinkedInId ] = useState("")
 
   const continueStep = e => {
-    if(!props.values.name || !props.values.email || !props.values.password){
-      alert("fill out all fields plz")
-    }else {
-      //api call to register user with no LinkedIn
-      props.handleNext()
-    } 
-  }
-
-  const handleSuccess = (data) => {
-    console.log(data.code)
     registerUser({
-      authCode: data.code
+        "authCode": linkedInId,
+        "user": {
+          "firstName": firstName,
+          "lastName": lastName,
+          "email": email,
+          "headline": headline,
+          "bio": bio,
+          "linkedInId": linkedInId
+        }
     }).then((response) => {
       console.log(response.data);
+      props.handleNext()
     }).catch((error) => {
       // setUserRegistered(true)
-      props.handleNext()
       console.log(error);
     })
+    } 
+
+  const handleSuccess = (data) => {
+    setShowUserFields(true)
+    setLinkedInId(data.code)
   }
 
   const handleFailure = (error) => {
   }
-  
+
   return (
     <>
     <Container style={{ textAlign: "center" }}>
       <img src={PlaceholderLogo} style={{ height: 80 }} alt="open mentorship logo" />
       <Title>Open Mentorship</Title>
       <Info>Find a Mentor who can help guide you to success.</Info>
-      <LinkedIn
-        clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
-        onFailure={handleFailure}
-        onSuccess={handleSuccess}
-        redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
-        scope='r_emailaddress r_liteprofile'
-        redirectPath='/register'
-      >
-        <LindkedInButton src='/images/linkedin-button.png' />
-      </LinkedIn>
+      <Wrapper>
+        <LinkedIn 
+          clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
+          onFailure={handleFailure}
+          onSuccess={handleSuccess}
+          redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
+          scope='r_emailaddress r_liteprofile'
+          redirectPath='/register'
+        >
+          <LindkedInButton src='/images/linkedin-button.png' />
+        </LinkedIn>
+      </Wrapper>
 
-      <Divider>or</Divider>
-      <form className={classes.root}>
-        <TextField
-          id="outlined-basic"
-          label="Full Name"
-          variant="outlined"
-          fullWidth={true}
-          type="text"
-          name="name"
-          defaultValue={props.values.name}
-          onChange={props.handleInput}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Email"
-          variant="outlined"
-          fullWidth={true}
-          type="email"
-          name="email"
-          defaultValue={props.values.email}
-          onChange={props.handleInput}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Password"
-          variant="outlined"
-          fullWidth={true}
-          type="password"
-          name="password"
-          defaultValue={props.values.password}
-          onChange={props.handleInput}
-        />
-      </form>
+      {showUserFields && 
+        <form className={classes.root}>
+          <TextField
+            id="outlined-basic"
+            label="First Name"
+            variant="outlined"
+            fullWidth={true}
+            type="text"
+            name="firstName"
+            value={firstName}
+            onChange={e => setFirstName(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            fullWidth={true}
+            type="text"
+            name="name"
+            value={lastName}
+            onChange={e => setLastName(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
+            fullWidth={true}
+            type="email"
+            name="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Headline"
+            variant="outlined"
+            fullWidth={true}
+            type="text"
+            name="headline"
+            value={headline}
+            onChange={e => setHeadline(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Bio"
+            variant="outlined"
+            fullWidth={true}
+            type="text"
+            name="bio"
+            value={bio}
+            onChange={e => setBio(e.target.value)}
+          />
+          
+        </form>   
+      }
       <Button onClick={continueStep}>Continue</Button>
     </Container>
   </>
