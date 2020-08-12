@@ -54,6 +54,7 @@ const RegisterMain = props => {
         }
     }).then((response) => {
       console.log(response.data);
+      localStorage.setItem("userId", response.data._id)
       props.handleNext()
     }).catch((error) => {
       // setUserRegistered(true)
@@ -131,6 +132,7 @@ const RegisterMain = props => {
             onChange={e => setHeadline(e.target.value)}
           />
           <TextField
+            multiline
             id="outlined-basic"
             label="Bio"
             variant="outlined"
@@ -143,7 +145,7 @@ const RegisterMain = props => {
           
         </form>   
       }
-      <Button onClick={continueStep}>Continue</Button>
+      <Button onClick={continueStep} disabled={showUserFields}>Continue</Button>
     </Container>
   </>
   )

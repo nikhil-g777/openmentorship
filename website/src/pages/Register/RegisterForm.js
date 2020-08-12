@@ -11,13 +11,10 @@ import RegisterWaits from "./RegisterWaits"
 
 export default function RegisterForm() {
   const [ state, setState ] = useState({
-    name: "",
-    email: "",
-    password: "",
     userType: "mentee",
     jobStatus: "Looking for a job",
     workExperience:{},
-    jobTitle: "",
+    title: "",
     company: "",
     location: "",
     industry: "-",
@@ -29,10 +26,12 @@ export default function RegisterForm() {
     jobs: [],
     skills: [],
     interests: [],
+    goals:[],
+    communicationFrequency: "",
+    socialMedia: {},
     mentorship:{
-      frequency: ""
-    },
-    socialMedia: {}
+        frequency: ""
+      },
   })
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -84,9 +83,8 @@ export default function RegisterForm() {
         [name]:value
     }  }))
   }
-  const { name, email, password, userType, jobStatus, workExperience, jobTitle, company, location, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, mentorship, socialMedia } = state
-  const values = { name, email, password, userType, jobStatus, workExperience, jobTitle, company, location, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, mentorship, socialMedia }
-  
+  const { userType, jobStatus, workExperience, title, company, location, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, mentorship, goals, socialMedia } = state
+  const values = { userType, jobStatus, workExperience, title, company, location, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, mentorship, goals, socialMedia }
   console.log(state)
 
   switch(activeStep) {

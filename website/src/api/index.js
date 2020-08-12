@@ -1,24 +1,18 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://www.openmentorship.com:3000'
-    
-  })
+  baseURL: 'http://www.openmentorship.com:3000'    
+})
+
+const userId = localStorage.getItem("userId")
   
-//Mentees
-export const createMentee = (payload) => api.post('/mentees/createMentee', payload)
-
-//Mentors
-export const createMentor = (payload) => api.post('/mentors/createMentor', payload)
-
-//Mentors
 export const registerUser = (payload) => api.post('/users/register', payload)
 
+export const updateUser = (payload) => api.put(`/users/update/${userId}`, payload)
 
 const apis = {
-    createMentee,
-    createMentor,
-    registerUser
+  registerUser,
+  updateUser
 }
 
 export default apis

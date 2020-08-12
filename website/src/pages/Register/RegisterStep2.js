@@ -31,7 +31,7 @@ const RegisterStep2 = props => {
             type="text"
             className="jobTitle"
             name="jobTitle"
-            value={props.values.jobTitle}
+            value={props.values.title}
             placeholder="Ex: Marketing Manager"
             onChange={props.handleInput}
           />
@@ -67,6 +67,7 @@ const RegisterStep2 = props => {
             <MenuItem value="Marketing">Marketing</MenuItem>
             <MenuItem value="Customer Service">Customer Service</MenuItem>
             <MenuItem value="Design">Design</MenuItem>
+            <MenuItem value="Otherqq">Other</MenuItem>
           </Select>
           <FormControlLabel
             control={
