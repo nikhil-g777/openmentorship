@@ -132,7 +132,6 @@ updateUser = (req, res) => {
         res.status(400).json({ success: false, error: 'request body is empty'})
     }
 
-    console.log(body);
     res.json({success: true})
 }
 
