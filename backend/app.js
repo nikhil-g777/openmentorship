@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-
 const db = require('./db')
 
 const indexRouter = require('./routes/index');
@@ -16,7 +15,6 @@ const mentorRouter = require('./routes/mentor-router');
 const app = express();
 
 
-// require('dotenv').config({path:__dirname+"/./config/.env"});
 require('dotenv').config()
 
 
@@ -29,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors({origin:'http://localhost:3000', credentials:true}));
+app.use(cors({origin:'http://localhost:3000', credentials:true }));
 
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))

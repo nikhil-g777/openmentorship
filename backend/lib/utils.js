@@ -10,7 +10,7 @@ module.exports = {
     },
 
     accessToken: (linkedinId)=>{
-        return jwt.sign({linkedinId}, PRIVATE, {algorithm:"RS256"})
+        return jwt.sign({linkedinId}, PRIVATE, {algorithm:"RS256", expiresIn: 1000 * 60 * 60 * 24})
     },
     verifyToken: (token)=>{
         if(token !== undefined){

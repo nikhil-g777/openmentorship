@@ -6,7 +6,7 @@ const axios = require('axios');
 
 const backendApi = axios.create({
     baseURL: 'http://localhost:3010',
-    withCredentials:true //this option is essential to receive the cookie from the backend
+    withCredentials:true, //this option is essential to receive the cookie from the backend    
 })
 
 class CreateMentor extends Component {
@@ -15,10 +15,7 @@ class CreateMentor extends Component {
         errorMessage: '',
     };
 
-    // handleMessage = (event)  => {
-    //     console.log(event.origin);
-    //     console.log(event.data.from)
-    // }
+
 
     componentDidMount() {
         window.addEventListener('message', this.handleMessage)
@@ -33,7 +30,7 @@ class CreateMentor extends Component {
         backendApi.post('/users/register', {
             authCode: data.code
         }).then((response) => {
-            console.log(response.data);
+            console.log(response);
         }).catch((error) => {
             console.log(error);
         })
@@ -50,6 +47,7 @@ class CreateMentor extends Component {
         const { code, errorMessage } = this.state;
 
         return  (
+            
             <div>
                 <LinkedIn
                     clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}

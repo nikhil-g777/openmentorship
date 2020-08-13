@@ -5,10 +5,12 @@ const User = require('../models/user')
 const Token = require('../models/Tokens')
 
 const cookieExtractor = (req) =>{
+    console.log(req.headers)
     let token = null;
     if (req && req.cookies)
     {
-        token = req.cookies['accessToken'];
+        token = req.cookies['accessToken']; //authorization Bearer token
+       
     }
     
     return token;
