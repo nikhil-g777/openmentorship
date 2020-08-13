@@ -4,7 +4,7 @@ require('dotenv').config({path:__dirname+"/../config/.env"});
 // console.log(process.env.MONGODB_URI)
 
 mongoose
-    .connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+    .connect(process.env.MONGODB_CONNECTION_URL + '/openmentorship', {useNewUrlParser: true})
     .catch(err => {
         console.error('Connection Error', err.message)
     })

@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
+import PostRegistration from "./registration/PostRegistration";
 
-
+const userData = {name:'shawn', age: '21'}
 class CreateMentee extends Component {
     render() {
         return (
             <div>
-                <p>Create Mentee Form Submission</p>
+                 <PostRegistration data = {userData} />
             </div>
+            
         )
     }
 }

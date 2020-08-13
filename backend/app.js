@@ -2,21 +2,21 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+var cors = require('cors');
 const logger = require('morgan');
-const cors = require('cors');
-
-const db = require('./db')
+const dotenv = require('dotenv');
 
 const indexRouter = require('./routes/index');
-const userRouter = require('./routes/user-router');
-const menteeRouter = require('./routes/mentee-router');
-const mentorRouter = require('./routes/mentor-router');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
+app.use(cors());
+const port = process.env.port || 3000;
 
-require('dotenv').config()
+dotenv.config();
 
+const db = require('./db');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,9 +34,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 
 app.use('/', indexRouter);
-app.use('/users', userRouter);
-app.use('/mentees', menteeRouter);
-app.use('/mentors', mentorRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
