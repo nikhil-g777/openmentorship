@@ -15,6 +15,10 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+<<<<<<< HEAD
+=======
+    "dotenv": "^8.2.0",
+>>>>>>> 58b55733aa98f7a3ba428c6fd5c668539a4378e5
     "material-ui": "^0.20.2",
     "query-string": "^6.13.1",
     "react": "^16.12.0",
