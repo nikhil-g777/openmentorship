@@ -7,12 +7,12 @@ const logger = require('morgan');
 const dotenv = require('dotenv');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/user-router');
+// const usersRouter = require('./routes/users');
 
 const app = express();
 
-app.use(cors());
-const port = process.env.port || 3000;
+
 
 dotenv.config();
 

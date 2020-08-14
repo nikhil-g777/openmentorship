@@ -69,38 +69,24 @@ registerUser = (req, res) => {
                     if(user) 
                         user = Object.assign(user, userProfile)
                     else User.create({userProfile})
-                        
-                 
-                    Token.find({})
+                    
+                    Token.findOne({linkedinId:user.linkedinId})
                     .then(token=>{
-                        //check if array isn't empty
-                        let tokenExist = false
-                        if(token.length !== 0){
-                            tokenExist = token.some(t=>{
-                           //check if token is in the DB
-                           let id = util.verifyToken(t.refreshToken)
-                           if (id == undefined) return res.status(401)
-                           if(id.linkedinId === user.linkedinId)
-                               {
-                                const accessToken = util.accessToken(id.linkedinId)
-                                res.cookie('accessToken', accessToken)
-                                .json({success:true})
-                                return true
-                               }
-                            else return false
-                        })
-                        }
-
-                        //create token if not in DB
-                        if(tokenExist == false)
-                        {
-                            //sign jwt refresh token
-                            let t = util.refreshToken(user.linkedinId)
-                            Token.create({refreshToken:t})
+                            //if token isn't in our DB, store
+                        if(!token) {
+                            //encrypt information
+                            const t = util.refreshToken(user.linkedinId)
+                            Token.create({refreshToken:t, linkedinId:user.linkedinId})
+                            //send the access token
                             const accessToken = util.accessToken(user.linkedinId)
-                            
                             res.cookie('accessToken', accessToken).json({success:true})
-                            
+                        }
+                        else {
+                            //create an access token
+                            const id = util.verifyToken(token.refreshToken)
+                            //send the access token
+                            const accessToken = util.accessToken(id.linkedinId)
+                            res.cookie('accessToken', accessToken).json({success:true})
                         }
                     })
                     .catch(err=>console.log(err))

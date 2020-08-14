@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const Token = new Schema(
     {
-       refreshToken:String
+       refreshToken:String,
+       linkedinId: String
     }
 )
 
