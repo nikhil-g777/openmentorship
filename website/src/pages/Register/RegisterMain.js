@@ -53,11 +53,9 @@ const RegisterMain = props => {
           "linkedInId": linkedInId
         }
     }).then((response) => {
-      console.log(response.data);
       localStorage.setItem("userId", response.data._id)
       props.handleNext()
     }).catch((error) => {
-      // setUserRegistered(true)
       console.log(error);
     })
     } 
@@ -145,7 +143,7 @@ const RegisterMain = props => {
           
         </form>   
       }
-      <Button onClick={continueStep} disabled={showUserFields}>Continue</Button>
+      <Button onClick={continueStep} disabled={!showUserFields}>Continue</Button>
     </Container>
   </>
   )
