@@ -5,9 +5,7 @@ import RegisterStep2 from "./RegisterStep2"
 import RegisterStep3 from "./RegisterStep3"
 import RegisterStep4 from "./RegisterStep4"
 import RegisterStep5 from "./RegisterStep5"
-import RegisterNextSteps from "./RegisterNextSteps"
-import RegisterAccepts from "./RegisterAccepts"
-import RegisterWaits from "./RegisterWaits"
+import PostRegistration from "./postRegistration/PostRegistration"
 
 export default function RegisterForm() {
   const [ state, setState ] = useState({
@@ -147,19 +145,8 @@ export default function RegisterForm() {
     )
     case 6:
       return (
-        <RegisterNextSteps
+        <PostRegistration 
           handleBack={handleBack}
-          handleNext={handleNext}
-        />
-    )
-    case 7:
-      return (
-        <RegisterAccepts
-        />
-    )
-    case 6:
-      return (
-        <RegisterWaits
         />
     )
   }

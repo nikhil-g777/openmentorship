@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BackButton, Container, DotStepper, Title, TitleWrapper } from "../../components"
 import { updateUser } from "../../api"
 
@@ -25,7 +25,6 @@ const RegisterStep5 = props => {
   let endDateFormatted = `${props.values.endYear}-${endMonth}-01`
 
   function handleUpdateUser() {
-    console.log(userId)
     updateUser({
       _id: userId,
       user: {
