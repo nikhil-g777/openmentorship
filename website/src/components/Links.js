@@ -31,6 +31,11 @@ class Links extends Component {
                             </Link>
                         </Item>
                         <Item>
+                            <Link to="/mentorMatches" className="nav-link">
+                                Mentor Matches
+                            </Link>
+                        </Item>
+                        <Item>
                             <Link to="/FAQ" className="nav-link">
                                 FAQ
                             </Link>
