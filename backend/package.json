@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devStart": "nodemon app.js"
+    "devStart": "nodemon app.js",
+    "pretest": "eslint --ignore-path .gitignore ."
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -13,18 +14,28 @@
     "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
+    "dotenv-flow": "^3.2.0",
     "ejs": "~2.5.7",
     "express": "~4.16.0",
-    "jsonwebtoken": "^8.5.1",
     "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.19",
     "mongoose": "^5.8.9",
-    "morgan": "~1.9.0",
+    "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "query-string": "^6.12.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.2.5",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.1",
+    "pretty-quick": "^3.0.0"
   }
 }

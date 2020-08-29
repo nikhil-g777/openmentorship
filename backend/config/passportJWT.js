@@ -2,7 +2,7 @@ const fs = require('fs')
 const JwtStrategy = require('passport-jwt').Strategy
 const PUBLIC_KEY = fs.readFileSync(__dirname + "/../keys/public.pem")
 const User = require('../models/user')
-const Token = require('../models/Tokens')
+const Token = require('../models/token')
 
 const cookieExtractor = (req) =>{
     console.log(req.headers)

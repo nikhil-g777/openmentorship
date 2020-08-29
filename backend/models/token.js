@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 const Token = new Schema(
     {
        refreshToken:String,
-       linkedinId: String
+       userId: {type:mongoose.Schema.Types.ObjectId, ref:'user'}
     }
 )
 
-module.exports = mongoose.model('MentorshipToken', Token)
+module.exports = mongoose.model('token', Token)

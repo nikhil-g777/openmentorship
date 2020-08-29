@@ -1,151 +1,263 @@
 const _ = require('lodash');
+const axios = require('axios');
+const jwt = require("jsonwebtoken");
+const queryString = require('query-string');
+const util = require('../lib/utils');
 
-const User = require('../models/user');
 const Match = require('../models/match');
+const Token = require('../models/token');
+const User = require('../models/user');
 
+const linkedinAuth = axios.create({
+    baseURL: 'https://www.linkedin.com/'
+})
+
+const linkedinApi = axios.create({
+    baseURL: 'https://api.linkedin.com/'
+})
+
+getLinkedInProfile = (authCode) => {
+    return new Promise((resolve, reject) => {
+        console.log('get linkedin profile');
+        const authUrl = queryString.stringifyUrl({
+            url: '/oauth/v2/accessToken',
+            query: {
+                grant_type: 'authorization_code',
+                code: authCode,
+                redirect_uri: process.env.LINKEDIN_REDIRECT_URI,
+                client_id: process.env.LINKEDIN_CLIENT_ID,
+                client_secret: process.env.LINKEDIN_CLIENT_SECRET
+            }
+        })
+        const profileUrl = '/v2/me'
+
+        linkedinAuth.post(authUrl) // exchange auth code for access token
+            .then((response) => {
+                linkedinApi.get(profileUrl, { // get user profile
+                    headers: {
+                        Authorization: `Bearer ${response.data.access_token}`
+                    }
+                }).then((profileResponse) => {
+                    console.log('profile response');
+                    console.log(profileResponse.data);
+                    var result = {
+                        firstName: profileResponse.data.localizedFirstName,
+                        lastName: profileResponse.data.localizedLastName,
+                        linkedInId: profileResponse.data.id
+                    }
+
+                    resolve(result);
+                }).catch((error) => {
+                    console.log(error);
+                    reject(new Error({ msg: 'Error in get linkedin profile' }));
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+                reject(new Error({ msg: 'Error in get linkedin profile' }));
+            })
+    })
+}
 
 registerUser = (req, res) => {
     const body = req.body
 
-    if(!body) {
-        return res.status(400).json({ success: false, error: 'request body is empty'});
+    if (!body) {
+        return res.status(400).json({ success: false, error: 'request body is empty' });
     }
 
-    if(!body.user) {
-        return res.status(400).json({ success: false, error: 'request body does not have user object'});
+    if (!body.user) {
+        return res.status(400).json({ success: false, error: 'request body does not have user object' });
     }
 
+    if (!body.authCode) {
+        return res.status(400).json({ success: false, error: 'authCode missing in the body' });
+    }
 
-    User.findOneAndUpdate({linkedInId: body.user.linkedInId}, body.user, {upsert: true, new: true}, function(err, user) {
-        if (err) res.status(500).json({ success: false, error: 'register user failed'});
-        console.log(user);
-        return res.status(200).json({
-            success: true,
-            _id: user['_id'],
-            linkedInId: user.linkedInId,
-            message: 'User Registered'
-        })
+    getLinkedInProfile(body.authCode).then((linkedInProfile) => {
+        User.findOne({ linkedInId: linkedInProfile.linkedInId })
+            .then(user => {
+                if (user)
+                    user = Object.assign(user, linkedInProfile);
+                else
+                    user = new User(linkedInProfile);
+                console.log(user);
+                user.save().then((updatedUser) => {
+                    Token.findOne({ userId: updatedUser._id })
+                        .then(token => {
+                            //if token isn't in our DB, store
+                            if (!token) {
+                                //encrypt information
+                                const t = util.refreshToken(updatedUser._id);
+                                Token.create({ refreshToken: t, userId: updatedUser._id });
 
-    });
+                            }
+                            //send the access token
+                            const accessToken = util.accessToken(updatedUser._id)
+                            return res.cookie('accessToken', accessToken).json({ success: true, _id: updatedUser._id });
+                        }).catch(err => {
+                            return res.status(500).json({
+                                success: false,
+                                error: 'Error in find token'
+                            });
+                        })
+                }).catch(err => {
+                    console.log(err);
+                    return res.status(500).json({
+                        success: false,
+                        error: 'Error in save user'
+                    });
+                })
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(500).json({
+                    success: false,
+                    error: 'Unable to authenticate linkedIn profile'
+                });
+            })
+    }).catch((err) => {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            error: 'Unable to authenticate linkedIn profile'
+        });
+    })
 }
 
 updateUser = (req, res) => {
-
     console.log('Got update user request');
     _id = req.params._id
+    if (req.user._id == _id) {
+        const body = req.body
 
-    const body = req.body
-
-    if(!body) {
-        return res.status(400).json({ success: false, error: 'request body is empty'});
-    }
-
-    if(!body.user) {
-        return res.status(400).json({ success: false, error: 'request body does not have user object'});
-    }
-
-    User.findByIdAndUpdate(_id, body.user, {new: true}, function(err, user) {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ success: false, error: err});
-        } else if (!user) {
-            return res.status(404).json({ success: false, error: 'user not found'})
+        if (!body) {
+            return res.status(400).json({ success: false, error: 'request body is empty' });
         }
-        
-        return res.status(200).json({
-            success: true,
-            message: 'User Updated',
-            user: user
-        })
 
-    });
+        if (!body.user) {
+            return res.status(400).json({ success: false, error: 'request body does not have user object' });
+        }
+
+        User.findByIdAndUpdate(_id, body.user, { new: true }, function (err, user) {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({ success: false, error: err });
+            } else if (!user) {
+                return res.status(404).json({ success: false, error: 'user not found' })
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: 'User Updated',
+                user: user
+            })
+        });
+    } else {
+        return res.status(401).json({
+            success: false,
+            message: 'Not authorized',
+        })
+    }
 }
 
 userInfo = (req, res) => {
 
     console.log('Got user info request');
-    let _id = req.params._id
-
-    if(!_id) {
-        return res.status(400).json({ success: false, error: 'id not sent'});
-    }
-
-
-    User.findById(_id, function(err, user) {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ success: false, error: err});
-        } else if (!user) {
-            return res.status(404).json({ success: false, error: 'user not found'})
+    let _id = req.params._id;
+    if (req.user._id == _id) {
+        if (!_id) {
+            return res.status(400).json({ success: false, error: 'id not sent' });
         }
-        
-        return res.status(200).json({
-            success: true,
-            user: user
-        })
 
-    });
+
+        User.findById(_id, function (err, user) {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({ success: false, error: err });
+            } else if (!user) {
+                return res.status(404).json({ success: false, error: 'user not found' })
+            }
+
+            return res.status(200).json({
+                success: true,
+                user: user
+            })
+        });
+    } else {
+        return res.status(401).json({
+            success: false,
+            message: 'Not authorized',
+        })
+    }
 }
 
 matches = (req, res) => {
+    if (req.user._id == _id) {
 
-    console.log('Got user matches request');
-    let _id = req.params._id
+        console.log('Got user matches request');
+        let _id = req.params._id
 
-    if(!_id) {
-        return res.status(400).json({ success: false, error: '_id not sent'});
-    }
-
-
-    User.findByIdAndUpdate(_id)
-        .exec(function(err, user) {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ success: false, error: err});
-        } else if (!user) {
-            return res.status(404).json({ success: false, error: 'user not found'});
+        if (!_id) {
+            return res.status(400).json({ success: false, error: '_id not sent' });
         }
 
-        let userType = user.userType;
 
-        findQuery = {}
-        if(user.userType == 'mentee') {
-            findQuery.menteeId = _id;
-        } else if (user.userType == 'mentor') {
-            findQuery.mentorId = _id;
-        } else {
-            return res.status(404).json({ success: false, error: 'user type in invalid'});      
-        }
-
-        Match.find(findQuery)
-            .populate('mentorId')
-            .populate('menteeId')
-            .exec(function(err, matches) {
+        User.findByIdAndUpdate(_id)
+            .exec(function (err, user) {
                 if (err) {
                     console.log(err);
-                    return res.status(500).json({ success: false, error: err});
-                } 
+                    return res.status(500).json({ success: false, error: err });
+                } else if (!user) {
+                    return res.status(404).json({ success: false, error: 'user not found' });
+                }
 
-                result = {pending: [], active: [], closed: []};
-                _.forEach(matches, function(match) {
-                    switch(userType) {
-                        case 'mentor':
-                            result[match.status].push(match.menteeId);
-                            break;
-                        case 'mentee':
-                            result[match.status].push(match.mentorId);
-                            break;
-                        default:
-                            console.log('Invalid user type');
-                    }
-                })
+                let userType = user.userType;
 
-                return res.status(200).json({
-                    success: true,
-                    matches: result
-                })
-            })
-    });
+                findQuery = {}
+                if (user.userType == 'mentee') {
+                    findQuery.menteeId = _id;
+                } else if (user.userType == 'mentor') {
+                    findQuery.mentorId = _id;
+                } else {
+                    return res.status(404).json({ success: false, error: 'user type in invalid' });
+                }
+
+                Match.find(findQuery)
+                    .populate('mentorId')
+                    .populate('menteeId')
+                    .exec(function (err, matches) {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).json({ success: false, error: err });
+                        }
+
+                        result = { pending: [], active: [], closed: [] };
+                        _.forEach(matches, function (match) {
+                            switch (userType) {
+                                case 'mentor':
+                                    result[match.status].push(match.menteeId);
+                                    break;
+                                case 'mentee':
+                                    result[match.status].push(match.mentorId);
+                                    break;
+                                default:
+                                    console.log('Invalid user type');
+                            }
+                        })
+
+                        return res.status(200).json({
+                            success: true,
+                            matches: result
+                        })
+                    })
+            });
+    } else {
+        return res.status(401).json({
+            success: false,
+            message: 'Not authorized',
+        })
+    }
 }
 
 module.exports = {
