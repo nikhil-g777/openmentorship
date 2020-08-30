@@ -141,11 +141,13 @@ const MatchProfile = ({ selectedProfile, props }) => {
   const classes = useStyles(props);
   const [openMessage, setOpenMessage] = useState(false);
   const [sentMessage, setSentMessage] = useState(false);
+  const [mentor,setMentor] = useState(false)
 
   function handleOpenMessage() {
-    console.log(sentMessage);
-    if (sentMessage == false) {
+    if (sentMessage == false && mentor==false) {
       setOpenMessage(!openMessage);
+    } else if (mentor==true){
+      setSentMessage(true);
     }
   }
 
@@ -186,7 +188,7 @@ const MatchProfile = ({ selectedProfile, props }) => {
           }
           onClick={handleOpenMessage}
         >
-          {sentMessage ? <div> Message sent</div> : <div>Send a message</div>}
+          {mentor ? (<div>Accepted</div>) : sentMessage ? <div> Message sent</div> : <div>Send a message</div>}
         </SendMsgButton>
       </div>
       {openMessage ? (
