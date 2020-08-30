@@ -21,16 +21,6 @@ class Links extends Component {
                 <Collapse>
                     <List>
                         <Item>
-                            <Link to="/mentees/create" className="nav-link">
-                                Register as Menteee
-                            </Link>
-                        </Item>
-                        <Item>
-                            <Link to="/mentors/create" className="nav-link">
-                                Register as Mentor
-                            </Link>
-                        </Item>
-                        <Item>
                             <Link to="/FAQ" className="nav-link">
                                 FAQ
                             </Link>

@@ -5,33 +5,28 @@ import RegisterStep2 from "./RegisterStep2"
 import RegisterStep3 from "./RegisterStep3"
 import RegisterStep4 from "./RegisterStep4"
 import RegisterStep5 from "./RegisterStep5"
-import RegisterNextSteps from "./RegisterNextSteps"
-import RegisterAccepts from "./RegisterAccepts"
-import RegisterWaits from "./RegisterWaits"
+import PostRegistration from "./postRegistration/PostRegistration"
 
 export default function RegisterForm() {
   const [ state, setState ] = useState({
     userType: "mentee",
     jobStatus: "Looking for a job",
-    workExperience:{},
-    title: "",
+    jobTitle: "",
     company: "",
-    location: "",
+    city: "",
+    jobState: "",
+    country: "",
     industry: "-",
     currentRole: false,
     startMonth: "",
     startYear: "",  
     endMonth: "",
     endYear: "",
-    jobs: [],
     skills: [],
     interests: [],
     goals:[],
     communicationFrequency: "",
-    socialMedia: {},
-    mentorship:{
-        frequency: ""
-      },
+    socialLinks: {},
   })
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -69,23 +64,25 @@ export default function RegisterForm() {
     setState({...state, interests:value})
   }
 
-  const handleMentorship = values => {
-    setState({...state, mentorship:values})
+  const handleGoals = values => {
+    setState({...state, goals:values})
   }
 
-  const handleSocialMedia = event => {
+  const handleCommunicationFrequency = value => {
+    setState({...state, communicationFrequency:value})
+  }
+  const handlesocialLinks = event => {
     const name = event.target.name;
     const value = event.target.value;
     setState((prevState) => ({ 
       ...prevState, 
-      socialMedia: {
-        ...prevState.socialMedia,
+      socialLinks: {
+        ...prevState.socialLinks,
         [name]:value
     }  }))
   }
-  const { userType, jobStatus, workExperience, title, company, location, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, mentorship, goals, socialMedia } = state
-  const values = { userType, jobStatus, workExperience, title, company, location, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, mentorship, goals, socialMedia }
-  console.log(state)
+  const { userType, jobStatus, jobTitle, company, city, jobState, country, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks } = state
+  const values = { userType, jobStatus, jobTitle, company, city, jobState, country, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks }
 
   switch(activeStep) {
     case 0:
@@ -131,7 +128,8 @@ export default function RegisterForm() {
         <RegisterStep4
           handleNext={handleNext}
           handleInput={handleInput}
-          handleMentorship={handleMentorship}
+          handleGoals={handleGoals}
+          handleCommunicationFrequency={handleCommunicationFrequency}
           values={values}
           handleBack={handleBack}
         />
@@ -140,26 +138,15 @@ export default function RegisterForm() {
       return (
         <RegisterStep5
           handleNext={handleNext}
-          handleSocialMedia={handleSocialMedia}
+          handlesocialLinks={handlesocialLinks}
           values={values}
           handleBack={handleBack}
         />
     )
     case 6:
       return (
-        <RegisterNextSteps
+        <PostRegistration 
           handleBack={handleBack}
-          handleNext={handleNext}
-        />
-    )
-    case 7:
-      return (
-        <RegisterAccepts
-        />
-    )
-    case 6:
-      return (
-        <RegisterWaits
         />
     )
   }

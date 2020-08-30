@@ -9,40 +9,49 @@ const RegisterStep5 = props => {
 
   const userId = localStorage.getItem("userId")
   
-  let startDate = `${props.values.startMonth} ${props.values.startYear}`
+  const months = [
+    'January', 'February', 'March', 'April', 'May',
+    'June', 'July', 'August', 'September',
+    'October', 'November', 'December'
+    ]
+  
+  const monthNameToNum = (monthname) => {
+    let month = months.indexOf(monthname);
+    return month != -1 ? month + 1 : undefined
+  }
+  let startMonth = monthNameToNum(props.values.startMonth) 
+  let endMonth = monthNameToNum(props.values.endMonth) 
+  let startDateFormatted = `${props.values.startYear}-${startMonth}-01` 
+  let endDateFormatted = `${props.values.endYear}-${endMonth}-01`
 
   function handleUpdateUser() {
     updateUser({
       _id: userId,
       user: {
-        userType: "mentee",
+        userType: props.values.userType,
         WorkExperiences: [
           {
           title: props.values.title,
             company: props.values.company,
             location: {
               city: props.values.city,
-              state: "",
-              country: ""
+              state: props.values.jobState,
+              country: props.values.country
             },
             industry: props.values.industry, 
-            startDate: "2018-01-01",
+            startDate: startDateFormatted,
             currentlyWorking: props.values.currentRole,
-            endDate: "2020-01-01"
+            endDate: endDateFormatted
           }
         ],
         skills: props.values.skills,
         interests: props.values.interests,
         goals:props.values.goals,
         communicationFrequency:props.values.cummunicationFrequency,
-        socialLinks: {
-          twitter: "",
-          medium: ""
-        },
+        socialLinks: props.values.socialLinks,
         active: false
       }
     }).then((response) => {
-      console.log(response.data);
       props.handleNext()
     }).catch((error) => {
       console.log(error)
@@ -64,9 +73,9 @@ const RegisterStep5 = props => {
             fullWidth={true}
             type="text"
             name={item}
-            defaultValue={props.values.socialMedia[item]}
+            defaultValue={props.values.socialLinks[item]}
             placeholder="https://"
-            onChange={props.handleSocialMedia}
+            onChange={props.handlesocialLinks}
           />
           </>
         )
