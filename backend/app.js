@@ -1,20 +1,19 @@
-const createError = require('http-errors');
+/* eslint no-unused-vars: 0 */
+
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
-var cors = require('cors');
+const cors = require('cors');
+const createError = require('http-errors');
+const path = require('path');
+
 const logger = require('morgan');
-const dotenv = require('dotenv');
+
+require('dotenv-flow').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 const app = express();
-
-app.use(cors());
-const port = process.env.port || 3000;
-
-dotenv.config();
 
 const db = require('./db');
 
@@ -27,19 +26,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
-db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
+  console.log(req);
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -49,6 +50,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(port, () => console.log('Server listening on port ' + port + '!'))
+app.listen(process.env.APP_PORT, () =>
+  console.log(`Server listening on port ${process.env.APP_PORT}!`),
+);
 
 module.exports = app;

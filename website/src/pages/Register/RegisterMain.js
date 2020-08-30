@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 
 import { registerUser } from '../../api';
+import RegisterStep1 from './RegisterStep1';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,106 +23,129 @@ const Info = styled.p`
   padding:1em 3em 1em 3em;
 `
 
-const Divider = styled.div`
-  padding: 2em 0 1em 0;
-  display:flex;
-  justify-content:center;
-  align-items: center;
-  color:grey;
-
-  &:after,
-  &:before {
-    content: "";
-    display: block;
-    background: #ccc;
-    width: 90%;
-    height:1px;
-    margin: 0 10px;
-  }
+const LindkedInButton = styled.img`
+  width:200px;
 `
-const RegisterMain = props => {
 
+const Wrapper = styled.div`
+  margin:3em auto;
+`
+
+const RegisterMain = props => {
   const classes = useStyles();
+  const [ showUserFields, setShowUserFields ] = useState(false)
+  const [ firstName, setFirstName ] = useState("")
+  const [ email, setEmail ] = useState("")
+  const [ lastName, setLastName ] = useState("")
+  const [ headline, setHeadline ] = useState("")
+  const [ bio, setBio ] = useState("")
+  const [ linkedInId, setLinkedInId ] = useState("")
 
   const continueStep = e => {
-    // if(!props.values.name || !props.values.email || !props.values.password){
-    //   alert("fill out all fields plz")
-    // }else {
-    //   //api call --> if success, redirect to registerFlow
-    //   // e.preventDefault()
-    // } 
-    props.handleNext()
-  }
+    registerUser({
+        "authCode": linkedInId,
+        "user": {
+          "firstName": firstName,
+          "lastName": lastName,
+          "email": email,
+          "headline": headline,
+          "bio": bio,
+          "linkedInId": linkedInId
+        }
+    }).then((response) => {
+      localStorage.setItem("userId", response.data._id)
+      props.handleNext()
+    }).catch((error) => {
+      console.log(error);
+    })
+    } 
 
   const handleSuccess = (data) => {
-    // API call for getting access token and saving user profile
-    console.log(data.code);
-
-    // use this auth code and call the register user API
-
-    // registerUser({
-    //   authCode: data.code
-    // }).then((response) => {
-    //   console.log(response.data);
-    // }).catch((error) => {
-    //   console.log(error);
-    // })
+    setShowUserFields(true)
+    setLinkedInId(data.code)
   }
 
   const handleFailure = (error) => {
   }
 
   return (
+    <>
     <Container style={{ textAlign: "center" }}>
       <img src={PlaceholderLogo} style={{ height: 80 }} alt="open mentorship logo" />
       <Title>Open Mentorship</Title>
       <Info>Find a Mentor who can help guide you to success.</Info>
-      <LinkedIn
-        clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
-        onFailure={handleFailure}
-        onSuccess={handleSuccess}
-        redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
-        scope='r_emailaddress r_liteprofile'
-        redirectPath='/register'
-      >
-        <img src='/images/linkedin-button.png' />
-      </LinkedIn>
+      <Wrapper>
+        <LinkedIn 
+          clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
+          onFailure={handleFailure}
+          onSuccess={handleSuccess}
+          redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
+          scope='r_emailaddress r_liteprofile'
+          redirectPath='/register'
+        >
+          <LindkedInButton src='/images/linkedin-button.png' />
+        </LinkedIn>
+      </Wrapper>
 
-      <Divider>or</Divider>
-      <form className={classes.root}>
-        <TextField
-          id="outlined-basic"
-          label="Full Name"
-          variant="outlined"
-          fullWidth={true}
-          type="text"
-          name="name"
-          defaultValue={props.values.name}
-          onChange={props.handleInput}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Email"
-          variant="outlined"
-          fullWidth={true}
-          type="email"
-          name="email"
-          defaultValue={props.values.email}
-          onChange={props.handleInput}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Password"
-          variant="outlined"
-          fullWidth={true}
-          type="password"
-          name="password"
-          defaultValue={props.values.password}
-          onChange={props.handleInput}
-        />
-      </form>
-      <Button onClick={continueStep}>Continue</Button>
+      {showUserFields && 
+        <form className={classes.root}>
+          <TextField
+            id="outlined-basic"
+            label="First Name"
+            variant="outlined"
+            fullWidth={true}
+            type="text"
+            name="firstName"
+            value={firstName}
+            onChange={e => setFirstName(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            fullWidth={true}
+            type="text"
+            name="name"
+            value={lastName}
+            onChange={e => setLastName(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
+            fullWidth={true}
+            type="email"
+            name="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Headline"
+            variant="outlined"
+            fullWidth={true}
+            type="text"
+            name="headline"
+            value={headline}
+            onChange={e => setHeadline(e.target.value)}
+          />
+          <TextField
+            multiline
+            id="outlined-basic"
+            label="Bio"
+            variant="outlined"
+            fullWidth={true}
+            type="text"
+            name="bio"
+            value={bio}
+            onChange={e => setBio(e.target.value)}
+          />
+          
+        </form>   
+      }
+      <Button onClick={continueStep} disabled={!showUserFields}>Continue</Button>
     </Container>
+  </>
   )
 }
 
