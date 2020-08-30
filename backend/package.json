@@ -5,7 +5,20 @@
   "scripts": {
     "start": "node ./bin/www",
     "devStart": "nodemon app.js",
-    "pretest": "eslint --ignore-path .gitignore ."
+    "lint": "eslint --ignore-path .gitignore .",
+    "format": "pretty-quick --staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix --ignore-path .gitignore .",
+      "pretty-quick --staged",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -19,6 +32,7 @@
     "express": "~4.16.0",
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
+    "lint-staged": "^10.2.13",
     "lodash": "^4.17.19",
     "mongoose": "^5.8.9",
     "morgan": "^1.10.0",
@@ -27,10 +41,10 @@
     "query-string": "^6.12.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.7.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-config-strongloop": "^2.1.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",

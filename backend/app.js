@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: 0 */
+
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -24,23 +26,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors({origin:'http://localhost:3000', credentials:true }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
-
-db.on('error', console.error.bind(console, 'MongoDB connection error:'))
-
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   console.log(req);
-  next(createError(404))
+  next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -50,6 +50,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(process.env.APP_PORT, () => console.log('Server listening on port ' + process.env.APP_PORT + '!'))
+app.listen(process.env.APP_PORT, () =>
+  console.log(`Server listening on port ${process.env.APP_PORT}!`),
+);
 
 module.exports = app;
