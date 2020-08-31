@@ -18,7 +18,7 @@ const app = express();
 const db = require('./db');
 
 const corsConfig = {
-  origin: true,
+  origin: ['http://localhost:3010', 'http://www.openmentorship.com:3010'],
   credentials: true,
 };
 
