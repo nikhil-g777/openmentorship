@@ -1,11 +1,15 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 mongoose
-    .connect(process.env.MONGODB_CONNECTION_URL + '/openmentorship', {useNewUrlParser: true})
-    .catch(err => {
-        console.error('Connection Error', err.message)
-    })
+  .connect(process.env.MONGODB_CONNECTION_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .catch((err) => {
+    console.error('Connection Error', err.message);
+  });
 
-const db = mongoose.connection
+const db = mongoose.connection;
 
-module.exports = db
+module.exports = db;

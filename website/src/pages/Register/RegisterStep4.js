@@ -10,15 +10,20 @@ const SectionWrapper = styled.div`
 
 const RegisterStep4 = props => {
   const [ mentorNeeds, setMentorNeeds ] = useState(props.values.mentorship)
+  const [ goals, setGoals ] = useState(props.values.goals)
+  const [ communicationFrequency, setCommunicationFrequency ] = useState(props.values.communicationFrequency)
+  const [ communicationType, setCommunicationType ] = useState([]) 
 
   const handleChange = (event) => {
-    setMentorNeeds(prev => ({...prev, [event.target.name]: event.target.checked }))
-    props.handleMentorship(mentorNeeds)
+    const { name, checked } = event.target
+    setGoals({...goals, [name]: checked })
+    props.handleGoals(goals)
   };
 
   const handleFrequency = (event) => {
-    setMentorNeeds(prev => ({...prev, frequency:event.target.value}))
-    props.handleMentorship(mentorNeeds)
+    // setMentorNeeds(prev => ({...prev, frequency:event.target.value}))
+    props.handleCommunicationFrequency(event.target.value)
+    setCommunicationFrequency(event.target.value)
   }
 
   return (
@@ -31,39 +36,39 @@ const RegisterStep4 = props => {
         <p>What do you need from your Mentor? Select all that apply.</p>
         <FormGroup column>
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.careerAdvice} onChange={handleChange} name="careerAdvice" color="primary" />}
+            control={<Checkbox checked={goals.careerAdvice} onChange={handleChange} name="careerAdvice" color="primary" />}
             label="Career advice"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.resumeReview} onChange={handleChange} name="resumeReview" color="primary" />}
+            control={<Checkbox checked={goals.resumeReview} onChange={handleChange} name="resumeReview" color="primary" />}
             label="Resume review"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.mockInterview} onChange={handleChange} name="mockInterview" color="primary" />}
+            control={<Checkbox checked={goals.mockInterview} onChange={handleChange} name="mockInterview" color="primary" />}
             label="Mock interview"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.projectReview} onChange={handleChange} name="projectReview" color="primary" />}
+            control={<Checkbox checked={goals.projectReview} onChange={handleChange} name="projectReview" color="primary" />}
             label="Project review"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.collaboration} onChange={handleChange} name="collaboration" color="primary" />}
+            control={<Checkbox checked={goals.collaboration} onChange={handleChange} name="collaboration" color="primary" />}
             label="Collaboration on an idea"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.inspiration} onChange={handleChange} name="inspiration" color="primary" />}
+            control={<Checkbox checked={goals.inspiration} onChange={handleChange} name="inspiration" color="primary" />}
             label="Inspiration"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.businessAdvice} onChange={handleChange} name="businessAdvice" color="primary" />}
+            control={<Checkbox checked={goals.businessAdvice} onChange={handleChange} name="businessAdvice" color="primary" />}
             label="Business Advice"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.careerChange} onChange={handleChange} name="careerChange" color="primary" />}
+            control={<Checkbox checked={goals.careerChange} onChange={handleChange} name="careerChange" color="primary" />}
             label="Career Change Advice"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.skillDevelopment} onChange={handleChange} name="skillDevelopment" color="primary" />}
+            control={<Checkbox checked={goals.skillDevelopment} onChange={handleChange} name="skillDevelopment" color="primary" />}
             label="Skill Development"
           />
         </FormGroup>
@@ -71,7 +76,7 @@ const RegisterStep4 = props => {
       <SectionWrapper>
         <p>How often would you expect to communicate in your mentorship?</p>
         <FormControl component="fieldset">
-          <RadioGroup name="frequency" value={mentorNeeds.frequency} onChange={handleFrequency}>
+          <RadioGroup name="frequency" value={communicationFrequency} onChange={handleFrequency}>
             <FormControlLabel value="weekly" control={<Radio />} label="Weekly" />
             <FormControlLabel value="biweekly" control={<Radio />} label="Bi-weekly" />
             <FormControlLabel value="onceamonth" control={<Radio />} label="Once a month" />
@@ -83,15 +88,15 @@ const RegisterStep4 = props => {
         <p>How would you prefer to communicate with your Mentor? Select all that apply.</p>
         <FormGroup column>
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.phoneCall} onChange={handleChange} name="phoneCall" color="primary" />}
+            control={<Checkbox checked={communicationType.phoneCall} onChange={handleChange} name="phoneCall" color="primary" />}
             label="Phone call"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.videoCall} onChange={handleChange} name="videoCall" color="primary" />}
+            control={<Checkbox checked={communicationType.videoCall} onChange={handleChange} name="videoCall" color="primary" />}
             label="Video call"
           />
           <FormControlLabel
-            control={<Checkbox checked={mentorNeeds.chatOrMessaging} onChange={handleChange} name="chatOrMessaging" color="primary" />}
+            control={<Checkbox checked={communicationType.chatOrMessaging} onChange={handleChange} name="chatOrMessaging" color="primary" />}
             label="Chat or Messaging"
           />
         </FormGroup>

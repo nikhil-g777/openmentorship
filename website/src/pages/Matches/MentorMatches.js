@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Card from "./MatchCard";
-import CardType from "./cardType";
+import Profile from "./MatchProfile";
+import CardType from "./CardType";
 import styled from "styled-components";
 import LogoNavBar from "./images/LogoNavBar.png";
 import userIcon from "./images/userIcon.png";
@@ -35,11 +36,16 @@ const UserIcon = styled(Picture)`
   background-image: url(${userIcon});
 `;
 
+const Container = styled.div`
+  margin-left: 16px;
+  margin-right: 16px;
+`;
+
 //load in active/pending/closed data into the various cards here
+//when user clicks Active -> do API call to populate props for Card in HandleSecondaryTab
 export default function MentorMatches() {
-  const [cardType, setCardType] = useState("pending");
   const [showBackButton, setShowBackButton] = useState(false);
-  const [showCards, setShowCards] = useState(true);
+  const [showProfile, setShowProfile] = useState(false);
 
   const [active, setActiveTab] = useState({
     pending: true,
@@ -50,17 +56,15 @@ export default function MentorMatches() {
   function handleBackButtonVisibility() {
     //user clicks on card to see profile
     setShowBackButton(true);
-    setShowCards(false);
   }
 
   function handleGoBack() {
     //user clicks back button
     setShowBackButton(false);
-    setShowCards(true);
+    setShowProfile(false);
   }
 
   function handleSecondaryTab(value) {
-    setCardType(value);
     if (value == "pending") {
       setActiveTab({ pending: true, active: false, closed: false });
     } else if (value == "active") {
@@ -68,75 +72,31 @@ export default function MentorMatches() {
     } else if (value == "closed") {
       setActiveTab({ pending: false, active: false, closed: true });
     }
-    setShowCards(true);
+    setShowProfile(false);
+    setShowBackButton(false);
   }
-
-  switch (cardType) {
-    case "pending":
-      return (
-        <div>
-          <Wrapper>
-            {showBackButton == false ? (
-              <Picture />
-            ) : (
-              <ArrowBackIosIcon
-                style={{ width: 32, height: 32 }}
-                onClick={() => handleGoBack()}
-              />
-            )}
-            <LogoImg />
-            <UserIcon />
-          </Wrapper>
-          <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
-          {showCards == true ? (
-            <Card onClick={handleBackButtonVisibility} />
-          ) : null}
-          <p>Matches Page Pending</p>
-        </div>
-      );
-    case "active":
-      return (
-        <div>
-          <Wrapper>
-            {showBackButton == false ? (
-              <Picture />
-            ) : (
-              <ArrowBackIosIcon
-                style={{ width: 32, height: 32 }}
-                onClick={() => handleGoBack()}
-              />
-            )}
-            <LogoImg />
-            <UserIcon />
-          </Wrapper>
-          <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
-          {showCards == true ? (
-            <Card onClick={handleBackButtonVisibility} />
-          ) : null}
-          <p>Matches Page Active</p>
-        </div>
-      );
-    case "closed":
-      return (
-        <div>
-          <Wrapper>
-            {showBackButton == false ? (
-              <Picture />
-            ) : (
-              <ArrowBackIosIcon
-                style={{ width: 32, height: 32 }}
-                onClick={() => handleGoBack()}
-              />
-            )}
-            <LogoImg />
-            <UserIcon />
-          </Wrapper>
-          <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
-          {showCards == true ? (
-            <Card onClick={handleBackButtonVisibility} />
-          ) : null}
-          <p>Matches Page Closed </p>
-        </div>
-      );
-  }
+  return (
+    <div>
+      <Wrapper>
+        {showBackButton == false ? (
+          <Picture />
+        ) : (
+          <ArrowBackIosIcon
+            style={{ width: 32, height: 32 }}
+            onClick={() => handleGoBack()}
+          />
+        )}
+        <LogoImg />
+        <UserIcon />
+      </Wrapper>
+      <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
+      <Container>
+        <Card
+          showProfile={showProfile}
+          setShowProfile={() => setShowProfile(true)}
+          handleBackButtonVisibility={handleBackButtonVisibility}
+        />
+      </Container>
+    </div>
+  );
 }
