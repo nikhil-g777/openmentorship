@@ -150,7 +150,7 @@ const updateUser = (req, res) => {
   console.log('Got update user request');
   const { _id } = req.params;
 
-  if (req.user._id === _id) {
+  if (req.user._id == _id) {
     const { body } = req;
 
     if (!body) {
@@ -195,7 +195,7 @@ const userInfo = (req, res) => {
   console.log('Got user info request');
   const { _id } = req.params;
 
-  if (req.user._id === _id) {
+  if (req.user._id == _id) {
     if (!_id) {
       return res.status(400).json({ success: false, error: 'id not sent' });
     }
@@ -232,7 +232,7 @@ const matches = (req, res) => {
     return res.status(400).json({ success: false, error: '_id not sent' });
   }
 
-  if (req.user._id === _id) {
+  if (req.user._id == _id) {
     User.findByIdAndUpdate(_id).exec((err, user) => {
       if (err) {
         console.log(err);

@@ -24,39 +24,41 @@ import {
   WaitTitle,
   WaitText,
 } from "./PostRegistrationStyling";
-import { BackButton, Container, TitleWrapper, Title } from "../../../components"
+import {
+  BackButton,
+  Container,
+  TitleWrapper,
+  Title,
+} from "../../../components";
+
+import { updateUser } from "../../../api";
 
 export default class PostRegistration extends Component {
   constructor(props) {
     super(props);
     this.state = { userData: this.props.data, signUpResult: null };
+    this.userId = localStorage.getItem("userId");
     this.userContinue = this.userContinue.bind(this);
     this.userWait = this.userWait.bind(this);
   }
 
   userContinue() {
-    this.setState({ signUpResult: "CONTINUE" });
-    // const userData = {
-    //   data: this.props.data,
-    //   email: true
-    // }
-    // axios.post(``, { user })
-    // .then(res => {
-    //   console.log(res);
-    //   console.log(res.data);
-    // })
+    updateUser({
+      _id: this.userId,
+      user: {
+        active: true,
+      },
+    })
+      .then((response) => {
+        this.setState({ signUpResult: "CONTINUE" });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   userWait() {
     this.setState({ signUpResult: "WAIT" });
-    // const userData = {
-    //   data: this.props.data,
-    //   email: false
-    // axios.post(``, { user })
-    // .then(res => {
-    //   console.log(res);
-    //   console.log(res.data);
-    // })
   }
   render() {
     return {
@@ -93,8 +95,8 @@ export default class PostRegistration extends Component {
             </TitleWrapper>
             <BodyText>
               Please read through these steps, and indicate whether you want to
-              continue with the process or wait until you’re ready for a matching
-              session.
+              continue with the process or wait until you’re ready for a
+              matching session.
             </BodyText>
 
             <ContentWrapper>
@@ -125,8 +127,9 @@ export default class PostRegistration extends Component {
               <PictureTextWrapper>
                 <MagnifyPicture alt="" />
                 <PictureText>
-                  After that period, the mentors will recieve their requests, and
-                  will have one week to decide on who they want to work with.
+                  After that period, the mentors will recieve their requests,
+                  and will have one week to decide on who they want to work
+                  with.
                 </PictureText>
               </PictureTextWrapper>
 

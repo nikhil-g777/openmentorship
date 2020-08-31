@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const WorkExperience = new Schema({
-  title: { type: String, required: true },
-  company: { type: String, required: true },
-  location: { type: Object, required: true },
-  industry: { type: String, required: true },
-  startDate: { type: Date, required: true },
-  currentlyWorking: { type: Boolean, required: true, default: false },
+  title: { type: String },
+  company: { type: String },
+  location: { type: Object },
+  industry: { type: String },
+  startDate: { type: Date },
+  currentlyWorking: { type: Boolean, default: false },
   endDate: { type: Date },
 });
 
