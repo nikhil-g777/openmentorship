@@ -110,10 +110,7 @@ const registerUser = (req, res) => {
                 const accessToken = util.accessToken(updatedUser._id);
 
                 return res
-                  .cookie('accessToken', accessToken, {
-                    sameSite: false,
-                    secure: true,
-                  })
+                  .cookie('accessToken', accessToken)
                   .json({ success: true, _id: updatedUser._id });
               })
               .catch((err) => {
