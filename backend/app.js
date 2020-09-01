@@ -4,9 +4,10 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const createError = require('http-errors');
-const path = require('path');
-
+const fs = require('fs');
+const https = require('https');
 const logger = require('morgan');
+const path = require('path');
 
 require('dotenv-flow').config();
 
@@ -16,6 +17,13 @@ const usersRouter = require('./routes/users');
 const app = express();
 
 const db = require('./db');
+
+const key = fs.readFileSync('./certs/selfsigned.key');
+const cert = fs.readFileSync('./certs/selfsigned.crt');
+const options = {
+  key,
+  cert,
+};
 
 const corsConfig = {
   origin: ['http://localhost:3010', 'http://www.openmentorship.com:3010'],
@@ -57,8 +65,10 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-app.listen(process.env.APP_PORT, () =>
-  console.log(`Server listening on port ${process.env.APP_PORT}!`),
-);
+const server = https.createServer(options, app);
+
+server.listen(process.env.APP_PORT, () => {
+  console.log(`Server listening on port ${process.env.APP_PORT}!`);
+});
 
 module.exports = app;
