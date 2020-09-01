@@ -18,8 +18,8 @@ const app = express();
 
 const db = require('./db');
 
-const key = fs.readFileSync('./certs/selfsigned.key');
-const cert = fs.readFileSync('./certs/selfsigned.crt');
+const key = fs.readFileSync('./certs/private.key');
+const cert = fs.readFileSync('./certs/certificate.crt');
 const options = {
   key,
   cert,
