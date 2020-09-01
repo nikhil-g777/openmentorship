@@ -5,10 +5,10 @@ const PUBLIC = fs.readFileSync(`${__dirname}/../keys/public.pem`);
 const PRIVATE = fs.readFileSync(`${__dirname}/../keys/private.pem`);
 
 module.exports = {
-  refreshToken: (id) => jwt.sign({ id }, PRIVATE, { algorithm: 'RS256' }),
+  refreshToken: (_id) => jwt.sign({ _id }, PRIVATE, { algorithm: 'RS256' }),
 
-  accessToken: (id) =>
-    jwt.sign({ id }, PRIVATE, {
+  accessToken: (_id) =>
+    jwt.sign({ _id }, PRIVATE, {
       algorithm: 'RS256',
       expiresIn: 1000 * 60 * 60 * 24,
     }),

@@ -22,7 +22,7 @@ const options = {
 };
 
 const verify = (payload, done) => {
-  User.findOne({ linkedinId: payload.linkedinId })
+  User.findById(payload._id)
     .then((u) => {
       if (u) {
         return done(null, u);

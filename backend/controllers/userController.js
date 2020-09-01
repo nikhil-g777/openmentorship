@@ -110,7 +110,10 @@ const registerUser = (req, res) => {
                 const accessToken = util.accessToken(updatedUser._id);
 
                 return res
-                  .cookie('accessToken', accessToken)
+                  .cookie('accessToken', accessToken, {
+                    sameSite: 'none',
+                    secure: true,
+                  })
                   .json({ success: true, _id: updatedUser._id });
               })
               .catch((err) => {
@@ -148,6 +151,9 @@ const registerUser = (req, res) => {
 
 const updateUser = (req, res) => {
   console.log('Got update user request');
+  console.log(req.params._id);
+  console.log(req.user);
+
   const { _id } = req.params;
 
   if (req.user._id == _id) {
