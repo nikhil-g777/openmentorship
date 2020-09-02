@@ -12,6 +12,9 @@ router.use(passport.initialize());
 router.use(cookieParser());
 
 router.post('/register', userController.registerUser);
+
+router.post('/tempAuth', userController.tempAuth);
+
 router.put(
   '/update/:_id',
   passport.authenticate('jwt', { session: false }),

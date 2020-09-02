@@ -149,6 +149,40 @@ const registerUser = (req, res) => {
     });
 };
 
+const tempAuth = (req, res) => {
+  console.log('Got temp auth user request');
+
+  const { _id } = req.params;
+
+  if (process.env.NODE_ENV == 'dev') {
+    User.findById(_id, (err, user) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, error: err });
+      }
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, error: 'user not found' });
+      }
+      // send the access token
+      const accessToken = util.accessToken(_id);
+
+      return res
+        .cookie('accessToken', accessToken, {
+          sameSite: 'none',
+          secure: true,
+        })
+        .json({ success: true, _id });
+    });
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: 'Not authorized',
+    });
+  }
+};
+
 const updateUser = (req, res) => {
   console.log('Got update user request');
   console.log(req.params._id);
@@ -304,6 +338,7 @@ const matches = (req, res) => {
 
 module.exports = {
   registerUser,
+  tempAuth,
   updateUser,
   userInfo,
   matches,
