@@ -13,7 +13,7 @@ router.use(cookieParser());
 
 router.post('/register', userController.registerUser);
 
-router.post('/tempAuth', userController.tempAuth);
+router.post('/tempAuth/:_id', userController.tempAuth);
 
 router.put(
   '/update/:_id',
