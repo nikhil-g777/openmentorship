@@ -52,7 +52,8 @@ export const theme = createMuiTheme({
     MuiList: {
       root: {
         display:'flex',
-        flexDirection:'column'
+        flexDirection:'column',
+        width: '210px'
       }
     },
     MuiMobileStepper: {

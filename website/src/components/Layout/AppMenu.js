@@ -4,7 +4,7 @@ import LogoNavBar from "../../images/LogoNavBar.png";
 import userIcon from "../../images/user.svg";
 import backIcon from "../../images/backIcon.svg"
 
-import { MenuItem, Menu } from '@material-ui/core';
+import { Divider, MenuItem, Menu } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 
 
@@ -118,6 +118,7 @@ const DropDownMenu = props => {
             <MenuLink to="/">
               <MenuItem disabled onClick={props.handleClose}>Sign Out</MenuItem>
             </MenuLink>
+            <Divider variant="middle" />
             <MenuLink to="/">
               <MenuItem onClick={props.handleClose}>About</MenuItem>
             </MenuLink>
