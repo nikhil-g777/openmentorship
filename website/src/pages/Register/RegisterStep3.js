@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BackButton, Container, DotStepper, Title, TitleWrapper } from "../../components"
+import { Container, DotStepper, Title, TitleWrapper } from "../../components"
 import { TextField } from '@material-ui/core'
 import ReactChipInput from "react-chip-input"
 import styled from "styled-components"
@@ -46,7 +46,6 @@ class RegisterStep3 extends React.Component {
     return (
       <Container>
         <TitleWrapper>
-          <BackButton handleBack={this.props.handleBack} />
           <Title>Lets get more specific.</Title>
         </TitleWrapper>
         <Wrapper>

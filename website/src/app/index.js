@@ -11,20 +11,25 @@ import { theme }  from "./GlobalTheme"
 
 function App() {
   return (
-      <>
+    <>
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path='/mentorMatches' component={MentorMatches} />
             <Route path="/FAQ" exact component={FAQ}/>
-            <Route path="/register" component={RegisterForm} />
             <Route exact path='/linkedin' component={LinkedInPopUp} />
+            {/* each route below needs to import their own Menu component. 
+            ...See mentorMatches for example  */}
+            <Route path='chat' component={"#"} />
+            <Route path='/mentorMatches' component={MentorMatches} />
+            <Route path='/profile' component={"#"} />
+            <Route path="/register" component={RegisterForm} />
+            <Route path='/signin' component={"#"} />
           </Switch>
         </ThemeProvider>
       </Router>
-      </>
+    </>
   )
 };
 

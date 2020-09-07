@@ -25,7 +25,6 @@ import {
   WaitText,
 } from "./PostRegistrationStyling";
 import {
-  BackButton,
   Container,
   TitleWrapper,
   Title,
@@ -90,7 +89,6 @@ export default class PostRegistration extends Component {
         <Container>
           <Wrapper>
             <TitleWrapper>
-              <BackButton handleBack={this.props.handleBack} />
               <Title>Thanks for signing up with Open Mentorship!</Title>
             </TitleWrapper>
             <BodyText>

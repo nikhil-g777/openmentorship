@@ -26,6 +26,14 @@ export const theme = createMuiTheme({
         },
         body:{
           fontSize:'1em'
+        },
+        a: {
+          color:"#000"
+        },
+        a: {
+          '&hover': {
+            color:"#000"
+          }
         }
       },
     },
@@ -47,11 +55,6 @@ export const theme = createMuiTheme({
         flexDirection:'column'
       }
     },
-    // MuiTypography: {
-    //   body1: {
-    //     fontSize:'.9em'
-    //   }
-    // },
     MuiMobileStepper: {
       root: {
         width:"90%",
@@ -69,7 +72,15 @@ export const theme = createMuiTheme({
         height:"15px",
         margin: "0 8px"
       }
-    }
+    },
+    MuiMenuItem: { 
+      root: {
+        "&$selected": { 
+          fontWeight:'800',
+          background:"#fff"
+        },
+      },
+    },
   },
   palette: {
     primary: {
@@ -82,6 +93,7 @@ export const theme = createMuiTheme({
       default: "#fff"
     } 
   },
+  
 });
 
 export const BootstrapInput = withStyles((theme) => ({
