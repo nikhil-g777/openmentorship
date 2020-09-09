@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./MatchCard";
 import Profile from "./MatchProfile";
 import CardType from "./CardType";
@@ -6,6 +6,7 @@ import styled from "styled-components";
 import LogoNavBar from "./images/LogoNavBar.png";
 import userIcon from "./images/userIcon.png";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import { getUserMatches } from "../../api/index";
 
 const Wrapper = styled.section`
   display: flex;
@@ -41,12 +42,28 @@ const Container = styled.div`
   margin-right: 16px;
 `;
 
-//load in active/pending/closed data into the various cards here
-//when user clicks Active -> do API call to populate props for Card in HandleSecondaryTab
+//api.get for match data
+//populate state with match data
+//when user clicks Active/Pending/Closed -> render .map() active/pending/closed matches with its data passed as props into mentorCard
+
 export default function MentorMatches() {
   const [showBackButton, setShowBackButton] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [matchData, setMatchData] = useState([]);
+  const [currentMatches, setCurrentMatches] = useState([]);
 
+  //Load matches API
+  useEffect(() => {
+    const APP_ID = localStorage.getItem("userId");
+    getUserMatches({ _id: APP_ID })
+      .then((res) => {
+        setMatchData(res.data.matches);
+        setCurrentMatches(res.data.matches.pending)
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  //MatchTab Management
   const [active, setActiveTab] = useState({
     pending: true,
     active: false,
@@ -54,12 +71,11 @@ export default function MentorMatches() {
   });
 
   function handleBackButtonVisibility() {
-    //user clicks on card to see profile
     setShowBackButton(true);
   }
 
   function handleGoBack() {
-    //user clicks back button
+    setCurrentMatches(null);
     setShowBackButton(false);
     setShowProfile(false);
   }
@@ -67,10 +83,13 @@ export default function MentorMatches() {
   function handleSecondaryTab(value) {
     if (value == "pending") {
       setActiveTab({ pending: true, active: false, closed: false });
+      setCurrentMatches(matchData.pending);
     } else if (value == "active") {
       setActiveTab({ pending: false, active: true, closed: false });
+      setCurrentMatches(matchData.active);
     } else if (value == "closed") {
       setActiveTab({ pending: false, active: false, closed: true });
+      setCurrentMatches(matchData.closed);
     }
     setShowProfile(false);
     setShowBackButton(false);
@@ -92,6 +111,7 @@ export default function MentorMatches() {
       <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
       <Container>
         <Card
+          currentMatches={currentMatches}
           showProfile={showProfile}
           setShowProfile={() => setShowProfile(true)}
           handleBackButtonVisibility={handleBackButtonVisibility}

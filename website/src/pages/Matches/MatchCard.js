@@ -13,32 +13,6 @@ import Typography from "@material-ui/core/Typography";
 //dummy image
 import img from "./images/Rectangle146.png";
 
-//Dummy Data
-const mentorData = {
-  Name: "Meghan Raab",
-  Job: "Product Marketing Manager at Snap Inc.",
-  YearsExperience: 5,
-  id: 1,
-  Biography:'I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.',
-  areasOfInterest: 'Product marketing, content marketing, media, global tech, project management', 
-  topSkills: 'User acquisition, digital marketing, product marketing, leadership, marketing analytics',
-  openToProviding: ['Mock Interview', 'Project Review', 'Resume Review', 'Collaboration on an idea', 'career changing advice' , 'career advice'],
-  userImage: img,
-};
-
-const mentorData2 = {
-  Name: "Mddan Raab",
-  Job: "Product Marketing Manager at Snap Inc.",
-  YearsExperience: 5,
-  id: 2,
-  Biography:'I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.',
-  areasOfInterest: 'Product marketing, content marketing, media, global tech, project management',
-  topSkills: 'User acquisition, digital marketing, product marketing, leadership, marketing analytics', 
-  openToProviding: ['dasasdiew', 'Project Review', 'Resume Review', 'Collaboration on an idea', 'career changing advice' , 'career advice'],
-  userImage: img,
-};
-
-const mentorList = [mentorData, mentorData2];
 const Title = styled.p`
   width: 215px;
   font-family: Proxima Nova;
@@ -83,14 +57,15 @@ const useStyles = makeStyles({
     fontSize: 14,
     color: "#6D6D6D",
   },
-  
 });
 
 const MatchCard = ({
   handleBackButtonVisibility,
   showProfile,
   setShowProfile,
+  currentMatches,
 }) => {
+  console.log("currentMatches", currentMatches);
   const classes = useStyles();
   function handleClick(id) {
     setShowProfile();
@@ -98,10 +73,13 @@ const MatchCard = ({
     handleBackButtonVisibility();
   }
 
+  //we need match data as props here from mentormatches page ie . State =  [active: [data]]
+
   const [selectedProfileId, setSelectedProfileId] = useState(null);
-  const selectedProfile = mentorList.find((x) => x.id === selectedProfileId);
+  const selectedProfile = currentMatches.find((match) => match._id === selectedProfileId);
 
   if (selectedProfile && showProfile) {
+    console.log('selectedProfile',selectedProfile)
     return <MatchProfile selectedProfile={selectedProfile} />;
   }
 
@@ -113,14 +91,14 @@ const MatchCard = ({
         until the deadline of April 29. They will receive your request and let
         you know if they want to work with you. Good luck!
       </Body>
-      {mentorList.map((x) => (
-        <div className={classes.cardSpacing} profile={x}>
+      {currentMatches.map((match) => (
+        <div key={match._id} className={classes.cardSpacing} profile={match}>
           <Card className={classes.root}>
             <CardMedia
               className={classes.cover}
               component="img"
               alt=""
-              image={x.userImage}
+              image={img}
               title=""
             />
             <div className={classes.details}>
@@ -130,14 +108,14 @@ const MatchCard = ({
                   variant="h6"
                   component="h2"
                 >
-                  {x.Name}
+                  {match.firstName + ' '+ match.lastName}
                 </Typography>
                 <Typography
                   className={classes.body}
                   variant="body2"
                   component="p"
                 >
-                  {x.Job}
+                  {match.WorkExperiences[0].title + ' at ' +  match.WorkExperiences[0].company}
                 </Typography>
               </CardContent>
 
@@ -152,7 +130,7 @@ const MatchCard = ({
                   marginLeft: 15,
                 }}
                 variant="contained"
-                onClick={() => handleClick(x.id)}
+                onClick={() => handleClick(match._id)}
               >
                 View full profile
               </Button>
