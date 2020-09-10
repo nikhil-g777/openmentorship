@@ -17,6 +17,10 @@ export const getUserMatches = (payload) => {
   return api.get(`/users/matches/${payload._id}`);
 };
 
+// export const sendMessage = (payload) => {
+//   api.put(`/users/matches/`)
+// }
+
 const apis = {
   registerUser,
   updateUser,

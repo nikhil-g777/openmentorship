@@ -145,6 +145,7 @@ const MatchProfile = ({ selectedProfile, props }) => {
   const classes = useStyles(props);
   const [openMessage, setOpenMessage] = useState(false);
   const [sentMessage, setSentMessage] = useState(false);
+  console.log('selectedProfile mathprofile: ', selectedProfile)
 
   // generates unique IDs like : 6b33fce8-1745-f8de-4ad8-4ee42585oprf
   function guidGenerator() {
@@ -227,7 +228,7 @@ const MatchProfile = ({ selectedProfile, props }) => {
         <div className={classes.messageContainer}>
           <div className={classes.headerTexts}>
             <Typography className={classes.name} variant="h6" component="h2">
-              Send a request to{" "}
+              Send a request to
               {selectedProfile.firstName + " " + selectedProfile.lastName}
             </Typography>
             <Typography
@@ -272,17 +273,16 @@ const MatchProfile = ({ selectedProfile, props }) => {
         <Text>
           {selectedProfile.skills.map((item, index) => (
             <span key={guidGenerator()}>
-              {" "}
               {index == selectedProfile.skills.length - 1 ? item : item + ", "}
             </span>
           ))}
         </Text>
         <Title>Open to providing</Title>
-        <div className={classes.providingBox}>
+        {/* <div className={classes.providingBox}>
           {selectedProfile.goals.map((item) => (
             <OpenToProviding key={guidGenerator()}>{item}</OpenToProviding>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

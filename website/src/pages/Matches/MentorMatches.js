@@ -51,6 +51,7 @@ export default function MentorMatches() {
   const [showProfile, setShowProfile] = useState(false);
   const [matchData, setMatchData] = useState([]);
   const [currentMatches, setCurrentMatches] = useState([]);
+  const [isMentor, setIsMentor] = useState([]);
 
   //Load matches API
   useEffect(() => {
@@ -58,7 +59,10 @@ export default function MentorMatches() {
     getUserMatches({ _id: APP_ID })
       .then((res) => {
         setMatchData(res.data.matches);
+        console.log('res.data',res.data)
         setCurrentMatches(res.data.matches.pending)
+        setIsMentor(res.data.userType)
+
       })
       .catch((err) => console.log(err));
   }, []);
@@ -111,6 +115,7 @@ export default function MentorMatches() {
       <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
       <Container>
         <Card
+          isMentor={isMentor}
           currentMatches={currentMatches}
           showProfile={showProfile}
           setShowProfile={() => setShowProfile(true)}

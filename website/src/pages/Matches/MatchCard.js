@@ -64,6 +64,7 @@ const MatchCard = ({
   showProfile,
   setShowProfile,
   currentMatches,
+  isMentor,
 }) => {
   console.log("currentMatches", currentMatches);
   const classes = useStyles();
@@ -76,21 +77,34 @@ const MatchCard = ({
   //we need match data as props here from mentormatches page ie . State =  [active: [data]]
 
   const [selectedProfileId, setSelectedProfileId] = useState(null);
-  const selectedProfile = currentMatches.find((match) => match._id === selectedProfileId);
+  const selectedProfile = currentMatches.find(
+    (match) => match._id === selectedProfileId
+  );
 
   if (selectedProfile && showProfile) {
-    console.log('selectedProfile',selectedProfile)
+    console.log("selectedProfile", selectedProfile);
     return <MatchProfile selectedProfile={selectedProfile} />;
   }
-
+  console.log("currentMatches", currentMatches);
+  //we need a way to show specific text for mentee and mentor users : put a isMentor variable in the API data
+  console.log('isMentor = ', isMentor)
   return (
     <div>
-      <Title>Here’s your curated list of potential mentors!</Title>
-      <Body>
-        Send message requests to the mentors that you would like to work with
-        until the deadline of April 29. They will receive your request and let
-        you know if they want to work with you. Good luck!
-      </Body>
+      {isMentor == "mentor" ? (
+        <div>
+          <Title>Here’s your curated list of potential mentees!</Title>
+          <Body>yes</Body>
+        </div>
+      ) : (
+        <div>
+          <Title>Here’s your curated list of potential mentors!</Title>
+          <Body>
+            Send message requests to the mentors that you would like to work
+            with until the deadline of April 29. They will receive your request
+            and let you know if they want to work with you. Good luck!
+          </Body>
+        </div>
+      )}
       {currentMatches.map((match) => (
         <div key={match._id} className={classes.cardSpacing} profile={match}>
           <Card className={classes.root}>
@@ -108,14 +122,16 @@ const MatchCard = ({
                   variant="h6"
                   component="h2"
                 >
-                  {match.firstName + ' '+ match.lastName}
+                  {match.firstName + " " + match.lastName}
                 </Typography>
                 <Typography
                   className={classes.body}
                   variant="body2"
                   component="p"
                 >
-                  {match.WorkExperiences[0].title + ' at ' +  match.WorkExperiences[0].company}
+                  {match.WorkExperiences[0].title +
+                    " at " +
+                    match.WorkExperiences[0].company}
                 </Typography>
               </CardContent>
 
