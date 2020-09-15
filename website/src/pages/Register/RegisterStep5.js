@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  BackButton,
   Container,
   DotStepper,
   Title,
@@ -83,7 +82,6 @@ const RegisterStep5 = (props) => {
   return (
     <Container>
       <TitleWrapper>
-        <BackButton handleBack={props.handleBack} />
         <Title>Lastly, add your social media links to your profile.</Title>
       </TitleWrapper>
       {socialOptions.map((item) => {

@@ -3,39 +3,8 @@ import Card from "./MatchCard";
 import Profile from "./MatchProfile";
 import CardType from "./CardType";
 import styled from "styled-components";
-import LogoNavBar from "./images/LogoNavBar.png";
-import userIcon from "./images/userIcon.png";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { getUserMatches } from "../../api/index";
-
-const Wrapper = styled.section`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 14px;
-  padding-bottom: 14.69px;
-  -webkit-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
-`;
-
-const Picture = styled.div`
-  width: 32px;
-  height: 32px;
-`;
-
-const LogoImg = styled(Picture)`
-  background-size: cover;
-  background-image: url(${LogoNavBar});
-`;
-
-const UserIcon = styled(Picture)`
-  background-size: cover;
-  background-image: url(${userIcon});
-`;
+import { Menu } from "../../components";
+import {getUserMatches} from '../../api'; 
 
 const Container = styled.div`
   margin-left: 16px;
@@ -99,29 +68,16 @@ export default function MentorMatches() {
     setShowBackButton(false);
   }
   return (
-    <div>
-      <Wrapper>
-        {showBackButton == false ? (
-          <Picture />
-        ) : (
-          <ArrowBackIosIcon
-            style={{ width: 32, height: 32 }}
-            onClick={() => handleGoBack()}
-          />
-        )}
-        <LogoImg />
-        <UserIcon />
-      </Wrapper>
-      <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
-      <Container>
-        <Card
-          isMentor={isMentor}
-          currentMatches={currentMatches}
-          showProfile={showProfile}
-          setShowProfile={() => setShowProfile(true)}
-          handleBackButtonVisibility={handleBackButtonVisibility}
-        />
-      </Container>
-    </div>
+    <>
+    <Menu handleBack={handleGoBack} showBackButton={showBackButton} />
+    <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
+    <Container>
+      <Card
+        showProfile={showProfile}
+        setShowProfile={() => setShowProfile(true)}
+        handleBackButtonVisibility={handleBackButtonVisibility}
+      />
+    </Container>
+    </>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import PlaceholderLogo from '../../logo.svg'
-import { Container, Title } from "../../components"
+import { Container, Title, Menu} from "../../components"
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
@@ -71,7 +70,6 @@ const RegisterMain = props => {
   return (
     <>
     <Container style={{ textAlign: "center" }}>
-      <img src={PlaceholderLogo} style={{ height: 80 }} alt="open mentorship logo" />
       <Title>Open Mentorship</Title>
       <Info>Find a Mentor who can help guide you to success.</Info>
       <Wrapper>
@@ -86,7 +84,6 @@ const RegisterMain = props => {
           <LindkedInButton src='/images/linkedin-button.png' />
         </LinkedIn>
       </Wrapper>
-
       {showUserFields && 
         <form className={classes.root}>
           <TextField
@@ -140,7 +137,6 @@ const RegisterMain = props => {
             value={bio}
             onChange={e => setBio(e.target.value)}
           />
-          
         </form>   
       }
       <Button onClick={continueStep} disabled={!showUserFields}>Continue</Button>
