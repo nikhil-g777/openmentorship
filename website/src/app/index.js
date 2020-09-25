@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { FAQ, Home, RegisterForm,MentorMatches } from '../pages'
+import { FAQ, Home, RegisterForm,MentorMatches, LandingPage } from '../pages'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles'
@@ -16,7 +16,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={LandingPage} />
             <Route path="/FAQ" exact component={FAQ}/>
             <Route exact path='/linkedin' component={LinkedInPopUp} />
             {/* each route below needs to import their own Menu component. 
