@@ -1,5 +1,6 @@
 import React from "react";
 import MobileNavBar from "../../components/MobileNavBar";
+import Footer from "../../components/Footer";
 
 //mui
 import styled from "styled-components";
@@ -162,7 +163,7 @@ export default function LandingPage(props) {
           <PuzzleImage src={Puzzles} />
         </PuzzleGreyBg>
         <TextContainer>
-          <div style={{ marginTop: 65, marginLeft: 16, marginBottom: 99 }}>
+          <div style={{ marginTop: 65, marginLeft: 16, marginBottom: 60 }}>
             <Typography className={classes.BodyHeader}>How It Works</Typography>
             <Typography className={classes.Header}>Register</Typography>
             <Typography className={classes.Body}>
@@ -235,6 +236,7 @@ export default function LandingPage(props) {
         </CheerTitleBox>
         <RegisterButton>Register</RegisterButton>
       </Container>
+      <Footer />
     </div>
   );
 }
