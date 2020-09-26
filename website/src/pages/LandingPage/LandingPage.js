@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import MobileNavBar from "../../components/MobileNavBar";
 import Footer from "../../components/Footer";
 
@@ -83,7 +84,8 @@ const CheerImage = styled.img`
 `;
 
 const CheerTitleBox = styled.div`
-  width: 269px;
+  width: 281px;
+  text-align: center;
   height: 51px;
   margin: 0 auto;
   margin-bottom: 15px;
@@ -157,7 +159,9 @@ export default function LandingPage(props) {
             Find a mentor who can help guide you to success.
           </Typography>
         </TitleContainer>
-        <RegisterButton>Register</RegisterButton>
+        <Link style={{ margin: "0 auto" }} to="/register">
+          <RegisterButton>Register</RegisterButton>
+        </Link>
 
         <PuzzleGreyBg>
           <PuzzleImage src={Puzzles} />
@@ -234,7 +238,9 @@ export default function LandingPage(props) {
             Get on the path of your dream career with us today.
           </Typography>
         </CheerTitleBox>
-        <RegisterButton>Register</RegisterButton>
+        <Link style={{ margin: "0 auto" }} to="/register">
+          <RegisterButton>Register</RegisterButton>
+        </Link>
       </Container>
       <Footer />
     </div>

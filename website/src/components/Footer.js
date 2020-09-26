@@ -3,7 +3,6 @@ import React from "react";
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 
 //imgs
 import Logo from "./images/logo_big.png";
