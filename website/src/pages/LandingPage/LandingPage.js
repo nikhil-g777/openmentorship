@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import MobileNavBar from "../../components/MobileNavBar";
 import Footer from "../../components/Footer";
+import AppMenu from "../../components/Layout/AppMenu"
 
 //mui
 import styled from "styled-components";
@@ -153,7 +154,7 @@ export default function LandingPage(props) {
   const classes = useStyles(props);
   return (
     <div>
-      <MobileNavBar />
+      <AppMenu showBackButton={false}/>
       <Container className={classes.root}>
         <StairsGreyBg>
           <StairsImage src={Stairs} />
