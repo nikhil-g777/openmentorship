@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 //mui
 import styled from "styled-components";
@@ -50,23 +51,26 @@ export default function Footer(props) {
     <Container>
       <ContentWrapper>
         <div className={classes.logo}>
-          <MLogo src={Logo} />
+          <Link to="/register">
+            <MLogo src={Logo} />
+          </Link>
         </div>
-
         <LinksContainer>
           <a className={classes.Links} href="">
-            About
+            <Link to="/about">About</Link>
           </a>
+
           <a className={classes.Links} href="">
-            How it Works
+            <Link to="">How it Works</Link>
           </a>
         </LinksContainer>
         <LinksContainer>
           <a className={classes.Links} href="">
-            Contact
+            <Link to="">Contact</Link>
           </a>
+
           <a className={classes.Links} href="">
-            Sign In
+            <Link to="">Sign In </Link>
           </a>
         </LinksContainer>
       </ContentWrapper>

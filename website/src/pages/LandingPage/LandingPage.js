@@ -40,9 +40,13 @@ const RegisterButton = styled.button`
   margin-left: 10px;
   margin: 0 auto;
   margin-bottom: 65px;
-  &:visited {
-    background-color: #51b6a5;
+  &:hover {
+    background-color: #2d6c61;
   }
+  &:active {
+    background-color: #2d6c61;
+  }
+
 `;
 
 const StairsImage = styled.img`
@@ -88,7 +92,7 @@ const CheerTitleBox = styled.div`
   text-align: center;
   height: 51px;
   margin: 0 auto;
-  margin-bottom: 15px;
+  margin-bottom: 40px;
   margin-top: 39px;
 `;
 
