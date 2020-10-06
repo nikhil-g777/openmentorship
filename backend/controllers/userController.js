@@ -62,6 +62,83 @@ const getLinkedInProfile = (authCode) =>
       });
   });
 
+const loginUser = (req, res) => {
+  const { body } = req;
+
+  if (!body) {
+    return res
+      .status(400)
+      .json({ success: false, error: 'request body is empty' });
+  }
+
+  if (!body.authCode) {
+    return res
+      .status(400)
+      .json({ success: false, error: 'authCode missing in the body' });
+  }
+
+  getLinkedInProfile(body.authCode)
+    .then((linkedInProfile) => {
+      User.findOne({ linkedInId: linkedInProfile.linkedInId })
+        .then((user) => {
+          if (user) {
+            Token.findOne({ userId: user._id })
+              .then((token) => {
+                // if token isn't in our DB, store
+                if (!token) {
+                  // encrypt information
+                  const t = util.refreshToken(user._id);
+
+                  Token.create({ refreshToken: t, userId: user._id });
+                }
+                // send the access token
+                const accessToken = util.accessToken(user._id);
+
+                return res
+                  .cookie('accessToken', accessToken, {
+                    sameSite: 'none',
+                    secure: true,
+                  })
+                  .json({
+                    success: true,
+                    message: 'Login Successful',
+                    user: {
+                      _id: user._id,
+                      userType: user.userType,
+                    },
+                  });
+              })
+              .catch((err) => {
+                console.log(err);
+                return res.status(500).json({
+                  success: false,
+                  error: 'Error in find token',
+                });
+              });
+          } else {
+            return res.status(200).json({
+              success: false,
+              message: 'User does not exist',
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json({
+            success: false,
+            error: 'Unable to query database',
+          });
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        error: 'Unable to authenticate linkedIn profile',
+      });
+    });
+};
+
 const registerUser = (req, res) => {
   const { body } = req;
 
@@ -337,6 +414,7 @@ const matches = (req, res) => {
 };
 
 module.exports = {
+  loginUser,
   registerUser,
   tempAuth,
   updateUser,

@@ -11,6 +11,8 @@ const userController = require('../controllers/userController');
 router.use(passport.initialize());
 router.use(cookieParser());
 
+router.post('/login', userController.loginUser);
+
 router.post('/register', userController.registerUser);
 
 router.post('/tempAuth/:_id', userController.tempAuth);
