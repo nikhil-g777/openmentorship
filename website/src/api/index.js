@@ -6,15 +6,28 @@ const api = axios.create({
   withCredentials: true,
 });
 
+const getToken = () => JSON.parse(localStorage.getItem("tokens"));
+
+export const loginUser = (payload) => api.post("/users/login", payload);
+
 export const registerUser = (payload) => api.post("/users/register", payload);
 
-export const updateUser = (payload) =>
-  api.put(`/users/update/${payload._id}`, payload);
+export const updateUser = (payload) => {
+  return api.put(`/users/update/${payload._id}`, payload, {
+    headers: { authorization: `Bearer ${getToken()}` },
+  });
+};
 
-export const getUserInfo = (payload) => api.get(`/users/info/${payload._id}`);
+export const getUserInfo = (payload) => {
+  return api.get(`/users/info/${payload._id}`, {
+    headers: { authorization: `Bearer ${getToken()}` },
+  });
+};
 
 export const getUserMatches = (payload) => {
-  return api.get(`/users/matches/${payload._id}`);
+  return api.get(`/users/matches/${payload._id}`, {
+    headers: { authorization: `Bearer ${getToken()}` },
+  });
 };
 
 // export const sendMessage = (payload) => {
@@ -22,6 +35,7 @@ export const getUserMatches = (payload) => {
 // }
 
 const apis = {
+  loginUser,
   registerUser,
   updateUser,
   getUserInfo,

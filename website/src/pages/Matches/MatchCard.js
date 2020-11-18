@@ -74,7 +74,7 @@ const MatchCard = ({
     handleBackButtonVisibility();
   }
 
-  //we need match data as props here from mentormatches page ie . State =  [active: [data]]
+  //we need match data as props here from matches page ie . State =  [active: [data]]
 
   const [selectedProfileId, setSelectedProfileId] = useState(null);
   const selectedProfile = currentMatches.find(
@@ -87,7 +87,7 @@ const MatchCard = ({
   }
   console.log("currentMatches", currentMatches);
   //we need a way to show specific text for mentee and mentor users : put a isMentor variable in the API data
-  console.log('isMentor = ', isMentor)
+  console.log("isMentor = ", isMentor);
   return (
     <div>
       {isMentor == "mentor" ? (

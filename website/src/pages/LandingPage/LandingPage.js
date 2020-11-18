@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MobileNavBar from "../../components/MobileNavBar";
+import { Menu } from "../../components";
 import Footer from "../../components/Footer";
 
 //mui
@@ -12,6 +13,9 @@ import Typography from "@material-ui/core/Typography";
 import Stairs from "./images/stairs.png";
 import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
+
+//packages
+import { useHistory } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -46,7 +50,6 @@ const RegisterButton = styled.button`
   &:active {
     background-color: #2d6c61;
   }
-
 `;
 
 const StairsImage = styled.img`
@@ -150,10 +153,12 @@ const useStyles = makeStyles({
 });
 
 export default function LandingPage(props) {
+  const history = useHistory();
   const classes = useStyles(props);
   return (
     <div>
-      <MobileNavBar />
+      {/* <MobileNavBar /> */}
+      <Menu handleBack={() => history.push("/")} registrationMenu={false} />
       <Container className={classes.root}>
         <StairsGreyBg>
           <StairsImage src={Stairs} />

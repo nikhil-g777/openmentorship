@@ -102,6 +102,7 @@ const loginUser = (req, res) => {
                   .json({
                     success: true,
                     message: 'Login Successful',
+                    token: accessToken,
                     user: {
                       _id: user._id,
                       userType: user.userType,
@@ -191,7 +192,13 @@ const registerUser = (req, res) => {
                     sameSite: 'none',
                     secure: true,
                   })
-                  .json({ success: true, _id: updatedUser._id });
+                  .json({
+                    success: true,
+                    token: accessToken,
+                    user: {
+                      _id: updatedUser._id,
+                    },
+                  });
               })
               .catch((err) => {
                 console.log(err);
@@ -412,7 +419,26 @@ const matches = (req, res) => {
     });
   }
 };
+/*
+const createMatch=(req, res) => {
+  //inputs : menteeId, mentorId
+  // create a new match record
 
+  // return matchId
+}
+
+const updateMatch = (req, res) => {
+  // inputs : matchId, status
+
+  // if (status == 'active')
+  // create a new channel in twilio
+  // update the match record with the status='active', twilioChannelId
+  //else
+  // update the match record with the status
+
+  // return matchId
+}
+*/
 module.exports = {
   loginUser,
   registerUser,
