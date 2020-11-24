@@ -35,7 +35,11 @@ const RegisterStep1 = props => {
           onChange={handleAlignment}
           aria-label="text alignment"
         >
-          <ToggleButton value="mentee" aria-label="left aligned">
+          <ToggleButton 
+            value="mentee" 
+            aria-label="left aligned"
+            thumbSwitchedStyle={{ backgroundColor: 'green' }}
+          >
             Mentee
           </ToggleButton>
           <ToggleButton value="mentor" aria-label="right aligned">
@@ -54,7 +58,6 @@ const RegisterStep1 = props => {
           <MenuItem value="Looking for a job">Looking for a job</MenuItem>
           <MenuItem value="Currently working">Currently working</MenuItem>
           <MenuItem value="Still in school">Still in school</MenuItem>
-          <MenuItem value="Other">Other</MenuItem>
         </Select>
       </FormItem>
       <DotStepper

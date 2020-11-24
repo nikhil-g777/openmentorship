@@ -56,16 +56,8 @@ const RegisterStep4 = props => {
             label="Collaboration on an idea"
           />
           <FormControlLabel
-            control={<Checkbox checked={goals.inspiration} onChange={handleChange} name="inspiration" color="primary" />}
-            label="Inspiration"
-          />
-          <FormControlLabel
             control={<Checkbox checked={goals.businessAdvice} onChange={handleChange} name="businessAdvice" color="primary" />}
             label="Business Advice"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={goals.careerChange} onChange={handleChange} name="careerChange" color="primary" />}
-            label="Career Change Advice"
           />
           <FormControlLabel
             control={<Checkbox checked={goals.skillDevelopment} onChange={handleChange} name="skillDevelopment" color="primary" />}

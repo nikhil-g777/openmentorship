@@ -17,6 +17,7 @@ export default function RegisterForm() {
     jobState: "",
     country: "",
     industry: "-",
+    noExperience: false,
     currentRole: false,
     startMonth: "",
     startYear: "",  
@@ -27,6 +28,7 @@ export default function RegisterForm() {
     goals:[],
     communicationFrequency: "",
     socialLinks: {},
+    emptyField: false
   })
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -35,13 +37,22 @@ export default function RegisterForm() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
+  const handleNextStep2 = () => {
+    if(activeStep == 2 && state.noExperience === false) {
+      if(state.jobTitle == "" || state.company == "" || state.city == "" || state.jobState == "" || state.country == "" || state.startMonth == "" || state.startYear == "")
+        setState({...state, emptyField: true})
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
+  }
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleInput = e => {
     const { name, value } = e.target
-    setState({ ...state, [name]:value})
+    setState({...state, emptyField: false, [name]:value })
   }
 
   const handleUserType = type => {
@@ -53,7 +64,7 @@ export default function RegisterForm() {
   }
 
   const handleCheckbox = e => {
-    setState({...state, [e.target.name]: e.target.checked})
+    setState({...state, emptyField: false, [e.target.name]: e.target.checked})
   }
 
   const handleSkills = value => {
@@ -81,9 +92,10 @@ export default function RegisterForm() {
         [name]:value
     }  }))
   }
-  const { userType, jobStatus, jobTitle, company, city, jobState, country, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks } = state
-  const values = { userType, jobStatus, jobTitle, company, city, jobState, country, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks }
+  const { userType, jobStatus, jobTitle, company, city, jobState, country, industry, noExperience, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks, emptyField } = state
+  const values = { userType, jobStatus, jobTitle, company, city, jobState, country, industry, noExperience, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks, emptyField }
 
+  console.log(state)
   switch(activeStep) {
     case 0:
       return (
@@ -111,6 +123,7 @@ export default function RegisterForm() {
           values={values}
           handleBack={handleBack}
           handleNext={handleNext}
+          handleNextStep2={handleNextStep2}
         />
       )
     case 3:

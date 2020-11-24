@@ -69,6 +69,11 @@ export const theme = createMuiTheme({
         height:"15px",
         margin: "0 8px"
       }
+    },
+    MuiToggleButtonRoot: {
+      MuiSelected: {
+        backgroundColor:"green"
+      }
     }
   },
   palette: {
