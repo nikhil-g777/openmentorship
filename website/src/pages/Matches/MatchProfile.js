@@ -103,6 +103,7 @@ const useStyles = makeStyles({
   },
   input: {
     margin: "0 auto",
+    width: "90%",
     border: "none",
     borderRadius: 6,
     display: "flex",
@@ -137,16 +138,40 @@ const useStyles = makeStyles({
   },
 });
 
+//api.get userInfo here
+//api.post accepted/submit msg here
+
 const MatchProfile = ({ selectedProfile, props }) => {
   const classes = useStyles(props);
   const [openMessage, setOpenMessage] = useState(false);
   const [sentMessage, setSentMessage] = useState(false);
-  const [mentor,setMentor] = useState(false)
+  console.log('selectedProfile mathprofile: ', selectedProfile)
+
+  // generates unique IDs like : 6b33fce8-1745-f8de-4ad8-4ee42585oprf
+  function guidGenerator() {
+    var S4 = function () {
+      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    };
+    return (
+      S4() +
+      S4() +
+      "-" +
+      S4() +
+      "-" +
+      S4() +
+      "-" +
+      S4() +
+      "-" +
+      S4() +
+      S4() +
+      S4()
+    );
+  }
 
   function handleOpenMessage() {
-    if (sentMessage == false && mentor==false) {
+    if (sentMessage == false && selectedProfile.userType != "mentor") {
       setOpenMessage(!openMessage);
-    } else if (mentor==true){
+    } else if (selectedProfile.userType == "mentor") {
       setSentMessage(true);
     }
   }
@@ -162,21 +187,23 @@ const MatchProfile = ({ selectedProfile, props }) => {
         <img src={img} alt="placeholder Profile pic" width="117" height="120" />
         <div className={classes.userContainer}>
           <Typography className={classes.name} variant="h6" component="h2">
-            {selectedProfile.Name}
+            {selectedProfile.firstName + " " + selectedProfile.lastName}
           </Typography>
           <Typography
             className={classes.occupation}
             variant="body2"
             component="p"
           >
-            {selectedProfile.Job}
+            {selectedProfile.WorkExperiences[0].title +
+              " at " +
+              selectedProfile.WorkExperiences[0].company}
           </Typography>
           <Typography
             className={classes.yearsExperience}
             variant="body2"
             component="p"
           >
-            {selectedProfile.YearsExperience} years of experience
+            {selectedProfile.WorkExperiences[0].company} years of experience
           </Typography>
         </div>
       </div>
@@ -188,21 +215,28 @@ const MatchProfile = ({ selectedProfile, props }) => {
           }
           onClick={handleOpenMessage}
         >
-          {mentor ? (<div>Accepted</div>) : sentMessage ? <div> Message sent</div> : <div>Send a message</div>}
+          {selectedProfile.userType == "mentor" ? (
+            <div>Accepted</div>
+          ) : sentMessage ? (
+            <div> Message sent</div>
+          ) : (
+            <div>Send a message</div>
+          )}
         </SendMsgButton>
       </div>
       {openMessage ? (
         <div className={classes.messageContainer}>
           <div className={classes.headerTexts}>
             <Typography className={classes.name} variant="h6" component="h2">
-              Send a request to {selectedProfile.Name}
+              Send a request to
+              {selectedProfile.firstName + " " + selectedProfile.lastName}
             </Typography>
             <Typography
               className={classes.occupation}
               variant="body2"
               component="p"
             >
-              Let {selectedProfile.Name} know why want them as your mentor.
+              Let {selectedProfile.firstName} know why want them as your mentor.
             </Typography>
           </div>
 
@@ -224,17 +258,31 @@ const MatchProfile = ({ selectedProfile, props }) => {
       ) : null}
       <div>
         <Title style={{ marginTop: 26 }}>Biography</Title>
-        <Text> {selectedProfile.Biography} </Text>
+        <Text> {`replace with biography end point data `} </Text>
         <Title style={{ marginTop: 31 }}>Areas of interest</Title>
-        <Text> {selectedProfile.areasOfInterest} </Text>
-        <Title style={{ marginTop: 27 }}>Top skills</Title>
-        <Text> {selectedProfile.topSkills} </Text>
-        <Title>Open to providing</Title>
-        <div className={classes.providingBox}>
-          {selectedProfile.openToProviding.map((item) => (
-            <OpenToProviding key={null}>{item}</OpenToProviding>
+        <Text>
+          {selectedProfile.interests.map((item, index) => (
+            <span key={guidGenerator()}>
+              {index == selectedProfile.interests.length - 1
+                ? item
+                : item + ", "}
+            </span>
           ))}
-        </div>
+        </Text>
+        <Title style={{ marginTop: 27 }}>Top skills</Title>
+        <Text>
+          {selectedProfile.skills.map((item, index) => (
+            <span key={guidGenerator()}>
+              {index == selectedProfile.skills.length - 1 ? item : item + ", "}
+            </span>
+          ))}
+        </Text>
+        <Title>Open to providing</Title>
+        {/* <div className={classes.providingBox}>
+          {selectedProfile.goals.map((item) => (
+            <OpenToProviding key={guidGenerator()}>{item}</OpenToProviding>
+          ))}
+        </div> */}
       </div>
     </div>
   );

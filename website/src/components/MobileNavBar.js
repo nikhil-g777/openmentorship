@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import LogoNavBar from "./../pages/Matches/images/LogoNavBar.png";
-import userIcon from "./../pages/Matches/images/userIcon.png";
+import LogoNavBar from "./images/logo.png";
+import userIcon from "./images/userIcon.png";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 const Wrapper = styled.section`

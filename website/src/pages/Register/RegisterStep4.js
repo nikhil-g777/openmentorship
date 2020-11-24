@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BackButton, Container, DotStepper, Title, TitleWrapper } from "../../components"
+import { Container, DotStepper, Title, TitleWrapper } from "../../components"
 
 import { FormGroup, FormControl, FormControlLabel, Checkbox, Radio, RadioGroup } from "@material-ui/core"
 import styled from 'styled-components'
@@ -21,7 +21,6 @@ const RegisterStep4 = props => {
   };
 
   const handleFrequency = (event) => {
-    // setMentorNeeds(prev => ({...prev, frequency:event.target.value}))
     props.handleCommunicationFrequency(event.target.value)
     setCommunicationFrequency(event.target.value)
   }
@@ -29,7 +28,6 @@ const RegisterStep4 = props => {
   return (
     <Container>
       <TitleWrapper>
-        <BackButton handleBack={props.handleBack} />
         <Title>Mentorship</Title>
       </TitleWrapper>
       <SectionWrapper>

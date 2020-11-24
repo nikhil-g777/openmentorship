@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BackButton, Container, DotStepper, FormItem, Title, TitleWrapper } from "../../components"
+import { Container, DotStepper, FormItem, Title, TitleWrapper } from "../../components"
 import { BootstrapInput } from "../../app/GlobalTheme"
 
 import { FormControl, FormControlLabel, Checkbox, Input, InputBase, InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
@@ -35,7 +35,6 @@ const RegisterStep2 = props => {
   return ( 
     <Container>
       <TitleWrapper>
-        <BackButton handleBack={props.handleBack} />
         <Title>Work Experience</Title>
       </TitleWrapper>
       <FormItem>

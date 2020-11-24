@@ -6,8 +6,13 @@ import RegisterStep3 from "./RegisterStep3"
 import RegisterStep4 from "./RegisterStep4"
 import RegisterStep5 from "./RegisterStep5"
 import PostRegistration from "./postRegistration/PostRegistration"
+import { Menu } from "../../components"
+
+import { useHistory } from "react-router-dom";
 
 export default function RegisterForm() {
+  const history = useHistory()
+
   const [ state, setState ] = useState({
     userType: "mentee",
     jobStatus: "Looking for a job",
@@ -31,7 +36,7 @@ export default function RegisterForm() {
     emptyField: false
   })
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -82,6 +87,7 @@ export default function RegisterForm() {
   const handleCommunicationFrequency = value => {
     setState({...state, communicationFrequency:value})
   }
+  
   const handlesocialLinks = event => {
     const name = event.target.name;
     const value = event.target.value;
@@ -92,31 +98,44 @@ export default function RegisterForm() {
         [name]:value
     }  }))
   }
+<<<<<<< HEAD
   const { userType, jobStatus, jobTitle, company, city, jobState, country, industry, noExperience, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks, emptyField } = state
   const values = { userType, jobStatus, jobTitle, company, city, jobState, country, industry, noExperience, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks, emptyField }
 
   console.log(state)
+=======
+
+  const { userType, jobStatus, jobTitle, company, city, jobState, country, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks } = state
+  const values = { userType, jobStatus, jobTitle, company, city, jobState, country, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks }
+  
+>>>>>>> master
   switch(activeStep) {
     case 0:
       return (
-        <RegisterMain 
-          handleInput={handleInput}
-          values={values}
-          handleNext={handleNext}
-        />
+        <>
+          <Menu handleBack={() => history.push("/")} registrationMenu={true}/>
+          <RegisterMain 
+            handleInput={handleInput}
+            values={values}
+            handleNext={handleNext}
+          />
+        </>
       );
     case 1:
       return (
+        <>
+        <Menu handleBack={handleBack} registrationMenu={true}/>
         <RegisterStep1 
           handleUserType={handleUserType}
           handleJobStatus={handleJobStatus}
           values={values}
           handleNext={handleNext}
-          handleBack={handleBack}
         />
+        </>
       )
     case 2:
       return (
+<<<<<<< HEAD
         <RegisterStep2 
           handleInput={handleInput}
           handleCheckbox={handleCheckbox}
@@ -125,42 +144,60 @@ export default function RegisterForm() {
           handleNext={handleNext}
           handleNextStep2={handleNextStep2}
         />
+=======
+        <>
+          <Menu handleBack={handleBack} registrationMenu={true}/>
+          <RegisterStep2 
+            handleInput={handleInput}
+            handleCheckbox={handleCheckbox}
+            values={values}
+            handleNext={handleNext}
+          />
+        </>
+>>>>>>> master
       )
     case 3:
-      return (                              
-        <RegisterStep3 
-          handleNext={handleNext}
-          handleSkills={handleSkills}
-          handleInterests={handleInterests}
-          values={values}
-          handleBack={handleBack}
-        />
+      return ( 
+        <>    
+          <Menu handleBack={handleBack} registrationMenu={true}/>                         
+          <RegisterStep3 
+            handleNext={handleNext}
+            handleSkills={handleSkills}
+            handleInterests={handleInterests}
+            values={values}
+          />
+        </>
       )
     case 4:
       return (
-        <RegisterStep4
-          handleNext={handleNext}
-          handleInput={handleInput}
-          handleGoals={handleGoals}
-          handleCommunicationFrequency={handleCommunicationFrequency}
-          values={values}
-          handleBack={handleBack}
-        />
+        <>    
+          <Menu handleBack={handleBack} registrationMenu={true}/>  
+          <RegisterStep4
+            handleNext={handleNext}
+            handleInput={handleInput}
+            handleGoals={handleGoals}
+            handleCommunicationFrequency={handleCommunicationFrequency}
+            values={values}
+          />
+        </>
     )
     case 5:
       return (
-        <RegisterStep5
-          handleNext={handleNext}
-          handlesocialLinks={handlesocialLinks}
-          values={values}
-          handleBack={handleBack}
-        />
+        <>
+          <Menu handleBack={handleBack} registrationMenu={true}/>
+          <RegisterStep5
+            handleNext={handleNext}
+            handlesocialLinks={handlesocialLinks}
+            values={values}
+          />
+        </>
     )
     case 6:
       return (
-        <PostRegistration 
-          handleBack={handleBack}
-        />
+        <>
+          <Menu handleBack={handleBack} registrationMenu={true}/>
+          <PostRegistration />
+        </>
     )
   }
 }
