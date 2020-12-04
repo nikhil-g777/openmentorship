@@ -15,6 +15,7 @@ import { LinkedInPopUp } from "react-linkedin-login-oauth2";
 import PrivateRoute from "./PrivateRoute";
 import { AuthContext } from "../context/auth";
 import { theme } from "./GlobalTheme";
+import PostRegistration from '../pages/Register/postRegistration/PostRegistration';
 
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
@@ -41,6 +42,7 @@ function App() {
             <Route path="/profile" component={LandingPage} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginPage} />
+            <PrivateRoute path="/postRegistration" component={PostRegistration} />
           </Switch>
         </ThemeProvider>
       </Router>

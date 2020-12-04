@@ -79,6 +79,8 @@ const DropDownMenu = (props) => {
 
   function logOut() {
     setAuthTokens("");
+    localStorage.removeItem("userType")
+    localStorage.removeItem("userId")
   }
 
   return (

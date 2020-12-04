@@ -41,7 +41,7 @@ const Login = (props) => {
   // store the page where user wanted to go and redirect to that page after login
   const referrer = props.location.state
     ? props.location.state.referrer
-    : "/matches";
+    : "/postRegistration";
   // const referrer = '/';
 
   const handleSuccess = (data) => {
