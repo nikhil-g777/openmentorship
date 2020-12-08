@@ -13,6 +13,7 @@ require('dotenv-flow').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const sessionsRouter = require('./routes/sessions');
 
 const app = express();
 
@@ -40,6 +41,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/sessions', sessionsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

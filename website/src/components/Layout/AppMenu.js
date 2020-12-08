@@ -79,8 +79,8 @@ const DropDownMenu = (props) => {
 
   function logOut() {
     setAuthTokens("");
-    localStorage.removeItem("userType")
-    localStorage.removeItem("userId")
+    localStorage.removeItem("userType");
+    localStorage.removeItem("userId");
   }
 
   return (
@@ -132,6 +132,14 @@ const DropDownMenu = (props) => {
                 selected={pathname === "/profile"}
               >
                 Profile
+              </MenuItem>
+            </MenuLink>
+            <MenuLink to="/sessions">
+              <MenuItem
+                onClick={props.handleClose}
+                selected={pathname === "/sessions"}
+              >
+                Sessions
               </MenuItem>
             </MenuLink>
             <MenuLink to="/matches">

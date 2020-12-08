@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState } from "react";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_BASE_URL,
@@ -7,6 +6,8 @@ const api = axios.create({
 });
 
 const getToken = () => JSON.parse(localStorage.getItem("tokens"));
+
+//---------------------User APIs---------------------
 
 export const loginUser = (payload) => api.post("/users/login", payload);
 
@@ -34,12 +35,10 @@ export const getUserMatches = (payload) => {
 //   api.put(`/users/matches/`)
 // }
 
-const apis = {
-  loginUser,
-  registerUser,
-  updateUser,
-  getUserInfo,
-  getUserMatches,
-};
+//---------------------Session APIs---------------------
 
-export default apis;
+export const getSessions = () => {
+  return api.get(`/sessions/sessionList`, {
+    headers: { authorization: `Bearer ${getToken()}` },
+  });
+};

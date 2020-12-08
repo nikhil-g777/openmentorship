@@ -6,6 +6,7 @@ import {
   Matches,
   LandingPage,
   LoginPage,
+  Sessions,
 } from "../pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,7 +16,7 @@ import { LinkedInPopUp } from "react-linkedin-login-oauth2";
 import PrivateRoute from "./PrivateRoute";
 import { AuthContext } from "../context/auth";
 import { theme } from "./GlobalTheme";
-import PostRegistration from '../pages/Register/postRegistration/PostRegistration';
+import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
 
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
@@ -42,7 +43,11 @@ function App() {
             <Route path="/profile" component={LandingPage} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginPage} />
-            <PrivateRoute path="/postRegistration" component={PostRegistration} />
+            <PrivateRoute
+              path="/postRegistration"
+              component={PostRegistration}
+            />
+            <Route path="/sessions" component={Sessions} />
           </Switch>
         </ThemeProvider>
       </Router>

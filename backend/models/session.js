@@ -15,7 +15,7 @@ const Session = new Schema(
     status: {
       type: String,
       required: true,
-      enum: ['pending', 'active', 'closed'],
+      enum: ['pending', 'active', 'closed', 'waitlist'],
       default: 'pending',
     },
   },
