@@ -40,14 +40,14 @@ function App() {
             ...See matches for example  */}
             <Route path="chat" component={LandingPage} />
             <PrivateRoute path="/matches" component={Matches} />
-            <Route path="/profile" component={LandingPage} />
+            <PrivateRoute path="/profile" component={LandingPage} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginPage} />
             <PrivateRoute
               path="/postRegistration"
               component={PostRegistration}
             />
-            <Route path="/sessions" component={Sessions} />
+            <PrivateRoute path="/sessions" component={Sessions} />
           </Switch>
         </ThemeProvider>
       </Router>

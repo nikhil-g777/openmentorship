@@ -13,14 +13,15 @@ router.use(cookieParser());
 // Get List of Sessions
 router.get(
   '/sessionList',
-  // passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   sessionController.sessionList,
 );
 
 // Create a Session
+// Add admin auth for this
 router.post(
   '/create',
-  // passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   sessionController.create,
 );
 
