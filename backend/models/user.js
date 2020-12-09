@@ -21,7 +21,7 @@ const User = new Schema(
     bio: { type: String },
     userType: { type: String, enum: ['mentee', 'mentor'] },
     userRole: { type: String, enum: ['user', 'admin'] },
-    linkedInId: { type: String, required: true },
+    linkedInId: { type: String, required: true, unique: true },
     WorkExperiences: { type: [WorkExperience], default: [] },
     skills: { type: [String], default: [] },
     interests: { type: [String], default: [] },
