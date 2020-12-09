@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import MobileNavBar from "../../components/MobileNavBar";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
+import AppMenu from "../../components/Layout/AppMenu"
 
 //mui
 import styled from "styled-components";
