@@ -35,9 +35,9 @@ const options = {
 
 const verify = (payload, done) => {
   User.findById(payload._id)
-    .then((u) => {
-      if (u) {
-        return done(null, u);
+    .then((user) => {
+      if (user) {
+        return done(null, user);
       }
       return done(null, false);
     })
