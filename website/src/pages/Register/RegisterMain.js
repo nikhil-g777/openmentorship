@@ -49,25 +49,25 @@ const RegisterMain = props => {
   const [ emptyFieldError, setEmptyFieldError ] = useState(false)
 
   const continueStep = e => {
-    //let inputIsValid = validateInput();
-    // if(inputIsValid) {
-    //   registerUser({
-    //       "authCode": linkedInId,
-    //       "user": {
-    //         "firstName": state.firstName,
-    //         "lastName": state.lastName,
-    //         "email": state.email,
-    //         "headline": state.headline,
-    //         "bio": state.bio,
-    //         "linkedInId": linkedInId
-    //       }
-    //   }).then((response) => {
-    //     localStorage.setItem("userId", response.data._id)
+    let inputIsValid = validateInput();
+    if(inputIsValid) {
+      registerUser({
+          "authCode": linkedInId,
+          "user": {
+            "firstName": state.firstName,
+            "lastName": state.lastName,
+            "email": state.email,
+            "headline": state.headline,
+            "bio": state.bio,
+            "linkedInId": linkedInId
+          }
+      }).then((response) => {
+        localStorage.setItem("userId", response.data._id)
         props.handleNext()
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   })
-    // }
+      }).catch((error) => {
+        console.log(error);
+      })
+    }
   } 
 
   const handleSuccess = (data) => {
@@ -78,14 +78,14 @@ const RegisterMain = props => {
   const handleFailure = (error) => {
   }
 
-  // const validateInput = () => {
-  //   let inputValid = true;
-  //   if(state.firstName.length === 0 || state.lastName.length === 0 || state.email.length === 0 || state.headline.length === 0 || state.bio.length === 0) {
-  //     setEmptyFieldError(true)
-  //     inputValid = false;
-  //   }
-  //   return inputValid;
-  // }
+  const validateInput = () => {
+    let inputValid = true;
+    if(state.firstName.length === 0 || state.lastName.length === 0 || state.email.length === 0 || state.headline.length === 0 || state.bio.length === 0) {
+      setEmptyFieldError(true)
+      inputValid = false;
+    }
+    return inputValid;
+  }
 
   const handleInput = (e) => {
     setEmptyFieldError(false)
@@ -169,8 +169,7 @@ const RegisterMain = props => {
         </form>   
       }
       {emptyFieldError && <p>Fields can't be blank</p>}
-      {/* <Button onClick={continueStep} disabled={!showUserFields}>Continue</Button> */}
-      <Button onClick={continueStep}>Continue</Button>
+      <Button onClick={continueStep} disabled={!showUserFields}>Continue</Button>
     </Container>
   </>
   )

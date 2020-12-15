@@ -98,17 +98,10 @@ export default function RegisterForm() {
         [name]:value
     }  }))
   }
-<<<<<<< HEAD
   const { userType, jobStatus, jobTitle, company, city, jobState, country, industry, noExperience, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks, emptyField } = state
   const values = { userType, jobStatus, jobTitle, company, city, jobState, country, industry, noExperience, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks, emptyField }
 
   console.log(state)
-=======
-
-  const { userType, jobStatus, jobTitle, company, city, jobState, country, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks } = state
-  const values = { userType, jobStatus, jobTitle, company, city, jobState, country, industry, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks }
-  
->>>>>>> master
   switch(activeStep) {
     case 0:
       return (
@@ -135,7 +128,6 @@ export default function RegisterForm() {
       )
     case 2:
       return (
-<<<<<<< HEAD
         <RegisterStep2 
           handleInput={handleInput}
           handleCheckbox={handleCheckbox}
@@ -144,17 +136,6 @@ export default function RegisterForm() {
           handleNext={handleNext}
           handleNextStep2={handleNextStep2}
         />
-=======
-        <>
-          <Menu handleBack={handleBack} registrationMenu={true}/>
-          <RegisterStep2 
-            handleInput={handleInput}
-            handleCheckbox={handleCheckbox}
-            values={values}
-            handleNext={handleNext}
-          />
-        </>
->>>>>>> master
       )
     case 3:
       return ( 
