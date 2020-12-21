@@ -1,36 +1,58 @@
-
-import React from 'react'
-import { FAQ, Home, RegisterForm,MentorMatches, LandingPage } from '../pages'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider } from '@material-ui/core/styles'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { LinkedInPopUp } from 'react-linkedin-login-oauth2'
-
-import { theme }  from "./GlobalTheme"
+import React, { useState } from "react";
+import {
+  FAQ,
+  Home,
+  RegisterForm,
+  Matches,
+  LandingPage,
+  LoginPage,
+  Sessions,
+} from "../pages";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@material-ui/core/styles";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { LinkedInPopUp } from "react-linkedin-login-oauth2";
+import PrivateRoute from "./PrivateRoute";
+import { AuthContext } from "../context/auth";
+import { theme } from "./GlobalTheme";
+import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
 
 function App() {
+  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+  const [authTokens, setAuthTokens] = useState(existingTokens);
+
+  const setTokens = (data) => {
+    localStorage.setItem("tokens", JSON.stringify(data));
+    setAuthTokens(data);
+  };
+
   return (
-    <>
+    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <Route path="/FAQ" exact component={FAQ}/>
-            <Route exact path='/linkedin' component={LinkedInPopUp} />
+            <PrivateRoute path="/FAQ" exact component={FAQ} />
+            <Route exact path="/linkedin" component={LinkedInPopUp} />
             {/* each route below needs to import their own Menu component. 
-            ...See mentorMatches for example  */}
-            <Route path='chat' component={"#"} />
-            <Route path='/mentorMatches' component={MentorMatches} />
-            <Route path='/profile' component={"#"} />
+            ...See matches for example  */}
+            <Route path="chat" component={LandingPage} />
+            <PrivateRoute path="/matches" component={Matches} />
+            <PrivateRoute path="/profile" component={LandingPage} />
             <Route path="/register" component={RegisterForm} />
-            <Route path='/signin' component={"#"} />
+            <Route path="/login" component={LoginPage} />
+            <PrivateRoute
+              path="/postRegistration"
+              component={PostRegistration}
+            />
+            <PrivateRoute path="/sessions" component={Sessions} />
           </Switch>
         </ThemeProvider>
       </Router>
-    </>
-  )
-};
+    </AuthContext.Provider>
+  );
+}
 
 export default App;

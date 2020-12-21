@@ -4,7 +4,7 @@ import Profile from "./MatchProfile";
 import CardType from "./CardType";
 import styled from "styled-components";
 import { Menu } from "../../components";
-import {getUserMatches} from '../../api'; 
+import { getUserMatches } from "../../api";
 
 const Container = styled.div`
   margin-left: 16px;
@@ -15,10 +15,14 @@ const Container = styled.div`
 //populate state with match data
 //when user clicks Active/Pending/Closed -> render .map() active/pending/closed matches with its data passed as props into mentorCard
 
-export default function MentorMatches() {
+export default function Matches() {
   const [showBackButton, setShowBackButton] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const [matchData, setMatchData] = useState([]);
+  const [matchData, setMatchData] = useState({
+    pending: [],
+    active: [],
+    closed: [],
+  });
   const [currentMatches, setCurrentMatches] = useState([]);
   const [isMentor, setIsMentor] = useState([]);
 
@@ -28,10 +32,9 @@ export default function MentorMatches() {
     getUserMatches({ _id: APP_ID })
       .then((res) => {
         setMatchData(res.data.matches);
-        console.log('res.data',res.data)
-        setCurrentMatches(res.data.matches.pending)
-        setIsMentor(res.data.userType)
-
+        console.log("res.data", res.data);
+        setCurrentMatches(res.data.matches.pending);
+        setIsMentor(res.data.userType);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -69,15 +72,16 @@ export default function MentorMatches() {
   }
   return (
     <>
-    <Menu handleBack={handleGoBack} showBackButton={showBackButton} />
-    <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
-    <Container>
-      <Card
-        showProfile={showProfile}
-        setShowProfile={() => setShowProfile(true)}
-        handleBackButtonVisibility={handleBackButtonVisibility}
-      />
-    </Container>
+      <Menu handleBack={handleGoBack} showBackButton={showBackButton} />
+      <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
+      <Container>
+        <Card
+          showProfile={showProfile}
+          setShowProfile={() => setShowProfile(true)}
+          handleBackButtonVisibility={handleBackButtonVisibility}
+          currentMatches={currentMatches}
+        />
+      </Container>
     </>
   );
 }

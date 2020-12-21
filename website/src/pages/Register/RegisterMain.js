@@ -1,43 +1,39 @@
-import React, { useState } from 'react'
-import { Container, Title, Menu} from "../../components"
-import Button from '@material-ui/core/Button';
-import styled from 'styled-components'
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import { LinkedIn } from 'react-linkedin-login-oauth2';
+import React, { useState } from "react";
+import { Container, Title, Menu } from "../../components";
+import Button from "@material-ui/core/Button";
+import styled from "styled-components";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import { LinkedIn } from "react-linkedin-login-oauth2";
 
-import { registerUser } from '../../api';
-import RegisterStep1 from './RegisterStep1';
+import { registerUser } from "../../api";
+import RegisterStep1 from "./RegisterStep1";
+import { useAuth } from "../../context/auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginBottom: "1em",
-    '& > *': {
-      margin: '1em 0',
+    "& > *": {
+      margin: "1em 0",
     },
   },
 }));
 
 const Info = styled.p`
-  padding:1em 3em 1em 3em;
-`
+  padding: 1em 3em 1em 3em;
+`;
 
 const LindkedInButton = styled.img`
-  width:200px;
-`
+  width: 200px;
+`;
 
 const Wrapper = styled.div`
-  margin:3em auto;
-`
+  margin: 3em auto;
+`;
 
-const RegisterMain = props => {
+const RegisterMain = (props) => {
   const classes = useStyles();
   const [ showUserFields, setShowUserFields ] = useState(false)
-  // const [ firstName, setFirstName ] = useState("")
-  // const [ email, setEmail ] = useState("")
-  // const [ lastName, setLastName ] = useState("")
-  // const [ headline, setHeadline ] = useState("")
-  // const [ bio, setBio ] = useState("")
   const [ linkedInId, setLinkedInId ] = useState("")
   const [ state, setState ] = useState({
     firstName:"",
@@ -47,36 +43,37 @@ const RegisterMain = props => {
     bio: ""
   })
   const [ emptyFieldError, setEmptyFieldError ] = useState(false)
+  const { setAuthTokens } = useAuth();
 
-  const continueStep = e => {
-    let inputIsValid = validateInput();
-    if(inputIsValid) {
-      registerUser({
-          "authCode": linkedInId,
-          "user": {
-            "firstName": state.firstName,
-            "lastName": state.lastName,
-            "email": state.email,
-            "headline": state.headline,
-            "bio": state.bio,
-            "linkedInId": linkedInId
-          }
-      }).then((response) => {
-        localStorage.setItem("userId", response.data.user._id)
-        props.handleNext()
-      }).catch((error) => {
-        console.log(error);
+  const continueStep = (e) => {
+    registerUser({
+      authCode: linkedInId,
+      user: {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        headline: headline,
+        bio: bio,
+        linkedInId: linkedInId,
+      },
+    })
+      .then((response) => {
+        localStorage.setItem("userId", response.data.user._id);
+        localStorage.setItem("userType", response.data.user.userType);
+        setAuthTokens(response.data.token);
+        props.handleNext();
       })
-    }
-  } 
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleSuccess = (data) => {
-    setShowUserFields(true)
-    setLinkedInId(data.code)
-  }
+    setShowUserFields(true);
+    setLinkedInId(data.code);
+  };
 
-  const handleFailure = (error) => {
-  }
+  const handleFailure = (error) => {};
 
   const validateInput = () => {
     let inputValid = true;
@@ -175,4 +172,4 @@ const RegisterMain = props => {
   )
 }
 
-export default RegisterMain
+export default RegisterMain;

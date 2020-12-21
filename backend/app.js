@@ -13,17 +13,11 @@ require('dotenv-flow').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const sessionsRouter = require('./routes/sessions');
 
 const app = express();
 
 const db = require('./db');
-
-const key = fs.readFileSync('./certs/private.key');
-const cert = fs.readFileSync('./certs/certificate.crt');
-const options = {
-  key,
-  cert,
-};
 
 const corsConfig = {
   origin: ['http://localhost:3010', 'http://www.openmentorship.com:3010'],
@@ -47,6 +41,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/sessions', sessionsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -65,10 +60,23 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-const server = https.createServer(options, app);
+if (process.env.NODE_ENV == 'local') {
+  app.listen(process.env.APP_PORT, () => {
+    console.log(`Server listening on port ${process.env.APP_PORT}!`);
+  });
+} else {
+  const key = fs.readFileSync('./certs/private.key');
+  const cert = fs.readFileSync('./certs/certificate.crt');
+  const options = {
+    key,
+    cert,
+  };
 
-server.listen(process.env.APP_PORT, () => {
-  console.log(`Server listening on port ${process.env.APP_PORT}!`);
-});
+  const server = https.createServer(options, app);
+
+  server.listen(process.env.APP_PORT, () => {
+    console.log(`Server listening on port ${process.env.APP_PORT}!`);
+  });
+}
 
 module.exports = app;

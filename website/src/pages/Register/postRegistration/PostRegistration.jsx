@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
+
 import {
   Button,
   BackArrowTop,
@@ -24,15 +26,11 @@ import {
   WaitTitle,
   WaitText,
 } from "./PostRegistrationStyling";
-import {
-  Container,
-  TitleWrapper,
-  Title,
-} from "../../../components";
+import { Container, TitleWrapper, Title } from "../../../components";
 
 import { updateUser } from "../../../api";
 
-export default class PostRegistration extends Component {
+class PostRegistration extends Component {
   constructor(props) {
     super(props);
     this.state = { userData: this.props.data, signUpResult: null };
@@ -50,6 +48,7 @@ export default class PostRegistration extends Component {
     })
       .then((response) => {
         this.setState({ signUpResult: "CONTINUE" });
+        this.props.history.push("/sessions");
       })
       .catch((error) => {
         console.log(error);
@@ -154,3 +153,5 @@ export default class PostRegistration extends Component {
     }[this.state.signUpResult];
   }
 }
+
+export default withRouter(PostRegistration);

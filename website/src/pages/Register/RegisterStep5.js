@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Container,
-  DotStepper,
-  Title,
-  TitleWrapper,
-} from "../../components";
+import { Container, DotStepper, Title, TitleWrapper } from "../../components";
 import { updateUser } from "../../api";
 
 import { InputLabel, TextField } from "@material-ui/core";
@@ -39,6 +34,7 @@ const RegisterStep5 = (props) => {
   function handleUpdateUser() {
     updateUser({
       _id: userId,
+      register: true,
       user: {
         userType: props.values.userType,
         WorkExperiences: [
