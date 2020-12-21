@@ -43,11 +43,15 @@ export default function RegisterForm() {
   };
 
   const handleNextStep2 = () => {
+    console.log(state)
     if(activeStep == 2 && state.noExperience === false) {
-      if(state.jobTitle == "" || state.company == "" || state.city == "" || state.jobState == "" || state.country == "" || state.startMonth == "" || state.startYear == "")
+      if(state.jobTitle == "" || state.company == "" || state.city == "" || state.jobState == "" || state.country == "" || state.startMonth == "" || state.startYear == "") {
         setState({...state, emptyField: true})
+      } else {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      }
     } else {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   }
 
@@ -128,14 +132,16 @@ export default function RegisterForm() {
       )
     case 2:
       return (
+        <>
+        <Menu handleBack={handleBack} registrationMenu={true}/>                         
         <RegisterStep2 
           handleInput={handleInput}
           handleCheckbox={handleCheckbox}
           values={values}
           handleBack={handleBack}
-          handleNext={handleNext}
           handleNextStep2={handleNextStep2}
         />
+        </>
       )
     case 3:
       return ( 

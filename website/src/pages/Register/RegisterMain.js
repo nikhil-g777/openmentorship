@@ -62,7 +62,7 @@ const RegisterMain = props => {
             "linkedInId": linkedInId
           }
       }).then((response) => {
-        localStorage.setItem("userId", response.data._id)
+        localStorage.setItem("userId", response.data.user._id)
         props.handleNext()
       }).catch((error) => {
         console.log(error);
