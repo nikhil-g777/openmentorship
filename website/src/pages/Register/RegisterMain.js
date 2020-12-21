@@ -49,11 +49,11 @@ const RegisterMain = (props) => {
     registerUser({
       authCode: linkedInId,
       user: {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        headline: headline,
-        bio: bio,
+        firstName: state.firstName,
+        lastName: state.lastName,
+        email: state.email,
+        headline: state.headline,
+        bio: state.bio,
         linkedInId: linkedInId,
       },
     })
