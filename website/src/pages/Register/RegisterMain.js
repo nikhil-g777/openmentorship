@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Title, Menu } from "../../components";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import { LinkedIn } from "react-linkedin-login-oauth2";
 import { registerUser } from "../../api";
 import RegisterStep1 from "./RegisterStep1";
 import { useAuth } from "../../context/auth";
+import { UserContext } from "../../context/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,9 @@ const Wrapper = styled.div`
 
 const RegisterMain = (props) => {
   const classes = useStyles();
+
+  const [user, setUser] = useContext(UserContext);
+
   const [showUserFields, setShowUserFields] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -41,7 +45,7 @@ const RegisterMain = (props) => {
   const [bio, setBio] = useState("");
   const [linkedInId, setLinkedInId] = useState("");
 
-  const { setAuthTokens } = useAuth();
+
 
   const continueStep = (e) => {
     registerUser({
@@ -56,9 +60,12 @@ const RegisterMain = (props) => {
       },
     })
       .then((response) => {
-        localStorage.setItem("userId", response.data.user._id);
-        localStorage.setItem("userType", response.data.user.userType);
-        setAuthTokens(response.data.token);
+        setUser({
+          userId: response.data._id,
+          userType: response.data.userType,
+          token: response.data.token
+        });
+        localStorage.setItem('token', response.data.token);
         props.handleNext();
       })
       .catch((error) => {

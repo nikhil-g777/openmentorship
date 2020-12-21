@@ -5,7 +5,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-const getToken = () => JSON.parse(localStorage.getItem("tokens"));
+const getToken = () => JSON.parse(localStorage.getItem("token"));
 
 //---------------------User APIs---------------------
 

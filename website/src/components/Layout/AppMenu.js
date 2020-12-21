@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import LogoNavBar from "../../images/LogoNavBar.png";
 import userIcon from "../../images/user.svg";
@@ -6,7 +6,7 @@ import backIcon from "../../images/backIcon.svg";
 
 import { Divider, MenuItem, Menu } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/auth";
+import { UserContext } from '../../context/UserContext';
 
 const Wrapper = styled.section`
   display: flex;
@@ -75,12 +75,11 @@ const MenuLink = styled(Link)`
 
 const DropDownMenu = (props) => {
   const pathname = window.location.pathname;
-  const { authTokens, setAuthTokens } = useAuth();
+  const [user, setUser] = useContext(UserContext);
 
   function logOut() {
-    setAuthTokens("");
-    localStorage.removeItem("userType");
-    localStorage.removeItem("userId");
+    setUser({});
+    localStorage.removeItem("token");
   }
 
   return (
@@ -101,7 +100,7 @@ const DropDownMenu = (props) => {
         onClose={props.handleClose}
       >
         {/* {props.registrationMenu ? ( */}
-        {authTokens == "" ? (
+        {user.token == "" ? (
           <div>
             <MenuLink to="/">
               <MenuItem onClick={props.handleClose}>About</MenuItem>

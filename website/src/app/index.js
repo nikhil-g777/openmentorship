@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FAQ,
   Home,
@@ -17,18 +17,14 @@ import PrivateRoute from "./PrivateRoute";
 import { AuthContext } from "../context/auth";
 import { theme } from "./GlobalTheme";
 import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
+import { UserContext, UserProvider } from '../context/UserContext';
+import { getUserInfo } from "../api";
 
 function App() {
-  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
-  const [authTokens, setAuthTokens] = useState(existingTokens);
 
-  const setTokens = (data) => {
-    localStorage.setItem("tokens", JSON.stringify(data));
-    setAuthTokens(data);
-  };
 
   return (
-    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+    <UserProvider>
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -51,7 +47,7 @@ function App() {
           </Switch>
         </ThemeProvider>
       </Router>
-    </AuthContext.Provider>
+    </UserProvider>
   );
 }
 
