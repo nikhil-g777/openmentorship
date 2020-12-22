@@ -10,7 +10,6 @@ import { LinkedIn } from "react-linkedin-login-oauth2";
 import { loginUser } from "../api";
 import { useAuth } from "../context/auth";
 import { UserContext } from "../context/UserContext";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     marginBottom: "1em",
@@ -34,18 +33,17 @@ const Wrapper = styled.div`
 
 const Login = (props) => {
   const classes = useStyles();
-  const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
   const [user, setUser] = useContext(UserContext);
 
   // const { setAuthTokens } = useAuth();
 
   // store the page where user wanted to go and redirect to that page after login
-  const referrer = props.location.state
+  const referrer = props.location.state && props.location.referrer != "/login"
     ? props.location.state.referrer
-    : "/postRegistration";
-  // const referrer = '/';
+    : "/sessions";
 
+  console.log(referrer);
   const handleSuccess = (data) => {
     loginUser({
       authCode: data.code,
@@ -53,13 +51,11 @@ const Login = (props) => {
       .then((response) => {
         if (response.data.success) {
           setUser({
-            userId: response.data._id,
-            userType: response.data.userType,
+            _id: response.data.user._id,
+            userType: response.data.user.userType,
             token: response.data.token
           });
           localStorage.setItem('token', JSON.stringify(response.data.token));
-          setLoggedIn(true);
-          // redirect to matches for now
         } else {
           setIsError(true);
         }
@@ -74,7 +70,7 @@ const Login = (props) => {
     setIsError(true);
   };
 
-  if (isLoggedIn) {
+  if (user.token) {
     return <Redirect to={referrer} />;
   }
 

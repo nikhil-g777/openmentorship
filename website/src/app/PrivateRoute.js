@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Route, Redirect } from "react-router-dom";
+import { getUserInfo } from "../api";
 import { useAuth } from "../context/auth";
 import { UserContext } from "../context/UserContext";
 
@@ -15,10 +16,10 @@ function PrivateRoute({ component: Component, ...rest }) {
         user.token ? (
           <Component {...props} />
         ) : (
-          <Redirect
-            to={{ pathname: "/login", state: { referrer: props.location } }}
-          />
-        )
+            <Redirect
+              to={{ pathname: "/login", state: { referrer: props.location } }}
+            />
+          )
       }
     />
   );

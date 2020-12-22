@@ -61,11 +61,11 @@ const RegisterMain = (props) => {
     })
       .then((response) => {
         setUser({
-          userId: response.data._id,
+          _id: response.data._id,
           userType: response.data.userType,
           token: response.data.token
         });
-        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('token', JSON.stringify(response.data.token));
         props.handleNext();
       })
       .catch((error) => {
