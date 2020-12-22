@@ -32,7 +32,6 @@ export default function Matches() {
     getUserMatches({ _id: user._id })
       .then((res) => {
         setMatchData(res.data.matches);
-        console.log("res.data", res.data);
         setCurrentMatches(res.data.matches.pending);
       })
       .catch((err) => console.log(err));

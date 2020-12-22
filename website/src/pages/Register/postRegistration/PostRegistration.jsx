@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
 import {
   Button,
@@ -35,7 +35,6 @@ const PostRegistration = (props) => {
 
   const [signUpResult, setSignUpResult] = useState(null);
   const [user, setUser] = useContext(UserContext);
-  const [userData, setUserData] = useState(this.props.data);
 
   const userContinue = () => {
     updateUser({
@@ -46,7 +45,6 @@ const PostRegistration = (props) => {
     })
       .then((response) => {
         setSignUpResult('CONTINUE')
-        this.props.history.push("/sessions");
       })
       .catch((error) => {
         console.log(error);
@@ -59,19 +57,24 @@ const PostRegistration = (props) => {
 
   const renderComponent = (param) => {
     switch (param) {
+      // Commenting for now but might need to use this once we implement email verification
+      // case 'CONTINUE':
+      //   return (
+      //     <Wrapper>
+      //       <AirplanePicture />
+      //       <ConfirmationTitle>
+      //         An email confirmation is on its way.
+      //     </ConfirmationTitle>
+      //       <ConfirmationText>
+      //         Thanks for joining OpenMentorshop. We’re excited for you to gain
+      //         success in your career.
+      //     </ConfirmationText>
+      //     </Wrapper>
+      //   )
       case 'CONTINUE':
         return (
-          <Wrapper>
-            <AirplanePicture />
-            <ConfirmationTitle>
-              An email confirmation is on its way.
-          </ConfirmationTitle>
-            <ConfirmationText>
-              Thanks for joining OpenMentorshop. We’re excited for you to gain
-              success in your career.
-          </ConfirmationText>
-          </Wrapper>
-        )
+          <Redirect to='/sessions'/>
+        );
 
       case 'WAIT':
         return (
@@ -164,4 +167,4 @@ const PostRegistration = (props) => {
   );
 }
 
-export default withRouter(PostRegistration);
+export default PostRegistration;
