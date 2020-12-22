@@ -300,7 +300,7 @@ const updateUser = (req, res) => {
   }
 
   // eslint-disable-next-line no-unused-vars
-  const { role, registrationStatus, userObj } = req.body.user; // making sure role and registrationStatus are not updated by the request, for security
+  const { role, registrationStatus, ...userObj } = req.body.user; // making sure role and registrationStatus are not updated by the request, for security
 
   if (req.body.register) {
     // if final step of the registration process
