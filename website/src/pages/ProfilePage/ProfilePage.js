@@ -80,12 +80,13 @@ export default function ProfilePage() {
     firstName: "",
     lastName: "",
     jobTitle: "",
-    yearsWorked: "",
+    Years: "",
     skills: "",
     company:"",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log('handleChange: updating state for ', name, "with value: ", value)
     setState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -179,7 +180,7 @@ export default function ProfilePage() {
                     label="Job Title"
                     value={state.jobTitle}
                     onChange={handleChange}
-                    name="Job Title"
+                    name="jobTitle"
                   />
                 </Grid>
               </Grid>
@@ -188,9 +189,9 @@ export default function ProfilePage() {
                   <TextField
                     id="standard-basic"
                     label="Years Worked"
-                    value={state.yearsWorked}
+                    value={state.years}
                     onChange={handleChange}
-                    name="Years Worked"
+                    name="years"
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
