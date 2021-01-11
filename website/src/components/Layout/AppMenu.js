@@ -121,14 +121,14 @@ const DropDownMenu = (props) => {
                 Log In
               </MenuItem>
             </MenuLink>
+
           </div>
         ) : (
           <div>
-            <MenuLink to="/profile">
+          <MenuLink to="ProfilePage">
               <MenuItem
-                disabled
                 onClick={props.handleClose}
-                selected={pathname === "/profile"}
+                selected={pathname === "/ProfilePage"}
               >
                 Profile
               </MenuItem>
@@ -171,6 +171,14 @@ const DropDownMenu = (props) => {
                 selected={pathname === "/FAQ"}
               >
                 FAQ
+              </MenuItem>
+            </MenuLink>
+            <MenuLink to="/ProfilePage">
+              <MenuItem
+                onClick={props.handleClose}
+                selected={pathname === "/ProfilePage"}
+              >
+                Profile
               </MenuItem>
             </MenuLink>
           </div>

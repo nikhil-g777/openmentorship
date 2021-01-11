@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   FAQ,
+  ProfilePage,
   Home,
   RegisterForm,
   Matches,
@@ -39,6 +40,7 @@ function App() {
             <PrivateRoute path="/profile" component={LandingPage} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginPage} />
+            <Route path="/ProfilePage" component={ProfilePage} />
             <PrivateRoute
               path="/postRegistration"
               component={PostRegistration}
