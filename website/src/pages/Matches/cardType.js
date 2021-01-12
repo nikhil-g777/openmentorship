@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.section`
@@ -13,9 +13,9 @@ const Wrapper = styled.section`
 `;
 
 const Text = styled.p`
-  ${(props) => (props.pending==true ? "color: #51B6A5" : "")}
-  ${(props) => (props.active==true ? "color: #51B6A5" : "")}
-  ${(props) => (props.closed==true ? "color: #51B6A5" : "")}
+  ${(props) => (props.pending===true ? "color: #51B6A5" : "")}
+  ${(props) => (props.active===true ? "color: #51B6A5" : "")}
+  ${(props) => (props.closed===true ? "color: #51B6A5" : "")}
 `;
 
 const CardType = ({ handleSecondaryTab,props}) => {

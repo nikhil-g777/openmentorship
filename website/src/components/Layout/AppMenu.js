@@ -100,7 +100,7 @@ const DropDownMenu = (props) => {
         onClose={props.handleClose}
       >
         {/* {props.registrationMenu ? ( */}
-        {user.token == "" ? (
+        {user.token === "" ? (
           <div>
             <MenuLink to="/">
               <MenuItem onClick={props.handleClose}>About</MenuItem>
@@ -202,7 +202,7 @@ const AppMenu = (props) => {
 
   return (
     <Wrapper>
-      {props.showBackButton == false ? (
+      {props.showBackButton === false ? (
         <Picture />
       ) : (
         <BackButton onClick={props.handleBack} />

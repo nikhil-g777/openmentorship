@@ -86,25 +86,25 @@ export default function ProfilePage() {
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log('handleChange: updating state for ', name, "with value: ", value)
+
     setState((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  //when user hits submit button
+  //when user hits submit button - send the changed profile data to the endpoint
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submitting data : state", state);
-    axios.post("/users/update/{user._id}", state);
+    axios.post(`/users/update/${user._id}`, state);
   };
 
   //run once, grab user profile data to prefill
   useEffect(() => {
     async function fetchData() {
       await axios
-        .get(`/users/info/user._id`)
+        .get(`https://www.openmentorship.com:4000/users/info/${user._id}`)
         .then((response) => {
           setUserData({ ...response, isFetching: false });
           console.log("userData fetched", userData);
