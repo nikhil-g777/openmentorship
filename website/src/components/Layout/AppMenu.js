@@ -100,7 +100,7 @@ const DropDownMenu = (props) => {
         onClose={props.handleClose}
       >
         {/* {props.registrationMenu ? ( */}
-        {user.token == "" ? (
+        {user.token === "" ? (
           <div>
             <MenuLink to="/">
               <MenuItem onClick={props.handleClose}>About</MenuItem>
@@ -121,14 +121,14 @@ const DropDownMenu = (props) => {
                 Log In
               </MenuItem>
             </MenuLink>
+
           </div>
         ) : (
           <div>
-            <MenuLink to="/profile">
+          <MenuLink to="ProfilePage">
               <MenuItem
-                disabled
                 onClick={props.handleClose}
-                selected={pathname === "/profile"}
+                selected={pathname === "/ProfilePage"}
               >
                 Profile
               </MenuItem>
@@ -173,6 +173,14 @@ const DropDownMenu = (props) => {
                 FAQ
               </MenuItem>
             </MenuLink>
+            <MenuLink to="/ProfilePage">
+              <MenuItem
+                onClick={props.handleClose}
+                selected={pathname === "/ProfilePage"}
+              >
+                Profile
+              </MenuItem>
+            </MenuLink>
           </div>
         )}
       </Menu>
@@ -194,7 +202,7 @@ const AppMenu = (props) => {
 
   return (
     <Wrapper>
-      {props.showBackButton == false ? (
+      {props.showBackButton === false ? (
         <Picture />
       ) : (
         <BackButton onClick={props.handleBack} />
