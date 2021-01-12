@@ -82,7 +82,7 @@ export default function ProfilePage() {
     jobTitle: "",
     Years: "",
     skills: "",
-    company:"",
+    company: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,14 +97,22 @@ export default function ProfilePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submitting data : state", state);
-    axios.post(`/users/update/${user._id}`, state);
+    axios.post(
+      `https://www.openmentorship.com:4000/users/update/${user._id}`,
+      state,
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    );
   };
 
   //run once, grab user profile data to prefill
   useEffect(() => {
     async function fetchData() {
       await axios
-        .get(`https://www.openmentorship.com:4000/users/info/${user._id}`)
+        .get(`https://www.openmentorship.com:4000/users/info/${user._id}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
         .then((response) => {
           setUserData({ ...response, isFetching: false });
           console.log("userData fetched", userData);
