@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import MobileNavBar from "../../components/MobileNavBar";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
-import AppMenu from "../../components/Layout/AppMenu"
+import WaitlistCard from "./WaitListCard";
 
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { Grid } from "@material-ui/core";
 
 //imgs
 import Stairs from "./images/stairs.png";
@@ -65,7 +65,6 @@ const StairsGreyBg = styled.div`
   width: 100%;
   height: 218px;
   background-color: #f5f3f8;
-  z-index: -1;
   margin: 0 auto;
   margin-bottom: 45px;
 `;
@@ -80,7 +79,7 @@ const PuzzleImage = styled.img`
 const PuzzleGreyBg = styled.div`
   width: 100%;
   height: 135px;
-  background-color: #f5f3f8;
+  background-color: #0000;
 `;
 
 const CheerImage = styled.img`
@@ -106,22 +105,22 @@ const TextContainer = styled.div`
 `;
 
 const useStyles = makeStyles({
+  root: {
+    fontFamily: "Roboto",
+  },
   Title: {
-    fontFamily: "Proxima Nova",
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: "Bold",
     color: "#000000",
     textAlign: "center",
   },
   BodyHeader: {
-    fontFamily: "Proxima Nova",
     fontSize: 20,
     fontWeight: "Bold",
     color: "#000000",
     marginBottom: 25,
   },
   Header: {
-    fontFamily: "Proxima Nova",
     fontStyle: "Semibold",
     fontSize: 18,
     fontWeight: "Bold",
@@ -129,7 +128,6 @@ const useStyles = makeStyles({
     marginBottom: 6,
   },
   Header2: {
-    fontFamily: "Proxima Nova",
     fontStyle: "Semibold",
     fontSize: 18,
     fontWeight: "Bold",
@@ -137,7 +135,6 @@ const useStyles = makeStyles({
     marginBottom: 6,
   },
   Header3: {
-    fontFamily: "Proxima Nova",
     fontStyle: "Semibold",
     fontSize: 18,
     fontWeight: "Bold",
@@ -145,11 +142,14 @@ const useStyles = makeStyles({
     marginBottom: 6,
   },
   Body: {
-    fontFamily: "Proxima Nova",
     fontStyle: "Regular",
     fontSize: 16,
     color: "#000000",
     marginBottom: 16,
+  },
+  WaitlistCard: {
+    paddingTop: 50,
+    paddingLeft: 50,
   },
 });
 
@@ -166,13 +166,13 @@ export default function LandingPage(props) {
         </StairsGreyBg>
         <TitleContainer>
           <Typography className={classes.Title}>
-            Find a mentor who can help guide you to success.
+            Let's build an OpenMentorship Community Together !
           </Typography>
         </TitleContainer>
-        <Link style={{ margin: "0 auto" }} to="/register">
+        <WaitlistCard className={classes.WaitlistCard} />
+        {/* <Link style={{ margin: "0 auto" }} to="/register">
           <RegisterButton>Register</RegisterButton>
-        </Link>
-
+        </Link> */}
         <PuzzleGreyBg>
           <PuzzleImage src={Puzzles} />
         </PuzzleGreyBg>

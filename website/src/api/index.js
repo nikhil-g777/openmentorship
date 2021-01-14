@@ -42,3 +42,7 @@ export const getSessions = () => {
     headers: { authorization: `Bearer ${getToken()}` },
   });
 };
+
+export const registerWaitlist = (payload) => {
+  return api.post(`/waitlist/register`, payload);
+};
