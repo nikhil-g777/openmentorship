@@ -164,11 +164,11 @@ export default function LandingPage(props) {
         <StairsGreyBg>
           <StairsImage src={Stairs} />
         </StairsGreyBg>
-        <TitleContainer>
+        {/* <TitleContainer>
           <Typography className={classes.Title}>
-            Let's build an OpenMentorship Community Together !
+            Let's build an OpenMentorship Community Together!
           </Typography>
-        </TitleContainer>
+        </TitleContainer> */}
         <WaitlistCard className={classes.WaitlistCard} />
         {/* <Link style={{ margin: "0 auto" }} to="/register">
           <RegisterButton>Register</RegisterButton>
