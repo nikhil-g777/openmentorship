@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 400,
     backgroundColor: "#f5f3f8",
     padding:".5em",
+    margin: '0 auto',
   },
   WaitlistButton: {
     size: "medium",
