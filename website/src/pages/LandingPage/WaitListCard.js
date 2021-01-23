@@ -124,11 +124,11 @@ export default function WaitlistCard(props) {
     <div style={{ textAlign:"center" }}>
       <ThemeProvider theme={theme}>
         <Container>
-          <TitleContainer>
+          {/* <TitleContainer>
             <Typography className={classes.Title}>
               Let's build an OpenMentorship Community Together!
             </Typography>
-          </TitleContainer>
+          </TitleContainer> */}
           <Card className={classes.WaitlistCard} raised={true}>
             {waitlistSubmitted ? (
               <p>Thanks for Registering! We will get back to you soon</p>
