@@ -25,6 +25,7 @@ import "fontsource-roboto";
 
 // local imports
 import { registerWaitlist } from "../../api";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {
@@ -111,6 +112,7 @@ export default function WaitlistCard(props) {
   const [userType, setUserType] = useState("mentee");
   const [email, setEmail] = useState("");
   const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
+  const [emailValid, setEmailValid] = useState(false); 
 
   const joinWaitlist = () => {
     registerWaitlist({ waitlist: { userType, email } })
@@ -119,6 +121,16 @@ export default function WaitlistCard(props) {
       })
       .catch((err) => console.log(err));
   };
+
+  const validateEmail = (email) => 
+    {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+  useEffect(() => {
+    setEmailValid(validateEmail(email))
+  }, [email])
 
   return (
     <div style={{ textAlign:"center" }}>
@@ -136,7 +148,7 @@ export default function WaitlistCard(props) {
               <>
                 <CardContent className={classes.CardTitle}>
                   <Typography className={classes.Title}>
-                    Be the first to be invited to first cohort starting soon
+                    Be the first to be invited to the cohort starting soon
                   </Typography>
                   <Typography className={classes.SpotsAvailable}>
                     Limited spots available
@@ -172,7 +184,7 @@ export default function WaitlistCard(props) {
                       <WaitlistButton
                         variant="contained"
                         onClick={joinWaitlist}
-                        disabled={email ? false : true}
+                        disabled={emailValid ? false : true}
                       >
                         Join the Waitlist
                       </WaitlistButton>

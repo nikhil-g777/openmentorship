@@ -209,7 +209,7 @@ export default function LandingPage(props) {
   return (
     <div>
       {/* <MobileNavBar /> */}
-      <Menu handleBack={() => history.push("/")} registrationMenu={false} />
+      <Menu handleBack={() => history.push("/")} registrationMenu={false} showBackButton={false} />
       <Container>
         <HeroWrapper>
           <StairsGreyBg>

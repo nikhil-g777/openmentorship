@@ -33,7 +33,7 @@ const LogoImg = styled(Picture)`
 `;
 
 const UserIconWrapper = styled.div`
-  background: #4e96cb;
+  background: #00;
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -201,14 +201,14 @@ const AppMenu = (props) => {
       )}
       <LogoImg />
       <UserIconWrapper>
-        <UserIcon onClick={handleMenu} />
+        {/* <UserIcon onClick={handleMenu} /> */}
       </UserIconWrapper>
-      <DropDownMenu
+      {/* <DropDownMenu
         anchorEl={anchorEl}
         handleClose={handleClose}
         open={open}
         registrationMenu={props.registrationMenu}
-      />
+      /> */}
     </Wrapper>
   );
 };

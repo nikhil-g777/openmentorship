@@ -30,10 +30,11 @@ function App() {
           <CssBaseline />
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PrivateRoute path="/FAQ" exact component={FAQ} />
+            {/* <PrivateRoute path="/FAQ" exact component={FAQ} />
             <Route exact path="/linkedin" component={LinkedInPopUp} />
             {/* each route below needs to import their own Menu component. 
             ...See matches for example  */}
+            {/*
             <Route path="chat" component={LandingPage} />
             <PrivateRoute path="/matches" component={Matches} />
             <PrivateRoute path="/profile" component={LandingPage} />
@@ -43,7 +44,7 @@ function App() {
               path="/postRegistration"
               component={PostRegistration}
             />
-            <PrivateRoute path="/sessions" component={Sessions} />
+            <PrivateRoute path="/sessions" component={Sessions} /> */}
           </Switch>
         </ThemeProvider>
       </Router>
