@@ -39,30 +39,33 @@ const useStyles = makeStyles((theme) => ({
   },
   Title: {
     fontSize: 18,
-    fontWeight:"Bold",
+    fontWeight: "Bold",
+  },
+  Note: {
+    fontSize: 14,
   },
   FormControl: {
-    width:"80%",
-    maxMidth:"300px",
+    width: "80%",
+    maxMidth: "300px",
   },
   SpotsAvailable: {
     color: "#e53935",
     fontSize: 13,
     fontWeight: 10,
-    marginTop:".5em",
+    marginTop: ".5em",
   },
   WaitlistCard: {
     maxWidth: 600,
     maxHeight: 400,
     backgroundColor: "#f5f3f8",
-    padding:".5em",
-    margin: '0 auto',
+    padding: ".5em",
+    margin: "0 auto",
   },
   WaitlistButton: {
     size: "medium",
     backgroundColor: "#51b6a5",
     height: 47,
-    width: '100%',
+    width: "100%",
   },
 }));
 
@@ -112,7 +115,7 @@ export default function WaitlistCard(props) {
   const [userType, setUserType] = useState("mentee");
   const [email, setEmail] = useState("");
   const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
-  const [emailValid, setEmailValid] = useState(false); 
+  const [emailValid, setEmailValid] = useState(false);
 
   const joinWaitlist = () => {
     registerWaitlist({ waitlist: { userType, email } })
@@ -122,18 +125,17 @@ export default function WaitlistCard(props) {
       .catch((err) => console.log(err));
   };
 
-  const validateEmail = (email) => 
-    {
-        var re = /\S+@\S+\.\S+/;
-        return re.test(email);
-    }
+  const validateEmail = (email) => {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
 
   useEffect(() => {
-    setEmailValid(validateEmail(email))
-  }, [email])
+    setEmailValid(validateEmail(email));
+  }, [email]);
 
   return (
-    <div style={{ textAlign:"center" }}>
+    <div style={{ textAlign: "center" }}>
       <ThemeProvider theme={theme}>
         <Container>
           {/* <TitleContainer>
@@ -188,6 +190,10 @@ export default function WaitlistCard(props) {
                       >
                         Join the Waitlist
                       </WaitlistButton>
+                      <br />
+                      <Typography className={classes.Note}>
+                        Currently open for software, design
+                      </Typography>
                     </Grid>
                   </Grid>
                 </CardActions>

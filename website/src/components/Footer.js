@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  width: 375px;
+  width: 275px;
   display: flex;
   margin: 0 auto;
 `;
@@ -31,17 +31,16 @@ const LinksContainer = styled.div`
 const MLogo = styled.img`
   width: 45px;
   height: 43px;
-  margin-right: 55px;
+  margin-right: 15px;
   margin-left: 30px;
 `;
 
 const useStyles = makeStyles({
   Links: {
-    fontFamily: "Proxima Nova",
-    fontStyle: "Semibold",
+    fontFamily: "Roboto",
     fontSize: 16,
+    fontWeight: "Bold",
     color: "#000000",
-    marginBottom: 24,
   },
 });
 export default function Footer(props) {
@@ -51,11 +50,12 @@ export default function Footer(props) {
     <Container>
       <ContentWrapper>
         <div className={classes.logo}>
-          <Link to="/register">
-            <MLogo src={Logo} />
-          </Link>
+          {/* <Link to="/register"> */}
+          <MLogo src={Logo} />
+          {/* </Link> */}
         </div>
-        <LinksContainer>
+        <p className={classes.Links}>Contact Us : hello@openmentorship.com</p>
+        {/* <LinksContainer>
           <a className={classes.Links} href="">
             <Link to="/about">About</Link>
           </a>
@@ -72,7 +72,7 @@ export default function Footer(props) {
           <a className={classes.Links} href="">
             <Link to="">Sign In </Link>
           </a>
-        </LinksContainer>
+        </LinksContainer> */}
       </ContentWrapper>
     </Container>
   );

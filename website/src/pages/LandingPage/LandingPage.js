@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
 
 //imgs
-import Stairs from "./images/stairs.png";
+import Stairs from "./images/stairs_large.png";
 import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
 
@@ -25,37 +25,36 @@ const Container = styled.div`
 `;
 
 const FlexWrapper = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   @media (min-width: 768px) {
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
   }
-`
+`;
 const FlexItem = styled.div`
-   @media (min-width: 768px) {
-     max-width:300px;
-   }
-`
+  @media (min-width: 768px) {
+    max-width: 300px;
+  }
+`;
 
 const PaddingWrapper = styled.div`
-   padding:50px 15px;
-`
+  padding: 50px 15px;
+`;
 
 const HeroWrapper = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   background-color: #f5f3f8;
-  padding:1em;
-  margin-bottom:5em;
+  padding: 1em;
+  margin-bottom: 5em;
   @media (min-width: 768px) {
-    flex-direction:row;
-    align-items:center;
-    margin-bottom:0;
-
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0;
   }
-`
+`;
 
 const CheerWrapper = styled.div`
   margin: 0px auto;
@@ -63,29 +62,29 @@ const CheerWrapper = styled.div`
     margin: 0;
     max-width: 300px;
   }
-`
+`;
 
 const TitleContainer = styled.div`
   max-width: 300px;
-  width:70%;
+  width: 70%;
   margin: 0 auto;
   margin-bottom: 40px;
-  text-align:center;
+  text-align: center;
   @media (min-width: 768px) {
-    text-align:left;
+    text-align: left;
     max-width: 350px;
   }
 `;
 
 const HeroTitle = styled.p`
-  font-family:"reoboto";
+  font-family: "Roboto";
   font-weight: bold;
   color: "#000000";
   text-align: "center";
   @media (min-width: 768px) {
-    font-size:40px;
-  } 
-`
+    font-size: 40px;
+  }
+`;
 
 const RegisterButton = styled.button`
   background-color: #51b6a5;
@@ -119,8 +118,9 @@ const StairsGreyBg = styled.div`
 `;
 
 const StairsImage = styled.img`
-  width: 274px;
-  height: 222px;
+  width: 100%;
+  height: auto;
+  max-width: 600px;
   display: block;
   margin: 0 auto;
   margin-top: 22px;
@@ -130,11 +130,11 @@ const OrderedSide = styled.div`
   @media (min-width: 768px) {
     order: 1;
   }
-`
+`;
 
 const PuzzleImage = styled.img`
   display: block;
-  margin:0 auto;
+  margin: 0 auto;
 `;
 
 const PuzzleGreyBg = styled.div`
@@ -209,21 +209,24 @@ export default function LandingPage(props) {
   return (
     <div>
       {/* <MobileNavBar /> */}
-      <Menu handleBack={() => history.push("/")} registrationMenu={false} showBackButton={false} />
+      <Menu
+        handleBack={() => history.push("/")}
+        registrationMenu={false}
+        showBackButton={false}
+      />
       <Container>
         <HeroWrapper>
           <StairsGreyBg>
             <StairsImage src={Stairs} />
           </StairsGreyBg>
-          <OrderedSide> 
+          <OrderedSide>
             <TitleContainer>
-            <HeroTitle>
-              Let's build an OpenMentorship Community Together!
-            </HeroTitle>
-          </TitleContainer>
+              <HeroTitle>
+                Let's build an OpenMentorship Community Together!
+              </HeroTitle>
+            </TitleContainer>
             <WaitlistCard className={classes.WaitlistCard} />
           </OrderedSide>
-
         </HeroWrapper>
         <FlexWrapper>
           <PuzzleGreyBg>
@@ -248,18 +251,18 @@ export default function LandingPage(props) {
           </PaddingWrapper>
         </FlexWrapper>
 
-        <FlexWrapper style={{ backgroundColor: "#f5f3f8", padding:"50px 15px" }}>
-          <div style={{ marginTop: 30, maxWidth: "300px"}}>
+        <FlexWrapper
+          style={{ backgroundColor: "#f5f3f8", padding: "50px 15px" }}
+        >
+          <div style={{ marginTop: 30, maxWidth: "300px" }}>
             <Typography className={classes.BodyHeader}>
               Why Open Mentorship?
             </Typography>
           </div>
-          
+
           <FlexItem>
             <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>
-                Career Advice
-              </Typography>
+              <Typography className={classes.Header3}>Career Advice</Typography>
               <Typography className={classes.Body}>
                 Receive career advice from professionals with years of
                 experience in your field, and feel confident moving forward in
@@ -271,9 +274,8 @@ export default function LandingPage(props) {
                 Strengthen your work
               </Typography>
               <Typography className={classes.Body}>
-                Share your portfolio, work examples, or resume with mentors
-                and receive constructive feedback before your next big
-                interview.
+                Share your portfolio, work examples, or resume with mentors and
+                receive constructive feedback before your next big interview.
               </Typography>
             </div>
           </FlexItem>
@@ -283,16 +285,15 @@ export default function LandingPage(props) {
                 Expand your network
               </Typography>
               <Typography className={classes.Body}>
-                Both mentees and mentors can grow their network and make
-                lasting connections that could benefit both careers in the
-                future.
+                Both mentees and mentors can grow their network and make lasting
+                connections that could benefit both careers in the future.
               </Typography>
             </div>
             <div style={{ marginTop: 20 }}>
               <Typography className={classes.Header3}>Guidance</Typography>
               <Typography className={classes.Body}>
-                Explore your career options and feel empowered making your
-                next decision towards your dream job.
+                Explore your career options and feel empowered making your next
+                decision towards your dream job.
               </Typography>
             </div>
           </FlexItem>
@@ -311,7 +312,7 @@ export default function LandingPage(props) {
             {/* <Link style={{ margin: "0 auto" }} to="/register">
               <RegisterButton>Register</RegisterButton>
             </Link> */}
-            <WaitlistCard className={classes.WaitlistCard} />
+            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
           </div>
         </FlexWrapper>
       </Container>
