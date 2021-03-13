@@ -208,10 +208,9 @@ export default function LandingPage(props) {
   const classes = useStyles(props);
   return (
     <div>
-      {/* <MobileNavBar /> */}
       <Menu
         handleBack={() => history.push("/")}
-        registrationMenu={false}
+        registrationMenu={true}
         showBackButton={false}
       />
       <Container>
