@@ -68,6 +68,8 @@ const getLinkedInProfile = (authCode) =>
 const loginUser = (req, res) => {
   const { body } = req;
 
+  console.log('Login');
+
   if (!body) {
     return res
       .status(400)
