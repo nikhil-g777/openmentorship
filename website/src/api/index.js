@@ -2,10 +2,9 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_BASE_URL,
-  withCredentials: true,
 });
 
-const getToken = () => JSON.parse(localStorage.getItem("tokens"));
+const getToken = () => JSON.parse(localStorage.getItem("token"));
 
 //---------------------User APIs---------------------
 
@@ -41,4 +40,8 @@ export const getSessions = () => {
   return api.get(`/sessions/sessionList`, {
     headers: { authorization: `Bearer ${getToken()}` },
   });
+};
+
+export const registerWaitlist = (payload) => {
+  return api.post(`/waitlist/register`, payload);
 };

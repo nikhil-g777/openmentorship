@@ -1,17 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import MobileNavBar from "../../components/MobileNavBar";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
-import AppMenu from "../../components/Layout/AppMenu"
+import WaitlistCard from "./WaitListCard";
 
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { Grid } from "@material-ui/core";
 
 //imgs
-import Stairs from "./images/stairs.png";
+import Stairs from "./images/stairs_large.png";
 import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
 
@@ -24,11 +24,66 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+`;
+const FlexItem = styled.div`
+  @media (min-width: 768px) {
+    max-width: 300px;
+  }
+`;
+
+const PaddingWrapper = styled.div`
+  padding: 50px 15px;
+`;
+
+const HeroWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f3f8;
+  padding: 1em;
+  margin-bottom: 5em;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0;
+  }
+`;
+
+const CheerWrapper = styled.div`
+  margin: 0px auto;
+  @media (min-width: 768px) {
+    margin: 0;
+    max-width: 300px;
+  }
+`;
+
 const TitleContainer = styled.div`
-  width: 269px;
-  height: 51px;
+  max-width: 300px;
+  width: 70%;
   margin: 0 auto;
   margin-bottom: 40px;
+  text-align: center;
+  @media (min-width: 768px) {
+    text-align: left;
+    max-width: 350px;
+  }
+`;
+
+const HeroTitle = styled.p`
+  font-family: "Roboto";
+  font-weight: bold;
+  color: "#000000";
+  text-align: "center";
+  @media (min-width: 768px) {
+    font-size: 40px;
+  }
 `;
 
 const RegisterButton = styled.button`
@@ -53,42 +108,41 @@ const RegisterButton = styled.button`
   }
 `;
 
+const StairsGreyBg = styled.div`
+  background-color: #f5f3f8;
+  margin: 0 auto;
+  margin-bottom: 45px;
+  @media (min-width: 768px) {
+    order: 2;
+  }
+`;
+
 const StairsImage = styled.img`
-  width: 274px;
-  height: 222px;
+  width: 100%;
+  height: auto;
+  max-width: 600px;
   display: block;
   margin: 0 auto;
   margin-top: 22px;
 `;
 
-const StairsGreyBg = styled.div`
-  width: 100%;
-  height: 218px;
-  background-color: #f5f3f8;
-  z-index: -1;
-  margin: 0 auto;
-  margin-bottom: 45px;
+const OrderedSide = styled.div`
+  @media (min-width: 768px) {
+    order: 1;
+  }
 `;
 
 const PuzzleImage = styled.img`
-  width: 312px;
-  height: 167px;
   display: block;
   margin: 0 auto;
 `;
 
 const PuzzleGreyBg = styled.div`
-  width: 100%;
-  height: 135px;
-  background-color: #f5f3f8;
+  background-color: #0000;
 `;
 
 const CheerImage = styled.img`
-  width: 281px;
-  height: 225px;
-  display: block;
-  margin: 0 auto;
-  margin-top: 65px;
+  width: 100%;
 `;
 
 const CheerTitleBox = styled.div`
@@ -100,28 +154,23 @@ const CheerTitleBox = styled.div`
   margin-top: 39px;
 `;
 
-const TextContainer = styled.div`
-  width: 343px;
-  margin: 0 auto;
-`;
-
 const useStyles = makeStyles({
+  root: {
+    fontFamily: "Roboto",
+  },
   Title: {
-    fontFamily: "Proxima Nova",
     fontSize: 20,
     fontWeight: "Bold",
     color: "#000000",
     textAlign: "center",
   },
   BodyHeader: {
-    fontFamily: "Proxima Nova",
     fontSize: 20,
     fontWeight: "Bold",
     color: "#000000",
     marginBottom: 25,
   },
   Header: {
-    fontFamily: "Proxima Nova",
     fontStyle: "Semibold",
     fontSize: 18,
     fontWeight: "Bold",
@@ -129,7 +178,6 @@ const useStyles = makeStyles({
     marginBottom: 6,
   },
   Header2: {
-    fontFamily: "Proxima Nova",
     fontStyle: "Semibold",
     fontSize: 18,
     fontWeight: "Bold",
@@ -137,7 +185,6 @@ const useStyles = makeStyles({
     marginBottom: 6,
   },
   Header3: {
-    fontFamily: "Proxima Nova",
     fontStyle: "Semibold",
     fontSize: 18,
     fontWeight: "Bold",
@@ -145,11 +192,14 @@ const useStyles = makeStyles({
     marginBottom: 6,
   },
   Body: {
-    fontFamily: "Proxima Nova",
     fontStyle: "Regular",
     fontSize: 16,
     color: "#000000",
     marginBottom: 16,
+  },
+  WaitlistCard: {
+    paddingTop: 50,
+    paddingLeft: 50,
   },
 });
 
@@ -158,26 +208,30 @@ export default function LandingPage(props) {
   const classes = useStyles(props);
   return (
     <div>
-      {/* <MobileNavBar /> */}
-      <Menu handleBack={() => history.push("/")} registrationMenu={false} />
-      <Container className={classes.root}>
-        <StairsGreyBg>
-          <StairsImage src={Stairs} />
-        </StairsGreyBg>
-        <TitleContainer>
-          <Typography className={classes.Title}>
-            Find a mentor who can help guide you to success.
-          </Typography>
-        </TitleContainer>
-        <Link style={{ margin: "0 auto" }} to="/register">
-          <RegisterButton>Register</RegisterButton>
-        </Link>
-
-        <PuzzleGreyBg>
-          <PuzzleImage src={Puzzles} />
-        </PuzzleGreyBg>
-        <TextContainer>
-          <div style={{ marginTop: 65, marginLeft: 16, marginBottom: 60 }}>
+      <Menu
+        handleBack={() => history.push("/")}
+        registrationMenu={true}
+        showBackButton={false}
+      />
+      <Container>
+        <HeroWrapper>
+          <StairsGreyBg>
+            <StairsImage src={Stairs} />
+          </StairsGreyBg>
+          <OrderedSide>
+            <TitleContainer>
+              <HeroTitle>
+                Let's build an OpenMentorship Community Together!
+              </HeroTitle>
+            </TitleContainer>
+            <WaitlistCard className={classes.WaitlistCard} />
+          </OrderedSide>
+        </HeroWrapper>
+        <FlexWrapper>
+          <PuzzleGreyBg>
+            <PuzzleImage src={Puzzles} />
+          </PuzzleGreyBg>
+          <PaddingWrapper>
             <Typography className={classes.BodyHeader}>How It Works</Typography>
             <Typography className={classes.Header}>Register</Typography>
             <Typography className={classes.Body}>
@@ -193,64 +247,73 @@ export default function LandingPage(props) {
             <Typography className={classes.Body}>
               Engage in a coversation with your mentor or mentee.
             </Typography>
-          </div>
-        </TextContainer>
-        <div style={{ backgroundColor: "#f5f3f8" }}>
-          <div style={{ marginLeft: 16, marginTop: 30 }}>
-            <TextContainer>
-              <Typography className={classes.BodyHeader}>
-                Why Open Mentorship?
-              </Typography>
-              <div style={{ marginTop: 20 }}>
-                <Typography className={classes.Header3}>
-                  Career Advice
-                </Typography>
-                <Typography className={classes.Body}>
-                  Receive career advice from professionals with years of
-                  experience in your field, and feel confident moving forward in
-                  your career.
-                </Typography>
-              </div>
-              <div style={{ marginTop: 20 }}>
-                <Typography className={classes.Header3}>
-                  Strengthen your work
-                </Typography>
-                <Typography className={classes.Body}>
-                  Share your portfolio, work examples, or resume with mentors
-                  and receive constructive feedback before your next big
-                  interview.
-                </Typography>
-              </div>
-              <div style={{ marginTop: 20 }}>
-                <Typography className={classes.Header3}>
-                  Expand your network
-                </Typography>
-                <Typography className={classes.Body}>
-                  Both mentees and mentors can grow their network and make
-                  lasting connections that could benefit both careers in the
-                  future.
-                </Typography>
-              </div>
-              <div style={{ marginTop: 20 }}>
-                <Typography className={classes.Header3}>Guidance</Typography>
-                <Typography className={classes.Body}>
-                  Explore your career options and feel empowered making your
-                  next decision towards your dream job.
-                </Typography>
-              </div>
-            </TextContainer>
-          </div>
-        </div>
+          </PaddingWrapper>
+        </FlexWrapper>
 
-        <CheerImage src={Cheer} />
-        <CheerTitleBox>
-          <Typography className={classes.BodyHeader}>
-            Get on the path of your dream career with us today.
-          </Typography>
-        </CheerTitleBox>
-        <Link style={{ margin: "0 auto" }} to="/register">
-          <RegisterButton>Register</RegisterButton>
-        </Link>
+        <FlexWrapper
+          style={{ backgroundColor: "#f5f3f8", padding: "50px 15px" }}
+        >
+          <div style={{ marginTop: 30, maxWidth: "300px" }}>
+            <Typography className={classes.BodyHeader}>
+              Why Open Mentorship?
+            </Typography>
+          </div>
+
+          <FlexItem>
+            <div style={{ marginTop: 20 }}>
+              <Typography className={classes.Header3}>Career Advice</Typography>
+              <Typography className={classes.Body}>
+                Receive career advice from professionals with years of
+                experience in your field, and feel confident moving forward in
+                your career.
+              </Typography>
+            </div>
+            <div style={{ marginTop: 20 }}>
+              <Typography className={classes.Header3}>
+                Strengthen your work
+              </Typography>
+              <Typography className={classes.Body}>
+                Share your portfolio, work examples, or resume with mentors and
+                receive constructive feedback before your next big interview.
+              </Typography>
+            </div>
+          </FlexItem>
+          <FlexItem>
+            <div style={{ marginTop: 20 }}>
+              <Typography className={classes.Header3}>
+                Expand your network
+              </Typography>
+              <Typography className={classes.Body}>
+                Both mentees and mentors can grow their network and make lasting
+                connections that could benefit both careers in the future.
+              </Typography>
+            </div>
+            <div style={{ marginTop: 20 }}>
+              <Typography className={classes.Header3}>Guidance</Typography>
+              <Typography className={classes.Body}>
+                Explore your career options and feel empowered making your next
+                decision towards your dream job.
+              </Typography>
+            </div>
+          </FlexItem>
+        </FlexWrapper>
+
+        <FlexWrapper>
+          <CheerWrapper>
+            <CheerImage src={Cheer} />
+          </CheerWrapper>
+          <div>
+            <CheerTitleBox>
+              <Typography className={classes.BodyHeader}>
+                Get on the path of your dream career with us today.
+              </Typography>
+            </CheerTitleBox>
+            {/* <Link style={{ margin: "0 auto" }} to="/register">
+              <RegisterButton>Register</RegisterButton>
+            </Link> */}
+            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
+          </div>
+        </FlexWrapper>
       </Container>
       <Footer />
     </div>

@@ -66,7 +66,6 @@ const MatchCard = ({
   currentMatches,
   isMentor,
 }) => {
-  console.log("currentMatches", currentMatches);
   const classes = useStyles();
   function handleClick(id) {
     setShowProfile();
@@ -82,12 +81,9 @@ const MatchCard = ({
   );
 
   if (selectedProfile && showProfile) {
-    console.log("selectedProfile", selectedProfile);
     return <MatchProfile selectedProfile={selectedProfile} />;
   }
-  console.log("currentMatches", currentMatches);
   //we need a way to show specific text for mentee and mentor users : put a isMentor variable in the API data
-  console.log("isMentor = ", isMentor);
   return (
     <div>
       {isMentor == "mentor" ? (

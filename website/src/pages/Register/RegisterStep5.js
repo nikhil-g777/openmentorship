@@ -1,11 +1,12 @@
-import React from "react";
-import { Container, DotStepper, Title, TitleWrapper } from "../../components";
-import { updateUser } from "../../api";
-
+import React, {useContext} from "react";
 import { InputLabel, TextField } from "@material-ui/core";
 
+import { Container, DotStepper, Title, TitleWrapper } from "../../components";
+import { updateUser } from "../../api";
+import { UserContext } from '../../context/UserContext';
+
 const RegisterStep5 = (props) => {
-  const userId = localStorage.getItem("userId");
+  const [user, setUser] = useContext(UserContext);
 
   const months = [
     "January",
@@ -33,7 +34,7 @@ const RegisterStep5 = (props) => {
 
   function handleUpdateUser() {
     updateUser({
-      _id: userId,
+      _id: user._id,
       register: true,
       user: {
         userType: props.values.userType,

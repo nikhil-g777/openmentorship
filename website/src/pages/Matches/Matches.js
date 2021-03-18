@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCon } from "react";
 import Card from "./MatchCard";
 import Profile from "./MatchProfile";
 import CardType from "./CardType";
 import styled from "styled-components";
 import { Menu } from "../../components";
 import { getUserMatches } from "../../api";
+import { UserContext } from "../../context/UserContext";
 
 const Container = styled.div`
   margin-left: 16px;
@@ -24,17 +25,14 @@ export default function Matches() {
     closed: [],
   });
   const [currentMatches, setCurrentMatches] = useState([]);
-  const [isMentor, setIsMentor] = useState([]);
+  const [user, setUser] = useContext(UserContext);
 
   //Load matches API
   useEffect(() => {
-    const APP_ID = localStorage.getItem("userId");
-    getUserMatches({ _id: APP_ID })
+    getUserMatches({ _id: user._id })
       .then((res) => {
         setMatchData(res.data.matches);
-        console.log("res.data", res.data);
         setCurrentMatches(res.data.matches.pending);
-        setIsMentor(res.data.userType);
       })
       .catch((err) => console.log(err));
   }, []);

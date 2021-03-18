@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Container, Title, Menu } from "../components";
 import Button from "@material-ui/core/Button";
@@ -9,7 +9,7 @@ import { LinkedIn } from "react-linkedin-login-oauth2";
 
 import { loginUser } from "../api";
 import { useAuth } from "../context/auth";
-
+import { UserContext } from "../context/UserContext";
 const useStyles = makeStyles((theme) => ({
   root: {
     marginBottom: "1em",
@@ -33,28 +33,29 @@ const Wrapper = styled.div`
 
 const Login = (props) => {
   const classes = useStyles();
-  const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [user, setUser] = useContext(UserContext);
 
-  const { setAuthTokens } = useAuth();
+  // const { setAuthTokens } = useAuth();
 
   // store the page where user wanted to go and redirect to that page after login
-  const referrer = props.location.state
+  const referrer = props.location.state && props.location.referrer != "/login"
     ? props.location.state.referrer
-    : "/postRegistration";
-  // const referrer = '/';
+    : "/sessions";
 
+  console.log(referrer);
   const handleSuccess = (data) => {
     loginUser({
       authCode: data.code,
     })
       .then((response) => {
         if (response.data.success) {
-          localStorage.setItem("userId", response.data.user._id);
-          localStorage.setItem("userType", response.data.user.userType);
-          setAuthTokens(response.data.token);
-          setLoggedIn(true);
-          // redirect to matches for now
+          setUser({
+            _id: response.data.user._id,
+            userType: response.data.user.userType,
+            token: response.data.token
+          });
+          localStorage.setItem('token', JSON.stringify(response.data.token));
         } else {
           setIsError(true);
         }
@@ -69,7 +70,7 @@ const Login = (props) => {
     setIsError(true);
   };
 
-  if (isLoggedIn) {
+  if (user.token) {
     return <Redirect to={referrer} />;
   }
 
