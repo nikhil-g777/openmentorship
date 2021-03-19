@@ -84,7 +84,7 @@ const RegisterStep5 = (props) => {
       {socialOptions.map((item) => {
         return (
           <>
-            <InputLabel htmlFor="component-simple">{item}</InputLabel>
+            <InputLabel htmlFor="component-simple" style={{fontWeight:800, color:"#000"}}>{item}</InputLabel>
             <TextField
               variant="outlined"
               fullWidth={true}

@@ -36,14 +36,14 @@ export default function RegisterForm() {
     emptyField: false
   })
 
-  const [activeStep, setActiveStep] = useState(0);
+  //change back to 0
+  const [activeStep, setActiveStep] = useState(3);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleNextStep2 = () => {
-    console.log(state)
     if(activeStep == 2 && state.noExperience === false) {
       if(state.jobTitle == "" || state.company == "" || state.city == "" || state.jobState == "" || state.country == "" || state.startMonth == "" || state.startYear == "") {
         setState({...state, emptyField: true})
@@ -52,6 +52,14 @@ export default function RegisterForm() {
       }
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+  }
+
+  const handleNextStep4 = () => {
+    if(activeStep == 4 && state.communicationFrequency !== "" || state.goals.length !== 0) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      setState({...state, emptyField: true})
     }
   }
 
@@ -105,7 +113,6 @@ export default function RegisterForm() {
   const { userType, jobStatus, jobTitle, company, city, jobState, country, industry, noExperience, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks, emptyField } = state
   const values = { userType, jobStatus, jobTitle, company, city, jobState, country, industry, noExperience, currentRole, startMonth, startYear, endMonth, endYear, skills, interests, goals, communicationFrequency, socialLinks, emptyField }
 
-  console.log(state)
   switch(activeStep) {
     case 0:
       return (
@@ -160,7 +167,7 @@ export default function RegisterForm() {
         <>    
           <Menu handleBack={handleBack} registrationMenu={true}/>  
           <RegisterStep4
-            handleNext={handleNext}
+            handleNext={handleNextStep4}
             handleInput={handleInput}
             handleGoals={handleGoals}
             handleCommunicationFrequency={handleCommunicationFrequency}
