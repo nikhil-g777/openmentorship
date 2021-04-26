@@ -7,6 +7,10 @@ import {
   LandingPage,
   LoginPage,
   Sessions,
+  Profile,
+  Chat,
+  Questions,
+  Meetings
 } from "../pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -32,9 +36,12 @@ function App() {
             <Route exact path="/linkedin" component={LinkedInPopUp} />
             {/* each route below needs to import their own Menu component. 
             ...See matches for example  */}
-            <Route path="chat" component={LandingPage} />
+            
             <PrivateRoute path="/matches" component={Matches} />
-            <PrivateRoute path="/profile" component={LandingPage} />
+            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/chat" component={Chat} />
+            <PrivateRoute path="/Questions" component={Questions} />
+            <PrivateRoute path="/Meetings" component={Meetings} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginPage} />
             <PrivateRoute

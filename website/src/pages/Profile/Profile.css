@@ -1,0 +1,100 @@
+.container {
+    background-color: white;
+    margin-top: 2%;
+    box-shadow: 0px 6px 12px -9px rgb(0 0 0 / 75%);
+}
+.header {
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    margin-top: 15px;
+}
+.sz-20 {
+    font-size: 20px;
+}
+.row {
+    padding: 25px 0px;
+}
+.profile {
+    padding: 5px;
+    background: #e8dddd;
+    border-radius: 5px 5px;
+    margin-right: 10px;
+    font-size: 13px;
+}
+.mt-15 {
+    margin-top: 15px;  
+}
+/* .fab {
+    font-family: "Font Awesome 5 Brands";
+    font-weight: 400;
+} */
+.para {
+    font-size: 13px;
+}
+.para1 {
+    color: #988e8e;
+    margin-bottom: 0px;
+}
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+.left-img {
+    text-align: right;
+}
+.edit-right {
+    float: right;
+}
+.mg-15 {
+    margin-bottom: 15px;
+}
+.chat-nav-wrapper{
+    background: #fff;
+    margin-top: 5px;
+}
+.bg-changes{
+    padding: 13px;
+}
+.wrapper{
+    width: 50%;
+    margin: auto;
+}
+.social-input {
+    width: 80%;
+    line-height: 37px;
+    border-color: #80808029;
+}
+.form-social-label {
+    width: 10%;
+    font-weight: bold;
+}
+.social-icons {
+    margin-bottom: 20px;
+}
+.social-header {
+    margin-top: 30px;
+}
+.form-check {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.form-check-label {
+    margin-left: 14px;
+    margin-top: 8px;
+}
+.form-check-input {
+    width: 50px;
+    height: 26px; 
+    position: absolute;
+    margin-top: .3rem;
+    margin-left: -2.25rem !important;
+}

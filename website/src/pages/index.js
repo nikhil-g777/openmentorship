@@ -5,5 +5,8 @@ import RegisterForm from "./Register/RegisterForm";
 import LandingPage from "./LandingPage/LandingPage";
 import LoginPage from "./LoginPage";
 import Sessions from "./Sessions/Sessions";
-
-export { FAQ, Home, Matches, RegisterForm, LandingPage, LoginPage, Sessions };
+import Profile from "./Profile/Profile";
+import Chat from "./Chat/Chat";
+import Questions from "./Questions/Questions";
+import Meetings from "./Meetings/Meetings";
+export { FAQ, Home, Matches, RegisterForm, LandingPage, LoginPage, Sessions,Profile,Chat,Questions,Meetings };

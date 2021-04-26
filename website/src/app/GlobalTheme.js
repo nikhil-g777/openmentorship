@@ -25,7 +25,8 @@ export const theme = createMuiTheme({
           marginBottom:"1.5rem"
         },
         body:{
-          fontSize:'1em'
+          fontSize:'1em',
+          backgroundColor: "#ececec",
         },
         a: {
           color:"#000"

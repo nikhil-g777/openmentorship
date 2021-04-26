@@ -1,0 +1,71 @@
+.chat-pannel {
+    background: none !important;
+}
+.chat-left {
+    background: #fff;
+    margin-right: 78px;
+    height: 157px;
+}
+.chat-right {
+    background-color: white;
+    height: 800px;
+}
+.chat-date{
+text-align: center;
+    font-size: 14px;
+    font-family: system-ui;
+    margin-top: 21px;
+    font-weight: 700;
+    color: #b1acac;
+    letter-spacing: 1px;
+
+}
+.drop-down {
+    margin-top: 22px;
+    font-family: system-ui;
+    font-weight: 700;
+    float: right;
+    margin-right: 79px;
+}
+.drop-down2 {
+    margin-top: 22px;
+    font-family: system-ui;
+    font-weight: 700;
+    float: right;
+    margin-right: 79px;
+}
+
+.h6 {
+    font-family: system-ui;
+   
+}
+.left {
+    float: left;
+    background-color: #efeaea;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-left: 17px;
+    
+}
+.right {
+    float: right;
+    background-color: #d7eaf3;
+    margin-left: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+.fa-circle:before {
+    content: "\f111";
+    float: left;
+    margin-top: 18px;
+    font-size: 2em;
+    color: #f1e8e8;
+}
+.left-icon {
+    float: left;
+    margin-top: -13px;
+    margin-right: 7px;
+    font-size: 1.5em;
+}

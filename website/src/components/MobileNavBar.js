@@ -16,6 +16,7 @@ const Wrapper = styled.section`
   -webkit-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
+  background-color:#ffffff;
 `;
 
 const Picture = styled.div`
