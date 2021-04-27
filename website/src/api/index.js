@@ -13,7 +13,7 @@ export const loginUser = (payload) => api.post("/users/login", payload);
 export const registerUser = (payload) => api.post("/users/register", payload);
 
 export const updateUser = (payload) => {
-  return api.put(`/users/update/${payload._id}`, payload, {
+  return api.put(`/users/update/${payload.user._id}`, payload, {
     headers: { authorization: `Bearer ${getToken()}` },
   });
 };

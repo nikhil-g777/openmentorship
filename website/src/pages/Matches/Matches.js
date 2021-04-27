@@ -26,7 +26,6 @@ export default function Matches() {
   });
   const [currentMatches, setCurrentMatches] = useState([]);
   const [user, setUser] = useContext(UserContext);
-
   //Load matches API
   useEffect(() => {
     getUserMatches({ _id: user._id })
