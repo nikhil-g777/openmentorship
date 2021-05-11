@@ -33,7 +33,7 @@
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^10.2.13",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mongoose": "^5.8.9",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
