@@ -4,15 +4,29 @@ const { Schema } = mongoose;
 
 const Match = new Schema(
   {
+    initialMessage: { type: String, default: '' },
     status: {
       type: String,
-      required: true,
       enum: ['pending', 'active', 'closed'],
       default: 'pending',
+      required: true,
     },
     twilioChannelId: { type: String },
-    menteeId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
-    mentorId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    menteeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
+    mentorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
+    sessionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'session',
+      required: true,
+    },
   },
   {
     timestamps: true,

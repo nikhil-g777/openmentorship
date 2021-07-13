@@ -15,6 +15,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const sessionsRouter = require('./routes/sessions');
 const waitlistRouter = require('./routes/waitlist');
+const matchesRouter = require('./routes/match');
 
 const app = express();
 
@@ -28,7 +29,7 @@ const corsConfig = {
     'www.openmentorship.com',
     'https://www.openmentorship.com:3010',
   ],
-  credentials: true,
+  credentials: false,
 };
 
 app.use(cors());
@@ -50,10 +51,11 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/sessions', sessionsRouter);
 app.use('/waitlist', waitlistRouter);
+app.use('/matches', matchesRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  console.log(req);
+  console.log(req.path);
   next(createError(404));
 });
 
