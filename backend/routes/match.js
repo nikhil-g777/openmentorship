@@ -5,35 +5,35 @@ const router = express.Router();
 const passport = require('passport');
 require('../config/passportJWT')(passport);
 
-const sessionController = require('../controllers/sessionController');
+const matchController = require('../controllers/matchController');
 const util = require('../lib/utils');
 const role = require('../lib/role');
 
 router.use(passport.initialize());
 router.use(cookieParser());
 
-// Get List of Sessions
+// Matches list
 router.get(
-  '/sessionList',
+  '/list/:_id',
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.mentee, role.mentor, role.admin]),
-  sessionController.sessionList,
+  matchController.getMatches,
 );
 
-// Create a Session
+// Send message to a mentor
+router.post(
+  '/sendMessage/:matchId',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee]),
+  matchController.sendMessage,
+);
+
+// Send message to a mentor
 router.post(
   '/create',
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.admin]),
-  sessionController.create,
-);
-
-// Get Matches in a session
-router.get(
-  '/matches/:sessionId',
-  passport.authenticate('jwt', { session: false }),
-  util.checkRole([role.admin]),
-  sessionController.getMatchesInSession,
+  matchController.createMatch,
 );
 
 module.exports = router;

@@ -25,17 +25,12 @@ router.put(
   util.checkRole([role.mentee, role.mentor, role.admin]),
   userController.updateUser,
 );
+
 router.get(
   '/info/:_id',
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.mentee, role.mentor, role.admin]),
   userController.userInfo,
-);
-router.get(
-  '/matches/:_id',
-  passport.authenticate('jwt', { session: false }),
-  util.checkRole([role.mentee, role.mentor, role.admin]),
-  userController.matches,
 );
 
 module.exports = router;
