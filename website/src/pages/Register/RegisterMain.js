@@ -43,42 +43,41 @@ const RegisterMain = (props) => {
   const [lastName, setLastName] = useState("");
   const [headline, setHeadline] = useState("");
   const [bio, setBio] = useState("");
-  const [linkedInId, setLinkedInId] = useState("");
-
-
+  const [disabled, setDisabled] = useState(false);
 
   const continueStep = (e) => {
+    props.handleNext();
+  };
+
+  const handleSuccess = (data) => {
     registerUser({
-      authCode: linkedInId,
-      user: {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        headline: headline,
-        bio: bio,
-        linkedInId: linkedInId,
-      },
+      authCode: data.code,
+      type: "linkedInSignup",
     })
       .then((response) => {
         setUser({
           _id: response.data._id,
           userType: response.data.userType,
-          token: response.data.token
+          token: response.data.token,
         });
-        localStorage.setItem('token', JSON.stringify(response.data.token));
-        props.handleNext();
+        setFirstName(response.data.user.firstName);
+        setLastName(response.data.user.lastName);
+        setEmail(response.data.user.email);
+        setDisabled(true);
+        localStorage.setItem("token", JSON.stringify(response.data.token));
       })
       .catch((error) => {
         console.log(error);
       });
-  };
 
-  const handleSuccess = (data) => {
     setShowUserFields(true);
-    setLinkedInId(data.code);
   };
 
   const handleFailure = (error) => {};
+  const buttonStyle = {
+    background: "white",
+    border: "none",
+  };
 
   return (
     <>
@@ -93,13 +92,18 @@ const RegisterMain = (props) => {
             redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
             scope="r_emailaddress r_liteprofile"
             redirectPath="/register"
-          >
-            <LindkedInButton src="/images/linkedin-button.png" />
-          </LinkedIn>
+            disabled={disabled}
+            renderElement={({ onClick, disabled }) => (
+              <button onClick={onClick} disabled={disabled} style={buttonStyle}>
+                <LindkedInButton src="/images/linkedin_connect_button.png" />
+              </button>
+            )}
+          />
         </Wrapper>
         {showUserFields && (
           <form className={classes.root}>
             <TextField
+              disabled
               id="outlined-basic"
               label="First Name"
               variant="outlined"
@@ -110,6 +114,7 @@ const RegisterMain = (props) => {
               onChange={(e) => setFirstName(e.target.value)}
             />
             <TextField
+              disabled
               id="outlined-basic"
               label="Last Name"
               variant="outlined"
@@ -120,6 +125,7 @@ const RegisterMain = (props) => {
               onChange={(e) => setLastName(e.target.value)}
             />
             <TextField
+              disabled
               id="outlined-basic"
               label="Email"
               variant="outlined"
@@ -131,7 +137,7 @@ const RegisterMain = (props) => {
             />
             <TextField
               id="outlined-basic"
-              label="Headline"
+              label="*Headline"
               variant="outlined"
               fullWidth={true}
               type="text"
@@ -142,7 +148,7 @@ const RegisterMain = (props) => {
             <TextField
               multiline
               id="outlined-basic"
-              label="Bio"
+              label="*Bio"
               variant="outlined"
               fullWidth={true}
               type="text"
