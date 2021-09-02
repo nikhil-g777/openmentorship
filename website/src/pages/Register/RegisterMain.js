@@ -32,52 +32,81 @@ const Wrapper = styled.div`
   margin: 3em auto;
 `;
 
+const buttonStyle = {
+  background: 'white',
+  border: 'none'
+}
+
 const RegisterMain = (props) => {
   const classes = useStyles();
 
   const [user, setUser] = useContext(UserContext);
 
   const [showUserFields, setShowUserFields] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [headline, setHeadline] = useState("");
-  const [bio, setBio] = useState("");
+  const [ state, setState ] = useState({
+    firstName:"",
+    lastName: "",
+    email: "",
+    headline: "",
+    bio: ""
+  })
   const [disabled, setDisabled] = useState(false);
+  const [ emptyFieldError, setEmptyFieldError ] = useState(false)
+
 
   const continueStep = (e) => {
-    props.handleNext();
+    let inputIsValid = validateInput();
+    if(inputIsValid) {
+      props.handleNext();
+    } else {
+      setEmptyFieldError(true);
+    }
   };
 
   const handleSuccess = (data) => {
     registerUser({
       authCode: data.code,
-      type: "linkedInSignup",
+      type: 'linkedInSignup'
     })
       .then((response) => {
         setUser({
           _id: response.data._id,
           userType: response.data.userType,
-          token: response.data.token,
+          token: response.data.token
         });
-        setFirstName(response.data.user.firstName);
-        setLastName(response.data.user.lastName);
-        setEmail(response.data.user.email);
+        setState((prevState) => ({
+          ...prevState,
+          firstName:response.data.user.firstName,
+          lastName: response.data.user.lastName,
+          email: response.data.user.email,        
+        }))
         setDisabled(true);
-        localStorage.setItem("token", JSON.stringify(response.data.token));
+        localStorage.setItem('token', JSON.stringify(response.data.token));
       })
       .catch((error) => {
         console.log(error);
       });
-
     setShowUserFields(true);
   };
 
   const handleFailure = (error) => {};
-  const buttonStyle = {
-    background: "white",
-    border: "none",
-  };
+
+   const validateInput = () => {
+    if(state.firstName.length === 0 || state.lastName.length === 0 || state.email.length === 0 || state.headline.length === 0 || state.bio.length === 0) {
+      console.log('INVALID');
+      setEmptyFieldError(true)
+      return false;
+    }
+    return true;
+  }
+  const handleInput = (e) => {
+    setEmptyFieldError(false)
+    let { value, name } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      [name]:value
+    }))
+  }
 
   return (
     <>
@@ -110,8 +139,8 @@ const RegisterMain = (props) => {
               fullWidth={true}
               type="text"
               name="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={state.firstName}
+              onChange={handleInput}
             />
             <TextField
               disabled
@@ -120,9 +149,9 @@ const RegisterMain = (props) => {
               variant="outlined"
               fullWidth={true}
               type="text"
-              name="name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              name="lastName"
+              value={state.lastName}
+              onChange={handleInput}
             />
             <TextField
               disabled
@@ -132,8 +161,8 @@ const RegisterMain = (props) => {
               fullWidth={true}
               type="email"
               name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={state.email}
+              onChange={handleInput}
             />
             <TextField
               id="outlined-basic"
@@ -142,8 +171,9 @@ const RegisterMain = (props) => {
               fullWidth={true}
               type="text"
               name="headline"
-              value={headline}
-              onChange={(e) => setHeadline(e.target.value)}
+              value={state.headline}
+              onChange={handleInput}
+              placeholder="Software Engineer at Google"
             />
             <TextField
               multiline
@@ -153,11 +183,13 @@ const RegisterMain = (props) => {
               fullWidth={true}
               type="text"
               name="bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
+              value={state.bio}
+              onChange={handleInput}
+              placeholder="Passionate about FullStack Development and Entrepreneurship"
             />
           </form>
         )}
+        {emptyFieldError && <p>Fields can't be blank</p>}
         <Button onClick={continueStep} disabled={!showUserFields}>
           Continue
         </Button>

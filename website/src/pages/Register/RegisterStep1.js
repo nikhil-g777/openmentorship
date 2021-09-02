@@ -34,7 +34,11 @@ const RegisterStep1 = props => {
           onChange={handleAlignment}
           aria-label="text alignment"
         >
-          <ToggleButton value="mentee" aria-label="left aligned">
+          <ToggleButton 
+            value="mentee" 
+            aria-label="left aligned"
+            thumbSwitchedStyle={{ backgroundColor: 'green' }}
+          >
             Mentee
           </ToggleButton>
           <ToggleButton value="mentor" aria-label="right aligned">
@@ -43,17 +47,15 @@ const RegisterStep1 = props => {
         </ToggleButtonGroup>
       </FormItem>
       <FormItem>
-        <p>What is your current job status?</p>
+        <p>Which of the following best describes you</p>
         <Select
           value={jobStatus}
           name="jobStatus"
           onChange={handleChange}
           input={<BootstrapInput />}
         >
-          <MenuItem value="Looking for a job">Looking for a job</MenuItem>
-          <MenuItem value="Currently working">Currently working</MenuItem>
-          <MenuItem value="Still in school">Still in school</MenuItem>
-          <MenuItem value="Other">Other</MenuItem>
+          <MenuItem value="Looking for a job">Student</MenuItem>
+          <MenuItem value="Currently working">Working</MenuItem>
         </Select>
       </FormItem>
       <DotStepper
