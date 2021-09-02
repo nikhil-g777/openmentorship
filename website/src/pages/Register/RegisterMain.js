@@ -38,40 +38,44 @@ const RegisterMain = (props) => {
   const [user, setUser] = useContext(UserContext);
 
   const [showUserFields, setShowUserFields] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [headline, setHeadline] = useState("");
-  const [bio, setBio] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [lastName, setLastName] = useState("");
+  // const [headline, setHeadline] = useState("");
+  // const [bio, setBio] = useState("");
   const [linkedInId, setLinkedInId] = useState("");
+  const [ state, setState ] = useState({
+    firstName:"",
+    lastName: "",
+    email: "",
+    headline: "",
+    bio: ""
+  })
+  const [ emptyFieldError, setEmptyFieldError ] = useState(false)
 
-
-
-  const continueStep = (e) => {
-    registerUser({
-      authCode: linkedInId,
-      user: {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        headline: headline,
-        bio: bio,
-        linkedInId: linkedInId,
-      },
-    })
-      .then((response) => {
-        setUser({
-          _id: response.data._id,
-          userType: response.data.userType,
-          token: response.data.token
-        });
-        localStorage.setItem('token', JSON.stringify(response.data.token));
-        props.handleNext();
-      })
-      .catch((error) => {
+  const continueStep = e => {
+    let inputIsValid = validateInput();
+    if(inputIsValid) {
+      registerUser({
+          "authCode": linkedInId,
+          "user": {
+            "firstName": state.firstName,
+            "lastName": state.lastName,
+            "email": state.email,
+            "headline": state.headline,
+            "bio": state.bio,
+            "linkedInId": linkedInId
+          }
+      }).then((response) => {
+        localStorage.setItem("userId", response.data._id)
+        props.handleNext()
+      }).catch((error) => {
         console.log(error);
-      });
-  };
+      })
+    } else {
+      setEmptyFieldError(true);
+    }
+  } 
 
   const handleSuccess = (data) => {
     setShowUserFields(true);
@@ -79,6 +83,24 @@ const RegisterMain = (props) => {
   };
 
   const handleFailure = (error) => {};
+
+
+   const validateInput = () => {
+    let inputValid = true;
+    if(state.firstName.length === 0 || state.lastName.length === 0 || state.email.length === 0 || state.headline.length === 0 || state.bio.length === 0) {
+      setEmptyFieldError(true)
+      inputValid = false;
+    }
+    return inputValid;
+  }
+  const handleInput = (e) => {
+    setEmptyFieldError(false)
+    let { value, name } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      [name]:value
+    }))
+  }
 
   return (
     <>
@@ -106,8 +128,8 @@ const RegisterMain = (props) => {
               fullWidth={true}
               type="text"
               name="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={state.firstName}
+              onChange={handleInput}
             />
             <TextField
               id="outlined-basic"
@@ -115,9 +137,9 @@ const RegisterMain = (props) => {
               variant="outlined"
               fullWidth={true}
               type="text"
-              name="name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              name="lastName"
+              value={state.lastName}
+              onChange={handleInput}
             />
             <TextField
               id="outlined-basic"
@@ -126,8 +148,8 @@ const RegisterMain = (props) => {
               fullWidth={true}
               type="email"
               name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={state.email}
+              onChange={handleInput}
             />
             <TextField
               id="outlined-basic"
@@ -136,8 +158,8 @@ const RegisterMain = (props) => {
               fullWidth={true}
               type="text"
               name="headline"
-              value={headline}
-              onChange={(e) => setHeadline(e.target.value)}
+              value={state.headline}
+              onChange={handleInput}
             />
             <TextField
               multiline
@@ -147,11 +169,12 @@ const RegisterMain = (props) => {
               fullWidth={true}
               type="text"
               name="bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
+              value={state.bio}
+              onChange={handleInput}
             />
           </form>
         )}
+        {emptyFieldError && <p>Fields can't be blank</p>}
         <Button onClick={continueStep} disabled={!showUserFields}>
           Continue
         </Button>
