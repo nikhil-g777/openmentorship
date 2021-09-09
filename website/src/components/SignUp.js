@@ -6,7 +6,7 @@ const SignUp = () => {
   return (
     <Link to="/register">
       <Button variant="contained" color="primary">
-        SIGN UP
+        Sign Up
       </Button>
     </Link>
   )

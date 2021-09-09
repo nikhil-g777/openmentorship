@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: '"Roboto"',
+    fontFamily: "proxima_nova",
   },
 });
 

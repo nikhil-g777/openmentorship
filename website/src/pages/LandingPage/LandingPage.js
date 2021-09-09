@@ -5,14 +5,12 @@ import { Menu } from "../../components";
 import Footer from "../../components/Footer";
 
 import { loginUser } from "../../api";
-import { useAuth } from "../../context/auth";
 import { UserContext } from "../../context/UserContext";
 
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Grid } from "@material-ui/core";
 
 //imgs
 import Stairs from "./images/stairs_large.png";
@@ -22,6 +20,8 @@ import Cheer from "./images/cheer.png";
 
 //packages
 import { useHistory } from "react-router-dom";
+
+// import "../../style/styles.css";
 
 const Container = styled.div`
   display: flex;
@@ -71,8 +71,7 @@ const CheerWrapper = styled.div`
 
 const TitleContainer = styled.div`
   max-width: 700px;
-  width: 70%;
-  margin: 0 auto;
+  margin: 0 4rem;
   margin-bottom: 40px;
   text-align: center;
   @media (min-width: 768px) {
@@ -82,14 +81,24 @@ const TitleContainer = styled.div`
 `;
 
 const HeroTitle = styled.p`
-  font-family: "Roboto";
-  font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: "#000000";
   text-align: "center";
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   @media (min-width: 768px) {
-    font-size: 40px;
+    font-size: 3rem;
+  }
+`;
+
+const SignupNote = styled.p`
+  font-size: 1rem;
+  color: gray;
+  text-align: center
+  margin-bottom: 1rem;
+  @media (min-width: 768px) {
+    font-size: 1.2rem;
+    text-align: left;
+    margin-bottom: 3rem;
   }
 `;
 
@@ -98,9 +107,10 @@ const SignInContainer = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  overflow: hidden;
   @media (min-width: 768px) {
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
   }
 `;
 
@@ -181,7 +191,7 @@ const CheerTitleBox = styled.div`
 
 const useStyles = makeStyles({
   root: {
-    fontFamily: "Roboto",
+    fontFamily: "proxima_nova",
   },
   Title: {
     fontSize: 20,
@@ -282,6 +292,9 @@ export default function LandingPage(props) {
               <HeroTitle>
                 Find a mentor who can help guide you to success!
               </HeroTitle>
+              <SignupNote>
+                Currently open for designers, software professionals
+              </SignupNote>
               <SignInContainer>
                 <LinkedIn
                   clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
