@@ -13,17 +13,18 @@ const Wrapper = styled.section`
 `;
 
 const Text = styled.p`
-  ${(props) => (props.pending==true ? "color: #51B6A5" : "")}
-  ${(props) => (props.active==true ? "color: #51B6A5" : "")}
-  ${(props) => (props.closed==true ? "color: #51B6A5" : "")}
+  ${(props) => (props.pending == true ? "color: #51B6A5" : "")}
+  ${(props) => (props.active == true ? "color: #51B6A5" : "")}
+  ${(props) => (props.closed == true ? "color: #51B6A5" : "")}
 `;
 
-const CardType = ({ handleSecondaryTab,props}) => {
-
-
+const CardType = ({ handleSecondaryTab, props }) => {
   return (
     <Wrapper>
-      <Text pending={props.pending} onClick={() => handleSecondaryTab("pending")}>
+      <Text
+        pending={props.pending}
+        onClick={() => handleSecondaryTab("pending")}
+      >
         Pending
       </Text>
       <Text active={props.active} onClick={() => handleSecondaryTab("active")}>
