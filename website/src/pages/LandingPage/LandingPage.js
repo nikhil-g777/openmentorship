@@ -1,22 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { LinkedIn } from "react-linkedin-login-oauth2";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
-import WaitlistCard from "./WaitListCard";
+
+import { loginUser } from "../../api";
+import { UserContext } from "../../context/UserContext";
 
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Grid } from "@material-ui/core";
 
 //imgs
 import Stairs from "./images/stairs_large.png";
+import LinkedinSignin from "./images/Linkedin-Sign-In-Large-Default.png";
 import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
 
 //packages
 import { useHistory } from "react-router-dom";
+
+// import "../../style/styles.css";
 
 const Container = styled.div`
   display: flex;
@@ -65,24 +70,47 @@ const CheerWrapper = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  max-width: 300px;
-  width: 70%;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 0 4rem;
   margin-bottom: 40px;
   text-align: center;
   @media (min-width: 768px) {
     text-align: left;
-    max-width: 350px;
+    max-width: 700px;
   }
 `;
 
 const HeroTitle = styled.p`
-  font-family: "Roboto";
-  font-weight: bold;
+  font-size: 2rem;
   color: "#000000";
   text-align: "center";
+  margin-bottom: 1rem;
   @media (min-width: 768px) {
-    font-size: 40px;
+    font-size: 3rem;
+  }
+`;
+
+const SignupNote = styled.p`
+  font-size: 1rem;
+  color: gray;
+  text-align: center
+  margin-bottom: 1rem;
+  @media (min-width: 768px) {
+    font-size: 1.2rem;
+    text-align: left;
+    margin-bottom: 3rem;
+  }
+`;
+
+const SignInContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  overflow: hidden;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: flex-start;
   }
 `;
 
@@ -94,12 +122,10 @@ const RegisterButton = styled.button`
   boxshadow: none;
   shadows: none;
   font-family: Proxima Nova;
-  height: 47px;
-  width: 343px;
+  height: 2.7rem;
+  width: 12.5rem;
   text-transform: none;
-  margin-left: 10px;
-  margin: 0 auto;
-  margin-bottom: 65px;
+  color: white;
   &:hover {
     background-color: #2d6c61;
   }
@@ -132,6 +158,15 @@ const OrderedSide = styled.div`
   }
 `;
 
+const LinkedinImage = styled.img`
+  max-width: 180px;
+`;
+
+const OrText = styled.span`
+  color: gray;
+  margin: 1rem;
+`;
+
 const PuzzleImage = styled.img`
   display: block;
   margin: 0 auto;
@@ -156,7 +191,7 @@ const CheerTitleBox = styled.div`
 
 const useStyles = makeStyles({
   root: {
-    fontFamily: "Roboto",
+    fontFamily: "proxima_nova",
   },
   Title: {
     fontSize: 20,
@@ -206,6 +241,40 @@ const useStyles = makeStyles({
 export default function LandingPage(props) {
   const history = useHistory();
   const classes = useStyles(props);
+
+  const [isError, setIsError] = useState(false);
+  const [user, setUser] = useContext(UserContext);
+
+  const handleSuccess = (data) => {
+    loginUser({
+      authCode: data.code,
+    })
+      .then((response) => {
+        if (response.data.success) {
+          setUser({
+            _id: response.data.user._id,
+            userType: response.data.user.userType,
+            token: response.data.token,
+          });
+          localStorage.setItem("token", JSON.stringify(response.data.token));
+        } else {
+          setIsError(true);
+        }
+      })
+      .catch((error) => {
+        setIsError(true);
+      });
+  };
+
+  const handleFailure = (error) => {
+    console.log(error);
+    setIsError(true);
+  };
+
+  if (user.token) {
+    return <Redirect to="/matches" />;
+  }
+
   return (
     <div>
       <Menu
@@ -221,10 +290,29 @@ export default function LandingPage(props) {
           <OrderedSide>
             <TitleContainer>
               <HeroTitle>
-                Let's build an OpenMentorship Community Together!
+                Find a mentor who can help guide you to success!
               </HeroTitle>
+              <SignupNote>
+                Currently open for designers, software professionals
+              </SignupNote>
+              <SignInContainer>
+                <LinkedIn
+                  clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
+                  onFailure={handleFailure}
+                  onSuccess={handleSuccess}
+                  redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
+                  scope="r_emailaddress r_liteprofile"
+                  redirectPath="/register"
+                >
+                  <LinkedinImage src={LinkedinSignin} />
+                </LinkedIn>
+                <OrText> or </OrText>
+                <Link to="/register">
+                  <RegisterButton> Register </RegisterButton>
+                </Link>
+              </SignInContainer>
             </TitleContainer>
-            <WaitlistCard className={classes.WaitlistCard} />
+            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
           </OrderedSide>
         </HeroWrapper>
         <FlexWrapper>

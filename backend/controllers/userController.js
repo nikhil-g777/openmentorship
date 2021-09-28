@@ -7,7 +7,6 @@ const Match = require('../models/match');
 const Token = require('../models/token');
 const User = require('../models/user');
 
-const Role = require('../lib/role');
 const RegistrationStatus = require('../lib/registrationStatus');
 
 const linkedinAuth = axios.create({
@@ -32,6 +31,7 @@ const getLinkedInProfile = (authCode) =>
       },
     });
     const profileUrl = '/v2/me';
+    const emaileUrl = `/v2/emailAddress?q=members&projection=(elements*(handle~))`;
 
     linkedinAuth
       .post(authUrl) // exchange auth code for access token
@@ -45,14 +45,26 @@ const getLinkedInProfile = (authCode) =>
           })
           .then((profileResponse) => {
             console.log('profile response');
-            console.log(profileResponse.data);
-            const result = {
-              firstName: profileResponse.data.localizedFirstName,
-              lastName: profileResponse.data.localizedLastName,
-              linkedInId: profileResponse.data.id,
-            };
-
-            resolve(result);
+            console.log(JSON.stringify(profileResponse.data), null, 4);
+            linkedinApi
+              .get(emaileUrl, {
+                headers: {
+                  Authorization: `Bearer ${response.data.access_token}`,
+                },
+              })
+              .then((emailResponse) => {
+                const result = {
+                  firstName: profileResponse.data.localizedFirstName,
+                  lastName: profileResponse.data.localizedLastName,
+                  linkedInId: profileResponse.data.id,
+                  email: emailResponse.data.elements[0]['handle~'].emailAddress,
+                };
+                resolve(result);
+              })
+              .catch((error) => {
+                console.log(error);
+                reject(new Error({ msg: 'Error in get linkedin email' }));
+              });
           })
           .catch((error) => {
             console.log(error);
@@ -156,98 +168,108 @@ const registerUser = (req, res) => {
       .json({ success: false, error: 'request body is empty' });
   }
 
-  if (!body.user) {
-    return res.status(400).json({
-      success: false,
-      error: 'request body does not have user object',
-    });
-  }
+  if (body.type == 'linkedInSignup') {
+    if (!body.authCode) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'authCode missing in the body' });
+    }
 
-  if (!body.authCode) {
-    return res
-      .status(400)
-      .json({ success: false, error: 'authCode missing in the body' });
-  }
+    getLinkedInProfile(body.authCode)
+      .then((linkedInProfile) => {
+        User.findOne({ linkedInId: linkedInProfile.linkedInId }).then(
+          (user) => {
+            let userObj = user;
+            if (user) {
+              userObj = Object.assign(user, linkedInProfile);
+            } else {
+              userObj = new User(linkedInProfile);
+            }
 
-  getLinkedInProfile(body.authCode)
-    .then((linkedInProfile) => {
-      User.findOne({ linkedInId: linkedInProfile.linkedInId }).then((user) => {
-        let userObj = user;
-        if (user) {
-          userObj = Object.assign(user, linkedInProfile);
-        } else {
-          userObj = new User(linkedInProfile);
-        }
+            userObj
+              .save()
+              .then((updatedUser) => {
+                Token.findOne({ userId: updatedUser._id })
+                  .then((token) => {
+                    // if token isn't in our DB, store
+                    if (!token) {
+                      // encrypt information
+                      const t = util.refreshToken(updatedUser._id);
 
-        if (userObj.userType == 'mentee') {
-          userObj.role = Role.mentor;
-        } else if (userObj.userType == 'mentee') {
-          userObj.role = Role.mentee;
-        } else {
-          userObj.role = Role.mentee; // assign mentee by default during registration
-        }
+                      Token.create({
+                        refreshToken: t,
+                        userId: updatedUser._id,
+                      });
+                    }
+                    // send the access token
+                    const accessToken = util.accessToken(updatedUser._id);
 
-        userObj
-          .save()
-          .then((updatedUser) => {
-            Token.findOne({ userId: updatedUser._id })
-              .then((token) => {
-                // if token isn't in our DB, store
-                if (!token) {
-                  // encrypt information
-                  const t = util.refreshToken(updatedUser._id);
-
-                  Token.create({ refreshToken: t, userId: updatedUser._id });
-                }
-                // send the access token
-                const accessToken = util.accessToken(updatedUser._id);
-
-                return (
-                  res
-                    // .cookie('accessToken', accessToken, {
-                    //   sameSite: 'none',
-                    //   secure: true,
-                    // })
-                    .json({
-                      success: true,
-                      token: accessToken,
-                      user: {
-                        _id: updatedUser._id,
-                      },
-                    })
-                );
+                    return (
+                      res
+                        // .cookie('accessToken', accessToken, {
+                        //   sameSite: 'none',
+                        //   secure: true,
+                        // })
+                        .json({
+                          success: true,
+                          token: accessToken,
+                          user: {
+                            _id: updatedUser._id,
+                            firstName: linkedInProfile.firstName,
+                            lastName: linkedInProfile.lastName,
+                            linkedInId: linkedInProfile.linkedInId,
+                            email: linkedInProfile.email,
+                          },
+                        })
+                    );
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    return res.status(500).json({
+                      success: false,
+                      error: 'Error in find token',
+                    });
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    return res.status(500).json({
+                      success: false,
+                      error: 'Error in save user',
+                    });
+                  });
               })
               .catch((err) => {
                 console.log(err);
                 return res.status(500).json({
                   success: false,
-                  error: 'Error in find token',
-                });
-              })
-              .catch((err) => {
-                console.log(err);
-                return res.status(500).json({
-                  success: false,
-                  error: 'Error in save user',
+                  error: 'Unable to authenticate linkedIn profile',
                 });
               });
-          })
-          .catch((err) => {
-            console.log(err);
-            return res.status(500).json({
-              success: false,
-              error: 'Unable to authenticate linkedIn profile',
-            });
-          });
+          },
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json({
+          success: false,
+          error: 'Unable to authenticate linkedIn profile',
+        });
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).json({
+  } else if (body.type == 'completeRegistration') {
+    if (!body.user) {
+      return res.status(400).json({
         success: false,
-        error: 'Unable to authenticate linkedIn profile',
+        error: 'request body does not have user object',
       });
+    }
+
+    return {};
+  } else {
+    return res.status(400).json({
+      success: false,
+      error: 'invalid type',
     });
+  }
 };
 
 const tempAuth = (req, res) => {

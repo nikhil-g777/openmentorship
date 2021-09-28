@@ -37,7 +37,7 @@ const MLogo = styled.img`
 
 const useStyles = makeStyles({
   Links: {
-    fontFamily: "Roboto",
+    fontFamily: "proxima_nova",
     fontSize: 16,
     fontWeight: "Bold",
     color: "#000000",
