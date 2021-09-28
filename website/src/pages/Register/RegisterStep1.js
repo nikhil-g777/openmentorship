@@ -60,8 +60,8 @@ const RegisterStep1 = (props) => {
       <ThemeProvider theme={theme}>
         <TitleWrapper>
           <Title>
-            Tell us a little bit about yourself so we can match you with the
-            right mentors.
+            Tell us a little bit about yourself, it helps make the right
+            connections
           </Title>
         </TitleWrapper>
         <FormItem>
@@ -89,8 +89,8 @@ const RegisterStep1 = (props) => {
             onChange={handleChange}
             input={<BootstrapInput />}
           >
-            <MenuItem value="Looking for a job">Student</MenuItem>
-            <MenuItem value="Currently working">Working</MenuItem>
+            <MenuItem value="Student">Student</MenuItem>
+            <MenuItem value="Professional">Professional</MenuItem>
           </Select>
         </FormItem>
         <FormGroup>

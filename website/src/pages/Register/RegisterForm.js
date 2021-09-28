@@ -16,7 +16,7 @@ export default function RegisterForm() {
 
   const [state, setState] = useState({
     userType: "mentee",
-    jobStatus: "Looking for a job",
+    jobStatus: "Student",
     areasOfInterest: {
       software: false,
       design: false,
@@ -33,7 +33,7 @@ export default function RegisterForm() {
   });
 
   //change back to 0
-  const [activeStep, setActiveStep] = useState(11);
+  const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
     console.log(activeStep);
