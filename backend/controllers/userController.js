@@ -3,6 +3,8 @@ const axios = require('axios');
 const queryString = require('query-string');
 const util = require('../lib/utils');
 
+const { generateTwilioToken } = require('../config/twilio');
+
 const Match = require('../models/match');
 const Token = require('../models/token');
 const User = require('../models/user');
@@ -386,7 +388,7 @@ const matches = (req, res) => {
     return res.status(400).json({ success: false, error: '_id not sent' });
   }
 
-  User.findByIdAndUpdate(_id).exec((err, user) => {
+  User.findByIdA(_id).exec((err, user) => {
     if (err) {
       console.log(err);
       return res.status(500).json({ success: false, error: err });
@@ -440,26 +442,18 @@ const matches = (req, res) => {
       });
   });
 };
-/*
-const createMatch=(req, res) => {
-  //inputs : menteeId, mentorId
-  // create a new match record
 
-  // return matchId
-}
+// Created when there is a request from a mentee
+const twilioToken = (req, res) => {
+  // inputs : menteeId, mentorId
+  const { _id } = req.user;
+  const token = generateTwilioToken(_id);
+  return res.json({
+    success: true,
+    twilioToken: token,
+  });
+};
 
-const updateMatch = (req, res) => {
-  // inputs : matchId, status
-
-  // if (status == 'active')
-  // create a new channel in twilio
-  // update the match record with the status='active', twilioChannelId
-  //else
-  // update the match record with the status
-
-  // return matchId
-}
-*/
 module.exports = {
   loginUser,
   registerUser,
@@ -467,4 +461,5 @@ module.exports = {
   updateUser,
   userInfo,
   matches,
+  twilioToken,
 };
