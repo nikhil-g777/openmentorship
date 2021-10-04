@@ -10,9 +10,18 @@ const Match = new Schema(
       enum: ['pending', 'active', 'closed'],
       default: 'pending',
     },
-    twilioChannelId: { type: String },
-    menteeId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
-    mentorId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    twilioConversationSid: { type: String },
+    requestMessage: { type: String, required: true },
+    mentee: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'user',
+    },
+    mentor: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'user',
+    },
   },
   {
     timestamps: true,

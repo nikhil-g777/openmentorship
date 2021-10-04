@@ -13,6 +13,7 @@ require('dotenv-flow').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const matchesRouter = require('./routes/matches');
 const sessionsRouter = require('./routes/sessions');
 const waitlistRouter = require('./routes/waitlist');
 
@@ -48,6 +49,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/matches', matchesRouter);
 app.use('/sessions', sessionsRouter);
 app.use('/waitlist', waitlistRouter);
 

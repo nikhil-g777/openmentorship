@@ -38,4 +38,11 @@ router.get(
   userController.matches,
 );
 
+router.get(
+  '/chatToken',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee, role.mentor, role.admin]),
+  userController.twilioToken,
+);
+
 module.exports = router;
