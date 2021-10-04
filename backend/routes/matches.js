@@ -20,4 +20,11 @@ router.post(
   matchController.createMatch,
 );
 
+router.post(
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee, role.mentor, role.admin]),
+  matchController.updateMatch,
+);
+
 module.exports = router;

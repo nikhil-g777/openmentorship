@@ -98,65 +98,49 @@ const loginUser = (req, res) => {
 
   getLinkedInProfile(body.authCode)
     .then((linkedInProfile) => {
-      User.findOne({ linkedInId: linkedInProfile.linkedInId })
-        .then((user) => {
-          if (user) {
-            Token.findOne({ userId: user._id })
-              .then((token) => {
-                // if token isn't in our DB, store
-                if (!token) {
-                  // encrypt information
-                  const t = util.refreshToken(user._id);
-
-                  Token.create({ refreshToken: t, userId: user._id });
-                }
-                // send the access token
-                const accessToken = util.accessToken(user._id);
-
-                return (
-                  res
-                    // .cookie('accessToken', accessToken, {
-                    //   sameSite: 'none',
-                    //   secure: true,
-                    // })
-                    .json({
-                      success: true,
-                      message: 'Login Successful',
-                      token: accessToken,
-                      user: {
-                        _id: user._id,
-                        userType: user.userType,
-                      },
-                    })
-                );
-              })
-              .catch((err) => {
-                console.log(err);
-                return res.status(500).json({
-                  success: false,
-                  error: 'Error in find token',
-                });
-              });
-          } else {
-            return res.status(200).json({
-              success: false,
-              message: 'User does not exist',
-            });
+      return User.findOne({ linkedInId: linkedInProfile.linkedInId });
+    })
+    .then((user) => {
+      if (user) {
+        Token.findOne({ userId: user._id }).then((token) => {
+          // if token isn't in our DB, store
+          if (!token) {
+            // encrypt information
+            const t = util.refreshToken(user._id);
+            Token.create({ refreshToken: t, userId: user._id });
           }
-        })
-        .catch((err) => {
-          console.log(err);
-          return res.status(500).json({
-            success: false,
-            error: 'Unable to query database',
-          });
+          // send the access token
+          const accessToken = util.accessToken(user._id);
+
+          return (
+            res
+              // .cookie('accessToken', accessToken, {
+              //   sameSite: 'none',
+              //   secure: true,
+              // })
+              .json({
+                success: true,
+                message: 'Login Successful',
+                token: accessToken,
+                user: {
+                  _id: user._id,
+                  userType: user.userType,
+                },
+              })
+          );
         });
+      } else {
+        return res.status(200).json({
+          success: false,
+          message: 'User does not exist',
+        });
+      }
     })
     .catch((err) => {
       console.log(err);
       return res.status(500).json({
         success: false,
-        error: 'Unable to authenticate linkedIn profile',
+        error: 'Unable to query database',
       });
     });
 };
@@ -388,7 +372,7 @@ const matches = (req, res) => {
     return res.status(400).json({ success: false, error: '_id not sent' });
   }
 
-  User.findByIdA(_id).exec((err, user) => {
+  User.findById(_id).exec((err, user) => {
     if (err) {
       console.log(err);
       return res.status(500).json({ success: false, error: err });
@@ -402,9 +386,9 @@ const matches = (req, res) => {
     const findQuery = {};
 
     if (user.userType === 'mentee') {
-      findQuery.menteeId = _id;
+      findQuery.mentee = _id;
     } else if (user.userType === 'mentor') {
-      findQuery.mentorId = _id;
+      findQuery.mentor = _id;
     } else {
       return res
         .status(404)
@@ -412,8 +396,8 @@ const matches = (req, res) => {
     }
 
     Match.find(findQuery)
-      .populate('mentorId')
-      .populate('menteeId')
+      .populate('mentor')
+      .populate('mentee')
       .exec((matchErr, matchesList) => {
         if (matchErr) {
           console.log(err);
@@ -425,10 +409,10 @@ const matches = (req, res) => {
         _.forEach(matchesList, (match) => {
           switch (userType) {
             case 'mentor':
-              result[match.status].push(match.menteeId);
+              result[match.status].push(match);
               break;
             case 'mentee':
-              result[match.status].push(match.mentorId);
+              result[match.status].push(match);
               break;
             default:
               console.log('Invalid user type');

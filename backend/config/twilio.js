@@ -44,13 +44,13 @@ const createChatConversation = (menteeId, mentorId) => {
         result.conversationSid = conversation.sid;
         return client.conversations
           .conversations(result.conversationSid)
-          .participants.create({ identity: menteeId });
+          .participants.create({ identity: menteeId.toString() });
       })
       .then((mentee) => {
         result.menteeParticipationId = mentee.sid;
         return client.conversations
           .conversations(result.conversationSid)
-          .participants.create({ identity: mentorId });
+          .participants.create({ identity: mentorId.toString() });
       })
       .then((mentor) => {
         result.mentorParicipationId = mentor.sid;
