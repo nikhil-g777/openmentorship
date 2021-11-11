@@ -20,7 +20,12 @@ const User = new Schema(
     headline: { type: String },
     bio: { type: String },
     userType: { type: String, enum: ['mentee', 'mentor', 'admin'] },
-    role: { type: String, enum: ['mentee', 'mentor', 'admin'], required: true },
+    role: {
+      type: String,
+      enum: ['mentee', 'mentor', 'admin'],
+      required: true,
+      default: 'mentor',
+    },
     linkedInId: { type: String, required: true, unique: true },
     WorkExperiences: { type: [WorkExperience], default: [] },
     skills: { type: [String], default: [] },
