@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useCon } from "react";
 import Card from "./MatchCard";
 import Profile from "./MatchProfile";
-import CardType from "./CardType";
+import CardType from "./cardType";
 import styled from "styled-components";
 import { Menu } from "../../components";
 import { getUserMatches } from "../../api";
