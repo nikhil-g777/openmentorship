@@ -23,7 +23,7 @@ const RegisterStep1 = (props) => {
   const { handleUpdate } = props;
 
   const [alignment, setAlignment] = useState(props.values.userType);
-  const [jobStatus, setJobStatus] = useState(props.values.jobStatus);
+  const [careerStatus, setCareerStatus] = useState(props.values.careerStatus);
   const [areasOfInterest, setAreasOfInterest] = useState(
     props.values.areasOfInterest
   );
@@ -34,8 +34,8 @@ const RegisterStep1 = (props) => {
   };
 
   const handleChange = (event) => {
-    setJobStatus(event.target.value);
-    props.handleJobStatus(event.target.value);
+    setCareerStatus(event.target.value);
+    props.handleCareerStatus(event.target.value);
   };
 
   const handleChangeAreaOfInterest = (event) => {
@@ -84,8 +84,8 @@ const RegisterStep1 = (props) => {
         <FormItem>
           <p>Which of the following best describes you</p>
           <Select
-            value={jobStatus}
-            name="jobStatus"
+            value={careerStatus}
+            name="careerStatus"
             onChange={handleChange}
             input={<BootstrapInput />}
           >
