@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const WorkExperience = new Schema({
+const Experience = new Schema({
   title: { type: String },
-  company: { type: String },
-  location: { type: Object },
-  industry: { type: String },
-  startDate: { type: Date },
-  currentlyWorking: { type: Boolean, default: false },
-  endDate: { type: Date },
+  organization: { type: String },
+});
+
+const Education = new Schema({
+  school: { type: String },
+  degree: { type: String },
 });
 
 const User = new Schema(
@@ -19,15 +19,22 @@ const User = new Schema(
     email: { type: String },
     headline: { type: String },
     bio: { type: String },
-    userType: { type: String, enum: ['mentee', 'mentor', 'admin'] },
+    userType: {
+      type: String,
+      enum: ['mentee', 'mentor', 'admin'],
+      default: 'mentee',
+    },
+    careerStatus: { type: 'String' },
     role: {
       type: String,
       enum: ['mentee', 'mentor', 'admin'],
       required: true,
-      default: 'mentor',
+      default: 'mentee',
     },
     linkedInId: { type: String, required: true, unique: true },
-    WorkExperiences: { type: [WorkExperience], default: [] },
+    areasOfInterest: { type: Object, default: {} },
+    experiences: { type: [Experience], default: [] },
+    education: { type: [Education], defaukt: [] },
     skills: { type: [String], default: [] },
     interests: { type: [String], default: [] },
     goals: { type: Object, default: [] },
