@@ -97,7 +97,7 @@ const RegisterStep2 = (props) => {
     let id = textFieldId.split("_")[1];
     let { name, value } = event.currentTarget;
     let updatedEducation = [];
-    experiences.forEach((exp) => {
+    education.forEach((exp) => {
       if (exp.id == id) {
         exp[name] = value;
       }

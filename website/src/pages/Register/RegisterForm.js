@@ -16,7 +16,7 @@ export default function RegisterForm() {
 
   const [state, setState] = useState({
     userType: "mentee",
-    jobStatus: "Student",
+    careerStatus: "Student",
     areasOfInterest: {
       software: false,
       design: false,
@@ -29,7 +29,6 @@ export default function RegisterForm() {
     goals: [],
     communicationFrequency: "",
     socialLinks: {},
-    emptyField: false,
   });
 
   //change back to 0
@@ -102,8 +101,8 @@ export default function RegisterForm() {
     setState({ ...state, userType: type });
   };
 
-  const handleJobStatus = (status) => {
-    setState({ ...state, jobStatus: status });
+  const handleCareerStatus = (status) => {
+    setState({ ...state, careerStatus: status });
   };
 
   const handleCheckbox = (e) => {
@@ -143,25 +142,27 @@ export default function RegisterForm() {
   };
   const {
     userType,
-    jobStatus,
+    careerStatus,
     areasOfInterest,
+    experiences,
+    education,
     skills,
     interests,
     goals,
     communicationFrequency,
     socialLinks,
-    emptyField,
   } = state;
   const values = {
     userType,
-    jobStatus,
+    careerStatus,
     areasOfInterest,
+    experiences,
+    education,
     skills,
     interests,
     goals,
     communicationFrequency,
     socialLinks,
-    emptyField,
   };
 
   switch (activeStep) {
@@ -182,7 +183,7 @@ export default function RegisterForm() {
           <Menu handleBack={handleBack} registrationMenu={true} />
           <RegisterStep1
             handleUserType={handleUserType}
-            handleJobStatus={handleJobStatus}
+            handleCareerStatus={handleCareerStatus}
             handleUpdate={handleUpdate}
             values={values}
             handleNext={handleNext}
