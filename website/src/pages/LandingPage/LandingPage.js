@@ -8,21 +8,22 @@ import WaitlistCard from "./WaitListCard";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Grid } from "@material-ui/core";
+import { useMediaQuery ,Container } from "@material-ui/core";
 
 //imgs
 import Stairs from "./images/stairs_large.png";
 import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
-
+// import useMediaQuery from '@mui/material/useMediaQuery';
 //packages
 import { useHistory } from "react-router-dom";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-`;
+// const Container = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   margin: 0 auto;
+  
+// `;
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ const HeroWrapper = styled.div`
   @media (min-width: 768px) {
     flex-direction: row;
     align-items: center;
-    margin-bottom: 0;
+    margin-bottom: 5em;
   }
 `;
 
@@ -65,8 +66,8 @@ const CheerWrapper = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  max-width: 300px;
-  width: 70%;
+  // max-width: 300px;
+  width: 100%;
   margin: 0 auto;
   margin-bottom: 40px;
   text-align: center;
@@ -80,9 +81,13 @@ const HeroTitle = styled.p`
   font-family: "Roboto";
   font-weight: bold;
   color: "#000000";
+  width: 452px;
+  font-size: 45px;
   text-align: "center";
-  @media (min-width: 768px) {
+  @media (max-width: 768px) {
     font-size: 40px;
+    width: auto;
+
   }
 `;
 
@@ -135,10 +140,16 @@ const OrderedSide = styled.div`
 const PuzzleImage = styled.img`
   display: block;
   margin: 0 auto;
+  width:720px;
+  @media (max-width: 768px) {
+    width:300px;
+  }
 `;
 
 const PuzzleGreyBg = styled.div`
   background-color: #0000;
+  margin-left: 39px;
+
 `;
 
 const CheerImage = styled.img`
@@ -147,11 +158,14 @@ const CheerImage = styled.img`
 
 const CheerTitleBox = styled.div`
   width: 281px;
-  text-align: center;
+  // text-align: center;
   height: 51px;
-  margin: 0 auto;
-  margin-bottom: 40px;
+  // margin: 0 auto;
+  margin-bottom: 90px;
   margin-top: 39px;
+  @media (max-width: 768px) {
+    margin-bottom: 290px;
+  }
 `;
 
 const useStyles = makeStyles({
@@ -165,10 +179,16 @@ const useStyles = makeStyles({
     textAlign: "center",
   },
   BodyHeader: {
-    fontSize: 20,
+    fontSize: 45,
     fontWeight: "Bold",
     color: "#000000",
-    marginBottom: 25,
+    marginBottom: 30,
+    width: 565,
+    height: 113,
+    '@media (max-width:780px)': {
+      width: 'auto',
+    }
+    
   },
   Header: {
     fontStyle: "Semibold",
@@ -185,7 +205,6 @@ const useStyles = makeStyles({
     marginBottom: 6,
   },
   Header3: {
-    fontStyle: "Semibold",
     fontSize: 18,
     fontWeight: "Bold",
     color: "#000000",
@@ -201,19 +220,31 @@ const useStyles = makeStyles({
     paddingTop: 50,
     paddingLeft: 50,
   },
+  CardsFlux: {
+    marginLeft:-120,
+    '@media (max-width:780px)': {
+      marginLeft:10,
+    
+    }
+    
+  },
+  WaitlistCard1: {
+    paddingTop: 50,
+  },
 });
 
 export default function LandingPage(props) {
   const history = useHistory();
   const classes = useStyles(props);
   return (
+    <Container>
+
     <div>
       <Menu
         handleBack={() => history.push("/")}
         registrationMenu={true}
         showBackButton={false}
       />
-      <Container>
         <HeroWrapper>
           <StairsGreyBg>
             <StairsImage src={Stairs} />
@@ -221,7 +252,7 @@ export default function LandingPage(props) {
           <OrderedSide>
             <TitleContainer>
               <HeroTitle>
-                Let's build an OpenMentorship Community Together!
+              Let’s build an Openmentorship community together.
               </HeroTitle>
             </TitleContainer>
             <WaitlistCard className={classes.WaitlistCard} />
@@ -251,11 +282,11 @@ export default function LandingPage(props) {
         </FlexWrapper>
 
         <FlexWrapper
-          style={{ backgroundColor: "#f5f3f8", padding: "50px 15px" }}
+          style={{ backgroundColor: "#f5f3f8", padding: "50px 15px" ,marginTop:100,marginBottom:100}}
         >
           <div style={{ marginTop: 30, maxWidth: "300px" }}>
             <Typography className={classes.BodyHeader}>
-              Why Open Mentorship?
+              Why Open<br/> Mentorship?
             </Typography>
           </div>
 
@@ -298,7 +329,7 @@ export default function LandingPage(props) {
           </FlexItem>
         </FlexWrapper>
 
-        <FlexWrapper>
+        <FlexWrapper >
           <CheerWrapper>
             <CheerImage src={Cheer} />
           </CheerWrapper>
@@ -308,14 +339,18 @@ export default function LandingPage(props) {
                 Get on the path of your dream career with us today.
               </Typography>
             </CheerTitleBox>
+            <div  className={classes.CardsFlux} >
+            <WaitlistCard className={classes.WaitlistCard} />
+            </div>
             {/* <Link style={{ margin: "0 auto" }} to="/register">
               <RegisterButton>Register</RegisterButton>
             </Link> */}
             {/* <WaitlistCard className={classes.WaitlistCard} /> */}
           </div>
         </FlexWrapper>
-      </Container>
       <Footer />
     </div>
+    </Container>
+
   );
 }

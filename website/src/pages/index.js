@@ -5,5 +5,7 @@ import RegisterForm from "./Register/RegisterForm";
 import LandingPage from "./LandingPage/LandingPage";
 import LoginPage from "./LoginPage";
 import Sessions from "./Sessions/Sessions";
+import Mentee from "./Mentee/Mentee";
 
-export { FAQ, Home, Matches, RegisterForm, LandingPage, LoginPage, Sessions };
+
+export { FAQ, Home, Matches, RegisterForm, LandingPage, LoginPage, Sessions,Mentee };

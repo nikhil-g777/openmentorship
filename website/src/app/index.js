@@ -7,6 +7,7 @@ import {
   LandingPage,
   LoginPage,
   Sessions,
+  Mentee
 } from "../pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -33,6 +34,7 @@ function App() {
             {/* each route below needs to import their own Menu component. 
             ...See matches for example  */}
             <Route path="chat" component={LandingPage} />
+            <Route path="/mentee" component={Mentee} />
             <PrivateRoute path="/matches" component={Matches} />
             <PrivateRoute path="/profile" component={LandingPage} />
             <Route path="/register" component={RegisterForm} />

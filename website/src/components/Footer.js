@@ -11,8 +11,19 @@ import Logo from "./images/logo_big.png";
 const Container = styled.div`
   background-color: #f5f3f8;
   width: 100%;
-  padding-top: 39px;
-  padding-bottom: 39px;
+  padding-top: 50px;
+  padding-bottom: 40px;
+  padding-left: 200px;
+  padding-right: 200px;
+  display:flex;
+  justify-content:space-between;
+  @media (max-width: 768px) {
+    padding-top: 50px;
+    padding-bottom: 40px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -33,6 +44,7 @@ const MLogo = styled.img`
   height: 43px;
   margin-right: 15px;
   margin-left: 30px;
+  margin-top:-10px;
 `;
 
 const useStyles = makeStyles({
@@ -40,7 +52,7 @@ const useStyles = makeStyles({
     fontFamily: "Roboto",
     fontSize: 16,
     fontWeight: "Bold",
-    color: "#000000",
+    color: "black",
   },
 });
 export default function Footer(props) {
@@ -48,14 +60,11 @@ export default function Footer(props) {
 
   return (
     <Container>
-      <ContentWrapper>
+      {/* <ContentWrapper>
         <div className={classes.logo}>
-          {/* <Link to="/register"> */}
           <MLogo src={Logo} />
-          {/* </Link> */}
         </div>
-        <p className={classes.Links}>Contact Us : hello@openmentorship.com</p>
-        {/* <LinksContainer>
+        <LinksContainer>
           <a className={classes.Links} href="">
             <Link to="/about">About</Link>
           </a>
@@ -73,7 +82,22 @@ export default function Footer(props) {
             <Link to="">Sign In </Link>
           </a>
         </LinksContainer> */}
-      </ContentWrapper>
+      {/* </ContentWrapper> */}
+      <div className={classes.logo}>
+          <MLogo src={Logo} />
+        </div>
+        <Link to="/about"><a className={classes.Links} href="">
+            About
+          </a></Link>
+          <Link to=""><a className={classes.Links} href="">
+           How it Works
+          </a></Link>
+          <Link to=""> <a className={classes.Links} href="">
+           Contact
+          </a></Link>
+          <Link to=""> <a className={classes.Links} href="">
+         Sign In 
+          </a></Link>
     </Container>
   );
 }
