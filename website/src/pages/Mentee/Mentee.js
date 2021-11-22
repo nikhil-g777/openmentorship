@@ -7,32 +7,42 @@ import {
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import {
-Container,
-Grid,
-Typography
-} from "@material-ui/core";
+import { Container, Box, Typography } from "@material-ui/core";
 import "fontsource-roboto";
-import MenteeCard  from "../../components/MenteeCard/MenteeCard";
+import MenteeCard from "../../components/MenteeCard/MenteeCard";
 
 const useStyles = makeStyles((theme) => ({
-
   tilte: {
-    textAlign:'center',
-    marginTop:'10%',
-    fontSize:'28px'
-
+    textAlign: "center",
+    paddingTop: "2%",
+    fontSize: "28px",
   },
-  subtilte: {
-    textAlign:'center',
-    marginTop:'2%',
-    fontSize:'16px',
-    lineHeight:'27px',
-    justifyContent:'center',
-    alignItems:'center',
-    paddingRight:'20%',
-    paddingLeft:'20%'
-  }
+  Background: {
+    backgroundColor: "#F1F4F4",
+    padding: 40,
+    paddingLeft: 120,
+    paddingRight: 120,
+    "@media (max-width:780px)": {
+      padding: 10,
+      paddingLeft: 10,
+      paddingRight: 10,
+    },
+  },
+  Navbar: {
+    backgroundColor: "white",
+    height: "60px",
+    padding: 20,
+    paddingLeft: "30%",
+    paddingRight: "30%",
+    display: "flex",
+    cursor: "pointer",
+    justifyContent: "space-between",
+    "@media (max-width:780px)": {
+      padding: 25,
+      paddingLeft: "10%",
+      paddingRight: "10%",
+    },
+  },
 }));
 
 const theme = createMuiTheme({
@@ -43,15 +53,46 @@ const theme = createMuiTheme({
 
 export default function Mentee(props) {
   const classes = useStyles();
-  const [userType, setUserType] = useState("");
-
+  const [menteeType, setMenteeType] = useState("Active");
+  const handleType = (value) => {
+    setMenteeType(value);
+  };
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <Container>
-        <Typography variant="h6" className={classes.tilte}>Your active connections</Typography>
-        {/* <Typography variant="h6" className={classes.subtilte}>Send message requests to the mentors that you would like to work with until the deadline on April 29. They will receive your request and let you know if they want to work with you. Good luck!</Typography> */}
-        <MenteeCard/>
+        <Box className={classes.Navbar}>
+          <Typography
+            variant="p"
+            style={{ color: menteeType === "Active" ? "#51B6A5" : "" }}
+            onClick={() => handleType("Active")}
+          >
+            Active
+          </Typography>
+          <Typography
+            variant="p"
+            style={{ color: menteeType === "Pending" ? "#51B6A5" : "" }}
+            onClick={() => handleType("Pending")}
+          >
+            Pending
+          </Typography>
+          <Typography
+            variant="p"
+            style={{ color: menteeType === "Closed" ? "#51B6A5" : "" }}
+            onClick={() => handleType("Closed")}
+          >
+            Closed
+          </Typography>
+        </Box>
+        <Container className={classes.Background}>
+          <Typography variant="h6" className={classes.tilte}>
+            {menteeType === "Active"
+              ? "Your active connections"
+              : menteeType === "Pending"
+              ? "Your pending connections"
+              : "Your past connections"}
+          </Typography>
+          <MenteeCard 
+          menteeType={menteeType}/>
         </Container>
       </ThemeProvider>
     </div>
