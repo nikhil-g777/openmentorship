@@ -6,6 +6,9 @@ import LandingPage from "./LandingPage/LandingPage";
 import LoginPage from "./LoginPage";
 import Sessions from "./Sessions/Sessions";
 import Mentee from "./Mentee/Mentee";
+import Chat from "./Chat/Chat";
+import Profile from "./Profile/Profile";
 
 
-export { FAQ, Home, Matches, RegisterForm, LandingPage, LoginPage, Sessions,Mentee };
+
+export { FAQ, Home, Matches, RegisterForm, LandingPage, LoginPage, Sessions,Mentee,Chat,Profile };

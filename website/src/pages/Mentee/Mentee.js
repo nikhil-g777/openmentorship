@@ -49,8 +49,8 @@ export default function Mentee(props) {
     <div>
       <ThemeProvider theme={theme}>
         <Container>
-        <Typography variant="h6" className={classes.tilte}>Here’s your curated list of potential mentors!</Typography>
-        <Typography variant="h6" className={classes.subtilte}>Send message requests to the mentors that you would like to work with until the deadline on April 29. They will receive your request and let you know if they want to work with you. Good luck!</Typography>
+        <Typography variant="h6" className={classes.tilte}>Your active connections</Typography>
+        {/* <Typography variant="h6" className={classes.subtilte}>Send message requests to the mentors that you would like to work with until the deadline on April 29. They will receive your request and let you know if they want to work with you. Good luck!</Typography> */}
         <MenteeCard/>
         </Container>
       </ThemeProvider>
