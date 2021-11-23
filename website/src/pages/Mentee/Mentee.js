@@ -10,7 +10,7 @@ import {
 import { Container, Box, Typography } from "@material-ui/core";
 import "fontsource-roboto";
 import MenteeCard from "../../components/MenteeCard/MenteeCard";
-
+import MenteeMobileCard from "../../components/MenteeCard/MenteeMobileCard";
 const useStyles = makeStyles((theme) => ({
   tilte: {
     textAlign: "center",
@@ -43,6 +43,18 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: "10%",
     },
   },
+  WebCard: {
+    display:'block',
+    "@media (max-width:780px)": {
+      display:'none',
+    },
+  },
+  MobileCard: {
+    display:'none',
+    "@media (max-width:780px)": {
+      display:'block',
+    },
+  }
 }));
 
 const theme = createMuiTheme({
@@ -54,9 +66,14 @@ const theme = createMuiTheme({
 export default function Mentee(props) {
   const classes = useStyles();
   const [menteeType, setMenteeType] = useState("Active");
+  const [viewType, setViewType] = useState(false);
+
   const handleType = (value) => {
     setMenteeType(value);
   };
+  const viewProfile = () => {
+    setViewType(true)
+  }
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -91,8 +108,19 @@ export default function Mentee(props) {
               ? "Your pending connections"
               : "Your past connections"}
           </Typography>
+          <Box className={classes.MobileCard} style={{display:viewType? 'none':''}}>
+            <MenteeMobileCard
+           viewProfile={viewProfile} />
+            </Box>
+            <Box style={{display:viewType? '':'none'}}>
+            <MenteeCard 
+          menteeType={menteeType}/>
+          </Box >
+            <Box className={classes.WebCard}>
           <MenteeCard 
           menteeType={menteeType}/>
+            </Box>
+
         </Container>
       </ThemeProvider>
     </div>
