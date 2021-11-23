@@ -21,14 +21,23 @@ const useStyles = makeStyles((theme) => ({
     padding: '30px'
   },
   profile_img: {
-    borderRadius: '5px'
+    borderRadius: '5px',
+    width: '191px',
+    height: '191px',
+    [theme.breakpoints.down('sm')]: {
+      width: '117px',
+      height: '120px'
+    }
   },
   pro_typo1: {
     // fontFamily: 'Proxima Nova',
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: '28px',
-    lineHeight: '27px'
+    lineHeight: '27px',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   },
   pro_typo2: {
     fontStyle: 'normal',
@@ -55,10 +64,14 @@ const useStyles = makeStyles((theme) => ({
   pro_typo_btn: {
     backgroundColor: '#F1F1F1',
     borderRadius: '4px',
-    width: '140px',
+    // width: '140px',
     // height: '30px',
     textAlign: 'center',
-    padding: '5px'
+    padding: '8px',
+    fontSize: '13px'
+    // [theme.breakpoints.down('sm')]: {
+    //   width: '130px'
+    // }
   },
   social_div: {
     marginTop: '15px'
@@ -80,6 +93,23 @@ const useStyles = makeStyles((theme) => ({
   pro_typo_div2: {
     display: 'flex',
     alignItems: 'center'
+  },
+  pro_typo1_sm: {
+    display: 'none',
+
+    [theme.breakpoints.down('sm')]: {
+      fontStyle: 'normal',
+      fontWeight: 'bold',
+      fontSize: '20px',
+      lineHeight: '27px',
+      display: 'block',
+      marginLeft: '4%'
+    }
+  },
+  img_div_xs: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex'
+    }
   }
   /* or 135% */
 }));
@@ -99,17 +129,22 @@ export default function Mentee(props) {
         <Container style={{ display: 'flex', justifyContent: 'center' }}>
           <Grid
             container
-            xs={10}
+            xs={12}
+            md={10}
+            lg={10}
             justify="space-around"
             className={classes.profile_container}
           >
             <Grid item xs={12} md={2} lg={2} style={{ marginTop: '10px' }}>
-              <img
-                className={classes.profile_img}
-                src="https://wallpaperaccess.com/full/2969091.jpg"
-                width="191px"
-                height="191px"
-              />
+              <Box component="div" className={classes.img_div_xs}>
+                <img
+                  className={classes.profile_img}
+                  src="https://wallpaperaccess.com/full/2969091.jpg"
+                />
+                <Typography className={classes.pro_typo1_sm}>
+                  Emily Lee
+                </Typography>
+              </Box>
             </Grid>
             <Grid item xs={12} lg={7} md={7} style={{ marginTop: '10px' }}>
               <Box component="div" className={classes.pro_typo_div_main}>
