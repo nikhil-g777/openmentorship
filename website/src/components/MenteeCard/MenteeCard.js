@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     fontWeight: "bold",
   },
-  CancelButton:{
+  CancelButton: {
     backgroundColor: "transpernt",
     border: "none",
     borderRadius: 50,
@@ -165,26 +165,26 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 22,
     lineHeight: "27px",
     fontWeight: "bold",
-    marginBottom:10
+    marginBottom: 10,
   },
   mentor: {
     fontWeight: "normal",
     fontSize: "16px",
     lineHeight: "19px",
   },
-  MessageArea : {
-    height:312,
-    backgroundColor:'white',
-    padding:30,
-    marginTop:30
+  MessageArea: {
+    height: 312,
+    backgroundColor: "white",
+    padding: 30,
+    marginTop: 30,
   },
-  MessageInput : {
-    border:'none'
+  MessageInput: {
+    border: "none",
   },
   buttonFlex: {
-    display:'flex',
-    justifyContent:'flex-end'
-  }
+    display: "flex",
+    justifyContent: "flex-end",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -195,6 +195,28 @@ const theme = createMuiTheme({
 export default function MenteeCard(props) {
   const classes = useStyles();
   const [reconnect, setReconnect] = useState(false);
+  const [data, setData] = useState([
+    {
+      name: "Meghan Raab",
+      title:
+        "Product Marketing Manager at Snap Inc. 5 years of experience in marketing",
+      decription:
+        "I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.",
+      interset:
+        "Product marketing, content marketing, media, global tech, project management",
+      skills:
+        "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
+    },
+  ]);
+  const Mock = [
+    "Mock interview",
+    "Project review",
+    "Collaboration on an idea",
+    "Resume review",
+    "Career change advice",
+    "Career advice",
+
+  ];
 
   const handleReconnect = () => {
     setReconnect(true);
@@ -203,90 +225,101 @@ export default function MenteeCard(props) {
     <div>
       <ThemeProvider theme={theme}>
         <Container>
-          <Card className={classes.MenteeCard} raised={true}>
-            <Grid container spacing={3} className={classes.padding}>
-              <Grid item lg={2}>
-                <img src={boxImage} />
-                {props.menteeType === "Active" ? (
-                  <Button className={classes.MessageButton}>Chat</Button>
-                ) : props.menteeType === "Pending" ? (
-                  <Button className={classes.Decline}>Withdraw request</Button>
-                ) : (
-                  <>
-                    <Button className={classes.Decline}>Archived chat</Button>
-                    <Button
-                      className={classes.MessageButton}
-                      onClick={handleReconnect}
-                    >
-                      Reconnect
+          {data.map((x) => (
+            <Card className={classes.MenteeCard} raised={true}>
+              <Grid container spacing={3} className={classes.padding}>
+                <Grid item lg={2}>
+                  <img src={boxImage} />
+                  {props.menteeType === "Active" ? (
+                    <Button className={classes.MessageButton}>Chat</Button>
+                  ) : props.menteeType === "Pending" ? (
+                    <Button className={classes.Decline}>
+                      Withdraw request
                     </Button>
-                  </>
-                )}
-              </Grid>
-              <Grid item lg={10}>
-                <Typography variant="h5" className={classes.RightGrid}>
-                  Meghan Raab <img src={Linkedin} />
-                </Typography>
-                <Typography variant="h5" className={classes.subHead}>
-                  Product Marketing Manager at Snap Inc. 5 years of experience
-                  in marketing
-                </Typography>
+                  ) : props.menteeType === "MentorPending" ? (
+                    <>
+                      <Button className={classes.MessageButton}>
+                        Approve request
+                      </Button>
+                      <Button className={classes.Decline}>
+                        Decline request
+                      </Button>
+                    </>
+                  ) : props.menteeType === "MentorClosed" ? (
+                    <Button className={classes.Decline}>Archived chat</Button>
+                  ) : (
+                    <>
+                      <Button className={classes.Decline}>Archived chat</Button>
+                      <Button
+                        className={classes.MessageButton}
+                        onClick={handleReconnect}
+                      >
+                        Reconnect
+                      </Button>
+                    </>
+                  )}
+                </Grid>
+                <Grid item lg={10}>
+                  <Typography variant="h5" className={classes.RightGrid}>
+                    {x.name} <img src={Linkedin} />
+                  </Typography>
+                  <Typography variant="h5" className={classes.subHead}>
+                    {x.title}
+                  </Typography>
 
-                <Typography variant="h5" className={classes.BodyText}>
-                  I have previously worked with Sephora, LinkedIn, Blue Shield
-                  of California, and University of San Francisco. I’m interested
-                  in growth marketing, product marketing, content marketing,
-                  user acquisition and retention, and customer experience.{" "}
-                </Typography>
-                <Typography variant="h5" className={classes.Interest}>
-                  Areas of interest{" "}
-                </Typography>
-                <Typography variant="p" className={classes.InterestDetail}>
-                  Product marketing, content marketing, media, global tech,
-                  project management
-                </Typography>
+                  <Typography variant="h5" className={classes.BodyText}>
+                    {x.decription}
+                  </Typography>
+                  <Typography variant="h5" className={classes.Interest}>
+                    Areas of interest{" "}
+                  </Typography>
+                  <Typography variant="p" className={classes.InterestDetail}>
+                    {x.interest}
+                  </Typography>
 
-                <Typography variant="h5" className={classes.Interest}>
-                  Top skills
-                </Typography>
-                <Typography variant="p" className={classes.InterestDetail}>
-                  User acquisition, digital marketing, product marketing,
-                  leadership, marketing analytics
-                </Typography>
-                <Typography variant="h5" className={classes.Interest}>
-                  Open to providing
-                </Typography>
-                <Box className={classes.ButtonBox}>
-                  <Button className={classes.Mock}>Mock interview</Button>
-                  <Button className={classes.Mock}>Project review</Button>
-                  <Button className={classes.Mock}>
-                    Collaboration on an idea
-                  </Button>
-                  <Button className={classes.Mock}>Resume review</Button>
-                  <Button className={classes.Mock}>Career change advice</Button>
-                  <Button className={classes.Mock}>Career advice</Button>
-                </Box>
-              </Grid>
-                {reconnect ?
-              <Box className={classes.Reconnevt}>
-                <Typography variant="h5" className={classes.Meghan}>
-                  Send a request to Meghan Raab
-                </Typography>
-                <Typography variant="h6" className={classes.mentor}>
-                  Let Meghan Rabb know why you want them as your mentor.{" "}
-                </Typography>
-                <Box className={classes.MessageArea}>
-                  <input placeholder="Type message here..." className={classes.MessageInput}/>
+                  <Typography variant="h5" className={classes.Interest}>
+                    Top skills
+                  </Typography>
+                  <Typography variant="p" className={classes.InterestDetail}>
+                    {x.skills}
+                  </Typography>
+                  <Typography variant="h5" className={classes.Interest}>
+                    Open to providing
+                  </Typography>
+                  <Box className={classes.ButtonBox}>
+                    {Mock.map(x => 
+                    <Button className={classes.Mock}>{x}</Button>
+                    )}
                   </Box>
-                  <Box className={classes.buttonFlex}>
-                    <Button  className={classes.CancelButton} onClick= {() => setReconnect(false)}>Cancel</Button>
-                    <Button  className={classes.MessageButton1}>Send</Button>
-
+                </Grid>
+                {reconnect ? (
+                  <Box className={classes.Reconnevt}>
+                    <Typography variant="h5" className={classes.Meghan}>
+                      Send a request to {x.name}
+                    </Typography>
+                    <Typography variant="h6" className={classes.mentor}>
+                      Let {x.name} know why you want them as your mentor.{" "}
+                    </Typography>
+                    <Box className={classes.MessageArea}>
+                      <input
+                        placeholder="Type message here..."
+                        className={classes.MessageInput}
+                      />
                     </Box>
-              </Box>
-              :null}
-            </Grid>
-          </Card>
+                    <Box className={classes.buttonFlex}>
+                      <Button
+                        className={classes.CancelButton}
+                        onClick={() => setReconnect(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button className={classes.MessageButton1}>Send</Button>
+                    </Box>
+                  </Box>
+                ) : null}
+              </Grid>
+            </Card>
+          ))}
         </Container>
       </ThemeProvider>
     </div>

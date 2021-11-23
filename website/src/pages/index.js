@@ -6,9 +6,11 @@ import LandingPage from './LandingPage/LandingPage';
 import LoginPage from './LoginPage';
 import Sessions from './Sessions/Sessions';
 import Mentee from './Mentee/Mentee';
+import Mentor from './Mentor/Mentor';
+import EditProfile from './Profile/editProfile';
+
 import Chat from './Chat/Chat';
 import Profile from './Profile/Profile';
-import EditProfile from './Profile/editProfile';
 
 export {
   FAQ,
@@ -21,5 +23,6 @@ export {
   Mentee,
   Chat,
   Profile,
+  Mentor,
   EditProfile
 };
