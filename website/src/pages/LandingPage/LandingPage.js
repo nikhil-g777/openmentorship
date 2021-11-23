@@ -8,7 +8,7 @@ import WaitlistCard from "./WaitListCard";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { useMediaQuery ,Container } from "@material-ui/core";
+import { Button, Container, Box } from "@material-ui/core";
 
 //imgs
 import Stairs from "./images/stairs_large.png";
@@ -17,12 +17,12 @@ import Cheer from "./images/cheer.png";
 // import useMediaQuery from '@mui/material/useMediaQuery';
 //packages
 import { useHistory } from "react-router-dom";
-
+import linkedinImage from "../../images/linkedinsignin.svg";
 // const Container = styled.div`
 //   display: flex;
 //   flex-direction: column;
 //   margin: 0 auto;
-  
+
 // `;
 
 const FlexWrapper = styled.div`
@@ -85,9 +85,8 @@ const HeroTitle = styled.p`
   font-size: 45px;
   text-align: "center";
   @media (max-width: 768px) {
-    font-size: 40px;
+    font-size: 20px;
     width: auto;
-
   }
 `;
 
@@ -98,13 +97,16 @@ const RegisterButton = styled.button`
   border-color: #51b6a5;
   boxshadow: none;
   shadows: none;
-  font-family: Proxima Nova;
-  height: 47px;
-  width: 343px;
+  height: 35px;
+  width: 194px;
   text-transform: none;
   margin-left: 10px;
+  color: white;
   margin: 0 auto;
-  margin-bottom: 65px;
+  @media (max-width: 768px) {
+    width: 100%;
+    color: black;
+  }
   &:hover {
     background-color: #2d6c61;
   }
@@ -140,20 +142,20 @@ const OrderedSide = styled.div`
 const PuzzleImage = styled.img`
   display: block;
   margin: 0 auto;
-  width:720px;
+  width: 720px;
   @media (max-width: 768px) {
-    width:300px;
+    width: 300px;
   }
 `;
 
 const PuzzleGreyBg = styled.div`
   background-color: #0000;
   margin-left: 39px;
-
 `;
 
 const CheerImage = styled.img`
   width: 100%;
+  margin-bottom: 30%;
 `;
 
 const CheerTitleBox = styled.div`
@@ -164,7 +166,9 @@ const CheerTitleBox = styled.div`
   margin-bottom: 90px;
   margin-top: 39px;
   @media (max-width: 768px) {
-    margin-bottom: 290px;
+    margin-bottom: 60px;
+  margin-top: 9px;
+
   }
 `;
 
@@ -185,10 +189,12 @@ const useStyles = makeStyles({
     marginBottom: 30,
     width: 565,
     height: 113,
-    '@media (max-width:780px)': {
-      width: 'auto',
-    }
-    
+    "@media (max-width:780px)": {
+      width: "auto",
+      fontSize: 20,
+      marginBottom: 15,
+      height: "auto",
+    },
   },
   Header: {
     fontStyle: "Semibold",
@@ -221,15 +227,61 @@ const useStyles = makeStyles({
     paddingLeft: 50,
   },
   CardsFlux: {
-    marginLeft:-120,
-    '@media (max-width:780px)': {
-      marginLeft:10,
-    
-    }
-    
+    marginLeft: -120,
+    "@media (max-width:780px)": {
+      marginLeft: 10,
+    },
   },
   WaitlistCard1: {
     paddingTop: 50,
+  },
+  SubTitle: {
+    color: "#6D6D6D",
+    fontWeight: "normal",
+    fontSize: "14px",
+    lineHeight: "17px",
+    marginTop: -40,
+    paddingLeft: 100,
+    display: "block",
+    "@media (max-width:780px)": {
+      paddingLeft: 10,
+      display: "none",
+    },
+  },
+  LinkedIn: {
+    display: "flex",
+    marginTop: 20,
+    paddingLeft: 100,
+    "@media (max-width:780px)": {
+      paddingLeft: 10,
+    },
+  },
+  MessageButton: {
+    backgroundColor: "#51B6A5",
+    border: "none",
+    borderRadius: 40,
+    marginTop: 20,
+    width: "194px",
+    height: "35px",
+    textTransform: "capitalize",
+    fontWeight: "bold",
+    color: "white",
+  },
+  Or: {
+    marginLeft: 20,
+    marginRight: 20,
+    color: "#6D6D6D",
+    paddingTop: 7,
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
+  LinkedImage: {
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
   },
 });
 
@@ -238,13 +290,12 @@ export default function LandingPage(props) {
   const classes = useStyles(props);
   return (
     <Container>
-
-    <div>
-      <Menu
-        handleBack={() => history.push("/")}
-        registrationMenu={true}
-        showBackButton={false}
-      />
+      <div>
+        <Menu
+          handleBack={() => history.push("/")}
+          registrationMenu={true}
+          showBackButton={false}
+        />
         <HeroWrapper>
           <StairsGreyBg>
             <StairsImage src={Stairs} />
@@ -252,10 +303,18 @@ export default function LandingPage(props) {
           <OrderedSide>
             <TitleContainer>
               <HeroTitle>
-              Let’s build an Openmentorship community together.
+                Find a mentor who can help guide you to success.{" "}
               </HeroTitle>
             </TitleContainer>
-            <WaitlistCard className={classes.WaitlistCard} />
+            <Typography variant="h6" className={classes.SubTitle}>
+              Currently open for designers, software professionals
+            </Typography>
+            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
+            <Box className={classes.LinkedIn}>
+              <img src={linkedinImage} className={classes.LinkedImage} />
+              <span className={classes.Or}>or</span>
+              <RegisterButton>Register</RegisterButton>
+            </Box>
           </OrderedSide>
         </HeroWrapper>
         <FlexWrapper>
@@ -282,11 +341,17 @@ export default function LandingPage(props) {
         </FlexWrapper>
 
         <FlexWrapper
-          style={{ backgroundColor: "#f5f3f8", padding: "50px 15px" ,marginTop:100,marginBottom:100}}
+          style={{
+            backgroundColor: "#f5f3f8",
+            padding: "50px 15px",
+            marginTop: 100,
+            marginBottom: 100,
+          }}
         >
           <div style={{ marginTop: 30, maxWidth: "300px" }}>
             <Typography className={classes.BodyHeader}>
-              Why Open<br/> Mentorship?
+              Why Open
+              <br /> Mentorship?
             </Typography>
           </div>
 
@@ -329,7 +394,7 @@ export default function LandingPage(props) {
           </FlexItem>
         </FlexWrapper>
 
-        <FlexWrapper >
+        <FlexWrapper>
           <CheerWrapper>
             <CheerImage src={Cheer} />
           </CheerWrapper>
@@ -339,18 +404,17 @@ export default function LandingPage(props) {
                 Get on the path of your dream career with us today.
               </Typography>
             </CheerTitleBox>
-            <div  className={classes.CardsFlux} >
-            <WaitlistCard className={classes.WaitlistCard} />
-            </div>
+            {/* <div  className={classes.CardsFlux} > */}
+            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
+            {/* </div> */}
             {/* <Link style={{ margin: "0 auto" }} to="/register">
               <RegisterButton>Register</RegisterButton>
             </Link> */}
             {/* <WaitlistCard className={classes.WaitlistCard} /> */}
           </div>
         </FlexWrapper>
-      <Footer />
-    </div>
+        <Footer />
+      </div>
     </Container>
-
   );
 }

@@ -53,6 +53,10 @@ const useStyles = makeStyles({
     fontSize: 16,
     fontWeight: "Bold",
     color: "black",
+    "@media (max-width:780px)": {
+      marginLeft:10,
+      display:'block'
+    },
   },
 });
 export default function Footer(props) {
@@ -86,6 +90,7 @@ export default function Footer(props) {
       <div className={classes.logo}>
           <MLogo src={Logo} />
         </div>
+        
         <Link to="/about"><a className={classes.Links} href="">
             About
           </a></Link>

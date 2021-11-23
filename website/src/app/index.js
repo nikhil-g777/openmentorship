@@ -9,7 +9,8 @@ import {
   Sessions,
   Mentee,
   Chat,
-  Profile
+  Profile,
+  Mentor
 } from "../pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -37,6 +38,7 @@ function App() {
             ...See matches for example  */}
             <Route path="/chat" component={Chat} />
             <Route path="/mentee" component={Mentee} />
+            <Route path="/mentor" component={Mentor} />
             <Route path="/profile" component={Profile} />
             <PrivateRoute path="/matches" component={Matches} />
             <PrivateRoute path="/profile" component={LandingPage} />
