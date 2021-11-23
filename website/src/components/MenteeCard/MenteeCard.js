@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     fontWeight: "bold",
     "@media (max-width:780px)": {
-      width: "101px",
+      width: "auto",
+      minWidth:'102px',
       height: "29px",
     },
   },
@@ -63,7 +64,8 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     fontWeight: "bold",
     "@media (max-width:780px)": {
-      width: "101px",
+      width: "auto",
+      minWidth:'102px',
       height: "29px",
     },
   },
@@ -77,8 +79,10 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     fontWeight: "bold",
     "@media (max-width:780px)": {
-      width: "101px",
+      width: "auto",
       height: "29px",
+      minWidth:'102px',
+
     },
   },
   Decline: {
@@ -91,8 +95,10 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     fontWeight: "bold",
     "@media (max-width:780px)": {
-      width: "131px",
+      width: "auto",
       height: "29px",
+      minWidth:'102px',
+
     },
   },
   RightGrid: {

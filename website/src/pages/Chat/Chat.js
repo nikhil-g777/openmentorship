@@ -24,7 +24,8 @@ import chat from "../../images/chat.svg";
 import arrow from "../../images/arrow.svg";
 import upload from "../../images/upload.svg";
 import sendMessage from "../../images/sendMessage.svg";
-
+import { Menu } from "../../components";
+import { useHistory } from "react-router-dom";
 import "fontsource-roboto";
 const useStyles = makeStyles((theme) => ({
   padding: {
@@ -200,10 +201,17 @@ const theme = createMuiTheme({
 });
 export default function MenteeCard(props) {
   const classes = useStyles();
+  const history = useHistory();
+
   return (
     <div>
       <ThemeProvider theme={theme}>
         <Container>
+        <Menu
+          handleBack={() => history.push("/")}
+          registrationMenu={true}
+          showBackButton={false}
+        />
           <Box className={classes.Navbar}>
             <Typography variant="p" style={{ color: "#51B6A5" }}>
               Chat

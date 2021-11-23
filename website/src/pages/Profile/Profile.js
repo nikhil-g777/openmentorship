@@ -12,6 +12,8 @@ import SocialIcon1 from '../../images/image 24.png';
 import SocialIcon2 from '../../images/image 23.png';
 import linked from '../../images/image 16.png';
 import editIcon from '../../images/edit 1.png';
+import { useHistory } from "react-router-dom";
+import { Menu } from "../../components";
 
 const useStyles = makeStyles((theme) => ({
   profile_container: {
@@ -122,10 +124,18 @@ const theme = createMuiTheme({
 
 export default function Mentee(props) {
   const classes = useStyles();
+  const history = useHistory();
+
   const data = [1, 1, 1, 1, 1, 1];
   return (
     <div>
       <ThemeProvider theme={theme}>
+      <Container>
+        <Menu
+          handleBack={() => history.push("/")}
+          registrationMenu={true}
+          showBackButton={false}
+        />
         <Container style={{ display: 'flex', justifyContent: 'center' }}>
           <Grid
             container
@@ -201,6 +211,7 @@ export default function Mentee(props) {
               </Box>
             </Grid>
           </Grid>
+        </Container>
         </Container>
       </ThemeProvider>
     </div>

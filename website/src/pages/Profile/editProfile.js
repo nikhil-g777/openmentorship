@@ -25,7 +25,8 @@ import {
   StopRounded
 } from '@material-ui/icons';
 import { faSquareFull } from '@fortawesome/free-solid-svg-icons';
-
+import { useHistory } from "react-router-dom";
+import { Menu } from "../../components";
 const useStyles = makeStyles((theme) => ({
   profile_container: {
     backgroundColor: 'white',
@@ -150,10 +151,18 @@ const theme = createMuiTheme({
 
 export default function Mentee(props) {
   const classes = useStyles();
+  const history = useHistory();
+
   const data = [1, 1, 1, 1, 1, 1];
   return (
     <div>
       <ThemeProvider theme={theme}>
+      <Container>
+        <Menu
+          handleBack={() => history.push("/")}
+          registrationMenu={true}
+          showBackButton={false}
+        />
         <Container style={{ display: 'flex', justifyContent: 'center' }}>
           <Grid
             container
@@ -507,6 +516,8 @@ export default function Mentee(props) {
             </Grid>
           </Grid>
         </Container>
+        </Container>
+
       </ThemeProvider>
     </div>
   );

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Menu } from "../../components";
+import { useHistory } from "react-router-dom";
 
 // mui
 import {
@@ -65,6 +67,8 @@ const theme = createMuiTheme({
 
 export default function Mentee(props) {
   const classes = useStyles();
+  const history = useHistory();
+
   const [menteeType, setMenteeType] = useState("Active");
   const [viewType, setViewType] = useState(false);
 
@@ -77,6 +81,12 @@ export default function Mentee(props) {
   return (
     <div>
       <ThemeProvider theme={theme}>
+      <Container>
+      <Menu
+          handleBack={() => history.push("/")}
+          registrationMenu={true}
+          showBackButton={false}
+        />
         <Box className={classes.Navbar}>
           <Typography
             variant="p"
@@ -121,6 +131,7 @@ export default function Mentee(props) {
           menteeType={menteeType}/>
             </Box>
 
+        </Container>
         </Container>
       </ThemeProvider>
     </div>

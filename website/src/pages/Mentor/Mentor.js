@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Menu } from "../../components";
 
 // mui
 import {
@@ -10,6 +11,8 @@ import {
 import { Container, Box, Typography } from "@material-ui/core";
 import "fontsource-roboto";
 import MenteeCard from "../../components/MenteeCard/MenteeCard";
+import MenteeMobileCard from "../../components/MenteeCard/MenteeMobileCard";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   tilte: {
@@ -43,6 +46,18 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: "10%",
     },
   },
+  WebCard: {
+    display:'block',
+    "@media (max-width:780px)": {
+      display:'none',
+    },
+  },
+  MobileCard: {
+    display:'none',
+    "@media (max-width:780px)": {
+      display:'block',
+    },
+  }
 }));
 
 const theme = createMuiTheme({
@@ -53,13 +68,27 @@ const theme = createMuiTheme({
 
 export default function Mentor(props) {
   const classes = useStyles();
+  const history = useHistory();
+
   const [menteeType, setMenteeType] = useState("Active");
+  const [viewType, setViewType] = useState(false);
+
   const handleType = (value) => {
     setMenteeType(value);
   };
+  const viewProfile = () => {
+    setViewType(true)
+  }
   return (
     <div>
+
       <ThemeProvider theme={theme}>
+        <Container>
+      <Menu
+          handleBack={() => history.push("/")}
+          registrationMenu={true}
+          showBackButton={false}
+        />
         <Box className={classes.Navbar}>
           <Typography
             variant="p"
@@ -87,12 +116,23 @@ export default function Mentor(props) {
           <Typography variant="h6" className={classes.tilte}>
             {menteeType === "Active"
               ? "Your active connections"
-              : menteeType === "Pending"
+              : menteeType === "MentorPending"
               ? "Your pending connections"
               : "Your past connections"}
           </Typography>
+          <Box className={classes.MobileCard} style={{display:viewType? 'none':''}}>
+            <MenteeMobileCard
+           viewProfile={viewProfile} />
+            </Box>
+            <Box style={{display:viewType? '':'none'}}>
+            <MenteeCard 
+          menteeType={menteeType}/>
+          </Box >
+            <Box className={classes.WebCard}>
           <MenteeCard 
           menteeType={menteeType}/>
+            </Box>
+        </Container>
         </Container>
       </ThemeProvider>
     </div>

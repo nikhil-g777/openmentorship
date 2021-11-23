@@ -279,6 +279,7 @@ const useStyles = makeStyles({
   },
   LinkedImage: {
     display: "block",
+    cursor:'pointer',
     "@media (max-width:780px)": {
       display: "none",
     },

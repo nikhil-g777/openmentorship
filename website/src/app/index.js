@@ -54,7 +54,7 @@ function App() {
             <Route path="/mentee" component={Mentee} />
             <Route path="/mentor" component={Mentor} />
             <Route path="/profile" component={Profile} />
-            <Route path="/editProfile" component={EditProfile} />
+            <Route path="/edit-profile" component={EditProfile} />
 
             <PrivateRoute path="/matches" component={Matches} />
             <PrivateRoute path="/profile" component={LandingPage} />
