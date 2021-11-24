@@ -24,9 +24,10 @@ const generateTwilioToken = (identity) => {
     twilioConfig.accountSid,
     twilioConfig.apiKey,
     twilioConfig.apiSecret,
-    { identity },
+    { identity: identity.toString() },
   );
   token.addGrant(chatGrant);
+  console.log(twilioConfig.serviceSid);
   return token.toJwt();
 };
 
@@ -44,12 +45,14 @@ const createChatConversation = (menteeId, mentorId) => {
       .then((conversation) => {
         result.conversationSid = conversation.sid;
         return client.conversations
+          .services(twilioConfig.serviceSid)
           .conversations(result.conversationSid)
           .participants.create({ identity: menteeId.toString() });
       })
       .then((mentee) => {
         result.menteeParticipationId = mentee.sid;
         return client.conversations
+          .services(twilioConfig.serviceSid)
           .conversations(result.conversationSid)
           .participants.create({ identity: mentorId.toString() });
       })
@@ -58,6 +61,7 @@ const createChatConversation = (menteeId, mentorId) => {
         resolve(result);
       })
       .catch((e) => {
+        console.log(e);
         reject(e);
       });
   });
