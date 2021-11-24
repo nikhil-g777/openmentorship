@@ -38,8 +38,9 @@ const createChatConversation = (menteeId, mentorId) => {
   };
 
   return new Promise((resolve, reject) => {
-    client.conversations.conversations
-      .create({ friendlyName: `${mentorId}-${menteeId}` })
+    client.conversations
+      .services(twilioConfig.serviceSid)
+      .conversations.create({ friendlyName: `${mentorId}-${menteeId}` })
       .then((conversation) => {
         result.conversationSid = conversation.sid;
         return client.conversations

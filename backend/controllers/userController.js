@@ -171,6 +171,8 @@ const registerUser = (req, res) => {
             } else {
               userObj = new User(linkedInProfile);
             }
+            userObj.headline = body.headline;
+            userObj.bio = body.bio;
 
             userObj
               .save()
@@ -312,7 +314,7 @@ const updateUser = (req, res) => {
   // eslint-disable-next-line no-unused-vars
   const { role, registrationStatus, ...userObj } = req.body.user; // making sure role and registrationStatus are not updated by the request, for security
 
-  if (req.body.register) {
+  if (req.body.type == 'completeRegistration') {
     // if final step of the registration process
     if (userObj.userType == 'mentee') {
       userObj.registrationStatus = RegistrationStatus.complete;
@@ -323,6 +325,10 @@ const updateUser = (req, res) => {
         .status(400)
         .json({ success: false, error: 'Invalid User Type' });
     }
+  } else if (req.body.type == 'updateUser') {
+    console.log('updateUser');
+  } else {
+    return res.status(400).json({ success: false, error: 'Invalid type' });
   }
 
   User.findByIdAndUpdate(_id, userObj, { new: true }, (err, user) => {
