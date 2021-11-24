@@ -39,6 +39,7 @@ const User = new Schema(
     interests: { type: [String], default: [] },
     goals: { type: Object, default: [] },
     communicationFrequency: { type: String },
+    communicationPreferences: { type: [String], default: [] },
     socialLinks: { type: Object, default: {} },
     active: { type: Boolean, default: false, required: true },
     registrationStatus: {
