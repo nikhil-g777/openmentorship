@@ -1,22 +1,22 @@
-import React, { useState, useContext } from "react";
-import { Redirect } from "react-router-dom";
-import { Container, Title, Menu } from "../components";
-import Button from "@material-ui/core/Button";
-import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import { LinkedIn } from "react-linkedin-login-oauth2";
+import React, { useState, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
+import { Container, Title, Menu } from '../components';
+import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import { LinkedIn } from 'react-linkedin-login-oauth2';
 
-import { loginUser } from "../api";
-import { useAuth } from "../context/auth";
-import { UserContext } from "../context/UserContext";
+import { loginUser } from '../api';
+import { useAuth } from '../context/auth';
+import { UserContext } from '../context/UserContext';
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginBottom: "1em",
-    "& > *": {
-      margin: "1em 0",
-    },
-  },
+    marginBottom: '1em',
+    '& > *': {
+      margin: '1em 0'
+    }
+  }
 }));
 
 const Info = styled.p`
@@ -39,14 +39,15 @@ const Login = (props) => {
   // const { setAuthTokens } = useAuth();
 
   // store the page where user wanted to go and redirect to that page after login
-  const referrer = props.location.state && props.location.referrer != "/login"
-    ? props.location.state.referrer
-    : "/sessions";
+  const referrer =
+    props.location.state && props.location.referrer != '/login'
+      ? props.location.state.referrer
+      : '/sessions';
 
   console.log(referrer);
   const handleSuccess = (data) => {
     loginUser({
-      authCode: data.code,
+      authCode: data.code
     })
       .then((response) => {
         if (response.data.success) {
@@ -76,7 +77,7 @@ const Login = (props) => {
 
   return (
     <>
-      <Container style={{ textAlign: "center" }}>
+      <Container style={{ textAlign: 'center' }}>
         <Title>Open Mentorship</Title>
         <Info>Find a Mentor who can help guide you to success.</Info>
         <Wrapper>
