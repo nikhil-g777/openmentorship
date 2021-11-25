@@ -1,23 +1,23 @@
-import React, { useContext, useState } from "react";
-import { Container, Title, Menu } from "../../components";
-import Button from "@material-ui/core/Button";
-import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import { LinkedIn } from "react-linkedin-login-oauth2";
+import React, { useContext, useState } from 'react';
+import { Container, Title, Menu } from '../../components';
+import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import { LinkedIn } from 'react-linkedin-login-oauth2';
 
-import { registerUser } from "../../api";
-import RegisterStep1 from "./RegisterStep1";
-import { useAuth } from "../../context/auth";
-import { UserContext } from "../../context/UserContext";
+import { registerUser } from '../../api';
+import RegisterStep1 from './RegisterStep1';
+import { useAuth } from '../../context/auth';
+import { UserContext } from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginBottom: "1em",
-    "& > *": {
-      margin: "1em 0",
-    },
-  },
+    marginBottom: '1em',
+    '& > *': {
+      margin: '1em 0'
+    }
+  }
 }));
 
 const Info = styled.p`
@@ -38,26 +38,25 @@ const RegisterMain = (props) => {
   const [user, setUser] = useContext(UserContext);
 
   const [showUserFields, setShowUserFields] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [headline, setHeadline] = useState("");
-  const [bio, setBio] = useState("");
-  const [linkedInId, setLinkedInId] = useState("");
-
-
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [headline, setHeadline] = useState('');
+  const [bio, setBio] = useState('');
+  const [linkedInId, setLinkedInId] = useState('');
 
   const continueStep = (e) => {
     registerUser({
       authCode: linkedInId,
+      type: 'linkedInSignup',
       user: {
         firstName: firstName,
         lastName: lastName,
         email: email,
         headline: headline,
         bio: bio,
-        linkedInId: linkedInId,
-      },
+        linkedInId: linkedInId
+      }
     })
       .then((response) => {
         setUser({
@@ -74,6 +73,7 @@ const RegisterMain = (props) => {
   };
 
   const handleSuccess = (data) => {
+    console.log('data', data);
     setShowUserFields(true);
     setLinkedInId(data.code);
   };
@@ -82,7 +82,7 @@ const RegisterMain = (props) => {
 
   return (
     <>
-      <Container style={{ textAlign: "center" }}>
+      <Container style={{ textAlign: 'center' }}>
         <Title>Open Mentorship</Title>
         <Info>Find a Mentor who can help guide you to success.</Info>
         <Wrapper>
