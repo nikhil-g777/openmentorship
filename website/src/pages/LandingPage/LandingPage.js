@@ -67,7 +67,7 @@ const TitleContainer = styled.div`
   text-align: "left";
   @media (min-width: 768px) {
     text-align: left;
-    margin-left:60px
+    margin-left:70px
     // max-width: 350px;
   }
 `;
@@ -242,7 +242,7 @@ const useStyles = makeStyles({
     fontSize: "14px",
     lineHeight: "17px",
     marginTop: -40,
-    paddingLeft: 60,
+    paddingLeft: 70,
     display: "block",
     "@media (max-width:780px)": {
       paddingLeft: 10,
@@ -252,7 +252,7 @@ const useStyles = makeStyles({
   LinkedIn: {
     display: "flex",
     marginTop: 20,
-    paddingLeft: 60,
+    paddingLeft: 70,
     "@media (max-width:780px)": {
       paddingLeft: 10,
     },
