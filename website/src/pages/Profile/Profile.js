@@ -14,7 +14,8 @@ import linked from '../../images/image 16.png';
 import editIcon from '../../images/edit 1.png';
 import { useHistory } from "react-router-dom";
 import { Menu } from "../../components";
-
+import './index.css';
+import {Link} from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   profile_container: {
     backgroundColor: 'white',
@@ -128,14 +129,15 @@ export default function Mentee(props) {
 
   const data = [1, 1, 1, 1, 1, 1];
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-      <Container>
+    <Container>
         <Menu
           handleBack={() => history.push("/")}
           registrationMenu={true}
           showBackButton={false}
         />
+    <div style={{backgroundColor:'#F1F4F4'}}>
+      <ThemeProvider theme={theme}>
+
         <Container style={{ display: 'flex', justifyContent: 'center' }}>
           <Grid
             container
@@ -162,12 +164,14 @@ export default function Mentee(props) {
                   <Typography className={classes.pro_typo1}>
                     Emily Lee
                   </Typography>
-                  <img src={linked} style={{ marginLeft: '3%' }} />
+                  <img src={linked} style={{ marginLeft: 10 }} />
                 </Box>
+                <Link to="/edit-profile">
                 <Box component="div" className={classes.pro_typo_div2}>
                   <img src={editIcon} width="23px" height="23px" />
                   <Typography className={classes.edit_txt}>Edit</Typography>
                 </Box>
+                </Link>
               </Box>
               <Typography className={classes.pro_typo2}>
                 Marketing Intern at Propeller Health<br></br>Cognitive Science
@@ -212,8 +216,9 @@ export default function Mentee(props) {
             </Grid>
           </Grid>
         </Container>
-        </Container>
       </ThemeProvider>
     </div>
+    </Container>
+
   );
 }

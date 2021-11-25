@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Menu } from "../../components";
 import { useHistory } from "react-router-dom";
+import './index.css'
+import Footer from "../../components/Footer";
 
 // mui
 import {
@@ -21,13 +23,15 @@ const useStyles = makeStyles((theme) => ({
   },
   Background: {
     backgroundColor: "#F1F4F4",
-    padding: 40,
-    paddingLeft: 120,
-    paddingRight: 120,
+    paddingBottom:'5%',
+
+    // padding: 40,
+    // paddingLeft: 120,
+    // paddingRight: 120,
     "@media (max-width:780px)": {
-      padding: 10,
-      paddingLeft: 10,
-      paddingRight: 10,
+      // padding: 10,
+      // paddingLeft: 10,
+      // paddingRight: 10,
     },
   },
   Navbar: {
@@ -39,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     cursor: "pointer",
     justifyContent: "space-between",
+    borderTop:'1px solid lightgrey',
+
     "@media (max-width:780px)": {
       padding: 25,
       paddingLeft: "10%",
@@ -47,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   WebCard: {
     display:'block',
+    
     "@media (max-width:780px)": {
       display:'none',
     },
@@ -79,9 +86,10 @@ export default function Mentee(props) {
     setViewType(true)
   }
   return (
+    <Container>
+
     <div>
       <ThemeProvider theme={theme}>
-      <Container>
       <Menu
           handleBack={() => history.push("/")}
           registrationMenu={true}
@@ -110,7 +118,7 @@ export default function Mentee(props) {
             Closed
           </Typography>
         </Box>
-        <Container className={classes.Background}>
+        <Box className={classes.Background}>
           <Typography variant="h6" className={classes.tilte}>
             {menteeType === "Active"
               ? "Your active connections"
@@ -131,9 +139,11 @@ export default function Mentee(props) {
           menteeType={menteeType}/>
             </Box>
 
-        </Container>
-        </Container>
+        </Box>
       </ThemeProvider>
+      <Footer/>
     </div>
+    </Container>
+
   );
 }

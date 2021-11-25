@@ -19,6 +19,7 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
+import './index.css';
 // additional packages
 import chat from "../../images/chat.svg";
 import arrow from "../../images/arrow.svg";
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 25,
     paddingRight: 25,
     "@media (max-width:780px)": {
-      width: "300px",
+      width: "340px",
       padding: 15,
       paddingLeft: 25,
       paddingRight: 25,
@@ -71,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 25,
     paddingRight: 25,
     "@media (max-width:780px)": {
-      width: "300px",
+      width: "340px",
       padding: 15,
       paddingLeft: 25,
       paddingRight: 25,
@@ -174,6 +175,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Input: {
     border: "none",
+    width:'100%',
   },
   Navbar: {
     backgroundColor: "white",
@@ -183,6 +185,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "30%",
     display: "flex",
     justifyContent: "space-between",
+    borderTop:'1px solid lightgrey',
     "@media (max-width:780px)": {
       padding: 25,
       paddingLeft: "10%",
@@ -204,9 +207,10 @@ export default function MenteeCard(props) {
   const history = useHistory();
 
   return (
+    <Container>
+
     <div>
       <ThemeProvider theme={theme}>
-        <Container>
         <Menu
           handleBack={() => history.push("/")}
           registrationMenu={true}
@@ -240,7 +244,7 @@ export default function MenteeCard(props) {
                   <img src={arrow} className={classes.ArrowImage} />
                 </Box>
 
-                <Box className={classes.Border}></Box>
+                {/* <Box className={classes.Border}></Box> */}
               </Grid>
               <Grid item lg={8}>
                 <Box className={classes.RightChat}>
@@ -273,8 +277,9 @@ export default function MenteeCard(props) {
               </Grid>
             </Grid>
           </Box>
-        </Container>
       </ThemeProvider>
     </div>
+    </Container>
+
   );
 }

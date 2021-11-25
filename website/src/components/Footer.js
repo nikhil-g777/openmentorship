@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
+import { Button, Grid, Box } from "@material-ui/core";
 
 //imgs
 import Logo from "./images/logo_big.png";
@@ -15,36 +16,23 @@ const Container = styled.div`
   padding-bottom: 40px;
   padding-left: 200px;
   padding-right: 200px;
-  display:flex;
-  justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
+  border-radius:10px
   @media (max-width: 768px) {
     padding-top: 50px;
     padding-bottom: 40px;
     padding-left: 5px;
     padding-right: 5px;
-
+    display: none;
   }
 `;
-
-const ContentWrapper = styled.div`
-  width: 275px;
-  display: flex;
-  margin: 0 auto;
-`;
-
-const LinksContainer = styled.div`
-  width: 191px;
-  height: 62px;
-  display: flex;
-  flex-direction: column;
-`;
-
 const MLogo = styled.img`
   width: 45px;
   height: 43px;
   margin-right: 15px;
   margin-left: 30px;
-  margin-top:-10px;
+  margin-top: -10px;
 `;
 
 const useStyles = makeStyles({
@@ -54,8 +42,25 @@ const useStyles = makeStyles({
     fontWeight: "Bold",
     color: "black",
     "@media (max-width:780px)": {
-      marginLeft:10,
-      display:'block'
+      marginLeft: 10,
+      display: "block",
+      fontSize: 13,
+      marginBottom:20
+
+    },
+  },
+  MobileFooter: {
+    display: "none",
+    "@media (max-width:780px)": {
+      padding: 10,
+      display: "block",
+      paddingTop: '50px',
+      paddingBottom: '40px',
+      paddingLeft: '5px',
+      paddingRight: '5px',
+      backgroundColor: '#f5f3f8',
+      borderRadius:10
+
     },
   },
 });
@@ -63,46 +68,67 @@ export default function Footer(props) {
   const classes = useStyles(props);
 
   return (
-    <Container>
-      {/* <ContentWrapper>
+    <>
+      <Container>
         <div className={classes.logo}>
           <MLogo src={Logo} />
         </div>
-        <LinksContainer>
+        <Link to="/about">
           <a className={classes.Links} href="">
-            <Link to="/about">About</Link>
-          </a>
-
-          <a className={classes.Links} href="">
-            <Link to="">How it Works</Link>
-          </a>
-        </LinksContainer>
-        <LinksContainer>
-          <a className={classes.Links} href="">
-            <Link to="">Contact</Link>
-          </a>
-
-          <a className={classes.Links} href="">
-            <Link to="">Sign In </Link>
-          </a>
-        </LinksContainer> */}
-      {/* </ContentWrapper> */}
-      <div className={classes.logo}>
-          <MLogo src={Logo} />
-        </div>
-        
-        <Link to="/about"><a className={classes.Links} href="">
             About
-          </a></Link>
-          <Link to=""><a className={classes.Links} href="">
-           How it Works
-          </a></Link>
-          <Link to=""> <a className={classes.Links} href="">
-           Contact
-          </a></Link>
-          <Link to=""> <a className={classes.Links} href="">
-         Sign In 
-          </a></Link>
-    </Container>
+          </a>
+        </Link>
+        <Link to="">
+          <a className={classes.Links} href="">
+            How it Works
+          </a>
+        </Link>
+        <Link to="">
+          {" "}
+          <a className={classes.Links} href="">
+            Contact
+          </a>
+        </Link>
+        <Link to="">
+          {" "}
+          <a className={classes.Links} href="">
+            Sign In
+          </a>
+        </Link>
+      </Container>
+      <Box className={classes.MobileFooter}>
+        <Grid container spacing={0}>
+          <Grid item xs={4}>
+            <MLogo src={Logo} />
+          </Grid>
+          <Grid item xs={4}>
+            <Link to="/about">
+              <a className={classes.Links} href="">
+                About
+              </a>
+            </Link>
+            <Link to="">
+              <a className={classes.Links} href="">
+                How it Works
+              </a>
+            </Link>
+          </Grid>
+          <Grid item xs={4}>
+            <Link to="">
+              {" "}
+              <a className={classes.Links} href="">
+                Contact
+              </a>
+            </Link>
+            <Link to="">
+              {" "}
+              <a className={classes.Links} href="">
+                Sign In
+              </a>
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 }

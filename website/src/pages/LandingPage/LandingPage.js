@@ -8,22 +8,15 @@ import WaitlistCard from "./WaitListCard";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Button, Container, Box } from "@material-ui/core";
-
+import { Button,Container, Box } from "@material-ui/core";
+import './index.css'
 //imgs
 import Stairs from "./images/stairs_large.png";
 import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
-// import useMediaQuery from '@mui/material/useMediaQuery';
-//packages
+
 import { useHistory } from "react-router-dom";
 import linkedinImage from "../../images/linkedinsignin.svg";
-// const Container = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   margin: 0 auto;
-
-// `;
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -50,6 +43,7 @@ const HeroWrapper = styled.div`
   background-color: #f5f3f8;
   padding: 1em;
   margin-bottom: 5em;
+  border-radius:10px;
   @media (min-width: 768px) {
     flex-direction: row;
     align-items: center;
@@ -61,7 +55,7 @@ const CheerWrapper = styled.div`
   margin: 0px auto;
   @media (min-width: 768px) {
     margin: 0;
-    max-width: 300px;
+    max-width: 400px;
   }
 `;
 
@@ -70,10 +64,11 @@ const TitleContainer = styled.div`
   width: 100%;
   margin: 0 auto;
   margin-bottom: 40px;
-  text-align: center;
+  text-align: "left";
   @media (min-width: 768px) {
     text-align: left;
-    max-width: 350px;
+    margin-left:60px
+    // max-width: 350px;
   }
 `;
 
@@ -126,11 +121,11 @@ const StairsGreyBg = styled.div`
 
 const StairsImage = styled.img`
   width: 100%;
-  height: auto;
+  height: 500px;
   max-width: 600px;
   display: block;
   margin: 0 auto;
-  margin-top: 22px;
+  padding-top: 20%;
 `;
 
 const OrderedSide = styled.div`
@@ -140,9 +135,9 @@ const OrderedSide = styled.div`
 `;
 
 const PuzzleImage = styled.img`
-  display: block;
-  margin: 0 auto;
-  width: 720px;
+  // display: block;
+  // margin: 0 auto;
+  width: auto;
   @media (max-width: 768px) {
     width: 300px;
   }
@@ -156,6 +151,12 @@ const PuzzleGreyBg = styled.div`
 const CheerImage = styled.img`
   width: 100%;
   margin-bottom: 30%;
+  margin-left:-40%;
+  @media (max-width: 768px) {
+    margin-left:0%;
+
+
+  }
 `;
 
 const CheerTitleBox = styled.div`
@@ -174,7 +175,7 @@ const CheerTitleBox = styled.div`
 
 const useStyles = makeStyles({
   root: {
-    fontFamily: "Roboto",
+    maxWidth:'100%'
   },
   Title: {
     fontSize: 20,
@@ -241,7 +242,7 @@ const useStyles = makeStyles({
     fontSize: "14px",
     lineHeight: "17px",
     marginTop: -40,
-    paddingLeft: 100,
+    paddingLeft: 60,
     display: "block",
     "@media (max-width:780px)": {
       paddingLeft: 10,
@@ -251,7 +252,7 @@ const useStyles = makeStyles({
   LinkedIn: {
     display: "flex",
     marginTop: 20,
-    paddingLeft: 100,
+    paddingLeft: 60,
     "@media (max-width:780px)": {
       paddingLeft: 10,
     },
@@ -284,14 +285,32 @@ const useStyles = makeStyles({
       display: "none",
     },
   },
+  WorkFlex:{
+    display:'flex',
+    "@media (max-width:780px)": {
+      display: "block",
+    },
+  },
+  WorkImage : {
+    width:'auto',
+    "@media (max-width:780px)": {
+      width:'300px',
+    },
+  },
+  DreamCareer : {
+    marginLeft:50,
+    "@media (max-width:780px)": {
+      marginLeft:10,
+    },
+  }
 });
 
 export default function LandingPage(props) {
   const history = useHistory();
   const classes = useStyles(props);
   return (
-    <Container>
-      <div>
+    <Container >
+      <div >
         <Menu
           handleBack={() => history.push("/")}
           registrationMenu={true}
@@ -318,10 +337,10 @@ export default function LandingPage(props) {
             </Box>
           </OrderedSide>
         </HeroWrapper>
-        <FlexWrapper>
-          <PuzzleGreyBg>
-            <PuzzleImage src={Puzzles} />
-          </PuzzleGreyBg>
+        <Box className={classes.WorkFlex}>
+          {/* <PuzzleGreyBg> */}
+            <img src={Puzzles} className={classes.WorkImage}/>
+          {/* </PuzzleGreyBg> */}
           <PaddingWrapper>
             <Typography className={classes.BodyHeader}>How It Works</Typography>
             <Typography className={classes.Header}>Register</Typography>
@@ -339,7 +358,7 @@ export default function LandingPage(props) {
               Engage in a coversation with your mentor or mentee.
             </Typography>
           </PaddingWrapper>
-        </FlexWrapper>
+        </Box>
 
         <FlexWrapper
           style={{
@@ -347,14 +366,15 @@ export default function LandingPage(props) {
             padding: "50px 15px",
             marginTop: 100,
             marginBottom: 100,
+            borderRadius:10
           }}
         >
-          <div style={{ marginTop: 30, maxWidth: "300px" }}>
+          {/* <div style={{ marginTop: 30, maxWidth: "300px" }}> */}
             <Typography className={classes.BodyHeader}>
               Why Open
               <br /> Mentorship?
             </Typography>
-          </div>
+          {/* </div> */}
 
           <FlexItem>
             <div style={{ marginTop: 20 }}>
@@ -399,23 +419,14 @@ export default function LandingPage(props) {
           <CheerWrapper>
             <CheerImage src={Cheer} />
           </CheerWrapper>
-          <div>
-            <CheerTitleBox>
+          <div className={classes.DreamCareer}>
               <Typography className={classes.BodyHeader}>
                 Get on the path of your dream career with us today.
               </Typography>
-            </CheerTitleBox>
-            {/* <div  className={classes.CardsFlux} > */}
-            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
-            {/* </div> */}
-            {/* <Link style={{ margin: "0 auto" }} to="/register">
-              <RegisterButton>Register</RegisterButton>
-            </Link> */}
-            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
           </div>
         </FlexWrapper>
         <Footer />
       </div>
-    </Container>
+     </Container>
   );
 }

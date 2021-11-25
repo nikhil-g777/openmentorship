@@ -21,7 +21,7 @@ import {
 } from "@material-ui/core";
 import boxImage from "../images/imagebox.png";
 import Linkedin from "../images/linkedin.svg";
-
+import AnchorLink from "react-anchor-link-smooth-scroll";
 // additional packages
 import "fontsource-roboto";
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     "@media (max-width:780px)": {
       width: "auto",
-      minWidth:'102px',
+      minWidth: "102px",
       height: "29px",
     },
   },
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     "@media (max-width:780px)": {
       width: "auto",
-      minWidth:'102px',
+      minWidth: "102px",
       height: "29px",
     },
   },
@@ -81,8 +81,7 @@ const useStyles = makeStyles((theme) => ({
     "@media (max-width:780px)": {
       width: "auto",
       height: "29px",
-      minWidth:'102px',
-
+      minWidth: "102px",
     },
   },
   Decline: {
@@ -97,8 +96,7 @@ const useStyles = makeStyles((theme) => ({
     "@media (max-width:780px)": {
       width: "auto",
       height: "29px",
-      minWidth:'102px',
-
+      minWidth: "102px",
     },
   },
   RightGrid: {
@@ -206,6 +204,9 @@ const useStyles = makeStyles((theme) => ({
   },
   MessageInput: {
     border: "none",
+    width:'100%',
+    padding:20,
+    marginTop:20
   },
   buttonFlex: {
     display: "flex",
@@ -292,6 +293,10 @@ export default function MenteeCard(props) {
 
   const handleReconnect = () => {
     setReconnect(true);
+    window.scrollTo(0,document.body.scrollHeight);
+    // document.getElementById('scroll').scrollTop =  document.getElementById('scroll').scrollHeight
+    // const scrollingElement = document.scrollingElement || document.body;
+    // scrollingElement.scrollTop = scrollingElement.scrollHeight;
   };
   return (
     <div>
@@ -392,19 +397,20 @@ export default function MenteeCard(props) {
                   </Box>
                 </Grid>
                 {reconnect ? (
-                  <Box className={classes.Reconnevt}>
+                  <Box className={classes.Reconnevt} >
                     <Typography variant="h5" className={classes.Meghan}>
                       Send a request to {x.name}
                     </Typography>
                     <Typography variant="h6" className={classes.mentor}>
                       Let {x.name} know why you want them as your mentor.{" "}
                     </Typography>
-                    <Box className={classes.MessageArea}>
-                      <input
+                    {/* <Box className={classes.MessageArea}> */}
+                      <textarea
+                      rows={10}
                         placeholder="Type message here..."
                         className={classes.MessageInput}
                       />
-                    </Box>
+                    {/* </Box> */}
                     <Box className={classes.buttonFlex}>
                       <Button
                         className={classes.CancelButton}
@@ -419,6 +425,7 @@ export default function MenteeCard(props) {
               </Grid>
             </Card>
           ))}
+          <Box id="scroll"></Box>
         </Container>
       </ThemeProvider>
     </div>

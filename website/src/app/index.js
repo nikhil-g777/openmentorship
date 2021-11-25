@@ -24,19 +24,6 @@ import { theme } from './GlobalTheme';
 import PostRegistration from '../pages/Register/postRegistration/PostRegistration';
 import { UserContext, UserProvider } from '../context/UserContext';
 import { getUserInfo } from '../api';
-//   Mentor
-// } from "../pages";
-// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-// import CssBaseline from "@material-ui/core/CssBaseline";
-// import { ThemeProvider } from "@material-ui/core/styles";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import { LinkedInPopUp } from "react-linkedin-login-oauth2";
-// import PrivateRoute from "./PrivateRoute";
-// import { AuthContext } from "../context/auth";
-// import { theme } from "./GlobalTheme";
-// import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
-// import { UserContext, UserProvider } from "../context/UserContext";
-// import { getUserInfo } from "../api";
 
 function App() {
   return (
