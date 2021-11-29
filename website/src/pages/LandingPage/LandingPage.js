@@ -308,19 +308,19 @@ export default function LandingPage(props) {
   return (
     <div>
       {/* <Container > */}
-      {/* <div
+      <div
         style={{
           backgroundColor: "white",
         }}
       >
-        <Container> */}
+        <Container>
           <Menu
             handleBack={() => history.push("/")}
             registrationMenu={true}
             showBackButton={false}
           />
-        {/* </Container> */}
-      {/* // </div> */}
+        </Container> 
+      </div>
       <div
         style={{
           backgroundColor: "#f5f3f8",

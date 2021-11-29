@@ -22,9 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
   Background: {
     backgroundColor: "#F1F4F4",
-    paddingBottom:'5%',
-    "@media (max-width:780px)": {
-    },
+    paddingBottom: "5%",
+    "@media (max-width:780px)": {},
   },
   Navbar: {
     backgroundColor: "white",
@@ -43,18 +42,18 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   WebCard: {
-    display:'block',
-    
+    display: "block",
+
     "@media (max-width:780px)": {
-      display:'none',
+      display: "none",
     },
   },
   MobileCard: {
-    display:'none',
+    display: "none",
     "@media (max-width:780px)": {
-      display:'block',
+      display: "block",
     },
-  }
+  },
 }));
 
 const theme = createMuiTheme({
@@ -74,79 +73,86 @@ export default function Mentee(props) {
     setMenteeType(value);
   };
   const viewProfile = () => {
-    setViewType(true)
-  }
+    setViewType(true);
+  };
   return (
     // <Container>
 
     <div>
       <ThemeProvider theme={theme}>
-      <Menu
-          handleBack={() => history.push("/")}
-          registrationMenu={true}
-          showBackButton={false}
-        />
-                <div style={{backgroundColor:'white',   borderTop:'1px solid lightgrey',}}>
-          <Container >
-        <Box className={classes.Navbar}>
-          <Typography
-            variant="p"
-            style={{ color: menteeType === "Active" ? "#51B6A5" : "" }}
-            onClick={() => handleType("Active")}
-          >
-            Active
-          </Typography>
-          <Typography
-            variant="p"
-            style={{ color: menteeType === "Pending" ? "#51B6A5" : "" }}
-            onClick={() => handleType("Pending")}
-          >
-            Pending
-          </Typography>
-          <Typography
-            variant="p"
-            style={{ color: menteeType === "Closed" ? "#51B6A5" : "" }}
-            onClick={() => handleType("Closed")}
-          >
-            Closed
-          </Typography>
-        </Box>
-        </Container>
+      <div
+        style={{
+          backgroundColor: "white",
+        }}
+      >
+        <Container>
+          <Menu
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
+        </Container> 
+      </div>
+        <div
+          style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
+        >
+          <Container>
+            <Box className={classes.Navbar}>
+              <Typography
+                variant="p"
+                style={{ color: menteeType === "Active" ? "#51B6A5" : "" }}
+                onClick={() => handleType("Active")}
+              >
+                Active
+              </Typography>
+              <Typography
+                variant="p"
+                style={{ color: menteeType === "Pending" ? "#51B6A5" : "" }}
+                onClick={() => handleType("Pending")}
+              >
+                Pending
+              </Typography>
+              <Typography
+                variant="p"
+                style={{ color: menteeType === "Closed" ? "#51B6A5" : "" }}
+                onClick={() => handleType("Closed")}
+              >
+                Closed
+              </Typography>
+            </Box>
+          </Container>
         </div>
-        
+
         <Box className={classes.Background}>
           <Container>
-          <Typography variant="h6" className={classes.tilte}>
-            {menteeType === "Active"
-              ? "Your active connections"
-              : menteeType === "Pending"
-              ? "Your pending connections"
-              : "Your past connections"}
-          </Typography>
-          <Box className={classes.MobileCard} style={{display:viewType? 'none':''}}>
-            <MenteeMobileCard
-           viewProfile={viewProfile} />
+            <Typography variant="h6" className={classes.tilte}>
+              {menteeType === "Active"
+                ? "Your active connections"
+                : menteeType === "Pending"
+                ? "Your pending connections"
+                : "Your past connections"}
+            </Typography>
+            <Box
+              className={classes.MobileCard}
+              style={{ display: viewType ? "none" : "" }}
+            >
+              <MenteeMobileCard viewProfile={viewProfile} />
             </Box>
-            <Box style={{display:viewType? '':'none'}}>
-            <MenteeCard 
-          menteeType={menteeType}/>
-          </Box >
+            <Box style={{ display: viewType ? "" : "none" }}>
+              <MenteeCard menteeType={menteeType} />
+            </Box>
             <Box className={classes.WebCard}>
-          <MenteeCard 
-          menteeType={menteeType}/>
+              <MenteeCard menteeType={menteeType} />
             </Box>
-            </Container>
-
+          </Container>
         </Box>
       </ThemeProvider>
-      <div style={{backgroundColor:'#f5f3f8'}}>
+      <div style={{ backgroundColor: "#f5f3f8" }}>
         <Container>
-      <Footer/>
-
+          <Footer />
         </Container>
       </div>
     </div>
     // </Container>
-
   );
 }

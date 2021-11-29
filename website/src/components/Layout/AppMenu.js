@@ -17,9 +17,9 @@ const Wrapper = styled.section`
   padding-right: 16px;
   padding-top: 14px;
   padding-bottom: 14.69px;
-  -webkit-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
+  // -webkit-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
+  // -moz-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
+  // box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
 `;
 
 const Picture = styled.div`
@@ -257,10 +257,10 @@ const AppMenu = (props) => {
         <BackButton onClick={props.handleBack} />
       )} */}
       <Box className="web-navbar">
-      <Link style={{marginRight:30,color:'black'}}>Discover</Link>
-      <Link  to="/mentee" style={{marginRight:30,color:'black'}}>Matches</Link>
+      <Link style={{marginRight:30,color:'black',textDecoration:'none'}}>Discover</Link>
+      <Link  to="/mentee" style={{marginRight:30,color:'black',textDecoration:'none'}}>Matches</Link>
 
-      <Link to="/chat"  style={{color:'black'}}>Chat</Link>
+      <Link to="/chat"  style={{color:'black',textDecoration:'none'}}>Chat</Link>
       </Box>
       <LogoImg/>
       <UserIconWrapper>

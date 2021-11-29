@@ -131,11 +131,19 @@ export default function Mentee(props) {
   const data = [1, 1, 1, 1, 1, 1];
   return (
     <div>
-      <Menu
-        handleBack={() => history.push("/")}
-        registrationMenu={true}
-        showBackButton={false}
-      />
+      <div
+        style={{
+          backgroundColor: "white",
+        }}
+      >
+        <Container>
+          <Menu
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
+        </Container> 
+      </div>
       <div style={{ backgroundColor: "#F1F4F4",paddingBottom:50 }}>
         <Container>
           <ThemeProvider theme={theme}>

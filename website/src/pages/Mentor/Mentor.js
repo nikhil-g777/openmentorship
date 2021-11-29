@@ -82,11 +82,19 @@ export default function Mentor(props) {
     <div>
 
       <ThemeProvider theme={theme}>
-      <Menu
-          handleBack={() => history.push("/")}
-          registrationMenu={true}
-          showBackButton={false}
-        />
+      <div
+        style={{
+          backgroundColor: "white",
+        }}
+      >
+        <Container>
+          <Menu
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
+        </Container> 
+      </div>
         <div style={{backgroundColor:'white',   borderTop:'1px solid lightgrey',}}>
           <Container >
         <Box className={classes.Navbar}>
