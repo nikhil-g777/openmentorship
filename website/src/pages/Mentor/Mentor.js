@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Menu } from "../../components";
-import './index.css'
+import Footer from "../../components/Footer";
 
 // mui
 import {
@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
   Background: {
     backgroundColor: "#F1F4F4",
+    paddingBottom:'5%',
+
     "@media (max-width:780px)": {
     },
   },
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     cursor: "pointer",
     justifyContent: "space-between",
-    borderTop:'1px solid lightgrey',
+ 
     "@media (max-width:780px)": {
       padding: 25,
       paddingLeft: "10%",
@@ -76,7 +78,6 @@ export default function Mentor(props) {
     setViewType(true)
   }
   return (
-    <Container>
 
     <div>
 
@@ -86,7 +87,10 @@ export default function Mentor(props) {
           registrationMenu={true}
           showBackButton={false}
         />
+        <div style={{backgroundColor:'white',   borderTop:'1px solid lightgrey',}}>
+          <Container >
         <Box className={classes.Navbar}>
+
           <Typography
             variant="p"
             style={{ color: menteeType === "Active" ? "#51B6A5" : "" }}
@@ -108,8 +112,13 @@ export default function Mentor(props) {
           >
             Closed
           </Typography>
-        </Box>
+          </Box>
+          </Container>
+          </div>
+        
         <Box className={classes.Background}>
+          <Container>
+
           <Typography variant="h6" className={classes.tilte}>
             {menteeType === "Active"
               ? "Your active connections"
@@ -129,10 +138,18 @@ export default function Mentor(props) {
           <MenteeCard 
           menteeType={menteeType}/>
             </Box>
+    </Container>
+
         </Box>
       </ThemeProvider>
+      <div style={{backgroundColor:'#f5f3f8'}}>
+        <Container>
+      <Footer/>
+
+        </Container>
+      </div>
+
     </div>
-    </Container>
 
   );
 }

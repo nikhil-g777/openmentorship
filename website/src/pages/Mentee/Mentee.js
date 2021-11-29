@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Menu } from "../../components";
 import { useHistory } from "react-router-dom";
-import './index.css'
 import Footer from "../../components/Footer";
 
 // mui
@@ -24,14 +23,7 @@ const useStyles = makeStyles((theme) => ({
   Background: {
     backgroundColor: "#F1F4F4",
     paddingBottom:'5%',
-
-    // padding: 40,
-    // paddingLeft: 120,
-    // paddingRight: 120,
     "@media (max-width:780px)": {
-      // padding: 10,
-      // paddingLeft: 10,
-      // paddingRight: 10,
     },
   },
   Navbar: {
@@ -43,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     cursor: "pointer",
     justifyContent: "space-between",
-    borderTop:'1px solid lightgrey',
 
     "@media (max-width:780px)": {
       padding: 25,
@@ -86,7 +77,7 @@ export default function Mentee(props) {
     setViewType(true)
   }
   return (
-    <Container>
+    // <Container>
 
     <div>
       <ThemeProvider theme={theme}>
@@ -95,6 +86,8 @@ export default function Mentee(props) {
           registrationMenu={true}
           showBackButton={false}
         />
+                <div style={{backgroundColor:'white',   borderTop:'1px solid lightgrey',}}>
+          <Container >
         <Box className={classes.Navbar}>
           <Typography
             variant="p"
@@ -118,7 +111,11 @@ export default function Mentee(props) {
             Closed
           </Typography>
         </Box>
+        </Container>
+        </div>
+        
         <Box className={classes.Background}>
+          <Container>
           <Typography variant="h6" className={classes.tilte}>
             {menteeType === "Active"
               ? "Your active connections"
@@ -138,12 +135,18 @@ export default function Mentee(props) {
           <MenteeCard 
           menteeType={menteeType}/>
             </Box>
+            </Container>
 
         </Box>
       </ThemeProvider>
+      <div style={{backgroundColor:'#f5f3f8'}}>
+        <Container>
       <Footer/>
+
+        </Container>
+      </div>
     </div>
-    </Container>
+    // </Container>
 
   );
 }

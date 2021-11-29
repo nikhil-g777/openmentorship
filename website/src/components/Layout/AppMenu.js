@@ -4,7 +4,7 @@ import LogoNavBar from "../../images/LogoNavBar.png";
 import userIcon from "../../images/user.svg";
 import backIcon from "../../images/backIcon.svg";
 
-import { Divider, MenuItem, Menu ,Box} from "@material-ui/core";
+import { Divider, MenuItem, Menu ,Box,Container} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import './index.css';
@@ -30,6 +30,7 @@ const Picture = styled.div`
 const LogoImg = styled(Picture)`
   background-size: cover;
   background-image: url(${LogoNavBar});
+  margin-right:150px;
 `;
 
 const UserIconWrapper = styled.div`
@@ -247,7 +248,9 @@ const AppMenu = (props) => {
   };
 
   return (
+    
     <Wrapper>
+      
       {/* {props.showBackButton == false ? (
         <Picture />
       ) : (
@@ -255,11 +258,11 @@ const AppMenu = (props) => {
       )} */}
       <Box className="web-navbar">
       <Link style={{marginRight:30,color:'black'}}>Discover</Link>
-      <Link  style={{marginRight:30,color:'black'}}>Matches</Link>
+      <Link  to="/mentee" style={{marginRight:30,color:'black'}}>Matches</Link>
 
-      <Link  style={{color:'black'}}>Chat</Link>
+      <Link to="/chat"  style={{color:'black'}}>Chat</Link>
       </Box>
-      <LogoImg />
+      <LogoImg/>
       <UserIconWrapper>
         <UserIcon onClick={handleMenu} />
       </UserIconWrapper>

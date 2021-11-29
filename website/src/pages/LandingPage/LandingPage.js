@@ -8,8 +8,8 @@ import WaitlistCard from "./WaitListCard";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Button,Container, Box } from "@material-ui/core";
-import './index.css'
+import { Button, Container, Box } from "@material-ui/core";
+
 //imgs
 import Stairs from "./images/stairs_large.png";
 import Puzzles from "./images/puzzles.png";
@@ -43,7 +43,7 @@ const HeroWrapper = styled.div`
   background-color: #f5f3f8;
   padding: 1em;
   margin-bottom: 5em;
-  border-radius:10px;
+  border-radius: 10px;
   @media (min-width: 768px) {
     flex-direction: row;
     align-items: center;
@@ -67,7 +67,7 @@ const TitleContainer = styled.div`
   text-align: "left";
   @media (min-width: 768px) {
     text-align: left;
-    margin-left:70px
+    margin-left: 70px;
     // max-width: 350px;
   }
 `;
@@ -151,11 +151,9 @@ const PuzzleGreyBg = styled.div`
 const CheerImage = styled.img`
   width: 100%;
   margin-bottom: 30%;
-  margin-left:-40%;
+  margin-left: -40%;
   @media (max-width: 768px) {
-    margin-left:0%;
-
-
+    margin-left: 0%;
   }
 `;
 
@@ -168,14 +166,13 @@ const CheerTitleBox = styled.div`
   margin-top: 39px;
   @media (max-width: 768px) {
     margin-bottom: 60px;
-  margin-top: 9px;
-
+    margin-top: 9px;
   }
 `;
 
 const useStyles = makeStyles({
   root: {
-    maxWidth:'100%'
+    maxWidth: "100%",
   },
   Title: {
     fontSize: 20,
@@ -280,66 +277,83 @@ const useStyles = makeStyles({
   },
   LinkedImage: {
     display: "block",
-    cursor:'pointer',
+    cursor: "pointer",
     "@media (max-width:780px)": {
       display: "none",
     },
   },
-  WorkFlex:{
-    display:'flex',
+  WorkFlex: {
+    display: "flex",
     "@media (max-width:780px)": {
       display: "block",
     },
   },
-  WorkImage : {
-    width:'auto',
+  WorkImage: {
+    width: "auto",
     "@media (max-width:780px)": {
-      width:'300px',
+      width: "300px",
     },
   },
-  DreamCareer : {
-    marginLeft:50,
+  DreamCareer: {
+    marginLeft: 50,
     "@media (max-width:780px)": {
-      marginLeft:10,
+      marginLeft: 10,
     },
-  }
+  },
 });
 
 export default function LandingPage(props) {
   const history = useHistory();
   const classes = useStyles(props);
   return (
-    <Container >
-      <div >
-        <Menu
-          handleBack={() => history.push("/")}
-          registrationMenu={true}
-          showBackButton={false}
-        />
-        <HeroWrapper>
-          <StairsGreyBg>
-            <StairsImage src={Stairs} />
-          </StairsGreyBg>
-          <OrderedSide>
-            <TitleContainer>
-              <HeroTitle>
-                Find a mentor who can help guide you to success.{" "}
-              </HeroTitle>
-            </TitleContainer>
-            <Typography variant="h6" className={classes.SubTitle}>
-              Currently open for designers, software professionals
-            </Typography>
-            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
-            <Box className={classes.LinkedIn}>
-              <img src={linkedinImage} className={classes.LinkedImage} />
-              <span className={classes.Or}>or</span>
-              <RegisterButton>Register</RegisterButton>
-            </Box>
-          </OrderedSide>
-        </HeroWrapper>
+    <div>
+      {/* <Container > */}
+      {/* <div
+        style={{
+          backgroundColor: "white",
+        }}
+      >
+        <Container> */}
+          <Menu
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
+        {/* </Container> */}
+      {/* // </div> */}
+      <div
+        style={{
+          backgroundColor: "#f5f3f8",
+        }}
+      >
+        <Container>
+          <HeroWrapper>
+            <StairsGreyBg>
+              <StairsImage src={Stairs} />
+            </StairsGreyBg>
+            <OrderedSide>
+              <TitleContainer>
+                <HeroTitle>
+                  Find a mentor who can help guide you to success.{" "}
+                </HeroTitle>
+              </TitleContainer>
+              <Typography variant="h6" className={classes.SubTitle}>
+                Currently open for designers, software professionals
+              </Typography>
+              {/* <WaitlistCard className={classes.WaitlistCard} /> */}
+              <Box className={classes.LinkedIn}>
+                <img src={linkedinImage} className={classes.LinkedImage} />
+                <span className={classes.Or}>or</span>
+                <RegisterButton>Register</RegisterButton>
+              </Box>
+            </OrderedSide>
+          </HeroWrapper>
+        </Container>
+      </div>
+      <Container>
         <Box className={classes.WorkFlex}>
           {/* <PuzzleGreyBg> */}
-            <img src={Puzzles} className={classes.WorkImage}/>
+          <img src={Puzzles} className={classes.WorkImage} />
           {/* </PuzzleGreyBg> */}
           <PaddingWrapper>
             <Typography className={classes.BodyHeader}>How It Works</Typography>
@@ -359,74 +373,95 @@ export default function LandingPage(props) {
             </Typography>
           </PaddingWrapper>
         </Box>
-
-        <FlexWrapper
-          style={{
-            backgroundColor: "#f5f3f8",
-            padding: "50px 15px",
-            marginTop: 100,
-            marginBottom: 100,
-            borderRadius:10
-          }}
-        >
-          {/* <div style={{ marginTop: 30, maxWidth: "300px" }}> */}
+      </Container>
+      <div
+        style={{
+          backgroundColor: "#f5f3f8",
+        }}
+      >
+        <Container>
+          <FlexWrapper
+            style={{
+              backgroundColor: "#f5f3f8",
+              padding: "50px 15px",
+              marginTop: 100,
+              marginBottom: 100,
+              borderRadius: 10,
+            }}
+          >
+            {/* <div style={{ marginTop: 30, maxWidth: "300px" }}> */}
             <Typography className={classes.BodyHeader}>
               Why Open
               <br /> Mentorship?
             </Typography>
-          {/* </div> */}
+            {/* </div> */}
 
-          <FlexItem>
-            <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>Career Advice</Typography>
-              <Typography className={classes.Body}>
-                Receive career advice from professionals with years of
-                experience in your field, and feel confident moving forward in
-                your career.
-              </Typography>
-            </div>
-            <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>
-                Strengthen your work
-              </Typography>
-              <Typography className={classes.Body}>
-                Share your portfolio, work examples, or resume with mentors and
-                receive constructive feedback before your next big interview.
-              </Typography>
-            </div>
-          </FlexItem>
-          <FlexItem>
-            <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>
-                Expand your network
-              </Typography>
-              <Typography className={classes.Body}>
-                Both mentees and mentors can grow their network and make lasting
-                connections that could benefit both careers in the future.
-              </Typography>
-            </div>
-            <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>Guidance</Typography>
-              <Typography className={classes.Body}>
-                Explore your career options and feel empowered making your next
-                decision towards your dream job.
-              </Typography>
-            </div>
-          </FlexItem>
-        </FlexWrapper>
+            <FlexItem>
+              <div style={{ marginTop: 20 }}>
+                <Typography className={classes.Header3}>
+                  Career Advice
+                </Typography>
+                <Typography className={classes.Body}>
+                  Receive career advice from professionals with years of
+                  experience in your field, and feel confident moving forward in
+                  your career.
+                </Typography>
+              </div>
+              <div style={{ marginTop: 20 }}>
+                <Typography className={classes.Header3}>
+                  Strengthen your work
+                </Typography>
+                <Typography className={classes.Body}>
+                  Share your portfolio, work examples, or resume with mentors
+                  and receive constructive feedback before your next big
+                  interview.
+                </Typography>
+              </div>
+            </FlexItem>
+            <FlexItem>
+              <div style={{ marginTop: 20 }}>
+                <Typography className={classes.Header3}>
+                  Expand your network
+                </Typography>
+                <Typography className={classes.Body}>
+                  Both mentees and mentors can grow their network and make
+                  lasting connections that could benefit both careers in the
+                  future.
+                </Typography>
+              </div>
+              <div style={{ marginTop: 20 }}>
+                <Typography className={classes.Header3}>Guidance</Typography>
+                <Typography className={classes.Body}>
+                  Explore your career options and feel empowered making your
+                  next decision towards your dream job.
+                </Typography>
+              </div>
+            </FlexItem>
+          </FlexWrapper>
+        </Container>
+      </div>
 
+      <Container>
         <FlexWrapper>
           <CheerWrapper>
             <CheerImage src={Cheer} />
           </CheerWrapper>
           <div className={classes.DreamCareer}>
-              <Typography className={classes.BodyHeader}>
-                Get on the path of your dream career with us today.
-              </Typography>
+            <Typography className={classes.BodyHeader}>
+              Get on the path of your dream career with us today.
+            </Typography>
           </div>
         </FlexWrapper>
-        <Footer />
+      </Container>
+      <div
+        style={{
+          backgroundColor: "#f5f3f8",
+        }}
+      >
+        <Container>
+          <Footer />
+        </Container>
       </div>
-     </Container>
+    </div>
   );
 }

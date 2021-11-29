@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
+import Footer from "../../components/Footer";
 // mui
 import {
   createMuiTheme,
@@ -19,7 +19,6 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-import './index.css';
 // additional packages
 import chat from "../../images/chat.svg";
 import arrow from "../../images/arrow.svg";
@@ -146,8 +145,7 @@ const useStyles = makeStyles((theme) => ({
       width: "auto",
       marginRight: 10,
       height: "88px",
-      marginLeft:10
-
+      marginLeft: 10,
     },
     // justifyContent:'flex-end'
   },
@@ -175,7 +173,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Input: {
     border: "none",
-    width:'100%',
+    width: "100%",
   },
   Navbar: {
     backgroundColor: "white",
@@ -185,16 +183,15 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "30%",
     display: "flex",
     justifyContent: "space-between",
-    borderTop:'1px solid lightgrey',
     "@media (max-width:780px)": {
       padding: 25,
       paddingLeft: "10%",
       paddingRight: "10%",
     },
   },
-  styleFlex:{
-      display:'flex'
-  }
+  styleFlex: {
+    display: "flex",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -207,8 +204,6 @@ export default function MenteeCard(props) {
   const history = useHistory();
 
   return (
-    <Container>
-
     <div>
       <ThemeProvider theme={theme}>
         <Menu
@@ -216,70 +211,86 @@ export default function MenteeCard(props) {
           registrationMenu={true}
           showBackButton={false}
         />
-          <Box className={classes.Navbar}>
-            <Typography variant="p" style={{ color: "#51B6A5" }}>
-              Chat
-            </Typography>
-            <Typography variant="p">Questions</Typography>
-            <Typography variant="p">Meetings</Typography>
-          </Box>
-          <Box className={classes.Background}>
-            <Grid container spacing={3} className={classes.padding}>
-              <Grid item lg={4} sm={12}>
-                <Typography variant="h5" className={classes.Chat}>
-                  Chat
-                </Typography>
-                <Box className={classes.GreenBox}>
-                  <Typography variant="h6">
-                    <img src={chat} className={classes.MarginImage} /> Meghan
-                    Raab
+        <div
+          style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
+        >
+          <Container>
+            <Box className={classes.Navbar}>
+              <Typography variant="p" style={{ color: "#51B6A5" }}>
+                Chat
+              </Typography>
+              <Typography variant="p">Questions</Typography>
+              <Typography variant="p">Meetings</Typography>
+            </Box>
+          </Container>
+        </div>
+        <div
+          style={{backgroundColor:'#F1F4F4' ,paddingBottom:30}}
+        >
+          <Container>
+            <Box className={classes.Background}>
+              <Grid container spacing={3} className={classes.padding}>
+                <Grid item lg={4} sm={12}>
+                  <Typography variant="h5" className={classes.Chat}>
+                    Chat
                   </Typography>
-                  <img src={arrow} className={classes.ArrowImage} />
-                </Box>
-                <Box className={classes.WhiteBox}>
-                  <Typography variant="h6">
-                    <img src={chat} className={classes.MarginImage} /> Erin
-                    Rapaport
-                  </Typography>
-                  <img src={arrow} className={classes.ArrowImage} />
-                </Box>
+                  <Box className={classes.GreenBox}>
+                    <Typography variant="h6">
+                      <img src={chat} className={classes.MarginImage} /> Meghan
+                      Raab
+                    </Typography>
+                    <img src={arrow} className={classes.ArrowImage} />
+                  </Box>
+                  <Box className={classes.WhiteBox}>
+                    <Typography variant="h6">
+                      <img src={chat} className={classes.MarginImage} /> Erin
+                      Rapaport
+                    </Typography>
+                    <img src={arrow} className={classes.ArrowImage} />
+                  </Box>
 
-                {/* <Box className={classes.Border}></Box> */}
-              </Grid>
-              <Grid item lg={8}>
-                <Box className={classes.RightChat}>
-                  <Typography variant="p" className={classes.Datee}>
-                    MONDAY, APRIL 20
-                  </Typography>
-                  <Box className={classes.FlexChat}>
-                    <img src={chat} className={classes.MarginImage1} />
-                    <Box className={classes.GrayBox}>
-                      Hi! I’m looking forward to working with you!
+                  {/* <Box className={classes.Border}></Box> */}
+                </Grid>
+                <Grid item lg={8}>
+                  <Box className={classes.RightChat}>
+                    <Typography variant="p" className={classes.Datee}>
+                      MONDAY, APRIL 20
+                    </Typography>
+                    <Box className={classes.FlexChat}>
+                      <img src={chat} className={classes.MarginImage1} />
+                      <Box className={classes.GrayBox}>
+                        Hi! I’m looking forward to working with you!
+                      </Box>
+                    </Box>
+
+                    <Box className={classes.SenderChatBox}>
+                      Hi Meghan! Thanks, I’m excited to get to know you more,
+                      and hopefully learn from each other!
                     </Box>
                   </Box>
 
-                  <Box className={classes.SenderChatBox}>
-                    Hi Meghan! Thanks, I’m excited to get to know you more, and
-                    hopefully learn from each other!
+                  <Box className={classes.SendBox}>
+                    <Box className={classes.styleFlex}>
+                      <img src={sendMessage} className={classes.uploadImage} />{" "}
+                      <input
+                        placeholder=" Type a message"
+                        className={classes.Input}
+                      />
+                    </Box>
+                    <img src={upload} className={classes.Message} />
                   </Box>
-                </Box>
-
-                <Box className={classes.SendBox}>
-                  <Box className={classes.styleFlex}>
-                    <img src={sendMessage} className={classes.uploadImage} />{" "}
-                    <input
-                      placeholder=" Type a message"
-                      className={classes.Input}
-                    />
-                  </Box>
-                  <img src={upload} className={classes.Message} />
-                </Box>
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
+            </Box>
+          </Container>
+        </div>
       </ThemeProvider>
-    </div>
-    </Container>
+      <div style={{backgroundColor:'#f5f3f8'}}>
+        <Container>
+      <Footer/>
 
+        </Container>
+      </div>
+    </div>
   );
 }
