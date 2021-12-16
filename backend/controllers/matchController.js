@@ -28,24 +28,29 @@ const createMatch = (req, res) => {
 
   const { menteeId, mentorId, requestMessage } = body.match;
 
-  Match.create(
-    {
-      mentee: menteeId,
-      mentor: mentorId,
-      requestMessage,
-    },
-    (err, createdMatch) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({ success: false, error: err });
+  Match.exists({ mentee: menteeId, mentor: mentorId })
+    .then((exists) => {
+      if (exists) {
+        return res
+          .status(500)
+          .json({ success: false, error: 'Match already exists' });
       }
-
+      return Match.create({
+        mentee: menteeId,
+        mentor: mentorId,
+        requestMessage,
+      });
+    })
+    .then((createdMatch) => {
       return res.status(200).json({
         success: true,
         match: createdMatch,
       });
-    },
-  );
+    })
+    .catch((e) => {
+      console.log(e);
+      return res.status(500).json({ success: false });
+    });
 };
 
 const updateMatch = (req, res) => {
@@ -72,15 +77,17 @@ const updateMatch = (req, res) => {
     .exec()
     .then((match) => {
       const { mentee, mentor } = match;
+      const results = {};
       if (match.status === 'pending' && status === 'active') {
-        Session.create({
-          startDate: moment.utc().toDate().toUTCString(),
-          status: 'active',
-          requestMessage: match.requestMessage,
-          match: match._id,
-        })
-          .then((session) => {
-            createChatConversation(mentee, mentor).then((result) => {
+        createChatConversation(mentee, mentor)
+          .then((chatResult) => {
+            return Session.create({
+              match: match._id,
+              requestMessage: match.requestMessage,
+              startDate: moment.utc().toDate().toUTCString(),
+              status: 'active',
+              twilioConversationSid: chatResult.conversationSid,
+            }).then((session) => {
               return Match.findByIdAndUpdate(matchId, {
                 status,
                 latestSession: session._id,
