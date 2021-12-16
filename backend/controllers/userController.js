@@ -92,7 +92,7 @@ const loginUser = (req, res) => {
 
   getLinkedInProfile(body.authCode)
     .then((linkedInProfile) => {
-      return User.findOne({ linkedInId: linkedInProfile.linkedInId });
+      return User.findOne({ linkedInId: linkedInProfile.linkedInId }).exec();
     })
     .then((user) => {
       if (user) {
@@ -167,8 +167,6 @@ const registerUser = (req, res) => {
         } else {
           userObj = new User(results.linkedInProfile);
         }
-        userObj.headline = body.headline;
-        userObj.bio = body.bio;
         return userObj.save();
       })
       .then((updatedUser) => {
@@ -212,7 +210,7 @@ const registerUser = (req, res) => {
         console.log(err);
         return res.status(500).json({
           success: false,
-          error: 'Error in registering he user',
+          error: 'Error in registering the user',
         });
       });
   } else if (body.type == 'completeRegistration') {
