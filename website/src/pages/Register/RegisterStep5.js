@@ -13,6 +13,11 @@ const RegisterStep5 = (props) => {
       _id: user._id,
       register: true,
       user: {
+        firstName: props.values.firstName,
+        lastName: props.values.lastName,
+        email: props.values.email,
+        headline: props.values.headline,
+        bio: props.values.bio,
         userType: props.values.userType,
         careerStatus: props.values.careerStatus,
         areasOfInterest: props.values.areasOfInterest,

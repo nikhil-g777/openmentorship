@@ -15,6 +15,8 @@ export default function RegisterForm() {
   const history = useHistory();
 
   const [state, setState] = useState({
+    headline: "",
+    bio: "",
     userType: "mentee",
     careerStatus: "Student",
     areasOfInterest: {
@@ -141,6 +143,11 @@ export default function RegisterForm() {
     }));
   };
   const {
+    firstName,
+    lastName,
+    email,
+    headline,
+    bio,
     userType,
     careerStatus,
     areasOfInterest,
@@ -153,6 +160,11 @@ export default function RegisterForm() {
     socialLinks,
   } = state;
   const values = {
+    firstName,
+    lastName,
+    email,
+    headline,
+    bio,
     userType,
     careerStatus,
     areasOfInterest,
@@ -173,6 +185,7 @@ export default function RegisterForm() {
           <RegisterMain
             handleInput={handleInput}
             values={values}
+            handleUpdate={handleUpdate}
             handleNext={handleNext}
           />
         </>
