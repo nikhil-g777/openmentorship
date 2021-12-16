@@ -20,13 +20,4 @@ router.get(
   sessionController.sessionList,
 );
 
-// Create a Session
-// Add admin auth for this
-router.post(
-  '/create',
-  passport.authenticate('jwt', { session: false }),
-  util.checkRole([role.admin]),
-  sessionController.create,
-);
-
 module.exports = router;

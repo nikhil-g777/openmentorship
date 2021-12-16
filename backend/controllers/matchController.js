@@ -1,6 +1,11 @@
+/* eslint no-unused-vars: 0 */
+
+const moment = require('moment');
+
 const { createChatConversation } = require('../config/twilio');
 
 const Match = require('../models/match');
+const Session = require('../models/session');
 
 // Created when there is a request from a mentee
 const createMatch = (req, res) => {
@@ -67,29 +72,58 @@ const updateMatch = (req, res) => {
     .exec()
     .then((match) => {
       const { mentee, mentor } = match;
-      if (match.status === 'pending' && status === 'active')
-        createChatConversation(mentee, mentor).then((result) => {
-          return Match.findByIdAndUpdate(matchId, {
-            status,
-            twilioConversationSid: result.conversationSid,
-          }).exec();
-        });
-      else if (
+      if (match.status === 'pending' && status === 'active') {
+        Session.create({
+          startDate: moment.utc().toDate().toUTCString(),
+          status: 'active',
+          requestMessage: match.requestMessage,
+          match: match._id,
+        })
+          .then((session) => {
+            createChatConversation(mentee, mentor).then((result) => {
+              return Match.findByIdAndUpdate(matchId, {
+                status,
+                latestSession: session._id,
+              }).exec();
+            });
+          })
+          .then((updatedMatch) => {
+            console.log(updatedMatch);
+            return res.status(200).json({
+              success: true,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+            return res.status(500).json({ success: false });
+          });
+      } else if (
         (match.status == 'active' || match.status == 'pending') &&
         status == 'closed'
       ) {
         return Match.findByIdAndUpdate(matchId, {
           status,
-        }).exec();
+        })
+          .exec()
+          .then((updadedMatch) => {
+            return Session.findByIdAndUpdate(updadedMatch.latestSession, {
+              status,
+              emdDate: moment.utc().toDate().toUTCString(),
+            });
+          })
+          .then((updatedSession) => {
+            console.log(updatedSession);
+            return res.status(200).json({
+              success: true,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+            return res.status(500).json({ success: false });
+          });
       } else {
         throw new Error('Invalid Request');
       }
-    })
-    .then((updatedMatch) => {
-      console.log(updatedMatch);
-      return res.status(200).json({
-        success: true,
-      });
     })
     .catch((e) => {
       console.log(e);
