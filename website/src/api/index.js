@@ -25,6 +25,7 @@ export const getUserInfo = (payload) => {
 };
 
 export const getUserMatches = (payload) => {
+  console.log("hello")
   return api.get(`/matches/list/${payload._id}`, {
     headers: { authorization: `Bearer ${getToken()}` }
   });

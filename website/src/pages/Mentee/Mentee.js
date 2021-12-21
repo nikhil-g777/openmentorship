@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import styled from "styled-components";
 import { Menu } from "../../components";
 import { useHistory } from "react-router-dom";
 import Footer from "../../components/Footer";
+import { getUserMatches } from "../../api";
+import { UserContext } from "../../context/UserContext";
 
 // mui
 import {
@@ -65,7 +67,13 @@ const theme = createMuiTheme({
 export default function Mentee(props) {
   const classes = useStyles();
   const history = useHistory();
-
+  const [matchData, setMatchData] = useState({
+    pending: [],
+    active: [],
+    closed: [],
+  });
+  const [currentMatches, setCurrentMatches] = useState([]);
+  const [user, setUser] = useContext(UserContext);
   const [menteeType, setMenteeType] = useState("Active");
   const [viewType, setViewType] = useState(false);
 
@@ -75,6 +83,14 @@ export default function Mentee(props) {
   const viewProfile = () => {
     setViewType(true);
   };
+  useEffect(() => {
+    getUserMatches({ _id: user._id })
+      .then((res) => {
+        setMatchData(res.data.matches);
+        setCurrentMatches(res.data.matches.pending);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     // <Container>
 

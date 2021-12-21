@@ -63,6 +63,7 @@ const Login = (props) => {
       })
       .catch((error) => {
         setIsError(true);
+        console.log(error,"error")
       });
   };
 
