@@ -6,10 +6,10 @@ import {
 
 import axiosClient from "../../helper";
 
-export const getUserMatches = (payload) => async (dispatch) => {
+export const getUserMatches = () => async (dispatch) => {
   dispatch({ type: GET_USER_MATCHES });
   try {
-    const result = await axiosClient().get(`/matches/list/${payload._id}`);
+    const result = await axiosClient().get(`/users/matches`);
     console.log("get matches: ", result);
     return dispatch({ type: GET_USER_MATCHES_SUCCESS, payload: result });
   } catch (err) {
