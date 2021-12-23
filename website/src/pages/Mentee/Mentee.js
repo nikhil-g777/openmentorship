@@ -4,7 +4,6 @@ import { Menu } from "../../components";
 import { useHistory } from "react-router-dom";
 import Footer from "../../components/Footer";
 // import { getUserMatches } from "../../api";
-import { getUserInfo } from "../../redux/Actions/UserActions";
 import { getUserMatches } from "../../redux/Actions/MatchesActions";
 // import { UserContext } from "../../context/UserContext";
 
@@ -81,17 +80,7 @@ export default function Mentee(props) {
   const [currentMatches, setCurrentMatches] = useState([]);
   // const [user, setUser] = useContext(UserContext);
 
-  useEffect(() => {
-    async function fetchUsers() {
-      if (Object.keys(user).length === 0) {
-        await dispatch(getUserInfo());
-      }
-    }
-    fetchUsers();
-  }, []);
-
-  const user = useSelector((store) => store.userreducer.user);
-  const matches = useSelector((store) => store.matchesreducer.user);
+  const matches = useSelector((store) => store.matchesreducer.matches);
 
   const [menteeType, setMenteeType] = useState("Active");
   const [viewType, setViewType] = useState(false);
@@ -106,12 +95,11 @@ export default function Mentee(props) {
 
   useEffect(() => {
     async function fetchmatches() {
-      await dispatch(getUserMatches({ _id: user?.user?._id }));
+      // await dispatch(getUserMatches({ _id: user?.user?._id }));
+      await dispatch(getUserMatches());
     }
 
-    if (Object.keys(user).length > 0) {
-      fetchmatches();
-    }
+    fetchmatches();
 
     if (matches) {
       setMatchData(matches);
@@ -123,7 +111,7 @@ export default function Mentee(props) {
     //   setCurrentMatches(res.data.matches.pending);
     // })
     // .catch((err) => console.log(err));
-  }, [user]);
+  }, []);
 
   return (
     // <Container>

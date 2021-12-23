@@ -53,10 +53,7 @@ export const getUserInfo = () => async (dispatch) => {
 export const updateUser = (payload) => async (dispatch) => {
   dispatch({ type: UPDATE_USER_START });
   try {
-    const result = await axiosClient().put(
-      `/users/update/${payload._id}`,
-      payload
-    );
+    const result = await axiosClient().put(`/users/update`, payload);
     console.log("get user: ", result);
     return dispatch({ type: UPDATE_USER_SUCCESS, payload: result });
   } catch (err) {

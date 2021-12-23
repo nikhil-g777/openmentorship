@@ -12,11 +12,11 @@ const RegisterStep5 = (props) => {
   const dispatch = useDispatch();
   // const [user, setUser] = useContext(UserContext);
 
-  useEffect(async () => {
-    if (Object.keys(userState.user).length === 0) {
-      await dispatch(getUserInfo());
-    }
-  }, []);
+  // useEffect(async () => {
+  //   if (Object.keys(userState.user).length === 0) {
+  //     await dispatch(getUserInfo());
+  //   }
+  // }, []);
 
   const userState = useSelector((store) => store.userreducer);
 
@@ -25,12 +25,9 @@ const RegisterStep5 = (props) => {
     await dispatch(
       updateUser({
         type: "completeRegistration",
-        _id: userState?.user?.user?._id,
+        // _id: userState?.user?.user?._id,
         register: true,
         user: {
-          firstName: props.values.firstName,
-          lastName: props.values.lastName,
-          email: props.values.email,
           headline: props.values.headline,
           bio: props.values.bio,
           userType: props.values.userType,
@@ -41,9 +38,15 @@ const RegisterStep5 = (props) => {
           skills: props.values.skills,
           interests: props.values.interests,
           goals: props.values.goals,
-          communicationFrequency: props.values.cummunicationFrequency,
+          communicationFrequency: props.values.communicationFrequency,
+          communicationPreferences: props.values.communicationPreferences,
           socialLinks: props.values.socialLinks,
-          active: false,
+
+          // firstName: props.values.firstName,
+          // lastName: props.values.lastName,
+          // email: props.values.email,
+
+          // active: false,
         },
       })
     );

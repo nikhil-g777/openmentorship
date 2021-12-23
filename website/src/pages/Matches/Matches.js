@@ -5,7 +5,6 @@ import CardType from "./cardType";
 import styled from "styled-components";
 import { Menu } from "../../components";
 // import { getUserMatches } from "../../api";
-import { getUserInfo } from "../../redux/Actions/UserActions";
 import { getUserMatches } from "../../redux/Actions/MatchesActions";
 // import { UserContext } from "../../context/UserContext";
 
@@ -32,28 +31,16 @@ export default function Matches() {
   const [currentMatches, setCurrentMatches] = useState([]);
   // const [user, setUser] = useContext(UserContext);
 
-  useEffect(() => {
-    async function fetchUsers() {
-      if (Object.keys(user).length === 0) {
-        await dispatch(getUserInfo());
-      }
-    }
-    fetchUsers();
-  }, []);
-
-  const user = useSelector((store) => store.userreducer.user);
-  const matches = useSelector((store) => store.matchesreducer.user);
+  const matches = useSelector((store) => store.matchesreducer.matches);
 
   //Load matches API
   useEffect(() => {
-    console.log("user in matches: ", user);
     async function fetchmatches() {
-      await dispatch(getUserMatches({ _id: user?.user?._id }));
+      // await dispatch(getUserMatches({ _id: user?.user?._id }));
+      await dispatch(getUserMatches());
     }
 
-    if (Object.keys(user).length > 0) {
-      fetchmatches();
-    }
+    fetchmatches();
 
     if (matches) {
       setMatchData(matches);
@@ -65,7 +52,7 @@ export default function Matches() {
     //   setCurrentMatches(res.data.matches.pending);
     // })
     // .catch((err) => console.log(err));
-  }, [user]);
+  }, []);
 
   //MatchTab Management
   const [active, setActiveTab] = useState({

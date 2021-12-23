@@ -30,6 +30,7 @@ export default function RegisterForm() {
     interests: [],
     goals: [],
     communicationFrequency: "",
+    communicationPreferences: [],
     socialLinks: {},
   });
 
