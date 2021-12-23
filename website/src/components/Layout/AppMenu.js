@@ -4,10 +4,11 @@ import LogoNavBar from "../../images/LogoNavBar.png";
 import userIcon from "../../images/user.svg";
 import backIcon from "../../images/backIcon.svg";
 
-import { Divider, MenuItem, Menu ,Box,Container} from "@material-ui/core";
+import { Divider, MenuItem, Menu, Box, Container } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../context/UserContext";
-import './index.css';
+// import { UserContext } from "../../context/UserContext";
+import { useDispatch, useSelector } from "react-redux";
+import "./index.css";
 const Wrapper = styled.section`
   display: flex;
   flex-direction: row;
@@ -30,7 +31,7 @@ const Picture = styled.div`
 const LogoImg = styled(Picture)`
   background-size: cover;
   background-image: url(${LogoNavBar});
-  margin-right:150px;
+  margin-right: 150px;
 `;
 
 const UserIconWrapper = styled.div`
@@ -76,10 +77,12 @@ const MenuLink = styled(Link)`
 
 const DropDownMenu = (props) => {
   const pathname = window.location.pathname;
-  const [user, setUser] = useContext(UserContext);
+  // const [user, setUser] = useContext(UserContext);
+
+  const user = useSelector((store) => store.userreducer.user);
 
   function logOut() {
-    setUser({});
+    // setUser({});
     localStorage.removeItem("token");
   }
 
@@ -99,84 +102,84 @@ const DropDownMenu = (props) => {
         }}
         open={props.open}
         onClose={props.handleClose}
-        style={{marginTop:40}}
+        style={{ marginTop: 40 }}
       >
         {/* {props.registrationMenu ? ( */}
         {user.token == "" ? (
           <>
-          <div className="web-navbar">
-            <MenuLink to="/">
-              <MenuItem onClick={props.handleClose}>About</MenuItem>
-            </MenuLink>
-            <MenuLink to="FAQ">
-              <MenuItem
-                onClick={props.handleClose}
-                selected={pathname === "/FAQ"}
-              >
-                FAQ
-              </MenuItem>
-            </MenuLink>
-            <MenuLink to="/login">
-              <MenuItem
-                onClick={props.handleClose}
-                selected={pathname === "/login"}
-              >
-                Log In
-              </MenuItem>
-            </MenuLink>
-          </div>
-          <div className="mobile-navbar">
-          <MenuLink to="/profile">
-            <MenuItem
-              disabled
-              onClick={props.handleClose}
-              selected={pathname === "/profile"}
-            >
-              Profile
-            </MenuItem>
-          </MenuLink>
-          <MenuLink to="/sessions">
-            <MenuItem
-              onClick={props.handleClose}
-              selected={pathname === "/sessions"}
-            >
-              Sessions
-            </MenuItem>
-          </MenuLink>
-          <MenuLink to="/matches">
-            <MenuItem
-              onClick={props.handleClose}
-              selected={pathname === "/matches"}
-            >
-              Matches
-            </MenuItem>
-          </MenuLink>
-          <MenuLink to="/chat">
-            <MenuItem
-              disabled
-              onClick={props.handleClose}
-              selected={pathname === "/chat"}
-            >
-              Chat
-            </MenuItem>
-          </MenuLink>
-          <MenuLink to="/">
-            <MenuItem onClick={logOut}>LogOut</MenuItem>
-          </MenuLink>
-          <Divider variant="middle" />
-          <MenuLink to="/">
-            <MenuItem onClick={props.handleClose}>About</MenuItem>
-          </MenuLink>
-          <MenuLink to="/FAQ">
-            <MenuItem
-              onClick={props.handleClose}
-              selected={pathname === "/FAQ"}
-            >
-              FAQ
-            </MenuItem>
-          </MenuLink>
-        </div>
-        </>
+            <div className="web-navbar">
+              <MenuLink to="/">
+                <MenuItem onClick={props.handleClose}>About</MenuItem>
+              </MenuLink>
+              <MenuLink to="/FAQ">
+                <MenuItem
+                  onClick={props.handleClose}
+                  selected={pathname === "/FAQ"}
+                >
+                  FAQ
+                </MenuItem>
+              </MenuLink>
+              <MenuLink to="/login">
+                <MenuItem
+                  onClick={props.handleClose}
+                  selected={pathname === "/login"}
+                >
+                  Log In
+                </MenuItem>
+              </MenuLink>
+            </div>
+            <div className="mobile-navbar">
+              <MenuLink to="/profile">
+                <MenuItem
+                  disabled
+                  onClick={props.handleClose}
+                  selected={pathname === "/profile"}
+                >
+                  Profile
+                </MenuItem>
+              </MenuLink>
+              <MenuLink to="/sessions">
+                <MenuItem
+                  onClick={props.handleClose}
+                  selected={pathname === "/sessions"}
+                >
+                  Sessions
+                </MenuItem>
+              </MenuLink>
+              <MenuLink to="/matches">
+                <MenuItem
+                  onClick={props.handleClose}
+                  selected={pathname === "/matches"}
+                >
+                  Matches
+                </MenuItem>
+              </MenuLink>
+              <MenuLink to="/chat">
+                <MenuItem
+                  disabled
+                  onClick={props.handleClose}
+                  selected={pathname === "/chat"}
+                >
+                  Chat
+                </MenuItem>
+              </MenuLink>
+              <MenuLink to="/">
+                <MenuItem onClick={logOut}>LogOut</MenuItem>
+              </MenuLink>
+              <Divider variant="middle" />
+              <MenuLink to="/">
+                <MenuItem onClick={props.handleClose}>About</MenuItem>
+              </MenuLink>
+              <MenuLink to="/FAQ">
+                <MenuItem
+                  onClick={props.handleClose}
+                  selected={pathname === "/FAQ"}
+                >
+                  FAQ
+                </MenuItem>
+              </MenuLink>
+            </div>
+          </>
         ) : (
           <div>
             <MenuLink to="/profile">
@@ -248,21 +251,31 @@ const AppMenu = (props) => {
   };
 
   return (
-    
     <Wrapper>
-      
       {/* {props.showBackButton == false ? (
         <Picture />
       ) : (
         <BackButton onClick={props.handleBack} />
       )} */}
       <Box className="web-navbar">
-      <Link style={{marginRight:30,color:'black',textDecoration:'none'}}>Discover</Link>
-      <Link  to="/mentee" style={{marginRight:30,color:'black',textDecoration:'none'}}>Matches</Link>
+        <Link
+          to="#"
+          style={{ marginRight: 30, color: "black", textDecoration: "none" }}
+        >
+          Discover
+        </Link>
+        <Link
+          to="/mentee"
+          style={{ marginRight: 30, color: "black", textDecoration: "none" }}
+        >
+          Matches
+        </Link>
 
-      <Link to="/chat"  style={{color:'black',textDecoration:'none'}}>Chat</Link>
+        <Link to="/chat" style={{ color: "black", textDecoration: "none" }}>
+          Chat
+        </Link>
       </Box>
-      <LogoImg/>
+      <LogoImg />
       <UserIconWrapper>
         <UserIcon onClick={handleMenu} />
       </UserIconWrapper>

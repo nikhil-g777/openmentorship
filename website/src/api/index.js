@@ -1,33 +1,33 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_BASE_URL
+  baseURL: process.env.REACT_APP_BACKEND_BASE_URL,
 });
 
-const getToken = () => JSON.parse(localStorage.getItem('token'));
+const getToken = () => JSON.parse(localStorage.getItem("token"));
 
 //---------------------User APIs---------------------
 
-export const loginUser = (payload) => api.post('/users/login', payload);
+export const loginUser = (payload) => api.post("/users/login", payload);
 
-export const registerUser = (payload) => api.post('/users/register', payload);
+export const registerUser = (payload) => api.post("/users/register", payload);
 
 export const updateUser = (payload) => {
   return api.put(`/users/update/${payload._id}`, payload, {
-    headers: { authorization: `Bearer ${getToken()}` }
+    headers: { authorization: `Bearer ${getToken()}` },
   });
 };
 
 export const getUserInfo = (payload) => {
   return api.get(`/users/info/${payload._id}`, {
-    headers: { authorization: `Bearer ${getToken()}` }
+    headers: { authorization: `Bearer ${getToken()}` },
   });
 };
 
 export const getUserMatches = (payload) => {
-  console.log("hello")
+  console.log("hello");
   return api.get(`/matches/list/${payload._id}`, {
-    headers: { authorization: `Bearer ${getToken()}` }
+    headers: { authorization: `Bearer ${getToken()}` },
   });
 };
 
@@ -39,7 +39,7 @@ export const getUserMatches = (payload) => {
 
 export const getSessions = () => {
   return api.get(`/sessions/sessionList`, {
-    headers: { authorization: `Bearer ${getToken()}` }
+    headers: { authorization: `Bearer ${getToken()}` },
   });
 };
 

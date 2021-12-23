@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { LinkedIn } from "react-linkedin-login-oauth2";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
 import WaitlistCard from "./WaitListCard";
+
+// import { loginUser } from "../../api";
+import { loginUser } from "../../redux/Actions/UserActions";
+// import { UserContext } from "../../context/UserContext";
+
+import { useDispatch, useSelector } from "react-redux";
 
 //mui
 import styled from "styled-components";
@@ -17,6 +24,7 @@ import Cheer from "./images/cheer.png";
 
 import { useHistory } from "react-router-dom";
 import linkedinImage from "../../images/linkedinsignin.svg";
+import LinkedinSignin from "./images/Linkedin-Sign-In-Large-Default.png";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -170,6 +178,27 @@ const CheerTitleBox = styled.div`
   }
 `;
 
+const SignInContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  overflow: hidden;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+`;
+
+const LinkedinImage = styled.img`
+  max-width: 180px;
+`;
+
+const OrText = styled.span`
+  color: gray;
+  margin: 1rem;
+`;
+
 const useStyles = makeStyles({
   root: {
     maxWidth: "100%",
@@ -303,8 +332,40 @@ const useStyles = makeStyles({
 });
 
 export default function LandingPage(props) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles(props);
+
+  const [isError, setIsError] = useState(false);
+  // const [user, setUser] = useContext(UserContext);
+
+  const user = useSelector((store) => store.userreducer.user);
+
+  const handleSuccess = async (data) => {
+    await dispatch(loginUser({ authCode: data.code }));
+
+    // .then((response) => {
+    //   if (response.data.success) {
+    //     setUser({
+    //       _id: response.data.user._id,
+    //       userType: response.data.user.userType,
+    //       token: response.data.token,
+    //     });
+    // localStorage.setItem("token", JSON.stringify(response.data.token));
+    //   } else {
+    //     setIsError(true);
+    //   }
+    // })
+    // .catch((error) => {
+    //   setIsError(true);
+    // });
+  };
+
+  const handleFailure = (error) => {
+    console.log(error);
+    setIsError(true);
+  };
+
   return (
     <div>
       {/* <Container > */}
@@ -319,7 +380,7 @@ export default function LandingPage(props) {
             registrationMenu={true}
             showBackButton={false}
           />
-        </Container> 
+        </Container>
       </div>
       <div
         style={{
@@ -341,11 +402,27 @@ export default function LandingPage(props) {
                 Currently open for designers, software professionals
               </Typography>
               {/* <WaitlistCard className={classes.WaitlistCard} /> */}
-              <Box className={classes.LinkedIn}>
+              {/* <Box className={classes.LinkedIn}>
                 <img src={linkedinImage} className={classes.LinkedImage} />
                 <span className={classes.Or}>or</span>
                 <RegisterButton>Register</RegisterButton>
-              </Box>
+              </Box> */}
+              <SignInContainer>
+                <LinkedIn
+                  clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
+                  onFailure={handleFailure}
+                  onSuccess={handleSuccess}
+                  redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
+                  scope="r_emailaddress r_liteprofile"
+                  redirectPath="/register"
+                >
+                  <LinkedinImage src={LinkedinSignin} />
+                </LinkedIn>
+                <OrText> or </OrText>
+                <Link to="/register">
+                  <RegisterButton> Register </RegisterButton>
+                </Link>
+              </SignInContainer>
             </OrderedSide>
           </HeroWrapper>
         </Container>

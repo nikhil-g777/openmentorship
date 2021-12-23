@@ -5,7 +5,9 @@ import CardType from "./cardType";
 import styled from "styled-components";
 import { Menu } from "../../components";
 import { getUserMatches } from "../../api";
-import { UserContext } from "../../context/UserContext";
+// import { UserContext } from "../../context/UserContext";
+
+import { useDispatch, useSelector } from "react-redux";
 
 const Container = styled.div`
   margin-left: 16px;
@@ -25,7 +27,9 @@ export default function Matches() {
     closed: [],
   });
   const [currentMatches, setCurrentMatches] = useState([]);
-  const [user, setUser] = useContext(UserContext);
+  // const [user, setUser] = useContext(UserContext);
+
+  const user = useSelector((store) => store.userreducer.user);
 
   //Load matches API
   useEffect(() => {

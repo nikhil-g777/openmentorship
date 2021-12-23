@@ -1,10 +1,12 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Menu } from "../../components";
 import { useHistory } from "react-router-dom";
 import Footer from "../../components/Footer";
 import { getUserMatches } from "../../api";
-import { UserContext } from "../../context/UserContext";
+// import { UserContext } from "../../context/UserContext";
+
+import { useDispatch, useSelector } from "react-redux";
 
 // mui
 import {
@@ -16,6 +18,7 @@ import { Container, Box, Typography } from "@material-ui/core";
 import "fontsource-roboto";
 import MenteeCard from "../../components/MenteeCard/MenteeCard";
 import MenteeMobileCard from "../../components/MenteeCard/MenteeMobileCard";
+
 const useStyles = makeStyles((theme) => ({
   tilte: {
     textAlign: "center",
@@ -73,7 +76,10 @@ export default function Mentee(props) {
     closed: [],
   });
   const [currentMatches, setCurrentMatches] = useState([]);
-  const [user, setUser] = useContext(UserContext);
+  // const [user, setUser] = useContext(UserContext);
+
+  const user = useSelector((store) => store.userreducer.user);
+
   const [menteeType, setMenteeType] = useState("Active");
   const [viewType, setViewType] = useState(false);
 
@@ -96,19 +102,19 @@ export default function Mentee(props) {
 
     <div>
       <ThemeProvider theme={theme}>
-      <div
-        style={{
-          backgroundColor: "white",
-        }}
-      >
-        <Container>
-          <Menu
-            handleBack={() => history.push("/")}
-            registrationMenu={true}
-            showBackButton={false}
-          />
-        </Container> 
-      </div>
+        <div
+          style={{
+            backgroundColor: "white",
+          }}
+        >
+          <Container>
+            <Menu
+              handleBack={() => history.push("/")}
+              registrationMenu={true}
+              showBackButton={false}
+            />
+          </Container>
+        </div>
         <div
           style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
         >
