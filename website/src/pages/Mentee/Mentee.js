@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { Menu } from "../../components";
 import { useHistory } from "react-router-dom";
 import Footer from "../../components/Footer";
-import { getUserMatches } from "../../api";
+// import { getUserMatches } from "../../api";
+import { getUserInfo } from "../../redux/Actions/UserActions";
+import { getUserMatches } from "../../redux/Actions/MatchesActions";
 // import { UserContext } from "../../context/UserContext";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -68,6 +70,7 @@ const theme = createMuiTheme({
 });
 
 export default function Mentee(props) {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
   const [matchData, setMatchData] = useState({
@@ -78,7 +81,17 @@ export default function Mentee(props) {
   const [currentMatches, setCurrentMatches] = useState([]);
   // const [user, setUser] = useContext(UserContext);
 
+  useEffect(() => {
+    async function fetchUsers() {
+      if (Object.keys(user).length === 0) {
+        await dispatch(getUserInfo());
+      }
+    }
+    fetchUsers();
+  }, []);
+
   const user = useSelector((store) => store.userreducer.user);
+  const matches = useSelector((store) => store.matchesreducer.user);
 
   const [menteeType, setMenteeType] = useState("Active");
   const [viewType, setViewType] = useState(false);
@@ -86,17 +99,32 @@ export default function Mentee(props) {
   const handleType = (value) => {
     setMenteeType(value);
   };
+
   const viewProfile = () => {
     setViewType(true);
   };
+
   useEffect(() => {
-    getUserMatches({ _id: user._id })
-      .then((res) => {
-        setMatchData(res.data.matches);
-        setCurrentMatches(res.data.matches.pending);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    async function fetchmatches() {
+      await dispatch(getUserMatches({ _id: user?.user?._id }));
+    }
+
+    if (Object.keys(user).length > 0) {
+      fetchmatches();
+    }
+
+    if (matches) {
+      setMatchData(matches);
+      setCurrentMatches(matches.pending);
+    }
+
+    // .then((res) => {
+    //   setMatchData(res.data.matches);
+    //   setCurrentMatches(res.data.matches.pending);
+    // })
+    // .catch((err) => console.log(err));
+  }, [user]);
+
   return (
     // <Container>
 

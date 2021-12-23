@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import LogoNavBar from "../../images/LogoNavBar.png";
 import userIcon from "../../images/user.svg";
@@ -7,8 +7,8 @@ import backIcon from "../../images/backIcon.svg";
 import { Divider, MenuItem, Menu, Box, Container } from "@material-ui/core";
 import { Link } from "react-router-dom";
 // import { UserContext } from "../../context/UserContext";
-import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
+
 const Wrapper = styled.section`
   display: flex;
   flex-direction: row;
@@ -79,7 +79,7 @@ const DropDownMenu = (props) => {
   const pathname = window.location.pathname;
   // const [user, setUser] = useContext(UserContext);
 
-  const user = useSelector((store) => store.userreducer.user);
+  let token = JSON.parse(localStorage.getItem("token"));
 
   function logOut() {
     // setUser({});
@@ -105,7 +105,8 @@ const DropDownMenu = (props) => {
         style={{ marginTop: 40 }}
       >
         {/* {props.registrationMenu ? ( */}
-        {user.token == "" ? (
+        {/* {user.token == "" ? ( */}
+        {!token ? (
           <>
             <div className="web-navbar">
               <MenuLink to="/">
@@ -252,11 +253,11 @@ const AppMenu = (props) => {
 
   return (
     <Wrapper>
-      {/* {props.showBackButton == false ? (
+      {props.showBackButton == false ? (
         <Picture />
       ) : (
         <BackButton onClick={props.handleBack} />
-      )} */}
+      )}
       <Box className="web-navbar">
         <Link
           to="#"

@@ -1,47 +1,61 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import { InputLabel, TextField } from "@material-ui/core";
 
 import { Container, DotStepper, Title, TitleWrapper } from "../../components";
-import { updateUser } from "../../api";
+import { getUserInfo, updateUser } from "../../redux/Actions/UserActions";
+// import { updateUser } from "../../api";
 // import { UserContext } from "../../context/UserContext";
 
 import { useDispatch, useSelector } from "react-redux";
 
 const RegisterStep5 = (props) => {
+  const dispatch = useDispatch();
   // const [user, setUser] = useContext(UserContext);
 
-  const user = useSelector((store) => store.userreducer.user);
+  useEffect(async () => {
+    if (Object.keys(userState.user).length === 0) {
+      await dispatch(getUserInfo());
+    }
+  }, []);
 
-  function handleUpdateUser() {
-    updateUser({
-      type: "completeRegistration",
-      _id: user._id,
-      register: true,
-      user: {
-        firstName: props.values.firstName,
-        lastName: props.values.lastName,
-        email: props.values.email,
-        headline: props.values.headline,
-        bio: props.values.bio,
-        userType: props.values.userType,
-        careerStatus: props.values.careerStatus,
-        areasOfInterest: props.values.areasOfInterest,
-        experiences: props.values.experiences,
-        education: props.values.education,
-        skills: props.values.skills,
-        interests: props.values.interests,
-        goals: props.values.goals,
-        communicationFrequency: props.values.cummunicationFrequency,
-        socialLinks: props.values.socialLinks,
-        active: false,
-      },
-    })
-      .then((response) => {
-        props.handleNext();
+  const userState = useSelector((store) => store.userreducer);
+
+  async function handleUpdateUser() {
+    console.log("user in handleUpdateUser: ", userState);
+    await dispatch(
+      updateUser({
+        type: "completeRegistration",
+        _id: userState?.user?.user?._id,
+        register: true,
+        user: {
+          firstName: props.values.firstName,
+          lastName: props.values.lastName,
+          email: props.values.email,
+          headline: props.values.headline,
+          bio: props.values.bio,
+          userType: props.values.userType,
+          careerStatus: props.values.careerStatus,
+          areasOfInterest: props.values.areasOfInterest,
+          experiences: props.values.experiences,
+          education: props.values.education,
+          skills: props.values.skills,
+          interests: props.values.interests,
+          goals: props.values.goals,
+          communicationFrequency: props.values.cummunicationFrequency,
+          socialLinks: props.values.socialLinks,
+          active: false,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+    );
+    if (userState.isUserUpdated) {
+      props.handleNext();
+    }
+    // .then((response) => {
+    //   props.handleNext();
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   }
   const socialOptions = [
     "Twitter",

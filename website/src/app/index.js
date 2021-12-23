@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import {
   FAQ,
   Home,
@@ -19,7 +19,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LinkedInPopUp } from "react-linkedin-login-oauth2";
 import PrivateRoute from "./PrivateRoute";
-import { AuthContext } from "../context/auth";
+// import { AuthContext } from "../context/auth";
 import { theme } from "./GlobalTheme";
 import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
 // import { UserContext, UserProvider } from "../context/UserContext";

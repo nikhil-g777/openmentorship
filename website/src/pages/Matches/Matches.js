@@ -1,10 +1,12 @@
-import React, { useContext, useState, useEffect, useCon } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./MatchCard";
-import Profile from "./MatchProfile";
+// import Profile from "./MatchProfile";
 import CardType from "./cardType";
 import styled from "styled-components";
 import { Menu } from "../../components";
-import { getUserMatches } from "../../api";
+// import { getUserMatches } from "../../api";
+import { getUserInfo } from "../../redux/Actions/UserActions";
+import { getUserMatches } from "../../redux/Actions/MatchesActions";
 // import { UserContext } from "../../context/UserContext";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +21,7 @@ const Container = styled.div`
 //when user clicks Active/Pending/Closed -> render .map() active/pending/closed matches with its data passed as props into mentorCard
 
 export default function Matches() {
+  const dispatch = useDispatch();
   const [showBackButton, setShowBackButton] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [matchData, setMatchData] = useState({
@@ -29,17 +32,40 @@ export default function Matches() {
   const [currentMatches, setCurrentMatches] = useState([]);
   // const [user, setUser] = useContext(UserContext);
 
+  useEffect(() => {
+    async function fetchUsers() {
+      if (Object.keys(user).length === 0) {
+        await dispatch(getUserInfo());
+      }
+    }
+    fetchUsers();
+  }, []);
+
   const user = useSelector((store) => store.userreducer.user);
+  const matches = useSelector((store) => store.matchesreducer.user);
 
   //Load matches API
   useEffect(() => {
-    getUserMatches({ _id: user._id })
-      .then((res) => {
-        setMatchData(res.data.matches);
-        setCurrentMatches(res.data.matches.pending);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    console.log("user in matches: ", user);
+    async function fetchmatches() {
+      await dispatch(getUserMatches({ _id: user?.user?._id }));
+    }
+
+    if (Object.keys(user).length > 0) {
+      fetchmatches();
+    }
+
+    if (matches) {
+      setMatchData(matches);
+      setCurrentMatches(matches.pending);
+    }
+
+    // .then((res) => {
+    //   setMatchData(res.data.matches);
+    //   setCurrentMatches(res.data.matches.pending);
+    // })
+    // .catch((err) => console.log(err));
+  }, [user]);
 
   //MatchTab Management
   const [active, setActiveTab] = useState({

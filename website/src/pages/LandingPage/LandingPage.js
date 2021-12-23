@@ -1,15 +1,15 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { LinkedIn } from "react-linkedin-login-oauth2";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
-import WaitlistCard from "./WaitListCard";
+// import WaitlistCard from "./WaitListCard";
 
 // import { loginUser } from "../../api";
 import { loginUser } from "../../redux/Actions/UserActions";
 // import { UserContext } from "../../context/UserContext";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 //mui
 import styled from "styled-components";
@@ -23,7 +23,7 @@ import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
 
 import { useHistory } from "react-router-dom";
-import linkedinImage from "../../images/linkedinsignin.svg";
+// import linkedinImage from "../../images/linkedinsignin.svg";
 import LinkedinSignin from "./images/Linkedin-Sign-In-Large-Default.png";
 
 const FlexWrapper = styled.div`
@@ -336,10 +336,10 @@ export default function LandingPage(props) {
   const history = useHistory();
   const classes = useStyles(props);
 
-  const [isError, setIsError] = useState(false);
+  // const [isError, setIsError] = useState(false);
   // const [user, setUser] = useContext(UserContext);
 
-  const user = useSelector((store) => store.userreducer.user);
+  // const user = useSelector((store) => store.userreducer.user);
 
   const handleSuccess = async (data) => {
     await dispatch(loginUser({ authCode: data.code }));
@@ -363,7 +363,7 @@ export default function LandingPage(props) {
 
   const handleFailure = (error) => {
     console.log(error);
-    setIsError(true);
+    // setIsError(true);
   };
 
   return (

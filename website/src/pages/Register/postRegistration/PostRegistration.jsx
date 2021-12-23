@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import axios from "axios";
+import React, { useContext, useState, useEffect } from "react";
+// import axios from "axios";
 import { Redirect, withRouter } from "react-router-dom";
 
 import {
@@ -28,30 +28,45 @@ import {
 } from "./PostRegistrationStyling";
 import { Container, TitleWrapper, Title } from "../../../components";
 
-import { updateUser } from "../../../api";
+import { getUserInfo, updateUser } from "../../../redux/Actions/UserActions";
+// import { updateUser } from "../../../api";
 // import { UserContext } from "../../../context/UserContext";
 
 import { useDispatch, useSelector } from "react-redux";
 
 const PostRegistration = (props) => {
+  const dispatch = useDispatch();
   const [signUpResult, setSignUpResult] = useState(null);
   // const [user, setUser] = useContext(UserContext);
 
-  const user = useSelector((store) => store.userreducer.user);
+  useEffect(async () => {
+    if (Object.keys(userState.user).length === 0) {
+      await dispatch(getUserInfo());
+    }
+  }, []);
 
-  const userContinue = () => {
-    updateUser({
-      _id: user._id,
-      user: {
-        active: true,
-      },
-    })
-      .then((response) => {
-        setSignUpResult("CONTINUE");
+  const userState = useSelector((store) => store.userreducer);
+
+  const userContinue = async () => {
+    await dispatch(
+      updateUser({
+        _id: userState.user?.user?._id,
+        user: {
+          active: true,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+    );
+
+    if (userState.isUserUpdated) {
+      setSignUpResult("CONTINUE");
+    }
+
+    // .then((response) => {
+    //   setSignUpResult("CONTINUE");
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   };
 
   const userWait = () => {

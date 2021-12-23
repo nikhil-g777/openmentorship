@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Container, Title, Menu } from "../components";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
+// import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { LinkedIn } from "react-linkedin-login-oauth2";
 
@@ -37,11 +37,11 @@ const Wrapper = styled.div`
 
 const Login = (props) => {
   const dispatch = useDispatch();
-  const classes = useStyles();
-  const [isError, setIsError] = useState(false);
+  // const classes = useStyles();
+  // const [isError, setIsError] = useState(false);
   // const [user, setUser] = useContext(UserContext);
 
-  const user = useSelector((store) => store.userreducer.user);
+  const userState = useSelector((store) => store.userreducer);
 
   // const { setAuthTokens } = useAuth();
 
@@ -54,6 +54,7 @@ const Login = (props) => {
   console.log(referrer);
   const handleSuccess = async (data) => {
     await dispatch(loginUser({ authCode: data.code }));
+
     // .then((response) => {
     //   if (response.data.success) {
     //     setUser({
@@ -74,10 +75,10 @@ const Login = (props) => {
 
   const handleFailure = (error) => {
     console.log(error);
-    setIsError(true);
+    // setIsError(true);
   };
 
-  if (user.token) {
+  if (userState.user.token) {
     return <Redirect to={referrer} />;
   }
 
@@ -97,7 +98,8 @@ const Login = (props) => {
           >
             <LindkedInButton src="/images/linkedin-button.png" />
           </LinkedIn>
-          {isError && <p> Could not authenticate with Linkedin</p>}
+          {userState.userError && <p> Could not authenticate with Linkedin</p>}
+          {/* {isError && <p> Could not authenticate with Linkedin</p>} */}
         </Wrapper>
       </Container>
     </>
