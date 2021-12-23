@@ -33,18 +33,21 @@ export default function Matches() {
 
   const matches = useSelector((store) => store.matchesreducer.matches);
 
+  console.log("matchesss: ", matches);
   //Load matches API
   useEffect(() => {
     async function fetchmatches() {
       // await dispatch(getUserMatches({ _id: user?.user?._id }));
-      await dispatch(getUserMatches());
+      if (Object.keys(matches).length === 0) {
+        await dispatch(getUserMatches());
+      }
     }
 
     fetchmatches();
 
     if (matches) {
       setMatchData(matches);
-      setCurrentMatches(matches.pending);
+      setCurrentMatches(matches?.pending);
     }
 
     // .then((res) => {

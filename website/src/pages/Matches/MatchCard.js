@@ -76,7 +76,7 @@ const MatchCard = ({
   //we need match data as props here from matches page ie . State =  [active: [data]]
 
   const [selectedProfileId, setSelectedProfileId] = useState(null);
-  const selectedProfile = currentMatches.find(
+  const selectedProfile = currentMatches?.find(
     (match) => match._id === selectedProfileId
   );
 
@@ -101,7 +101,7 @@ const MatchCard = ({
           </Body>
         </div>
       )}
-      {currentMatches.map((match) => (
+      {currentMatches?.map((match) => (
         <div key={match._id} className={classes.cardSpacing} profile={match}>
           <Card className={classes.root}>
             <CardMedia

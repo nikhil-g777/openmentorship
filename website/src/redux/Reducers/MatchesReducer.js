@@ -5,7 +5,7 @@ import {
 } from "../Types/UserTypes";
 
 const initialState = {
-  matches: [],
+  matches: {},
   loading: true,
   matchesError: false,
 };
@@ -24,7 +24,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        matches: action.payload.data,
+        matches: action.payload.data.matches,
       };
 
     case GET_USER_MATCHES_ERROR:
