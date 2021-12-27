@@ -51,6 +51,7 @@ export const getUserInfo = () => async (dispatch) => {
 };
 
 export const updateUser = (payload) => async (dispatch) => {
+  console.log("payload in update User: ", payload);
   dispatch({ type: UPDATE_USER_START });
   try {
     const result = await axiosClient().put(`/users/update`, payload);

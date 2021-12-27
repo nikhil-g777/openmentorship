@@ -1,105 +1,228 @@
 import React, { useState, useEffect } from "react";
-import Card from "./MatchCard";
-// import Profile from "./MatchProfile";
-import CardType from "./cardType";
-import styled from "styled-components";
-import { Menu } from "../../components";
-// import { getUserMatches } from "../../api";
-import { getUserMatches } from "../../redux/Actions/MatchesActions";
-// import { UserContext } from "../../context/UserContext";
 
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-const Container = styled.div`
-  margin-left: 16px;
-  margin-right: 16px;
-`;
+// mui
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core/styles";
+import { Container, Box, Typography } from "@material-ui/core";
+import "fontsource-roboto";
 
-//api.get for match data
-//populate state with match data
-//when user clicks Active/Pending/Closed -> render .map() active/pending/closed matches with its data passed as props into mentorCard
+import MenteeMobileCard from "../../components/MenteeCard/MenteeMobileCard";
+import MenteeCard from "../../components/MenteeCard/MenteeCard";
+import { Menu } from "../../components";
+import Footer from "../../components/Footer";
 
-export default function Matches() {
+import { getUserMatches } from "../../redux/Actions/MatchesActions";
+import { getUserInfo } from "../../redux/Actions/UserActions";
+
+const useStyles = makeStyles((theme) => ({
+  tilte: {
+    textAlign: "center",
+    paddingTop: "2%",
+    fontSize: "28px",
+  },
+  Background: {
+    backgroundColor: "#F1F4F4",
+    paddingBottom: "5%",
+
+    "@media (max-width:780px)": {},
+  },
+  Navbar: {
+    backgroundColor: "white",
+    height: "60px",
+    padding: 20,
+    paddingLeft: "30%",
+    paddingRight: "30%",
+    display: "flex",
+    cursor: "pointer",
+    justifyContent: "space-between",
+
+    "@media (max-width:780px)": {
+      padding: 25,
+      paddingLeft: "10%",
+      paddingRight: "10%",
+    },
+  },
+  WebCard: {
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
+  MobileCard: {
+    display: "none",
+    "@media (max-width:780px)": {
+      display: "block",
+    },
+  },
+}));
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: '"Roboto"',
+  },
+});
+
+export default function Matches(props) {
   const dispatch = useDispatch();
-  const [showBackButton, setShowBackButton] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
-  const [matchData, setMatchData] = useState({
-    pending: [],
-    active: [],
-    closed: [],
-  });
-  const [currentMatches, setCurrentMatches] = useState([]);
-  // const [user, setUser] = useContext(UserContext);
+  const classes = useStyles();
+  const history = useHistory();
+
+  const [menteeType, setMenteeType] = useState("active");
+  const [mentorType, setMentorType] = useState("active");
+  const [viewType, setViewType] = useState(false);
 
   const matches = useSelector((store) => store.matchesreducer.matches);
+  const user = useSelector((store) => store.userreducer.user);
 
-  console.log("matchesss: ", matches);
-  //Load matches API
   useEffect(() => {
     async function fetchmatches() {
-      // await dispatch(getUserMatches({ _id: user?.user?._id }));
-      if (Object.keys(matches).length === 0) {
-        await dispatch(getUserMatches());
-      }
+      await dispatch(getUserMatches());
     }
 
-    fetchmatches();
+    const fetchUser = async () => {
+      await dispatch(getUserInfo());
+    };
 
-    if (matches) {
-      setMatchData(matches);
-      setCurrentMatches(matches?.pending);
+    if (user && Object.keys(user).length === 0) {
+      fetchUser();
     }
 
-    // .then((res) => {
-    //   setMatchData(res.data.matches);
-    //   setCurrentMatches(res.data.matches.pending);
-    // })
-    // .catch((err) => console.log(err));
+    if (Object.keys(matches).length === 0) {
+      fetchmatches();
+    }
   }, []);
 
-  //MatchTab Management
-  const [active, setActiveTab] = useState({
-    pending: true,
-    active: false,
-    closed: false,
-  });
+  const handleType = (mentorValue, menteeValue) => {
+    setMentorType(
+      user?.user?.userType && user?.user?.userType === "mentor"
+        ? mentorValue
+        : ""
+    );
+    setMenteeType(menteeValue);
+  };
+  const viewProfile = () => {
+    setViewType(true);
+  };
 
-  function handleBackButtonVisibility() {
-    setShowBackButton(true);
-  }
-
-  function handleGoBack() {
-    setCurrentMatches(null);
-    setShowBackButton(false);
-    setShowProfile(false);
-  }
-
-  function handleSecondaryTab(value) {
-    if (value == "pending") {
-      setActiveTab({ pending: true, active: false, closed: false });
-      setCurrentMatches(matchData.pending);
-    } else if (value == "active") {
-      setActiveTab({ pending: false, active: true, closed: false });
-      setCurrentMatches(matchData.active);
-    } else if (value == "closed") {
-      setActiveTab({ pending: false, active: false, closed: true });
-      setCurrentMatches(matchData.closed);
-    }
-    setShowProfile(false);
-    setShowBackButton(false);
-  }
   return (
-    <>
-      <Menu handleBack={handleGoBack} showBackButton={showBackButton} />
-      <CardType props={active} handleSecondaryTab={handleSecondaryTab} />
-      <Container>
-        <Card
-          showProfile={showProfile}
-          setShowProfile={() => setShowProfile(true)}
-          handleBackButtonVisibility={handleBackButtonVisibility}
-          currentMatches={currentMatches}
-        />
-      </Container>
-    </>
+    <div>
+      <ThemeProvider theme={theme}>
+        <div
+          style={{
+            backgroundColor: "white",
+          }}
+        >
+          <Container>
+            <Menu
+              handleBack={() => history.push("/")}
+              registrationMenu={true}
+              showBackButton={false}
+            />
+          </Container>
+        </div>
+        <div
+          style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
+        >
+          <Container>
+            <Box className={classes.Navbar}>
+              <Typography
+                variant="p"
+                style={{ color: menteeType === "active" ? "#51B6A5" : "" }}
+                onClick={() => handleType("active", "active")}
+              >
+                Active
+              </Typography>
+              <Typography
+                variant="p"
+                style={{
+                  color: menteeType === "MentorPending" ? "#51B6A5" : "",
+                }}
+                onClick={() => handleType("MentorPending", "pending")}
+              >
+                Pending
+              </Typography>
+              <Typography
+                variant="p"
+                style={{
+                  color: menteeType === "MentorClosed" ? "#51B6A5" : "",
+                }}
+                onClick={() => handleType("MentorClosed", "closed")}
+              >
+                Closed
+              </Typography>
+            </Box>
+          </Container>
+        </div>
+
+        <Box className={classes.Background}>
+          <Container>
+            <Typography variant="h6" className={classes.tilte}>
+              {menteeType === "active"
+                ? "Your active connections"
+                : menteeType === "pending"
+                ? "Your pending connections"
+                : "Your past connections"}
+            </Typography>
+            <Box
+              className={classes.MobileCard}
+              style={{ display: viewType ? "none" : "" }}
+            >
+              <MenteeMobileCard
+                viewProfile={viewProfile}
+                menteeType={menteeType}
+                mentorType={mentorType}
+                matchData={matches}
+                userType={
+                  user?.user?.userType === "mentee"
+                    ? "mentor"
+                    : user?.user?.userType === "mentor"
+                    ? "mentee"
+                    : ""
+                }
+              />
+            </Box>
+            <Box style={{ display: viewType ? "" : "none" }}>
+              <MenteeCard
+                menteeType={menteeType}
+                mentorType={mentorType}
+                matchData={matches}
+                userType={
+                  user?.user?.userType === "mentee"
+                    ? "mentor"
+                    : user?.user?.userType === "mentor"
+                    ? "mentee"
+                    : ""
+                }
+              />
+            </Box>
+            <Box className={classes.WebCard}>
+              <MenteeCard
+                menteeType={menteeType}
+                mentorType={mentorType}
+                matchData={matches}
+                userType={
+                  user?.user?.userType === "mentee"
+                    ? "mentor"
+                    : user?.user?.userType === "mentor"
+                    ? "mentee"
+                    : ""
+                }
+              />
+            </Box>
+          </Container>
+        </Box>
+      </ThemeProvider>
+      <div style={{ backgroundColor: "#f5f3f8" }}>
+        <Container>
+          <Footer />
+        </Container>
+      </div>
+    </div>
   );
 }

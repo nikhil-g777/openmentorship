@@ -1,12 +1,19 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import LogoNavBar from "../../images/LogoNavBar.png";
-import userIcon from "../../images/user.svg";
-import backIcon from "../../images/backIcon.svg";
-
-import { Divider, MenuItem, Menu, Box, Container } from "@material-ui/core";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-// import { UserContext } from "../../context/UserContext";
+
+import styled from "styled-components";
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core/styles";
+import { Divider, MenuItem, Menu, Box, Container } from "@material-ui/core";
+
+import LogoNavBar from "../../../images/LogoNavBar.png";
+import userIcon from "../../../images/user.svg";
+import backIcon from "../../../images/backIcon.svg";
+// import { UserContext } from "../../../context/UserContext";
+
 import "./index.css";
 
 const Wrapper = styled.section`
@@ -79,13 +86,12 @@ const DropDownMenu = (props) => {
   const pathname = window.location.pathname;
   // const [user, setUser] = useContext(UserContext);
 
-  let token = JSON.parse(localStorage.getItem("token"));
-
   function logOut() {
     // setUser({});
     localStorage.removeItem("token");
   }
 
+  let token = localStorage.getItem("token");
   return (
     <>
       <Menu
@@ -112,7 +118,7 @@ const DropDownMenu = (props) => {
               <MenuLink to="/">
                 <MenuItem onClick={props.handleClose}>About</MenuItem>
               </MenuLink>
-              <MenuLink to="/FAQ">
+              <MenuLink to="FAQ">
                 <MenuItem
                   onClick={props.handleClose}
                   selected={pathname === "/FAQ"}
@@ -239,9 +245,19 @@ const DropDownMenu = (props) => {
   );
 };
 
+const useStyles = makeStyles((theme) => ({
+  LinkDashboard: {
+    marginRight: 30,
+    color: "black",
+    textDecoration: "none",
+    opacity: 0.8,
+  },
+}));
+
 const AppMenu = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const classes = useStyles();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -253,27 +269,33 @@ const AppMenu = (props) => {
 
   return (
     <Wrapper>
-      {props.showBackButton == false ? (
+      {/* {props.showBackButton == false ? (
         <Picture />
       ) : (
         <BackButton onClick={props.handleBack} />
-      )}
+      )} */}
       <Box className="web-navbar">
         <Link
-          to="#"
-          style={{ marginRight: 30, color: "black", textDecoration: "none" }}
+          className={classes.LinkDashboard}
+          to="/admin/dashboard"
+          style={{ textDecoration: "none" }}
         >
-          Discover
+          Dashboard
         </Link>
         <Link
-          to="/matches"
-          style={{ marginRight: 30, color: "black", textDecoration: "none" }}
+          className={classes.LinkDashboard}
+          to="/admin/sessions"
+          style={{ textDecoration: "none" }}
         >
-          Matches
+          Sessions
         </Link>
 
-        <Link to="/chat" style={{ color: "black", textDecoration: "none" }}>
-          Chat
+        <Link
+          to="/admin/match"
+          className={classes.LinkDashboard}
+          style={{ textDecoration: "none" }}
+        >
+          Match
         </Link>
       </Box>
       <LogoImg />

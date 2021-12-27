@@ -11,7 +11,7 @@ export const getSessions = () => async (dispatch) => {
   try {
     const result = await axiosClient().get(`/sessions/sessionList`);
     console.log("get sessions: ", result);
-    return dispatch({ type: GET_SESSIONS_SUCCESS, payload: result });
+    return dispatch({ type: GET_SESSIONS_SUCCESS, payload: result.data });
   } catch (err) {
     console.log("error in get sessions: ", err);
     return dispatch({ type: GET_SESSIONS_ERROR });

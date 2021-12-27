@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Checkbox,
@@ -14,10 +14,8 @@ import {
 } from "@material-ui/core/styles";
 import { Container, Typography } from "@material-ui/core";
 import "fontsource-roboto";
-import SocialIcon1 from "../../images/image 24.png";
-import SocialIcon2 from "../../images/image 23.png";
-import linked from "../../images/image 16.png";
-import editIcon from "../../images/edit 1.png";
+import linked from "../../../images/image 16.png";
+import editIcon from "../../../images/edit 1.png";
 import {
   CheckBoxOutlineBlank,
   CropSquareOutlined,
@@ -26,11 +24,7 @@ import {
 } from "@material-ui/icons";
 import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
-import { Menu } from "../../components";
-import Footer from "../../components/Footer";
-
-import { useDispatch, useSelector } from "react-redux";
-import { getUserInfo, updateUser } from "../../redux/Actions/UserActions";
+import { Menu1 } from "../../Component";
 
 const useStyles = makeStyles((theme) => ({
   profile_container: {
@@ -101,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
   pro_typo_div: {
     display: "flex",
     alignItems: "center",
-    width: "100%",
   },
   pro_typo_div_main: {
     display: "flex",
@@ -116,7 +109,6 @@ const useStyles = makeStyles((theme) => ({
   pro_typo_div2: {
     display: "flex",
     alignItems: "center",
-    cursor: "pointer",
   },
   pro_typo1_sm: {
     display: "none",
@@ -157,70 +149,13 @@ const theme = createMuiTheme({
 });
 
 export default function Mentee(props) {
-  const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
+  const [about, setAbout] = useState("I am a second-year UCLA Regents Scholar interested in digital health, healthcare management, population health studies, and social innovation. I am experienced in email marketing techniques, SEO and brand analytics.");
+  const [interest, setInterest] = useState("Public health, social innovation, digital health, healthcare management");
+  const [skills, setSkills] = useState("Marketing techniques, SEO, brand analytics, email marketing");
 
-  const [about, setAbout] = useState("");
-  const [interest, setInterest] = useState([]);
-  const [skills, setSkills] = useState([]);
-  const [goals, setGoals] = useState([]);
-  const [socialLinks, setSocialLinks] = useState([]);
-
-  const user = useSelector((store) => store.userreducer.user);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      await dispatch(getUserInfo());
-    };
-    if (user && Object.keys(user).length === 0) {
-      fetchUser();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (user && Object.keys(user).length > 0) {
-      setAbout(user?.user?.headline);
-      setInterest(user?.user?.interests);
-      setSkills(user?.user?.skills);
-      setGoals(user?.user?.goals);
-      setSocialLinks(user?.user?.socialLinks);
-      console.log("user?.user?.goals: ", user?.user?.socialLinks);
-    }
-  }, [user]);
-
-  const handleChangeGoals = (event) => {
-    console.log("goals: ", goals);
-    const { name, checked } = event.target;
-    setGoals({ ...goals, [name]: checked });
-  };
-
-  const handleChangeSocialLinks = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setSocialLinks((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleUpdateUser = () => {
-    let userData = {
-      bio: about,
-      areasOfInterest: interest,
-      skills: skills,
-      goals: goals,
-      socialLinks: socialLinks,
-    };
-    console.log("userdata: ", userData);
-    dispatch(
-      updateUser({
-        type: "updateUser",
-        user: userData,
-      })
-    );
-  };
-
+  const data = [1, 1, 1, 1, 1, 1];
   return (
     <div>
       <div
@@ -229,12 +164,12 @@ export default function Mentee(props) {
         }}
       >
         <Container>
-          <Menu
+          <Menu1
             handleBack={() => history.push("/")}
             registrationMenu={true}
             showBackButton={false}
           />
-        </Container>
+        </Container> 
       </div>
       <div
         style={{
@@ -260,8 +195,7 @@ export default function Mentee(props) {
                   />
                   <Box component="div">
                     <Typography className={classes.pro_typo1_sm}>
-                      {/* Emily Lee */}
-                      {`${user.user?.firstName} ${user.user?.lastName}`}
+                      Emily Lee
                     </Typography>
                     <TextField
                       className={classes.feild_info}
@@ -282,24 +216,19 @@ export default function Mentee(props) {
                 <Box component="div" className={classes.pro_typo_div_main}>
                   <Box component="div" className={classes.pro_typo_div}>
                     <Typography className={classes.pro_typo1}>
-                      {`${user.user?.firstName} ${user.user?.lastName}`}
+                      Emily Lee
                     </Typography>
 
                     <img src={linked} style={{ marginLeft: "3%" }} />
                   </Box>
-                  <Box
-                    component="div"
-                    className={classes.pro_typo_div2}
-                    onClick={handleUpdateUser}
-                  >
+                  <Box component="div" className={classes.pro_typo_div2}>
                     <img src={editIcon} width="23px" height="23px" />
                     <Typography className={classes.edit_txt}>Save</Typography>
                   </Box>
                 </Box>
                 <Typography className={classes.pro_typo2}>
-                  {/* Marketing Intern at Propeller Health<br></br>Cognitive Science
-                  at UCLA 2022 */}
-                  {user?.user?.headline}
+                  Marketing Intern at Propeller Health<br></br>Cognitive Science
+                  at UCLA 2022
                 </Typography>
                 <Typography className={classes.pro_typo3}>About</Typography>
                 <TextField
@@ -309,6 +238,7 @@ export default function Mentee(props) {
                   fullWidth
                   value={about}
                   onChange={(event) => setAbout(event.target.value)}
+
                 />
 
                 <Typography className={classes.pro_typo3}>
@@ -333,6 +263,7 @@ export default function Mentee(props) {
                   fullWidth
                   value={skills}
                   onChange={(event) => setSkills(event.target.value)}
+
                 />
 
                 <Typography className={classes.pro_typo3}>
@@ -350,9 +281,7 @@ export default function Mentee(props) {
                             style={{ color: "#51B6A5", fontSize: "30px" }}
                           />
                         }
-                        checked={goals.careerAdvice ? true : false}
-                        onChange={handleChangeGoals}
-                        name="careerAdvice"
+                        name="checkedH"
                       />
                     }
                     label="Career Advice"
@@ -368,9 +297,7 @@ export default function Mentee(props) {
                             style={{ color: "#51B6A5", fontSize: "30px" }}
                           />
                         }
-                        checked={goals.resumeReview ? true : false}
-                        onChange={handleChangeGoals}
-                        name="resumeReview"
+                        name="checkedH"
                       />
                     }
                     label="Resume review"
@@ -386,9 +313,7 @@ export default function Mentee(props) {
                             style={{ color: "#51B6A5", fontSize: "30px" }}
                           />
                         }
-                        checked={goals.mockInterview ? true : false}
-                        onChange={handleChangeGoals}
-                        name="mockInterview"
+                        name="checkedH"
                       />
                     }
                     label="Mock interview"
@@ -404,9 +329,7 @@ export default function Mentee(props) {
                             style={{ color: "#51B6A5", fontSize: "30px" }}
                           />
                         }
-                        checked={goals.projectReview ? true : false}
-                        onChange={handleChangeGoals}
-                        name="projectReview"
+                        name="checkedH"
                       />
                     }
                     label="Project review"
@@ -422,14 +345,12 @@ export default function Mentee(props) {
                             style={{ color: "#51B6A5", fontSize: "30px" }}
                           />
                         }
-                        checked={goals?.collaboration ? true : false}
-                        onChange={handleChangeGoals}
-                        name="collaboration"
+                        name="checkedH"
                       />
                     }
                     label="Collaboration on an idea"
                   />
-                  {/* <FormControlLabel
+                  <FormControlLabel
                     control={
                       <Checkbox
                         icon={
@@ -444,7 +365,7 @@ export default function Mentee(props) {
                       />
                     }
                     label="Inspiration"
-                  /> */}
+                  />
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -456,14 +377,12 @@ export default function Mentee(props) {
                             style={{ color: "#51B6A5", fontSize: "30px" }}
                           />
                         }
-                        checked={goals.businessAdvice ? true : false}
-                        onChange={handleChangeGoals}
-                        name="businessAdvice"
+                        name="checkedH"
                       />
                     }
                     label="Business advice"
                   />
-                  {/* <FormControlLabel
+                  <FormControlLabel
                     control={
                       <Checkbox
                         icon={
@@ -478,7 +397,7 @@ export default function Mentee(props) {
                       />
                     }
                     label="Career change advice"
-                  /> */}
+                  />
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -490,9 +409,7 @@ export default function Mentee(props) {
                             style={{ color: "#51B6A5", fontSize: "30px" }}
                           />
                         }
-                        checked={goals.skillDevelopment ? true : false}
-                        onChange={handleChangeGoals}
-                        name="skillDevelopment"
+                        name="checkedH"
                       />
                     }
                     label="Skill development"
@@ -517,9 +434,6 @@ export default function Mentee(props) {
                       variant="outlined"
                       placeholder="https://"
                       fullWidth
-                      value={socialLinks.Twitter}
-                      onChange={handleChangeSocialLinks}
-                      name="Twitter"
                     />
                   </Grid>
                 </Grid>
@@ -539,9 +453,6 @@ export default function Mentee(props) {
                       variant="outlined"
                       placeholder="https://"
                       fullWidth
-                      value={socialLinks.Medium}
-                      onChange={handleChangeSocialLinks}
-                      name="Medium"
                     />
                   </Grid>
                 </Grid>
@@ -562,9 +473,6 @@ export default function Mentee(props) {
                       variant="outlined"
                       placeholder="https://"
                       fullWidth
-                      value={socialLinks.Behance}
-                      onChange={handleChangeSocialLinks}
-                      name="Behance"
                     />
                   </Grid>
                 </Grid>
@@ -585,9 +493,6 @@ export default function Mentee(props) {
                       variant="outlined"
                       placeholder="https://"
                       fullWidth
-                      value={socialLinks.Github}
-                      onChange={handleChangeSocialLinks}
-                      name="Github"
                     />
                   </Grid>
                 </Grid>
@@ -608,9 +513,6 @@ export default function Mentee(props) {
                       variant="outlined"
                       placeholder="https://"
                       fullWidth
-                      value={socialLinks.Portfolio}
-                      onChange={handleChangeSocialLinks}
-                      name="Portfolio"
                     />
                   </Grid>
                 </Grid>
@@ -631,9 +533,6 @@ export default function Mentee(props) {
                       variant="outlined"
                       placeholder="https://"
                       fullWidth
-                      value={socialLinks.Other}
-                      onChange={handleChangeSocialLinks}
-                      name="Other"
                     />
                   </Grid>
                 </Grid>
@@ -643,11 +542,11 @@ export default function Mentee(props) {
           </Container>
         </ThemeProvider>
       </div>
-      <div style={{ backgroundColor: "#f5f3f8" }}>
+      {/* <div style={{ backgroundColor: "#f5f3f8" }}>
         <Container>
           <Footer />
         </Container>
-      </div>
+      </div> */}
     </div>
   );
 }

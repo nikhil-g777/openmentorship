@@ -34,14 +34,15 @@ const Sessions = () => {
   console.log("sesssionnssss: ", sessions);
 
   useEffect(() => {
-    // Fetch sessions
-
     async function fetchSessions() {
       await dispatch(getSessions());
     }
-    if (sessions?.sessions?.length > 0) {
+
+    fetchSessions();
+
+    if (sessions?.length > 0) {
       setSessionComponents(
-        sessions.sessions.map((session) => {
+        sessions.map((session) => {
           return (
             <SessionCard
               session={session}
@@ -52,8 +53,6 @@ const Sessions = () => {
         })
       );
     }
-
-    fetchSessions();
     // getSessions()
     //   .then((res) => {
     //     setSessionList(res.data.sessions);

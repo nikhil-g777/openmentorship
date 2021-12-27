@@ -24,7 +24,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        sessions: action.payload.data,
+        sessions: action.payload.sessions,
       };
 
     case GET_SESSIONS_ERROR:

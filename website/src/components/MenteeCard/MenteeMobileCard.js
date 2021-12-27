@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
   MenteeCard: {
     marginTop: "2%",
     marginBottom: "2%",
-    display:'flex',
-    padding:10,
+    display: "flex",
+    padding: 10,
     "@media (max-width:780px)": {
       height: "auto",
     },
@@ -66,16 +66,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   Profile: {
-    width:'116px',
-    height:'25px',
-    backgroundColor:'#51B6A5',
-    borderRadius:4,
-    marginTop:8,
+    width: "116px",
+    height: "25px",
+    backgroundColor: "#51B6A5",
+    borderRadius: 4,
+    marginTop: 8,
     marginLeft: 10,
-    fontSize:'11px',
+    fontSize: "11px",
     textTransform: "capitalize",
-    fontWeight:'bold'
-
+    fontWeight: "bold",
   },
 }));
 
@@ -85,87 +84,30 @@ const theme = createMuiTheme({
   },
 });
 export default function MenteeMobileCard(props) {
+  // console.log("mentee mobile props: ", props);
   const classes = useStyles();
   const [reconnect, setReconnect] = useState(false);
-  const [data, setData] = useState([
-    {
-      name: "Meghan Raab",
-      title:
-        "Product Marketing Manager at Snap Inc. 5 years of experience in marketing",
-      decription:
-        "I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.",
-      interest:
-        "Product marketing, content marketing, media, global tech, project management",
-      skills:
-        "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
-    },
-    {
-        name: "Meghan Raab",
-        title:
-          "Product Marketing Manager at Snap Inc. 5 years of experience in marketing",
-        decription:
-          "I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.",
-        interest:
-          "Product marketing, content marketing, media, global tech, project management",
-        skills:
-          "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
-      },
-      {
-        name: "Meghan Raab",
-        title:
-          "Product Marketing Manager at Snap Inc. 5 years of experience in marketing",
-        decription:
-          "I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.",
-        interest:
-          "Product marketing, content marketing, media, global tech, project management",
-        skills:
-          "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
-      },
-      {
-        name: "Meghan Raab",
-        title:
-          "Product Marketing Manager at Snap Inc. 5 years of experience in marketing",
-        decription:
-          "I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.",
-        interest:
-          "Product marketing, content marketing, media, global tech, project management",
-        skills:
-          "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
-      },
-      {
-        name: "Meghan Raab",
-        title:
-          "Product Marketing Manager at Snap Inc. 5 years of experience in marketing",
-        decription:
-          "I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.",
-        interest:
-          "Product marketing, content marketing, media, global tech, project management",
-        skills:
-          "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
-      },
-  ]);
+
   return (
     <div>
       <ThemeProvider theme={theme}>
         <Container>
-          {data.map((x) => (
+          {props.matchData[props.menteeType]?.map((x) => (
             <Card className={classes.MenteeCard} raised={true}>
-                    <img src={boxImage} className={classes.BoxImage} />
-                    <Box>
-                      <Typography
-                        variant="h5"
-                        className={classes.MobileRightGrid}
-                      >
-                        {x.name}
-                      </Typography>
-                      <Typography
-                        variant="h5"
-                        className={classes.MobileSubHead}
-                      >
-                        {x.title}
-                      </Typography>
-                      <Button className={classes.Profile} onClick={props.viewProfile}>View full profile</Button>
-                    </Box>
+              <img src={boxImage} className={classes.BoxImage} />
+              <Box>
+                <Typography variant="h5" className={classes.MobileRightGrid}>
+                  {`${x[props.userType]?.firstName}  ${
+                    x[props.userType]?.lastName
+                  }`}
+                </Typography>
+                <Typography variant="h5" className={classes.MobileSubHead}>
+                  {x[props.userType]?.headline}
+                </Typography>
+                <Button className={classes.Profile} onClick={props.viewProfile}>
+                  View full profile
+                </Button>
+              </Box>
             </Card>
           ))}
         </Container>

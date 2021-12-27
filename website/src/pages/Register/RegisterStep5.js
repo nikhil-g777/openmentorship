@@ -22,6 +22,7 @@ const RegisterStep5 = (props) => {
 
   async function handleUpdateUser() {
     console.log("user in handleUpdateUser: ", userState);
+    console.log("values to update: ", props.values);
     await dispatch(
       updateUser({
         type: "completeRegistration",

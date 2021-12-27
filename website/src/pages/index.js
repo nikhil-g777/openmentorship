@@ -1,28 +1,24 @@
-import FAQ from '../pages/FAQ/FAQ';
-import Home from '../pages/Home';
-import Matches from './Matches/Matches';
-import RegisterForm from './Register/RegisterForm';
-import LandingPage from './LandingPage/LandingPage';
-import LoginPage from './LoginPage';
-import Sessions from './Sessions/Sessions';
-import Mentee from './Mentee/Mentee';
-import Mentor from './Mentor/Mentor';
-import EditProfile from './Profile/editProfile';
+import FAQ from "../pages/FAQ/FAQ";
+import Home from "../pages/Home";
+import RegisterForm from "./Register/RegisterForm";
+import LandingPage from "./LandingPage/LandingPage";
+import LoginPage from "./LoginPage";
+import Sessions from "./Sessions/Sessions";
+import Matches from "./Matches/Matches";
+import EditProfile from "./Profile/editProfile";
 
-import Chat from './Chat/Chat';
-import Profile from './Profile/Profile';
+import Chat from "./Chat/Chat";
+import Profile from "./Profile/Profile";
 
 export {
   FAQ,
   Home,
-  Matches,
   RegisterForm,
   LandingPage,
   LoginPage,
   Sessions,
-  Mentee,
   Chat,
   Profile,
-  Mentor,
-  EditProfile
+  Matches,
+  EditProfile,
 };

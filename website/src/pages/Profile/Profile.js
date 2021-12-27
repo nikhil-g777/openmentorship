@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid } from "@material-ui/core";
 // mui
 import {
@@ -8,14 +8,23 @@ import {
 } from "@material-ui/core/styles";
 import { Container, Typography } from "@material-ui/core";
 import "fontsource-roboto";
-import SocialIcon1 from "../../images/image 24.png";
-import SocialIcon2 from "../../images/image 23.png";
+import twitterIcon from "../../images/image 23.png";
+import mediumIcon from "../../images/image 24.png";
+import githubIcon from "../../images/github-logo.png";
+import behanceIcon from "../../images/behance-logo.png";
+import portfolioIcon from "../../images/portfolio-icon.png";
+import otherIcon from "../../images/other-icon.png";
 import linked from "../../images/image 16.png";
 import editIcon from "../../images/edit 1.png";
 import { useHistory } from "react-router-dom";
 import { Menu } from "../../components";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer";
+
+import { getUserInfo } from "../../redux/Actions/UserActions";
+import { useDispatch, useSelector } from "react-redux";
+
+import "./index.css";
 
 const useStyles = makeStyles((theme) => ({
   profile_container: {
@@ -73,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     padding: "8px",
     fontSize: "13px",
+    textTransform: "capitalize",
     // [theme.breakpoints.down('sm')]: {
     //   width: '130px'
     // }
@@ -125,10 +135,25 @@ const theme = createMuiTheme({
 });
 
 export default function Mentee(props) {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
 
   const data = [1, 1, 1, 1, 1, 1];
+
+  const user = useSelector((store) => store.userreducer.user);
+
+  console.log("user: ", user);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      await dispatch(getUserInfo());
+    };
+    if (Object.keys(user).length === 0) {
+      fetchUser();
+    }
+  }, []);
+
   return (
     <div>
       <div
@@ -142,9 +167,9 @@ export default function Mentee(props) {
             registrationMenu={true}
             showBackButton={false}
           />
-        </Container> 
+        </Container>
       </div>
-      <div style={{ backgroundColor: "#F1F4F4",paddingBottom:50 }}>
+      <div style={{ backgroundColor: "#F1F4F4", paddingBottom: 50 }}>
         <Container>
           <ThemeProvider theme={theme}>
             <Container style={{ display: "flex", justifyContent: "center" }}>
@@ -163,7 +188,8 @@ export default function Mentee(props) {
                       src="https://wallpaperaccess.com/full/2969091.jpg"
                     />
                     <Typography className={classes.pro_typo1_sm}>
-                      Emily Lee
+                      {/* Emily Lee */}
+                      {`${user.user?.firstName} ${user.user?.lastName}`}
                     </Typography>
                   </Box>
                 </Grid>
@@ -171,7 +197,8 @@ export default function Mentee(props) {
                   <Box component="div" className={classes.pro_typo_div_main}>
                     <Box component="div" className={classes.pro_typo_div}>
                       <Typography className={classes.pro_typo1}>
-                        Emily Lee
+                        {/* Emily Lee */}
+                        {`${user.user?.firstName} ${user.user?.lastName}`}
                       </Typography>
                       <img src={linked} style={{ marginLeft: 10 }} />
                     </Box>
@@ -185,28 +212,36 @@ export default function Mentee(props) {
                     </Link>
                   </Box>
                   <Typography className={classes.pro_typo2}>
-                    Marketing Intern at Propeller Health<br></br>Cognitive
-                    Science at UCLA 2022
+                    {/* Marketing Intern at Propeller Health<br></br>Cognitive
+                    Science at UCLA 2022 */}
+                    {user?.user?.headline}
                   </Typography>
                   <Typography className={classes.pro_typo3}>About</Typography>
                   <Typography className={classes.pro_typo4}>
-                    I am a second-year UCLA Regents Scholar interested in
+                    {/* I am a second-year UCLA Regents Scholar interested in
                     digital health, healthcare management, population health
                     studies, and social innovation. I am experienced in email
-                    marketing techniques, SEO and brand analytics.
+                    marketing techniques, SEO and brand analytics. */}
+                    {user?.user?.bio}
                   </Typography>
                   <Typography className={classes.pro_typo3}>
                     Areas of interest
                   </Typography>
                   <Typography className={classes.pro_typo4}>
-                    Public health, social innovation, digital health, healthcare
-                    management
+                    {/* Public health, social innovation, digital health, healthcare
+                    management */}
+                    {user?.user?.interests?.map((interest) => (
+                      <span>{interest},</span>
+                    ))}
                   </Typography>
                   <Typography className={classes.pro_typo3}>
                     Top skills
                   </Typography>
                   <Typography className={classes.pro_typo4}>
-                    Marketing techniques, SEO, brand analytics, email marketing
+                    {user?.user?.skills?.map((skill) => (
+                      <span>{skill},</span>
+                    ))}
+                    {/* Marketing techniques, SEO, brand analytics, email marketing */}
                   </Typography>
                   <Typography className={classes.pro_typo3}>
                     Looking for
@@ -217,21 +252,74 @@ export default function Mentee(props) {
                     spacing={1}
                     style={{ marginTop: "10px" }}
                   >
-                    {data.map((txt) => (
-                      <Grid item>
-                        <Typography className={classes.pro_typo_btn}>
-                          Mock interview
-                        </Typography>
-                      </Grid>
-                    ))}
+                    {Object.keys(user).length > 0 &&
+                      Object.keys(user?.user?.goals || {})?.map((txt) => (
+                        <Grid item>
+                          <Typography className={classes.pro_typo_btn}>
+                            {txt}
+                          </Typography>
+                        </Grid>
+                      ))}
                   </Grid>
                   <Typography className={classes.pro_typo3}>
                     Social Media
                   </Typography>
                   <Box component="div" className={classes.social_div}>
-                    <img src={SocialIcon2} />
+                    {Object.keys(user).length > 0 &&
+                      Object.entries(user?.user?.socialLinks).map(
+                        ([key, value]) => (
+                          console.log(`${key}: ${value}`),
+                          (
+                            <a href={value} target="_blank">
+                              <img
+                                src={
+                                  `${key}` === "Twitter"
+                                    ? twitterIcon
+                                    : key === "Medium"
+                                    ? mediumIcon
+                                    : key === "Behance"
+                                    ? behanceIcon
+                                    : key === "Github"
+                                    ? githubIcon
+                                    : key === "Portfolio"
+                                    ? portfolioIcon
+                                    : key === "Other"
+                                    ? otherIcon
+                                    : ""
+                                }
+                                className="logo-icons"
+                              />
+                            </a>
+                          )
+                        )
+                      )}
 
-                    <img src={SocialIcon1} style={{ marginLeft: "3%" }} />
+                    {/* {Object.keys(user).length > 0 &&
+                      Object.keys(user?.user?.socialLinks || {})?.map(
+                        (txt) => (
+                          console.log("txt: ", txt.value),
+                          (
+                            <img
+                              src={
+                                txt === "Twitter"
+                                  ? twitterIcon
+                                  : txt === "Medium"
+                                  ? mediumIcon
+                                  : txt === "Behance"
+                                  ? behanceIcon
+                                  : txt === "Github"
+                                  ? githubIcon
+                                  : txt === "Portfolio"
+                                  ? portfolioIcon
+                                  : txt === "Other"
+                                  ? otherIcon
+                                  : ""
+                              }
+                              className="logo-icons"
+                            />
+                          )
+                        )
+                      )} */}
                   </Box>
                 </Grid>
               </Grid>
@@ -239,10 +327,9 @@ export default function Mentee(props) {
           </ThemeProvider>
         </Container>
       </div>
-      <div style={{backgroundColor:'#f5f3f8'}}>
+      <div style={{ backgroundColor: "#f5f3f8" }}>
         <Container>
-      <Footer/>
-
+          <Footer />
         </Container>
       </div>
     </div>

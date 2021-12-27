@@ -132,6 +132,18 @@ export default function RegisterForm() {
     setState({ ...state, communicationFrequency: value });
   };
 
+  const handleCommunicationPreferences = (value) => {
+    console.log(
+      "proferences on change: ",
+      value,
+      "value.name: ",
+      value.name,
+      "communicationPreferences: ",
+      communicationPreferences
+    );
+    setState({ ...state, communicationPreferences: value.name });
+  };
+
   const handlesocialLinks = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -158,8 +170,10 @@ export default function RegisterForm() {
     interests,
     goals,
     communicationFrequency,
+    communicationPreferences,
     socialLinks,
   } = state;
+
   const values = {
     firstName,
     lastName,
@@ -175,6 +189,7 @@ export default function RegisterForm() {
     interests,
     goals,
     communicationFrequency,
+    communicationPreferences,
     socialLinks,
   };
 
@@ -246,6 +261,7 @@ export default function RegisterForm() {
             handleInput={handleInput}
             handleGoals={handleGoals}
             handleCommunicationFrequency={handleCommunicationFrequency}
+            handleCommunicationPreferences={handleCommunicationPreferences}
             values={values}
           />
         </>
