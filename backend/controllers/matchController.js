@@ -78,12 +78,23 @@ const updateMatch = (req, res) => {
     .then((match) => {
       const { mentee, mentor } = match;
       const results = {};
-      if (match.status === 'pending' && status === 'active') {
+      if (
+        (match.status == 'pending' || match.status == 'closed') &&
+        status === 'active'
+      ) {
+        let requestMessage = '';
+        if (match.status == 'closed') {
+          // reconnecting
+          requestMessage = body.requestMessage;
+        } else {
+          requestMessage = match.requestMessage;
+        }
+
         createChatConversation(mentee, mentor)
           .then((chatResult) => {
             return Session.create({
               match: match._id,
-              requestMessage: match.requestMessage,
+              requestMessage,
               startDate: moment.utc().toDate().toUTCString(),
               status: 'active',
               twilioConversationSid: chatResult.conversationSid,
@@ -91,6 +102,7 @@ const updateMatch = (req, res) => {
               return Match.findByIdAndUpdate(matchId, {
                 status,
                 latestSession: session._id,
+                requestMessage,
               }).exec();
             });
           })
