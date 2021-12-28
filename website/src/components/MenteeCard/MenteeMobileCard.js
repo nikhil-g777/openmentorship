@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 
 // mui
 import {
@@ -7,23 +6,12 @@ import {
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  Button,
-  FormControl,
-  Box,
-  Grid,
-  Input,
-  Typography,
-  Container,
-} from "@material-ui/core";
-import boxImage from "../images/imagebox.png";
-import Linkedin from "../images/linkedin.svg";
+import { Card, Button, Box, Typography, Container } from "@material-ui/core";
 
+import boxImage from "../images/imagebox.png";
 // additional packages
 import "fontsource-roboto";
+
 const useStyles = makeStyles((theme) => ({
   MenteeCard: {
     marginTop: "2%",
@@ -83,6 +71,7 @@ const theme = createMuiTheme({
     fontFamily: '"Roboto"',
   },
 });
+
 export default function MenteeMobileCard(props) {
   // console.log("mentee mobile props: ", props);
   const classes = useStyles();

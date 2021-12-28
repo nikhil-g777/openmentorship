@@ -37,7 +37,8 @@ export const createMatch = (data) => async (dispatch) => {
 export const updateMatch = (payload) => async (dispatch) => {
   dispatch({ type: UPDATE_MATCHES });
   try {
-    const result = await axiosClient().put(`/matches/update`, payload);
+    const result = await axiosClient().post(`/matches/update`, payload);
+    console.log("result updated match: ", result);
     return dispatch({ type: UPDATE_MATCHES_SUCCESS, payload: result });
   } catch (err) {
     return dispatch({ type: UPDATE_MATCHES_ERROR, payload: err });

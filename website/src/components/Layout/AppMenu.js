@@ -252,12 +252,12 @@ const AppMenu = (props) => {
   };
 
   return (
-    <Wrapper>
-      {props.showBackButton == false ? (
+    <Wrapper style={{ padding: "0.75% 2.75%" }}>
+      {/* {props.showBackButton == false ? (
         <Picture />
       ) : (
         <BackButton onClick={props.handleBack} />
-      )}
+      )} */}
       <Box className="web-navbar">
         <Link
           to="#"

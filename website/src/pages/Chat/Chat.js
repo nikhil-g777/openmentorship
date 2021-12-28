@@ -1,32 +1,23 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Footer from "../../components/Footer";
+import React from "react";
+
+import { useHistory } from "react-router-dom";
+
 // mui
 import {
   createMuiTheme,
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  Button,
-  FormControl,
-  Divider,
-  Grid,
-  Box,
-  Typography,
-  Container,
-} from "@material-ui/core";
-// additional packages
+import { Grid, Box, Typography, Container } from "@material-ui/core";
+import "fontsource-roboto";
+
+import { Menu } from "../../components";
+import Footer from "../../components/Footer";
 import chat from "../../images/chat.svg";
 import arrow from "../../images/arrow.svg";
 import upload from "../../images/upload.svg";
 import sendMessage from "../../images/sendMessage.svg";
-import { Menu } from "../../components";
-import { useHistory } from "react-router-dom";
-import "fontsource-roboto";
+
 const useStyles = makeStyles((theme) => ({
   padding: {
     padding: "20px",
@@ -199,26 +190,19 @@ const theme = createMuiTheme({
     fontFamily: '"Roboto"',
   },
 });
-export default function MenteeCard(props) {
+
+export default function MenteeCard() {
   const classes = useStyles();
   const history = useHistory();
 
   return (
-    <div>
+    <>
+      <Menu
+        handleBack={() => history.push("/")}
+        registrationMenu={true}
+        showBackButton={false}
+      />
       <ThemeProvider theme={theme}>
-      <div
-        style={{
-          backgroundColor: "white",
-        }}
-      >
-        <Container>
-          <Menu
-            handleBack={() => history.push("/")}
-            registrationMenu={true}
-            showBackButton={false}
-          />
-        </Container> 
-      </div>
         <div
           style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
         >
@@ -232,9 +216,7 @@ export default function MenteeCard(props) {
             </Box>
           </Container>
         </div>
-        <div
-          style={{backgroundColor:'#F1F4F4' ,paddingBottom:30}}
-        >
+        <div style={{ backgroundColor: "#F1F4F4", paddingBottom: 30 }}>
           <Container>
             <Box className={classes.Background}>
               <Grid container spacing={3} className={classes.padding}>
@@ -293,12 +275,11 @@ export default function MenteeCard(props) {
           </Container>
         </div>
       </ThemeProvider>
-      <div style={{backgroundColor:'#f5f3f8'}}>
+      <div style={{ backgroundColor: "#f5f3f8" }}>
         <Container>
-      <Footer/>
-
+          <Footer />
         </Container>
       </div>
-    </div>
+    </>
   );
 }

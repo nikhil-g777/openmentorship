@@ -1,7 +1,7 @@
 // Packages
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Divider from "@material-ui/core/Divider";
+// import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
 // Project Imports
@@ -38,8 +38,14 @@ const Sessions = () => {
       await dispatch(getSessions());
     }
 
-    fetchSessions();
+    console.log("before fetch");
+    if (sessions?.length === 0) {
+      fetchSessions();
+    }
+    console.log("after fetch: ", sessions);
+  }, []);
 
+  useEffect(() => {
     if (sessions?.length > 0) {
       setSessionComponents(
         sessions.map((session) => {
@@ -53,23 +59,7 @@ const Sessions = () => {
         })
       );
     }
-    // getSessions()
-    //   .then((res) => {
-    //     setSessionList(res.data.sessions);
-    //     setSessionComponents(
-    //       res.data.sessions.map((session) => {
-    //         return (
-    //           <SessionCard
-    //             session={session}
-    //             key={session._id}
-    //             onClick={handleClick}
-    //           />
-    //         );
-    //       })
-    //     );
-    //   })
-    //   .catch((err) => console.log(err));
-  }, []);
+  }, [sessions]);
 
   function handleGoBack() {}
 

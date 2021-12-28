@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   Box,
   Checkbox,
@@ -13,23 +17,16 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import { Container, Typography } from "@material-ui/core";
+import { CheckBoxOutlineBlank, StopRounded } from "@material-ui/icons";
+import ReactChipInput from "react-chip-input";
 import "fontsource-roboto";
-import SocialIcon1 from "../../images/image 24.png";
-import SocialIcon2 from "../../images/image 23.png";
+
 import linked from "../../images/image 16.png";
 import editIcon from "../../images/edit 1.png";
-import {
-  CheckBoxOutlineBlank,
-  CropSquareOutlined,
-  SquareFoot,
-  StopRounded,
-} from "@material-ui/icons";
-import { faSquareFull } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
 
-import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo, updateUser } from "../../redux/Actions/UserActions";
 
 const useStyles = makeStyles((theme) => ({
@@ -185,14 +182,36 @@ export default function Mentee(props) {
       setSkills(user?.user?.skills);
       setGoals(user?.user?.goals);
       setSocialLinks(user?.user?.socialLinks);
-      console.log("user?.user?.goals: ", user?.user?.socialLinks);
     }
   }, [user]);
 
   const handleChangeGoals = (event) => {
-    console.log("goals: ", goals);
     const { name, checked } = event.target;
     setGoals({ ...goals, [name]: checked });
+  };
+
+  const addSkill = (value) => {
+    const newskills = skills.slice();
+    newskills.push(value);
+    setSkills(newskills);
+  };
+
+  const removeSkill = (index) => {
+    const newskills = skills.slice();
+    newskills.splice(index, 1);
+    setSkills(newskills);
+  };
+
+  const addInterests = (value) => {
+    const newinterests = interest.slice();
+    newinterests.push(value);
+    setInterest(newinterests);
+  };
+
+  const removeInterests = (index) => {
+    const newinterests = interest.slice();
+    newinterests.splice(index, 1);
+    setInterest(newinterests);
   };
 
   const handleChangeSocialLinks = (event) => {
@@ -204,38 +223,30 @@ export default function Mentee(props) {
     }));
   };
 
-  const handleUpdateUser = () => {
+  const handleUpdateUser = async () => {
     let userData = {
       bio: about,
-      areasOfInterest: interest,
+      interests: interest,
       skills: skills,
       goals: goals,
       socialLinks: socialLinks,
     };
-    console.log("userdata: ", userData);
-    dispatch(
+    await dispatch(
       updateUser({
         type: "updateUser",
         user: userData,
       })
     );
+    history.push("/profile");
   };
 
   return (
-    <div>
-      <div
-        style={{
-          backgroundColor: "white",
-        }}
-      >
-        <Container>
-          <Menu
-            handleBack={() => history.push("/")}
-            registrationMenu={true}
-            showBackButton={false}
-          />
-        </Container>
-      </div>
+    <>
+      <Menu
+        handleBack={() => history.push("/")}
+        registrationMenu={true}
+        showBackButton={false}
+      />
       <div
         style={{
           backgroundColor: "#F1F4F4",
@@ -314,25 +325,21 @@ export default function Mentee(props) {
                 <Typography className={classes.pro_typo3}>
                   Areas of interest
                 </Typography>
-                <TextField
-                  style={{ marginTop: "10px" }}
-                  multiline
-                  variant="outlined"
-                  fullWidth
-                  value={interest}
-                  onChange={(event) => setInterest(event.target.value)}
+                <ReactChipInput
+                  classes="class1 class2"
+                  chips={interest}
+                  onSubmit={(value) => addInterests(value)}
+                  onRemove={(index) => removeInterests(index)}
                 />
 
                 <Typography className={classes.pro_typo3}>
                   Top skills
                 </Typography>
-                <TextField
-                  style={{ marginTop: "10px" }}
-                  multiline
-                  variant="outlined"
-                  fullWidth
-                  value={skills}
-                  onChange={(event) => setSkills(event.target.value)}
+                <ReactChipInput
+                  classes="class1 class2"
+                  chips={skills}
+                  onSubmit={(value) => addSkill(value)}
+                  onRemove={(index) => removeSkill(index)}
                 />
 
                 <Typography className={classes.pro_typo3}>
@@ -648,6 +655,6 @@ export default function Mentee(props) {
           <Footer />
         </Container>
       </div>
-    </div>
+    </>
   );
 }

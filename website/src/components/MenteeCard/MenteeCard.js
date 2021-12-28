@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 
 // mui
 import {
@@ -9,19 +8,16 @@ import {
 } from "@material-ui/core/styles";
 import {
   Card,
-  CardActions,
-  CardContent,
   Button,
-  FormControl,
   Box,
   Grid,
-  Input,
   Typography,
   Container,
 } from "@material-ui/core";
+
 import boxImage from "../images/imagebox.png";
 import Linkedin from "../images/linkedin.svg";
-import AnchorLink from "react-anchor-link-smooth-scroll";
+
 // additional packages
 import "fontsource-roboto";
 
@@ -267,7 +263,9 @@ const theme = createMuiTheme({
     fontFamily: '"Roboto"',
   },
 });
+
 export default function MenteeCard(props) {
+  console.log("props: ", props);
   const classes = useStyles();
   const [reconnect, setReconnect] = useState(false);
 
@@ -278,6 +276,7 @@ export default function MenteeCard(props) {
     // const scrollingElement = document.scrollingElement || document.body;
     // scrollingElement.scrollTop = scrollingElement.scrollHeight;
   };
+
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -315,7 +314,15 @@ export default function MenteeCard(props) {
                       props.mentorType !== "MentorPending" ? (
                       <Box className={classes.FlexImageBox}>
                         <img src={Linkedin} className={classes.Connections} />
-                        <Button className={classes.Decline}>
+                        <Button
+                          className={classes.Decline}
+                          onClick={() =>
+                            props.handleUpdateConnectionRequest(
+                              x?._id,
+                              "closed"
+                            )
+                          }
+                        >
                           Withdraw request
                         </Button>
                       </Box>
@@ -388,9 +395,10 @@ export default function MenteeCard(props) {
                     <Box className={classes.ButtonBox}>
                       {Object.keys(x[props.userType]?.goals || {}).length > 0 &&
                         Object.entries(x[props.userType]?.goals || {}).map(
-                          ([key, value]) => (
-                            <Button className={classes.Mock}>{key}</Button>
-                          )
+                          ([key, value]) =>
+                            value && (
+                              <Button className={classes.Mock}>{key}</Button>
+                            )
                         )}
                     </Box>
                   </Grid>
@@ -408,6 +416,8 @@ export default function MenteeCard(props) {
                         rows={10}
                         placeholder="Type message here..."
                         className={classes.MessageInput}
+                        value={props.connectionRequestMessage}
+                        onChange={props.handleChangeRequestMessage}
                       />
                       {/* </Box> */}
                       <Box className={classes.buttonFlex}>
@@ -417,7 +427,17 @@ export default function MenteeCard(props) {
                         >
                           Cancel
                         </Button>
-                        <Button className={classes.MessageButton1}>Send</Button>
+                        <Button
+                          className={classes.MessageButton1}
+                          onClick={() =>
+                            props.handleUpdateConnectionRequest(
+                              x?._id,
+                              "active"
+                            )
+                          }
+                        >
+                          Send
+                        </Button>
                       </Box>
                     </Box>
                   ) : null}

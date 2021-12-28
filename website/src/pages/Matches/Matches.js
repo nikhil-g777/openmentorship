@@ -17,13 +17,17 @@ import MenteeCard from "../../components/MenteeCard/MenteeCard";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
 
-import { getUserMatches } from "../../redux/Actions/MatchesActions";
+import {
+  getUserMatches,
+  updateMatch,
+} from "../../redux/Actions/MatchesActions";
 import { getUserInfo } from "../../redux/Actions/UserActions";
 
 const useStyles = makeStyles((theme) => ({
   tilte: {
     textAlign: "center",
-    paddingTop: "2%",
+    // paddingTop: "2%",
+    paddingTop: "4.1%",
     fontSize: "28px",
   },
   Background: {
@@ -68,7 +72,7 @@ const theme = createMuiTheme({
   },
 });
 
-export default function Matches(props) {
+export default function Matches() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
@@ -76,6 +80,7 @@ export default function Matches(props) {
   const [menteeType, setMenteeType] = useState("active");
   const [mentorType, setMentorType] = useState("active");
   const [viewType, setViewType] = useState(false);
+  const [connectionRequestMessage, setConnectionRequestMessage] = useState("");
 
   const matches = useSelector((store) => store.matchesreducer.matches);
   const user = useSelector((store) => store.userreducer.user);
@@ -110,22 +115,35 @@ export default function Matches(props) {
     setViewType(true);
   };
 
+  const handleChangeRequestMessage = (e) => {
+    setConnectionRequestMessage(e.target.value);
+  };
+
+  const handleUpdateConnectionRequest = async (matchId, updatestatus) => {
+    let payload = {
+      matchId: matchId,
+      status: updatestatus,
+      requestMessage: connectionRequestMessage,
+    };
+    console.log("payload: ", payload);
+    await dispatch(updateMatch(payload));
+  };
+
   return (
-    <div>
+    <>
+      <Menu
+        handleBack={() => history.push("/")}
+        registrationMenu={true}
+        showBackButton={false}
+      />
       <ThemeProvider theme={theme}>
-        <div
+        {/* <div
           style={{
             backgroundColor: "white",
           }}
         >
-          <Container>
-            <Menu
-              handleBack={() => history.push("/")}
-              registrationMenu={true}
-              showBackButton={false}
-            />
-          </Container>
-        </div>
+          <Container></Container>
+        </div> */}
         <div
           style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
         >
@@ -178,6 +196,9 @@ export default function Matches(props) {
                 menteeType={menteeType}
                 mentorType={mentorType}
                 matchData={matches}
+                handleUpdateConnectionRequest={handleUpdateConnectionRequest}
+                handleChangeRequestMessage={handleChangeRequestMessage}
+                connectionRequestMessage={connectionRequestMessage}
                 userType={
                   user?.user?.userType === "mentee"
                     ? "mentor"
@@ -192,6 +213,9 @@ export default function Matches(props) {
                 menteeType={menteeType}
                 mentorType={mentorType}
                 matchData={matches}
+                handleUpdateConnectionRequest={handleUpdateConnectionRequest}
+                handleChangeRequestMessage={handleChangeRequestMessage}
+                connectionRequestMessage={connectionRequestMessage}
                 userType={
                   user?.user?.userType === "mentee"
                     ? "mentor"
@@ -206,6 +230,9 @@ export default function Matches(props) {
                 menteeType={menteeType}
                 mentorType={mentorType}
                 matchData={matches}
+                handleUpdateConnectionRequest={handleUpdateConnectionRequest}
+                handleChangeRequestMessage={handleChangeRequestMessage}
+                connectionRequestMessage={connectionRequestMessage}
                 userType={
                   user?.user?.userType === "mentee"
                     ? "mentor"
@@ -223,6 +250,6 @@ export default function Matches(props) {
           <Footer />
         </Container>
       </div>
-    </div>
+    </>
   );
 }

@@ -253,11 +253,13 @@ export default function Mentee(props) {
                     style={{ marginTop: "10px" }}
                   >
                     {Object.keys(user).length > 0 &&
-                      Object.keys(user?.user?.goals || {})?.map((txt) => (
+                      Object.entries(user?.user?.goals).map(([key, value]) => (
                         <Grid item>
-                          <Typography className={classes.pro_typo_btn}>
-                            {txt}
-                          </Typography>
+                          {value && (
+                            <Typography className={classes.pro_typo_btn}>
+                              {key}
+                            </Typography>
+                          )}
                         </Grid>
                       ))}
                   </Grid>
@@ -268,58 +270,28 @@ export default function Mentee(props) {
                     {Object.keys(user).length > 0 &&
                       Object.entries(user?.user?.socialLinks).map(
                         ([key, value]) => (
-                          console.log(`${key}: ${value}`),
-                          (
-                            <a href={value} target="_blank">
-                              <img
-                                src={
-                                  `${key}` === "Twitter"
-                                    ? twitterIcon
-                                    : key === "Medium"
-                                    ? mediumIcon
-                                    : key === "Behance"
-                                    ? behanceIcon
-                                    : key === "Github"
-                                    ? githubIcon
-                                    : key === "Portfolio"
-                                    ? portfolioIcon
-                                    : key === "Other"
-                                    ? otherIcon
-                                    : ""
-                                }
-                                className="logo-icons"
-                              />
-                            </a>
-                          )
-                        )
-                      )}
-
-                    {/* {Object.keys(user).length > 0 &&
-                      Object.keys(user?.user?.socialLinks || {})?.map(
-                        (txt) => (
-                          console.log("txt: ", txt.value),
-                          (
+                          <a href={value} target="_blank">
                             <img
                               src={
-                                txt === "Twitter"
+                                `${key}` === "Twitter"
                                   ? twitterIcon
-                                  : txt === "Medium"
+                                  : key === "Medium"
                                   ? mediumIcon
-                                  : txt === "Behance"
+                                  : key === "Behance"
                                   ? behanceIcon
-                                  : txt === "Github"
+                                  : key === "Github"
                                   ? githubIcon
-                                  : txt === "Portfolio"
+                                  : key === "Portfolio"
                                   ? portfolioIcon
-                                  : txt === "Other"
+                                  : key === "Other"
                                   ? otherIcon
                                   : ""
                               }
                               className="logo-icons"
                             />
-                          )
+                          </a>
                         )
-                      )} */}
+                      )}
                   </Box>
                 </Grid>
               </Grid>
