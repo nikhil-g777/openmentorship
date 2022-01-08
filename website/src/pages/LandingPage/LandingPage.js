@@ -1,8 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { LinkedIn } from "react-linkedin-login-oauth2";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
-import WaitlistCard from "./WaitListCard";
+
+import { loginUser } from "../../api";
+import { UserContext } from "../../context/UserContext";
 
 //mui
 import styled from "styled-components";
@@ -12,6 +15,7 @@ import { Button, Container, Box } from "@material-ui/core";
 
 //imgs
 import Stairs from "./images/stairs_large.png";
+import LinkedinSignin from "./images/Linkedin-Sign-In-Large-Default.png";
 import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
 
@@ -73,8 +77,7 @@ const TitleContainer = styled.div`
 `;
 
 const HeroTitle = styled.p`
-  font-family: "Roboto";
-  font-weight: bold;
+  font-size: 2rem;
   color: "#000000";
   width: 452px;
   font-size: 45px;
@@ -132,6 +135,15 @@ const OrderedSide = styled.div`
   @media (min-width: 768px) {
     order: 1;
   }
+`;
+
+const LinkedinImage = styled.img`
+  max-width: 180px;
+`;
+
+const OrText = styled.span`
+  color: gray;
+  margin: 1rem;
 `;
 
 const PuzzleImage = styled.img`
@@ -305,6 +317,40 @@ const useStyles = makeStyles({
 export default function LandingPage(props) {
   const history = useHistory();
   const classes = useStyles(props);
+
+  const [isError, setIsError] = useState(false);
+  const [user, setUser] = useContext(UserContext);
+
+  const handleSuccess = (data) => {
+    loginUser({
+      authCode: data.code,
+    })
+      .then((response) => {
+        if (response.data.success) {
+          setUser({
+            _id: response.data.user._id,
+            userType: response.data.user.userType,
+            token: response.data.token,
+          });
+          localStorage.setItem("token", JSON.stringify(response.data.token));
+        } else {
+          setIsError(true);
+        }
+      })
+      .catch((error) => {
+        setIsError(true);
+      });
+  };
+
+  const handleFailure = (error) => {
+    console.log(error);
+    setIsError(true);
+  };
+
+  if (user.token) {
+    return <Redirect to="/matches" />;
+  }
+
   return (
     <div>
       {/* <Container > */}
@@ -319,7 +365,7 @@ export default function LandingPage(props) {
             registrationMenu={true}
             showBackButton={false}
           />
-        </Container> 
+        </Container>
       </div>
       <div
         style={{

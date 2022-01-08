@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import MatchProfile from "./MatchProfile";
+import { UserContext } from "../../context/UserContext";
 
 //Material-UI
 import styled from "styled-components";
@@ -64,7 +65,6 @@ const MatchCard = ({
   showProfile,
   setShowProfile,
   currentMatches,
-  isMentor,
 }) => {
   const classes = useStyles();
   function handleClick(id) {
@@ -74,7 +74,8 @@ const MatchCard = ({
   }
 
   //we need match data as props here from matches page ie . State =  [active: [data]]
-
+  const [user, setUser] = useContext(UserContext);
+  const { userType } = user;
   const [selectedProfileId, setSelectedProfileId] = useState(null);
   const selectedProfile = currentMatches.find(
     (match) => match._id === selectedProfileId
@@ -86,7 +87,7 @@ const MatchCard = ({
   //we need a way to show specific text for mentee and mentor users : put a isMentor variable in the API data
   return (
     <div>
-      {isMentor == "mentor" ? (
+      {userType == "mentor" ? (
         <div>
           <Title>Here’s your curated list of potential mentees!</Title>
           <Body>yes</Body>
@@ -118,16 +119,16 @@ const MatchCard = ({
                   variant="h6"
                   component="h2"
                 >
-                  {match.firstName + " " + match.lastName}
+                  {match[userType].firstName + " - " + match[userType].lastName}
                 </Typography>
                 <Typography
                   className={classes.body}
                   variant="body2"
                   component="p"
                 >
-                  {match.WorkExperiences[0].title +
+                  {match[userType].experiences[0].title +
                     " at " +
-                    match.WorkExperiences[0].company}
+                    match[userType].experiences[0].organization}
                 </Typography>
               </CardContent>
 

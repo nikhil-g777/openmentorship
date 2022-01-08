@@ -68,11 +68,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#f5f3f8",
     padding: ".1em",
     margin: "0 auto",
-    '@media (max-width:780px)': {
-      width:320,
-      marginLeft:-10
-      
-    }
+    "@media (max-width:780px)": {
+      width: 320,
+      marginLeft: -10,
+    },
   },
   WaitlistButton: {
     size: "small",
@@ -84,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: '"Roboto"',
+    fontFamily: "proxima_nova",
   },
 });
 
@@ -195,9 +194,9 @@ export default function WaitlistCard(props) {
                     <Grid item xs={12}>
                       {/* <Input size="small" placeholder="Enter Your Email" inputProps={{ 'aria-label': 'email' }} /> */}
                       <TextField
-                                           style={{
-                                            color: "#5C5C5C",
-                                          }}
+                        style={{
+                          color: "#5C5C5C",
+                        }}
                         // style={{height:40}}
                         id="outlined-basic"
                         variant="outlined"
@@ -210,7 +209,6 @@ export default function WaitlistCard(props) {
                     </Grid>
                     <Grid item xs={12}>
                       <WaitlistButton
-   
                         variant="contained"
                         onClick={joinWaitlist}
                         disabled={emailValid ? false : true}

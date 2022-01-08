@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCon } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Card from "./MatchCard";
 import Profile from "./MatchProfile";
 import CardType from "./cardType";
@@ -55,13 +55,13 @@ export default function Matches() {
   }
 
   function handleSecondaryTab(value) {
-    if (value == "pending") {
+    if (value === "pending") {
       setActiveTab({ pending: true, active: false, closed: false });
       setCurrentMatches(matchData.pending);
-    } else if (value == "active") {
+    } else if (value === "active") {
       setActiveTab({ pending: false, active: true, closed: false });
       setCurrentMatches(matchData.active);
-    } else if (value == "closed") {
+    } else if (value === "closed") {
       setActiveTab({ pending: false, active: false, closed: true });
       setCurrentMatches(matchData.closed);
     }

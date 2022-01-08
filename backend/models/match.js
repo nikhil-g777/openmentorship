@@ -11,21 +11,21 @@ const Match = new Schema(
       default: 'pending',
       required: true,
     },
-    twilioChannelId: { type: String },
-    menteeId: {
+    requestMessage: { type: String, required: true },
+    mentee: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: 'user',
-      required: true,
     },
-    mentorId: {
+    mentor: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: 'user',
-      required: true,
     },
-    sessionId: {
+    latestSession: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'session',
-      required: true,
+      ref: 'Session',
+      default: null,
     },
   },
   {
