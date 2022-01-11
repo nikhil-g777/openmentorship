@@ -1,162 +1,144 @@
-const _ = require('lodash');
+/* eslint no-unused-vars: 0 */
+
+const moment = require('moment');
+
+const { createChatConversation } = require('../config/twilio');
 
 const Match = require('../models/match');
-const User = require('../models/user');
+const Session = require('../models/session');
 
-const getMatches = (req, res) => {
-  const { _id } = req.user;
+// Created when there is a request from a mentee
+const createMatch = (req, res) => {
+  // inputs : menteeId, mentorId
 
-  if (!_id) {
-    return res.status(400).json({ success: false, error: '_id not sent' });
-  }
-
-  User.findById(_id).exec((err, user) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ success: false, error: err });
-    }
-    if (!user) {
-      return res.status(404).json({ success: false, error: 'user not found' });
-    }
-
-    const { userType } = user;
-
-    const findQuery = {};
-
-    if (user.userType === 'mentee') {
-      findQuery.menteeId = _id;
-    } else if (user.userType === 'mentor') {
-      findQuery.mentorId = _id;
-    } else {
-      return res
-        .status(404)
-        .json({ success: false, error: 'user type in invalid' });
-    }
-
-    Match.find(findQuery)
-      .populate('mentorId')
-      .populate('menteeId')
-      .exec((matchErr, matchesList) => {
-        if (matchErr) {
-          console.log(err);
-          return res.status(500).json({ success: false, error: matchErr });
-        }
-
-        console.log(matchesList);
-
-        const result = { pending: [], active: [], closed: [] };
-
-        _.forEach(matchesList, (match) => {
-          switch (userType) {
-            case 'mentor':
-              result[match.status].push(match.menteeId);
-              break;
-            case 'mentee':
-              result[match.status].push(match.mentorId);
-              break;
-            default:
-              console.log('Invalid user type');
-          }
-        });
-
-        return res.status(200).json({
-          success: true,
-          matches: result,
-        });
-      });
-  });
-};
-
-const sendMessage = (req, res) => {
-  const { _id, userType } = req.user;
-  const { matchId } = req.params;
   const { body } = req;
 
-  if (!_id) {
-    return res.status(400).json({ success: false, error: 'User not found' });
-  }
-
-  if (!matchId) {
+  if (!body) {
     return res
       .status(400)
-      .json({ success: false, error: 'matchId must be sent' });
+      .json({ success: false, error: 'request body is empty' });
   }
 
-  Match.findById(matchId)
-    .then((match) => {
-      if (userType != 'mentee' || !match.menteeId.equals(_id)) {
-        return res.status(400).json({
-          success: false,
-          error: 'Not authorized to send this message',
-        });
-      }
+  if (!body.match) {
+    return res.status(400).json({
+      success: false,
+      error: 'request body does not have match object',
+    });
+  }
 
-      if (match.initialMessage) {
-        // message is already present
-        return res.status(400).json({
-          success: false,
-          error: 'Message already sent, cannot overwrite',
-        });
-      }
+  const { menteeId, mentorId, requestMessage } = body.match;
 
-      Match.findByIdAndUpdate(matchId, {
-        initialMessage: body.initialMessage,
-      }).then(() => {
-        return res.status(200).json({
-          success: true,
-        });
+  Match.exists({ mentee: menteeId, mentor: mentorId })
+    .then((exists) => {
+      if (exists) {
+        return res
+          .status(500)
+          .json({ success: false, error: 'Match already exists' });
+      }
+      return Match.create({
+        mentee: menteeId,
+        mentor: mentorId,
+        requestMessage,
       });
     })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        error: 'Unable to process the request',
-      });
-    });
-};
-
-const createMatch = (req, res) => {
-  const { menteeId, mentorId, sessionId } = req.body;
-
-  if (!menteeId || !mentorId) {
-    res
-      .status(400)
-      .json({ success: false, error: 'menteeId and mentorId must be sent' });
-  }
-
-  Match.create({ menteeId, mentorId, sessionId })
     .then((createdMatch) => {
       return res.status(200).json({
         success: true,
-        matchId: createdMatch._id,
+        match: createdMatch,
       });
     })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        error: 'Unable to process the request',
-      });
+    .catch((e) => {
+      console.log(e);
+      return res.status(500).json({ success: false });
     });
 };
 
-/*
 const updateMatch = (req, res) => {
-  // inputs : matchId, status
+  // inputs : matchId
 
-  // if (status == 'active')
-  // create a new channel in twilio
-  // update the match record with the status='active', twilioChannelId
-  //else
-  // update the match record with the status
+  const { body } = req;
 
-  // return matchId
-}
-*/
+  if (!body) {
+    return res
+      .status(400)
+      .json({ success: false, error: 'request body is empty' });
+  }
+
+  const { matchId, status } = body;
+
+  if (!matchId || !status) {
+    return res.status(400).json({
+      success: false,
+      error: 'request body does not have the required parameters',
+    });
+  }
+
+  Match.findById(matchId)
+    .exec()
+    .then((match) => {
+      const { mentee, mentor } = match;
+      const results = {};
+      if (match.status === 'pending' && status === 'active') {
+        createChatConversation(mentee, mentor)
+          .then((chatResult) => {
+            return Session.create({
+              match: match._id,
+              requestMessage: match.requestMessage,
+              startDate: moment.utc().toDate().toUTCString(),
+              status: 'active',
+              twilioConversationSid: chatResult.conversationSid,
+            }).then((session) => {
+              return Match.findByIdAndUpdate(matchId, {
+                status,
+                latestSession: session._id,
+              }).exec();
+            });
+          })
+          .then((updatedMatch) => {
+            console.log(updatedMatch);
+            return res.status(200).json({
+              success: true,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+            return res.status(500).json({ success: false });
+          });
+      } else if (
+        (match.status == 'active' || match.status == 'pending') &&
+        status == 'closed'
+      ) {
+        return Match.findByIdAndUpdate(matchId, {
+          status,
+        })
+          .exec()
+          .then((updadedMatch) => {
+            return Session.findByIdAndUpdate(updadedMatch.latestSession, {
+              status,
+              emdDate: moment.utc().toDate().toUTCString(),
+            });
+          })
+          .then((updatedSession) => {
+            console.log(updatedSession);
+            return res.status(200).json({
+              success: true,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+            return res.status(500).json({ success: false });
+          });
+      } else {
+        throw new Error('Invalid Request');
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      return res.status(500).json({ success: false });
+    });
+};
 
 module.exports = {
   createMatch,
-  getMatches,
-  sendMessage,
+  updateMatch,
 };

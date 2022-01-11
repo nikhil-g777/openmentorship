@@ -1,84 +1,81 @@
-import React from 'react'
-import { createMuiTheme } from '@material-ui/core/styles'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { FormControl, InputBase, InputLabel, MenuItem, Select } from '@material-ui/core'
-
+import React from "react";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
+import { InputBase } from "@material-ui/core";
 
 export const theme = createMuiTheme({
   overrides: {
-    MuiButton: {
-      text: {
-        border:'2px solid lightgreen !important',
-        background:'white !important',
-        borderRadius:'30px !important',
-        color:'lightgreen !important',
-        padding: '1em !important',
-        width:'100% !important',
-      },
-    },
     MuiCssBaseline: {
-      '@global': {
+      "@global": {
         html: {
-          WebkitFontSmoothing: 'auto',
+          WebkitFontSmoothing: "auto",
         },
         h6: {
-          marginBottom:"1.5rem"
+          marginBottom: "1.5rem",
         },
-        body:{
-          fontSize:'1em'
-        },
-        a: {
-          color:"#000"
+        body: {
+          fontSize: "1em",
         },
         a: {
-          '&hover': {
-            color:"#000"
-          }
-        }
+          color: "#000",
+        },
+        a: {
+          "&hover": {
+            color: "#000",
+          },
+        },
       },
     },
     MuiFormControl: {
       root: {
-        margin:'1em 0',
-        display:'flex',
-        flexDirection:'column'
-      }
+        margin: "1em 0",
+        display: "flex",
+        flexDirection: "column",
+      },
     },
-    MuiInputBase:{
+    MuiInputBase: {
       root: {
-        width: '100%'
-      }
+        width: "100%",
+      },
     },
     MuiList: {
       root: {
-        display:'flex',
-        flexDirection:'column',
-        width: '210px'
-      }
+        display: "flex",
+        flexDirection: "column",
+      },
     },
     MuiMobileStepper: {
       root: {
-        width:"90%",
-        maxWidth: 500,
+        width: "70%",
         flexGrow: 1,
-        position: 'absolute',
-        display: 'flex',
-        flexDirection: 'column-reverse'
+        position: "inherit",
+        display: "flex",
+        flexDirection: "column-reverse",
+      },
+      positionBottom: {
+        position: "inherit",
       },
       dots: {
-        padding: "2em"
+        padding: "2em",
       },
       dot: {
-        width:"15px",
-        height:"15px",
-        margin: "0 8px"
-      }
+        width: "15px",
+        height: "15px",
+        margin: "0 8px",
+      },
     },
-    MuiMenuItem: { 
+    MuiMenuItem: {
       root: {
-        "&$selected": { 
-          fontWeight:'800',
-          background:"#fff"
+        "&$selected": {
+          fontWeight: "800",
+          background: "#fff",
+        },
+      },
+    },
+    MuiToggleButton: {
+      root: {
+        "&$selected": {
+          "background-color": "#69b595",
         },
       },
     },
@@ -88,46 +85,34 @@ export const theme = createMuiTheme({
       main: "#69b595",
     },
     secondary: {
-      main: "#1cbbd4",
+      main: "#6D6D6D",
     },
     background: {
-      default: "#fff"
-    } 
+      default: "#fff",
+    },
   },
-  
 });
 
 export const BootstrapInput = withStyles((theme) => ({
   root: {
-    'label + &': {
+    "label + &": {
       marginTop: "1em",
     },
   },
   input: {
     borderRadius: 4,
-    position: 'relative',
+    position: "relative",
     backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
+    border: "1px solid #ced4da",
     fontSize: 16,
-    padding: '18.5px 14px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    padding: "18.5px 14px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
     // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
+    fontFamily: ["proxima_nova"].join(","),
+    "&:focus": {
       borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+      borderColor: "#80bdff",
+      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
     },
   },
 }))(InputBase);

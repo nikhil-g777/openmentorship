@@ -16,7 +16,6 @@ import { Dashboard, Session, Match, AdminEditProfile } from "../admin/pages";
 import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
 import {
   FAQ,
-  Home,
   RegisterForm,
   Matches,
   LandingPage,
@@ -27,6 +26,8 @@ import {
   Profile,
   EditProfile,
 } from "../pages";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { UserProvider } from "../context/UserContext";
 
 function App() {
   return (

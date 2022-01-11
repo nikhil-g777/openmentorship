@@ -18,8 +18,7 @@ const Container = styled.div`
   padding-right: 200px;
   display: flex;
   justify-content: space-between;
-  border-radius:10px
-  @media (max-width: 768px) {
+  border-radius: 10px @media (max-width: 768px) {
     padding-top: 50px;
     padding-bottom: 40px;
     padding-left: 5px;
@@ -37,7 +36,7 @@ const MLogo = styled.img`
 
 const useStyles = makeStyles({
   Links: {
-    fontFamily: "Roboto",
+    fontFamily: "proxima_nova",
     fontSize: 16,
     fontWeight: "Bold",
     color: "black",
@@ -45,8 +44,7 @@ const useStyles = makeStyles({
       marginLeft: 10,
       display: "block",
       fontSize: 13,
-      marginBottom:20
-
+      marginBottom: 20,
     },
   },
   MobileFooter: {
@@ -54,13 +52,12 @@ const useStyles = makeStyles({
     "@media (max-width:780px)": {
       padding: 10,
       display: "block",
-      paddingTop: '50px',
-      paddingBottom: '40px',
-      paddingLeft: '5px',
-      paddingRight: '5px',
-      backgroundColor: '#f5f3f8',
-      borderRadius:10
-
+      paddingTop: "50px",
+      paddingBottom: "40px",
+      paddingLeft: "5px",
+      paddingRight: "5px",
+      backgroundColor: "#f5f3f8",
+      borderRadius: 10,
     },
   },
 });

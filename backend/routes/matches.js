@@ -3,21 +3,28 @@ const express = require('express');
 
 const router = express.Router();
 const passport = require('passport');
+
 require('../config/passportJWT')(passport);
 
-const sessionController = require('../controllers/sessionController');
+const matchController = require('../controllers/matchController');
 const util = require('../lib/utils');
 const role = require('../lib/role');
 
 router.use(passport.initialize());
 router.use(cookieParser());
 
-// Get List of Sessions
-router.get(
-  '/sessionList',
+router.post(
+  '/create',
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.mentee, role.mentor, role.admin]),
-  sessionController.sessionList,
+  matchController.createMatch,
+);
+
+router.post(
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee, role.mentor, role.admin]),
+  matchController.updateMatch,
 );
 
 module.exports = router;
