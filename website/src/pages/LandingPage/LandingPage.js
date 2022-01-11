@@ -1,33 +1,30 @@
-import React, { useState, useContext } from "react";
-import { Link, Redirect } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import { LinkedIn } from "react-linkedin-login-oauth2";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
+// import WaitlistCard from "./WaitListCard";
 
-import { loginUser } from "../../api";
-import { UserContext } from "../../context/UserContext";
+// import { loginUser } from "../../api";
+import { loginUser } from "../../redux/Actions/UserActions";
+// import { UserContext } from "../../context/UserContext";
+
+import { useDispatch } from "react-redux";
 
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { Button, Container, Box } from "@material-ui/core";
 
 //imgs
 import Stairs from "./images/stairs_large.png";
-import LinkedinSignin from "./images/Linkedin-Sign-In-Large-Default.png";
 import Puzzles from "./images/puzzles.png";
 import Cheer from "./images/cheer.png";
 
-//packages
 import { useHistory } from "react-router-dom";
-
-// import "../../style/styles.css";
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-`;
+// import linkedinImage from "../../images/linkedinsignin.svg";
+import LinkedinSignin from "./images/Linkedin-Sign-In-Large-Default.png";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -54,10 +51,11 @@ const HeroWrapper = styled.div`
   background-color: #f5f3f8;
   padding: 1em;
   margin-bottom: 5em;
+  border-radius: 10px;
   @media (min-width: 768px) {
     flex-direction: row;
     align-items: center;
-    margin-bottom: 0;
+    margin-bottom: 5em;
   }
 `;
 
@@ -65,52 +63,33 @@ const CheerWrapper = styled.div`
   margin: 0px auto;
   @media (min-width: 768px) {
     margin: 0;
-    max-width: 300px;
+    max-width: 400px;
   }
 `;
 
 const TitleContainer = styled.div`
-  max-width: 700px;
-  margin: 0 4rem;
+  // max-width: 300px;
+  width: 100%;
+  margin: 0 auto;
   margin-bottom: 40px;
-  text-align: center;
+  text-align: "left";
   @media (min-width: 768px) {
     text-align: left;
-    max-width: 700px;
+    margin-left: 70px;
+    // max-width: 350px;
   }
 `;
 
 const HeroTitle = styled.p`
-  font-size: 2rem;
+  font-family: "Roboto";
+  font-weight: bold;
   color: "#000000";
+  width: 452px;
+  font-size: 45px;
   text-align: "center";
-  margin-bottom: 1rem;
-  @media (min-width: 768px) {
-    font-size: 3rem;
-  }
-`;
-
-const SignupNote = styled.p`
-  font-size: 1rem;
-  color: gray;
-  text-align: center
-  margin-bottom: 1rem;
-  @media (min-width: 768px) {
-    font-size: 1.2rem;
-    text-align: left;
-    margin-bottom: 3rem;
-  }
-`;
-
-const SignInContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  overflow: hidden;
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: flex-start;
+  @media (max-width: 768px) {
+    font-size: 20px;
+    width: auto;
   }
 `;
 
@@ -121,11 +100,16 @@ const RegisterButton = styled.button`
   border-color: #51b6a5;
   boxshadow: none;
   shadows: none;
-  font-family: Proxima Nova;
-  height: 2.7rem;
-  width: 12.5rem;
+  height: 35px;
+  width: 194px;
   text-transform: none;
+  margin-left: 10px;
   color: white;
+  margin: 0 auto;
+  @media (max-width: 768px) {
+    width: 100%;
+    color: black;
+  }
   &:hover {
     background-color: #2d6c61;
   }
@@ -145,16 +129,64 @@ const StairsGreyBg = styled.div`
 
 const StairsImage = styled.img`
   width: 100%;
-  height: auto;
+  height: 500px;
   max-width: 600px;
   display: block;
   margin: 0 auto;
-  margin-top: 22px;
+  padding-top: 20%;
 `;
 
 const OrderedSide = styled.div`
   @media (min-width: 768px) {
     order: 1;
+  }
+`;
+
+const PuzzleImage = styled.img`
+  // display: block;
+  // margin: 0 auto;
+  width: auto;
+  @media (max-width: 768px) {
+    width: 300px;
+  }
+`;
+
+const PuzzleGreyBg = styled.div`
+  background-color: #0000;
+  margin-left: 39px;
+`;
+
+const CheerImage = styled.img`
+  width: 100%;
+  margin-bottom: 30%;
+  margin-left: -40%;
+  @media (max-width: 768px) {
+    margin-left: 0%;
+  }
+`;
+
+const CheerTitleBox = styled.div`
+  width: 281px;
+  // text-align: center;
+  height: 51px;
+  // margin: 0 auto;
+  margin-bottom: 90px;
+  margin-top: 39px;
+  @media (max-width: 768px) {
+    margin-bottom: 60px;
+    margin-top: 9px;
+  }
+`;
+
+const SignInContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  overflow: hidden;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: flex-start;
   }
 `;
 
@@ -167,31 +199,9 @@ const OrText = styled.span`
   margin: 1rem;
 `;
 
-const PuzzleImage = styled.img`
-  display: block;
-  margin: 0 auto;
-`;
-
-const PuzzleGreyBg = styled.div`
-  background-color: #0000;
-`;
-
-const CheerImage = styled.img`
-  width: 100%;
-`;
-
-const CheerTitleBox = styled.div`
-  width: 281px;
-  text-align: center;
-  height: 51px;
-  margin: 0 auto;
-  margin-bottom: 40px;
-  margin-top: 39px;
-`;
-
 const useStyles = makeStyles({
   root: {
-    fontFamily: "proxima_nova",
+    maxWidth: "100%",
   },
   Title: {
     fontSize: 20,
@@ -200,10 +210,18 @@ const useStyles = makeStyles({
     textAlign: "center",
   },
   BodyHeader: {
-    fontSize: 20,
+    fontSize: 45,
     fontWeight: "Bold",
     color: "#000000",
-    marginBottom: 25,
+    marginBottom: 30,
+    width: 565,
+    height: 113,
+    "@media (max-width:780px)": {
+      width: "auto",
+      fontSize: 20,
+      marginBottom: 15,
+      height: "auto",
+    },
   },
   Header: {
     fontStyle: "Semibold",
@@ -220,7 +238,6 @@ const useStyles = makeStyles({
     marginBottom: 6,
   },
   Header3: {
-    fontStyle: "Semibold",
     fontSize: 18,
     fontWeight: "Bold",
     color: "#000000",
@@ -236,65 +253,160 @@ const useStyles = makeStyles({
     paddingTop: 50,
     paddingLeft: 50,
   },
+  CardsFlux: {
+    marginLeft: -120,
+    "@media (max-width:780px)": {
+      marginLeft: 10,
+    },
+  },
+  WaitlistCard1: {
+    paddingTop: 50,
+  },
+  SubTitle: {
+    color: "#6D6D6D",
+    fontWeight: "normal",
+    fontSize: "14px",
+    lineHeight: "17px",
+    marginTop: -40,
+    paddingLeft: 70,
+    display: "block",
+    "@media (max-width:780px)": {
+      paddingLeft: 10,
+      display: "none",
+    },
+  },
+  LinkedIn: {
+    display: "flex",
+    marginTop: 20,
+    paddingLeft: 70,
+    "@media (max-width:780px)": {
+      paddingLeft: 10,
+    },
+  },
+  MessageButton: {
+    backgroundColor: "#51B6A5",
+    border: "none",
+    borderRadius: 40,
+    marginTop: 20,
+    width: "194px",
+    height: "35px",
+    textTransform: "capitalize",
+    fontWeight: "bold",
+    color: "white",
+  },
+  Or: {
+    marginLeft: 20,
+    marginRight: 20,
+    color: "#6D6D6D",
+    paddingTop: 7,
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
+  LinkedImage: {
+    display: "block",
+    cursor: "pointer",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
+  WorkFlex: {
+    display: "flex",
+    "@media (max-width:780px)": {
+      display: "block",
+    },
+  },
+  WorkImage: {
+    width: "auto",
+    "@media (max-width:780px)": {
+      width: "300px",
+    },
+  },
+  DreamCareer: {
+    marginLeft: 50,
+    "@media (max-width:780px)": {
+      marginLeft: 10,
+    },
+  },
 });
 
 export default function LandingPage(props) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles(props);
 
-  const [isError, setIsError] = useState(false);
-  const [user, setUser] = useContext(UserContext);
+  // const [isError, setIsError] = useState(false);
+  // const [user, setUser] = useContext(UserContext);
 
-  const handleSuccess = (data) => {
-    loginUser({
-      authCode: data.code,
-    })
-      .then((response) => {
-        if (response.data.success) {
-          setUser({
-            _id: response.data.user._id,
-            userType: response.data.user.userType,
-            token: response.data.token,
-          });
-          localStorage.setItem("token", JSON.stringify(response.data.token));
-        } else {
-          setIsError(true);
-        }
-      })
-      .catch((error) => {
-        setIsError(true);
-      });
+  // const user = useSelector((store) => store.userreducer.user);
+
+  const handleSuccess = async (data) => {
+    await dispatch(loginUser({ authCode: data.code }));
+
+    // .then((response) => {
+    //   if (response.data.success) {
+    //     setUser({
+    //       _id: response.data.user._id,
+    //       userType: response.data.user.userType,
+    //       token: response.data.token,
+    //     });
+    // localStorage.setItem("token", JSON.stringify(response.data.token));
+    //   } else {
+    //     setIsError(true);
+    //   }
+    // })
+    // .catch((error) => {
+    //   setIsError(true);
+    // });
   };
 
   const handleFailure = (error) => {
     console.log(error);
-    setIsError(true);
+    // setIsError(true);
   };
-
-  if (user.token) {
-    return <Redirect to="/matches" />;
-  }
 
   return (
     <div>
-      <Menu
-        handleBack={() => history.push("/")}
-        registrationMenu={true}
-        showBackButton={false}
-      />
-      <Container>
-        <HeroWrapper>
-          <StairsGreyBg>
-            <StairsImage src={Stairs} />
-          </StairsGreyBg>
-          <OrderedSide>
-            <TitleContainer>
-              <HeroTitle>
-                Find a mentor who can help guide you to success!
-              </HeroTitle>
-              <SignupNote>
+      {/* <Container > */}
+      <div
+        style={{
+          backgroundColor: "white",
+        }}
+      >
+        <Container>
+          <Menu
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
+        </Container>
+      </div>
+      <div
+        style={{
+          backgroundColor: "#f5f3f8",
+        }}
+      >
+        <Container>
+          <HeroWrapper>
+            <StairsGreyBg>
+              <StairsImage src={Stairs} />
+            </StairsGreyBg>
+            <OrderedSide>
+              <TitleContainer>
+                <HeroTitle>
+                  Find a mentor who can help guide you to success.{" "}
+                </HeroTitle>
+              </TitleContainer>
+              <Typography variant="h6" className={classes.SubTitle}>
                 Currently open for designers, software professionals
-              </SignupNote>
+              </Typography>
+              {/* <WaitlistCard className={classes.WaitlistCard} /> */}
+              {/* <Box className={classes.LinkedIn}>
+                <img src={linkedinImage} className={classes.LinkedImage} />
+                <span className={classes.Or}>or</span>
+                <RegisterButton>Register</RegisterButton>
+              </Box> */}
               <SignInContainer>
                 <LinkedIn
                   clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
@@ -311,14 +423,15 @@ export default function LandingPage(props) {
                   <RegisterButton> Register </RegisterButton>
                 </Link>
               </SignInContainer>
-            </TitleContainer>
-            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
-          </OrderedSide>
-        </HeroWrapper>
-        <FlexWrapper>
-          <PuzzleGreyBg>
-            <PuzzleImage src={Puzzles} />
-          </PuzzleGreyBg>
+            </OrderedSide>
+          </HeroWrapper>
+        </Container>
+      </div>
+      <Container>
+        <Box className={classes.WorkFlex}>
+          {/* <PuzzleGreyBg> */}
+          <img src={Puzzles} className={classes.WorkImage} />
+          {/* </PuzzleGreyBg> */}
           <PaddingWrapper>
             <Typography className={classes.BodyHeader}>How It Works</Typography>
             <Typography className={classes.Header}>Register</Typography>
@@ -336,74 +449,96 @@ export default function LandingPage(props) {
               Engage in a coversation with your mentor or mentee.
             </Typography>
           </PaddingWrapper>
-        </FlexWrapper>
-
-        <FlexWrapper
-          style={{ backgroundColor: "#f5f3f8", padding: "50px 15px" }}
-        >
-          <div style={{ marginTop: 30, maxWidth: "300px" }}>
+        </Box>
+      </Container>
+      <div
+        style={{
+          backgroundColor: "#f5f3f8",
+        }}
+      >
+        <Container>
+          <FlexWrapper
+            style={{
+              backgroundColor: "#f5f3f8",
+              padding: "50px 15px",
+              marginTop: 100,
+              marginBottom: 100,
+              borderRadius: 10,
+            }}
+          >
+            {/* <div style={{ marginTop: 30, maxWidth: "300px" }}> */}
             <Typography className={classes.BodyHeader}>
-              Why Open Mentorship?
+              Why Open
+              <br /> Mentorship?
             </Typography>
-          </div>
+            {/* </div> */}
 
-          <FlexItem>
-            <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>Career Advice</Typography>
-              <Typography className={classes.Body}>
-                Receive career advice from professionals with years of
-                experience in your field, and feel confident moving forward in
-                your career.
-              </Typography>
-            </div>
-            <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>
-                Strengthen your work
-              </Typography>
-              <Typography className={classes.Body}>
-                Share your portfolio, work examples, or resume with mentors and
-                receive constructive feedback before your next big interview.
-              </Typography>
-            </div>
-          </FlexItem>
-          <FlexItem>
-            <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>
-                Expand your network
-              </Typography>
-              <Typography className={classes.Body}>
-                Both mentees and mentors can grow their network and make lasting
-                connections that could benefit both careers in the future.
-              </Typography>
-            </div>
-            <div style={{ marginTop: 20 }}>
-              <Typography className={classes.Header3}>Guidance</Typography>
-              <Typography className={classes.Body}>
-                Explore your career options and feel empowered making your next
-                decision towards your dream job.
-              </Typography>
-            </div>
-          </FlexItem>
-        </FlexWrapper>
+            <FlexItem>
+              <div style={{ marginTop: 20 }}>
+                <Typography className={classes.Header3}>
+                  Career Advice
+                </Typography>
+                <Typography className={classes.Body}>
+                  Receive career advice from professionals with years of
+                  experience in your field, and feel confident moving forward in
+                  your career.
+                </Typography>
+              </div>
+              <div style={{ marginTop: 20 }}>
+                <Typography className={classes.Header3}>
+                  Strengthen your work
+                </Typography>
+                <Typography className={classes.Body}>
+                  Share your portfolio, work examples, or resume with mentors
+                  and receive constructive feedback before your next big
+                  interview.
+                </Typography>
+              </div>
+            </FlexItem>
+            <FlexItem>
+              <div style={{ marginTop: 20 }}>
+                <Typography className={classes.Header3}>
+                  Expand your network
+                </Typography>
+                <Typography className={classes.Body}>
+                  Both mentees and mentors can grow their network and make
+                  lasting connections that could benefit both careers in the
+                  future.
+                </Typography>
+              </div>
+              <div style={{ marginTop: 20 }}>
+                <Typography className={classes.Header3}>Guidance</Typography>
+                <Typography className={classes.Body}>
+                  Explore your career options and feel empowered making your
+                  next decision towards your dream job.
+                </Typography>
+              </div>
+            </FlexItem>
+          </FlexWrapper>
+        </Container>
+      </div>
 
+      <Container>
         <FlexWrapper>
           <CheerWrapper>
             <CheerImage src={Cheer} />
           </CheerWrapper>
-          <div>
-            <CheerTitleBox>
-              <Typography className={classes.BodyHeader}>
-                Get on the path of your dream career with us today.
-              </Typography>
-            </CheerTitleBox>
-            {/* <Link style={{ margin: "0 auto" }} to="/register">
-              <RegisterButton>Register</RegisterButton>
-            </Link> */}
-            {/* <WaitlistCard className={classes.WaitlistCard} /> */}
+          <div className={classes.DreamCareer}>
+            <Typography className={classes.BodyHeader}>
+              Get on the path of your dream career with us today.
+            </Typography>
           </div>
         </FlexWrapper>
       </Container>
-      <Footer />
+      <div
+        style={{
+          backgroundColor: "#f5f3f8",
+        }}
+      >
+        <Container>
+          <Footer />
+        </Container>
+      </div>
     </div>
   );
 }

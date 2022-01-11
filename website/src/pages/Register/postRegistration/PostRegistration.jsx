@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import axios from "axios";
+import React, { useContext, useState, useEffect } from "react";
+// import axios from "axios";
 import { Redirect, withRouter } from "react-router-dom";
 
 import {
@@ -28,32 +28,50 @@ import {
 } from "./PostRegistrationStyling";
 import { Container, TitleWrapper, Title } from "../../../components";
 
-import { updateUser } from "../../../api";
-import { UserContext } from "../../../context/UserContext";
+import { getUserInfo, updateUser } from "../../../redux/Actions/UserActions";
+// import { updateUser } from "../../../api";
+// import { UserContext } from "../../../context/UserContext";
+
+import { useDispatch, useSelector } from "react-redux";
 
 const PostRegistration = (props) => {
-
+  const dispatch = useDispatch();
   const [signUpResult, setSignUpResult] = useState(null);
-  const [user, setUser] = useContext(UserContext);
+  // const [user, setUser] = useContext(UserContext);
 
-  const userContinue = () => {
-    updateUser({
-      _id: user._id,
-      user: {
-        active: true,
-      },
-    })
-      .then((response) => {
-        setSignUpResult('CONTINUE')
+  useEffect(async () => {
+    if (Object.keys(userState.user).length === 0) {
+      await dispatch(getUserInfo());
+    }
+  }, []);
+
+  const userState = useSelector((store) => store.userreducer);
+
+  const userContinue = async () => {
+    await dispatch(
+      updateUser({
+        _id: userState.user?.user?._id,
+        user: {
+          active: true,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+    );
+
+    if (userState.isUserUpdated) {
+      setSignUpResult("CONTINUE");
+    }
+
+    // .then((response) => {
+    //   setSignUpResult("CONTINUE");
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+  };
 
   const userWait = () => {
-    setSignUpResult('WAIT')
-  }
+    setSignUpResult("WAIT");
+  };
 
   const renderComponent = (param) => {
     switch (param) {
@@ -71,24 +89,22 @@ const PostRegistration = (props) => {
       //     </ConfirmationText>
       //     </Wrapper>
       //   )
-      case 'CONTINUE':
-        return (
-          <Redirect to='/sessions'/>
-        );
+      case "CONTINUE":
+        return <Redirect to="/sessions" />;
 
-      case 'WAIT':
+      case "WAIT":
         return (
           <Wrapper>
             <ThumbsUpPicture />
             <WaitTitle>
               No problem! We’ll hold your information until you’re ready.
-              </WaitTitle>
+            </WaitTitle>
             <WaitText>
-              Just sign back in and indicate that you’re ready for the mentorship
-              session.
-              </WaitText>
+              Just sign back in and indicate that you’re ready for the
+              mentorship session.
+            </WaitText>
           </Wrapper>
-        )
+        );
 
       default:
         return (
@@ -98,25 +114,25 @@ const PostRegistration = (props) => {
                 <Title>Thanks for signing up with Open Mentorship!</Title>
               </TitleWrapper>
               <BodyText>
-                Please read through these steps, and indicate whether you want to
-                continue with the process or wait until you’re ready for a
+                Please read through these steps, and indicate whether you want
+                to continue with the process or wait until you’re ready for a
                 matching session.
-                </BodyText>
+              </BodyText>
 
               <ContentWrapper>
                 <PictureTextWrapper>
                   <MailPicture />
                   <PictureText>
                     You will recieve an email confirmation of your application.
-                    </PictureText>
+                  </PictureText>
                 </PictureTextWrapper>
 
                 <PictureTextWrapper>
                   <HumansPicture alt="" />
                   <PictureText>
-                    Within one week, you will recieve a curated list of mentors to
-                    choose from.
-                    </PictureText>
+                    Within one week, you will recieve a curated list of mentors
+                    to choose from.
+                  </PictureText>
                 </PictureTextWrapper>
 
                 <PictureTextWrapper>
@@ -125,7 +141,7 @@ const PostRegistration = (props) => {
                     You will have one week from the day you recieve the list to
                     message each of your top choices, explaining why you want to
                     work with them.
-                    </PictureText>
+                  </PictureText>
                 </PictureTextWrapper>
 
                 <PictureTextWrapper>
@@ -134,15 +150,15 @@ const PostRegistration = (props) => {
                     After that period, the mentors will recieve their requests,
                     and will have one week to decide on who they want to work
                     with.
-                    </PictureText>
+                  </PictureText>
                 </PictureTextWrapper>
 
                 <PictureTextWrapper>
                   <HandShakePicture alt="" />
                   <PictureText>
-                    When a match is made, you will have a set amount of time that
-                    your session will last. Make it count!
-                    </PictureText>
+                    When a match is made, you will have a set amount of time
+                    that your session will last. Make it count!
+                  </PictureText>
                 </PictureTextWrapper>
               </ContentWrapper>
 
@@ -156,15 +172,11 @@ const PostRegistration = (props) => {
               </ButtonWrapper>
             </Wrapper>
           </Container>
-        )
+        );
     }
-  }
+  };
 
-  return (
-    <div>
-      {renderComponent(signUpResult)}
-    </div>
-  );
-}
+  return <div>{renderComponent(signUpResult)}</div>;
+};
 
 export default PostRegistration;

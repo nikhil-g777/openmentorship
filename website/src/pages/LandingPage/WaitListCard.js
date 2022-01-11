@@ -29,42 +29,54 @@ import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: -20,
+    border: "1px solid #BCBBBF",
+    height: 43,
+    borderRadius: 5,
+    paddingLeft: 12,
+    fontWeight: "bold",
+    color: "#5C5C5C",
   },
   CardTitle: {
-    padding: "16px",
-    width: "80%",
-    maxWwidth: "300px",
-    margin: "0 auto",
+    // padding: "16px",
+    width: "100%",
+    // maxWwidth: "300px",
+    // margin: "0 auto",
   },
   Title: {
-    fontSize: 18,
-    fontWeight: "Bold",
+    fontSize: 14,
+    fontWeight: "normal",
   },
   Note: {
     fontSize: 14,
   },
   FormControl: {
-    width: "80%",
-    maxMidth: "300px",
+    width: "100%",
+    // maxMidth: "300px",
+    padding: 5,
   },
   SpotsAvailable: {
-    color: "#e53935",
-    fontSize: 13,
-    fontWeight: 10,
+    color: "#B80000",
+    fontSize: 11,
+    fontWeight: "normal",
     marginTop: ".5em",
+    opacity: 0.5,
   },
   WaitlistCard: {
     maxWidth: 600,
     maxHeight: 400,
     backgroundColor: "#f5f3f8",
-    padding: ".5em",
+    padding: ".1em",
     margin: "0 auto",
+    "@media (max-width:780px)": {
+      width: 320,
+      marginLeft: -10,
+    },
   },
   WaitlistButton: {
-    size: "medium",
+    size: "small",
     backgroundColor: "#51b6a5",
-    height: 47,
+    height: 35,
     width: "100%",
   },
 }));
@@ -96,13 +108,19 @@ const WaitlistButton = styled.button`
   border-radius: 40px;
   border: 1px solid;
   border-color: #51b6a5;
-  font-family: Proxima Nova;
-  height: 47px;
-  width: 80%;
+  // font-family: Proxima Nova;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  text-align: center;
+  height: 40px;
+  width: 238px;
   text-transform: none;
   margin-left: 10px;
   margin: 0 auto;
   margin-bottom: 1em;
+  color: black;
   &:hover {
     background-color: #2d6c61;
   }
@@ -135,7 +153,7 @@ export default function WaitlistCard(props) {
   }, [email]);
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div>
       <ThemeProvider theme={theme}>
         <Container>
           {/* <TitleContainer>
@@ -150,14 +168,15 @@ export default function WaitlistCard(props) {
               <>
                 <CardContent className={classes.CardTitle}>
                   <Typography className={classes.Title}>
-                    Be the first to be invited to the cohort starting soon
+                    Be the first to be invited to our Openmentorship cohort
+                    starting soon, join the waitlist today!{" "}
                   </Typography>
                   <Typography className={classes.SpotsAvailable}>
                     Limited spots available
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Grid container spacing={3}>
+                  <Grid container spacing={0}>
                     <Grid item xs={12}>
                       <FormControl className={classes.FormControl}>
                         <NativeSelect
@@ -175,8 +194,14 @@ export default function WaitlistCard(props) {
                     <Grid item xs={12}>
                       {/* <Input size="small" placeholder="Enter Your Email" inputProps={{ 'aria-label': 'email' }} /> */}
                       <TextField
+                        style={{
+                          color: "#5C5C5C",
+                        }}
+                        // style={{height:40}}
+                        id="outlined-basic"
+                        variant="outlined"
                         size="small"
-                        placeholder="Enter your email"
+                        placeholder="Enter Your Adress Email"
                         value={email}
                         className={classes.FormControl}
                         onChange={(e) => setEmail(e.target.value)}
@@ -188,12 +213,12 @@ export default function WaitlistCard(props) {
                         onClick={joinWaitlist}
                         disabled={emailValid ? false : true}
                       >
-                        Join the Waitlist
+                        Join the waitlist{" "}
                       </WaitlistButton>
-                      <br />
+                      {/* <br />
                       <Typography className={classes.Note}>
                         Currently open for software, design
-                      </Typography>
+                      </Typography> */}
                     </Grid>
                   </Grid>
                 </CardActions>

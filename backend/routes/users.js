@@ -25,6 +25,7 @@ router.put(
   util.checkRole([role.mentee, role.mentor, role.admin]),
   userController.updateUser,
 );
+
 router.get(
   '/info',
   passport.authenticate('jwt', { session: false }),

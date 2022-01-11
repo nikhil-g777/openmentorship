@@ -21,7 +21,6 @@ const linkedinApi = axios.create({
 
 const getLinkedInProfile = (authCode) =>
   new Promise((resolve, reject) => {
-    console.log('get linkedin profile');
     const authUrl = queryString.stringifyUrl({
       url: '/oauth/v2/accessToken',
       query: {

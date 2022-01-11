@@ -4,11 +4,12 @@ const { Schema } = mongoose;
 
 const Match = new Schema(
   {
+    initialMessage: { type: String, default: '' },
     status: {
       type: String,
-      required: true,
       enum: ['pending', 'active', 'closed'],
       default: 'pending',
+      required: true,
     },
     requestMessage: { type: String, required: true },
     mentee: {

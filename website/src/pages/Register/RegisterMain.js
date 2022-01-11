@@ -1,14 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { LinkedIn } from "react-linkedin-login-oauth2";
 
-import { registerUser } from "../../api";
+// import { registerUser } from "../../api";
+import { registerUser, getUserInfo } from "../../redux/Actions/UserActions";
 import RegisterStep1 from "./RegisterStep1";
 import { useAuth } from "../../context/auth";
-import { UserContext } from "../../context/UserContext";
+// import { UserContext } from "../../context/UserContext";
+
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,9 +102,11 @@ const buttonStyle = {
 };
 
 const RegisterMain = (props) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
 
-  const [user, setUser] = useContext(UserContext);
+  // const [user, setUser] = useContext(UserContext);
+  const user = useSelector((store) => store.userreducer.user);
 
   const [showUserFields, setShowUserFields] = useState(true);
   const [localState, setLocalState] = useState({
@@ -114,6 +119,15 @@ const RegisterMain = (props) => {
   const [disabled, setDisabled] = useState(false);
   const [emptyFieldError, setEmptyFieldError] = useState(false);
 
+  useEffect(() => {
+    setLocalState((prevState) => ({
+      ...prevState,
+      firstName: user?.user?.firstName,
+      lastName: user?.user?.lastName,
+      email: user?.user?.email,
+    }));
+  }, [user]);
+
   const continueStep = (e) => {
     let inputIsValid = validateInput();
     if (inputIsValid) {
@@ -123,29 +137,42 @@ const RegisterMain = (props) => {
     }
   };
 
-  const handleSuccess = (data) => {
-    registerUser({
-      authCode: data.code,
-      type: "linkedInSignup",
-    })
-      .then((response) => {
-        setUser({
-          _id: response.data._id,
-          userType: response.data.userType,
-          token: response.data.token,
-        });
-        setLocalState((prevState) => ({
-          ...prevState,
-          firstName: response.data.user.firstName,
-          lastName: response.data.user.lastName,
-          email: response.data.user.email,
-        }));
-        setDisabled(true);
-        localStorage.setItem("token", JSON.stringify(response.data.token));
+  const handleSuccess = async (data) => {
+    await dispatch(
+      registerUser({
+        authCode: data.code,
+        type: "linkedInSignup",
       })
-      .catch((error) => {
-        console.log(error);
-      });
+    );
+    setDisabled(true);
+
+    if (Object.keys(user).length === 0) {
+      await dispatch(getUserInfo());
+    }
+    // setLocalState((prevState) => ({
+    //   ...prevState,
+    //   firstName: user.firstName,
+    //   lastName: user.lastName,
+    //   email: user.email,
+    // }));
+    // .then((response) => {
+    //   setUser({
+    //     _id: response.data._id,
+    //     userType: response.data.userType,
+    //     token: response.data.token,
+    //   });
+    //   setLocalState((prevState) => ({
+    //     ...prevState,
+    //     firstName: response.data.user.firstName,
+    //     lastName: response.data.user.lastName,
+    //     email: response.data.user.email,
+    //   }));
+    //   setDisabled(true);
+    //   localStorage.setItem("token", JSON.stringify(response.data.token));
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
     setShowUserFields(true);
   };
 
@@ -153,11 +180,11 @@ const RegisterMain = (props) => {
 
   const validateInput = () => {
     if (
-      localState.firstName.length === 0 ||
-      localState.lastName.length === 0 ||
-      localState.email.length === 0 ||
-      localState.headline.length === 0 ||
-      localState.bio.length === 0
+      localState.firstName?.length === 0 ||
+      localState.lastName?.length === 0 ||
+      localState.email?.length === 0 ||
+      localState.headline?.length === 0 ||
+      localState.bio?.length === 0
     ) {
       console.log("INVALID");
       setEmptyFieldError(true);
