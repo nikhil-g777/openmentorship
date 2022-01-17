@@ -31,7 +31,7 @@ const User = new Schema(
       required: true,
       default: 'mentee',
     },
-    linkedInId: { type: String, required: true, unique: true },
+    linkedInId: { type: String, required: true, unique: true, index: true },
     areasOfInterest: { type: Object, default: {} },
     experiences: { type: [Experience], default: [] },
     education: { type: [Education], defaukt: [] },
@@ -44,10 +44,11 @@ const User = new Schema(
     active: { type: Boolean, default: false, required: true },
     registrationStatus: {
       type: String,
-      enum: ['incomplete', 'pendingApproval', 'complete'],
+      enum: ['incomplete', 'complete', 'pendingApproval', 'denied'],
       default: 'incomplete',
       required: true,
     },
+    approvedDate: { type: Date },
   },
   {
     timestamps: true,
