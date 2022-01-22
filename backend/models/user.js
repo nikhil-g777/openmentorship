@@ -44,7 +44,7 @@ const User = new Schema(
     active: { type: Boolean, default: false, required: true },
     registrationStatus: {
       type: String,
-      enum: ['incomplete', 'complete', 'pendingApproval', 'denied'],
+      enum: ['incomplete', 'complete', 'pendingApproval', 'denied', 'disabled'],
       default: 'incomplete',
       required: true,
     },

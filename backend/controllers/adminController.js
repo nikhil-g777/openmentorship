@@ -156,7 +156,7 @@ const sessionList = async (req, res) => {
 
   {
     mentorId : "",
-    registrationStatus: "" // complete, denied
+    registrationStatus: "" // complete, denied, disabled
   }
 
 */
