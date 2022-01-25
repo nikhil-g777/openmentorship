@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid, Box } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 
 //imgs
 import Logo from "./images/logo_big.png";
@@ -18,7 +18,8 @@ const Container = styled.div`
   padding-right: 200px;
   display: flex;
   justify-content: space-between;
-  border-radius: 10px @media (max-width: 768px) {
+  border-radius: 10px;
+  @media (max-width: 780px) {
     padding-top: 50px;
     padding-bottom: 40px;
     padding-left: 5px;

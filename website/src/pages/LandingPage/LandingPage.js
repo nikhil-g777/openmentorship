@@ -43,6 +43,9 @@ const FlexItem = styled.div`
 
 const PaddingWrapper = styled.div`
   padding: 50px 15px;
+  @media (min-width: 768px) {
+    margin-left: 90px;
+  }
 `;
 
 const HeroWrapper = styled.div`
@@ -57,39 +60,64 @@ const HeroWrapper = styled.div`
     align-items: center;
     margin-bottom: 5em;
   }
+  @media (max-width: 768px) {
+    padding-bottom: 3em;
+  }
 `;
 
 const CheerWrapper = styled.div`
   margin: 0px auto;
   @media (min-width: 768px) {
     margin: 0;
-    max-width: 400px;
+    width: 400px;
   }
 `;
 
 const TitleContainer = styled.div`
-  // max-width: 300px;
-  width: 100%;
-  margin: 0 auto;
+  // // max-width: 300px;
+  // width: 100%;
+  // margin: 0 auto;
+  // margin-bottom: 40px;
+  // text-align: "left";
+  // @media (min-width: 768px) {
+  //   text-align: left;
+  //   margin-left: 70px;
+  //   // max-width: 350px;
+  // }
+  max-width: 700px;
+  // margin: 0 4rem;
   margin-bottom: 40px;
   text-align: "left";
   @media (min-width: 768px) {
     text-align: left;
-    margin-left: 70px;
-    // max-width: 350px;
+    max-width: 700px;
   }
 `;
 
 const HeroTitle = styled.p`
-  font-family: "Roboto";
-  font-weight: bold;
+  // font-family: "Roboto";
+  // font-weight: bold;
+  // color: "#000000";
+  // width: 452px;
+  // font-size: 45px;
+  // text-align: "center";
+  // @media (max-width: 768px) {
+  //   font-size: 20px;
+  //   width: auto;
+  // }
+  font-size: 2rem;
   color: "#000000";
-  width: 452px;
+  max-width: 452px;
   font-size: 45px;
-  text-align: "center";
+  font-weight: 600;
+  margin-bottom: 1rem;
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
   @media (max-width: 768px) {
-    font-size: 20px;
-    width: auto;
+    font-size: 34px;
+    margin: auto;
+    text-align: center;
   }
 `;
 
@@ -106,10 +134,10 @@ const RegisterButton = styled.button`
   margin-left: 10px;
   color: white;
   margin: 0 auto;
-  @media (max-width: 768px) {
-    width: 100%;
-    color: black;
-  }
+  // @media (max-width: 768px) {
+  //   width: 100%;
+  //   color: black;
+  // }
   &:hover {
     background-color: #2d6c61;
   }
@@ -134,6 +162,9 @@ const StairsImage = styled.img`
   display: block;
   margin: 0 auto;
   padding-top: 20%;
+  @media (max-width: 768px) {
+    height: auto;
+  }
 `;
 
 const OrderedSide = styled.div`
@@ -158,8 +189,8 @@ const PuzzleGreyBg = styled.div`
 
 const CheerImage = styled.img`
   width: 100%;
-  margin-bottom: 30%;
-  margin-left: -40%;
+  // margin-bottom: 30%;
+  // margin-left: -40%;
   @media (max-width: 768px) {
     margin-left: 0%;
   }
@@ -214,7 +245,7 @@ const useStyles = makeStyles({
     fontWeight: "Bold",
     color: "#000000",
     marginBottom: 30,
-    width: 565,
+    maxWidth: 565,
     height: 113,
     "@media (max-width:780px)": {
       width: "auto",
@@ -247,11 +278,13 @@ const useStyles = makeStyles({
     fontStyle: "Regular",
     fontSize: 16,
     color: "#000000",
-    marginBottom: 16,
   },
   WaitlistCard: {
     paddingTop: 50,
     paddingLeft: 50,
+  },
+  BoxWrapper: {
+    marginBottom: "30px",
   },
   CardsFlux: {
     marginLeft: -120,
@@ -268,7 +301,7 @@ const useStyles = makeStyles({
     fontSize: "14px",
     lineHeight: "17px",
     marginTop: -40,
-    paddingLeft: 70,
+    // paddingLeft: 70,
     display: "block",
     "@media (max-width:780px)": {
       paddingLeft: 10,
@@ -278,9 +311,9 @@ const useStyles = makeStyles({
   LinkedIn: {
     display: "flex",
     marginTop: 20,
-    paddingLeft: 70,
+    // paddingLeft: 70,
     "@media (max-width:780px)": {
-      paddingLeft: 10,
+      // paddingLeft: 10,
     },
   },
   MessageButton: {
@@ -311,22 +344,35 @@ const useStyles = makeStyles({
       display: "none",
     },
   },
+  OpenWrapper: {
+    backgroundColor: "#f5f3f8",
+    padding: "50px 0px 25px",
+    marginTop: 100,
+    borderRadius: 10,
+    justifyContent: "space-between",
+    "@media (max-width:1535px)": {
+      padding: "50px 15px 25px",
+    },
+  },
   WorkFlex: {
     display: "flex",
-    "@media (max-width:780px)": {
+    alignItems: "center",
+    "@media(max-width:1160px)": {
       display: "block",
     },
   },
   WorkImage: {
     width: "auto",
     "@media (max-width:780px)": {
-      width: "300px",
+      // width: "300px",
+      maxWidth: "100%",
     },
   },
   DreamCareer: {
     marginLeft: 50,
     "@media (max-width:780px)": {
-      marginLeft: 10,
+      margin: "12px",
+      textAlign: "center",
     },
   },
 });
@@ -407,7 +453,7 @@ export default function LandingPage(props) {
                 <span className={classes.Or}>or</span>
                 <RegisterButton>Register</RegisterButton>
               </Box> */}
-              <SignInContainer>
+              <SignInContainer className={classes.LinkedIn}>
                 <LinkedIn
                   clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
                   onFailure={handleFailure}
@@ -433,21 +479,31 @@ export default function LandingPage(props) {
           <img src={Puzzles} className={classes.WorkImage} />
           {/* </PuzzleGreyBg> */}
           <PaddingWrapper>
-            <Typography className={classes.BodyHeader}>How It Works</Typography>
-            <Typography className={classes.Header}>Register</Typography>
-            <Typography className={classes.Body}>
-              Sign Up as a mentee or mentor.
+            <Typography
+              className={classes.BodyHeader}
+              style={{ height: "auto" }}
+            >
+              How It Works
             </Typography>
-            <Typography className={classes.Header2}>Match</Typography>
+            <Box className={classes.BoxWrapper}>
+              <Typography className={classes.Header}>Register</Typography>
+              <Typography className={classes.Body}>
+                Sign Up as a mentee or mentor.
+              </Typography>
+            </Box>
+            <Box className={classes.BoxWrapper}>
+              <Typography className={classes.Header2}>Match</Typography>
 
-            <Typography className={classes.Body}>
-              Get Matched with mentees or mentors.
-            </Typography>
-
-            <Typography className={classes.Header2}>Chat</Typography>
-            <Typography className={classes.Body}>
-              Engage in a coversation with your mentor or mentee.
-            </Typography>
+              <Typography className={classes.Body}>
+                Get Matched with mentees or mentors.
+              </Typography>
+            </Box>
+            <Box className={classes.BoxWrapper}>
+              <Typography className={classes.Header2}>Chat</Typography>
+              <Typography className={classes.Body}>
+                Engage in a coversation with your mentor or mentee.
+              </Typography>
+            </Box>
           </PaddingWrapper>
         </Box>
       </Container>
@@ -457,15 +513,7 @@ export default function LandingPage(props) {
         }}
       >
         <Container>
-          <FlexWrapper
-            style={{
-              backgroundColor: "#f5f3f8",
-              padding: "50px 15px",
-              marginTop: 100,
-              marginBottom: 100,
-              borderRadius: 10,
-            }}
-          >
+          <FlexWrapper className={classes.OpenWrapper}>
             {/* <div style={{ marginTop: 30, maxWidth: "300px" }}> */}
             <Typography className={classes.BodyHeader}>
               Why Open
@@ -474,7 +522,7 @@ export default function LandingPage(props) {
             {/* </div> */}
 
             <FlexItem>
-              <div style={{ marginTop: 20 }}>
+              <Box className={classes.BoxWrapper}>
                 <Typography className={classes.Header3}>
                   Career Advice
                 </Typography>
@@ -483,8 +531,8 @@ export default function LandingPage(props) {
                   experience in your field, and feel confident moving forward in
                   your career.
                 </Typography>
-              </div>
-              <div style={{ marginTop: 20 }}>
+              </Box>
+              <Box className={classes.BoxWrapper}>
                 <Typography className={classes.Header3}>
                   Strengthen your work
                 </Typography>
@@ -493,10 +541,10 @@ export default function LandingPage(props) {
                   and receive constructive feedback before your next big
                   interview.
                 </Typography>
-              </div>
+              </Box>
             </FlexItem>
             <FlexItem>
-              <div style={{ marginTop: 20 }}>
+              <Box className={classes.BoxWrapper}>
                 <Typography className={classes.Header3}>
                   Expand your network
                 </Typography>
@@ -505,21 +553,21 @@ export default function LandingPage(props) {
                   lasting connections that could benefit both careers in the
                   future.
                 </Typography>
-              </div>
-              <div style={{ marginTop: 20 }}>
+              </Box>
+              <Box className={classes.BoxWrapper}>
                 <Typography className={classes.Header3}>Guidance</Typography>
                 <Typography className={classes.Body}>
                   Explore your career options and feel empowered making your
                   next decision towards your dream job.
                 </Typography>
-              </div>
+              </Box>
             </FlexItem>
           </FlexWrapper>
         </Container>
       </div>
 
       <Container>
-        <FlexWrapper>
+        <FlexWrapper style={{ margin: "100px auto" }}>
           <CheerWrapper>
             <CheerImage src={Cheer} />
           </CheerWrapper>
