@@ -157,14 +157,11 @@ const StairsGreyBg = styled.div`
 
 const StairsImage = styled.img`
   width: 100%;
-  height: 500px;
+  height: auto;
   max-width: 600px;
   display: block;
   margin: 0 auto;
   padding-top: 20%;
-  @media (max-width: 768px) {
-    height: auto;
-  }
 `;
 
 const OrderedSide = styled.div`

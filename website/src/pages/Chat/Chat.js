@@ -203,7 +203,7 @@ export default function MenteeCard() {
         showBackButton={false}
       />
       <ThemeProvider theme={theme}>
-        <div
+        {/* <div
           style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
         >
           <Container>
@@ -215,7 +215,7 @@ export default function MenteeCard() {
               <Typography variant="p">Meetings</Typography>
             </Box>
           </Container>
-        </div>
+        </div> */}
         <div style={{ backgroundColor: "#F1F4F4", paddingBottom: 30 }}>
           <Container>
             <Box className={classes.Background}>

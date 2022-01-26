@@ -1,17 +1,13 @@
-import React, { useContext, useState, useEffect } from "react";
-import Button from "@material-ui/core/Button";
-import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect } from "react";
+
 import { LinkedIn } from "react-linkedin-login-oauth2";
-
-// import { registerUser } from "../../api";
-import { registerUser, getUserInfo } from "../../redux/Actions/UserActions";
-import RegisterStep1 from "./RegisterStep1";
-import { useAuth } from "../../context/auth";
-// import { UserContext } from "../../context/UserContext";
-
+import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+
+import { Button, TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+import { registerUser, getUserInfo } from "../../redux/Actions/UserActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: "inherit",
+  },
+  textField: {
+    "& .Mui-disabled": {
+      background: "#f5f5f5",
+    },
   },
 }));
 
@@ -243,6 +244,7 @@ const RegisterMain = (props) => {
                   id="outlined-basic"
                   label="First Name"
                   variant="outlined"
+                  className={classes.textField}
                   fullWidth={true}
                   type="text"
                   name="firstName"
@@ -258,6 +260,7 @@ const RegisterMain = (props) => {
                   id="outlined-basic"
                   label="Last Name"
                   variant="outlined"
+                  className={classes.textField}
                   fullWidth={true}
                   type="text"
                   name="lastName"
@@ -274,6 +277,7 @@ const RegisterMain = (props) => {
                 id="outlined-basic"
                 label="Email"
                 variant="outlined"
+                className={classes.textField}
                 fullWidth={true}
                 type="email"
                 name="email"
@@ -281,9 +285,11 @@ const RegisterMain = (props) => {
                 onChange={handleInput}
               />
               <TextField
+                disabled={user && Object.keys(user).length === 0 ? true : false}
                 id="outlined-basic"
                 label="*Headline"
                 variant="outlined"
+                className={classes.textField}
                 fullWidth={true}
                 type="text"
                 name="headline"
@@ -292,10 +298,12 @@ const RegisterMain = (props) => {
                 placeholder="Software Engineer at Google"
               />
               <TextField
+                disabled={user && Object.keys(user).length === 0 ? true : false}
                 multiline
                 id="outlined-basic"
                 label="*Bio"
                 variant="outlined"
+                className={classes.textField}
                 fullWidth={true}
                 type="text"
                 name="bio"
@@ -316,7 +324,11 @@ const RegisterMain = (props) => {
               <Button
                 variant="contained"
                 onClick={continueStep}
-                disabled={!showUserFields}
+                disabled={
+                  !showUserFields || (user && Object.keys(user).length === 0)
+                    ? true
+                    : false
+                }
                 className={classes.continueButton}
               >
                 Continue
