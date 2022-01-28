@@ -13,9 +13,18 @@ class RegisterStep3 extends React.Component {
     interests: this.props.values.interests,
   };
 
+  componentDidMount() {
+    const skills = this.state.skills;
+    skills.push("Communication");
+    const interests = this.state.interests;
+    interests.push("Tech");
+    this.setState({ skills, interests });
+  }
+
   addSkill = (value) => {
     const skills = this.state.skills.slice();
     skills.push(value);
+    console.log("skills: ", skills);
     this.setState({ skills });
     this.props.handleSkills(skills);
   };
@@ -42,6 +51,7 @@ class RegisterStep3 extends React.Component {
   };
 
   render() {
+    console.log("this.props.values.skills: ", this.props.values.skills);
     return (
       <Container>
         <TitleWrapper>

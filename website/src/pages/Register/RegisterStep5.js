@@ -1,22 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { InputLabel, TextField } from "@material-ui/core";
 
 import { Container, DotStepper, Title, TitleWrapper } from "../../components";
-import { getUserInfo, updateUser } from "../../redux/Actions/UserActions";
-// import { updateUser } from "../../api";
-// import { UserContext } from "../../context/UserContext";
+import { updateUser } from "../../redux/Actions/UserActions";
 
 import { useDispatch, useSelector } from "react-redux";
 
 const RegisterStep5 = (props) => {
   const dispatch = useDispatch();
-  // const [user, setUser] = useContext(UserContext);
-
-  // useEffect(async () => {
-  //   if (Object.keys(userState.user).length === 0) {
-  //     await dispatch(getUserInfo());
-  //   }
-  // }, []);
 
   const userState = useSelector((store) => store.userreducer);
 

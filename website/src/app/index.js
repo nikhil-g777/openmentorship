@@ -12,7 +12,8 @@ import PrivateRoute from "./PrivateRoute";
 import { theme } from "./GlobalTheme";
 import Store from "../redux/Store";
 
-import { Dashboard, Session, Match, AdminEditProfile } from "../admin/pages";
+import { AdminEditProfile, Dashboard, Match, Session } from "../admin/pages";
+
 import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
 import {
   FAQ,

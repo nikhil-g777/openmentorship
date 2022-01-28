@@ -252,7 +252,9 @@ const AppMenu = (props) => {
   };
 
   return (
-    <Wrapper style={{ padding: "0.75% 2.75%" }}>
+    <Wrapper
+    // style={{ padding: "0.75% 2.75%" }}
+    >
       {/* {props.showBackButton == false ? (
         <Picture />
       ) : (
