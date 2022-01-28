@@ -1,102 +1,62 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 
 // mui
-import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider,
-} from "@material-ui/core/styles";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  Button,
-  FormControl,
-  Box,
-  Grid,
-  Input,
-  Typography,
-  Container,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Box, Container, Grid, TextField, Typography } from "@material-ui/core";
+
 import boxImage from "../../../components/images/imagebox.png";
 import Linkedin from "../../../components/images/linkedin.svg";
-import AnchorLink from "react-anchor-link-smooth-scroll";
 // additional packages
 import "fontsource-roboto";
+
 const useStyles = makeStyles((theme) => ({
-  MenteeCard: {
-    minHeight: "200px",
-    marginTop: "5%",
-    marginBottom: "5%",
-    "@media (max-width:780px)": {
-      height: "auto",
+  tabsBox: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: "1.8%",
+    boxShadow: "4px 8px 8px rgb(201 199 199 / 25%)",
+    padding: "21px 26px 8px",
+  },
+  sessionsText: {
+    fontSize: "20px",
+    fontWeight: 700,
+    lineHeight: "24px",
+    letterSpacing: "0em",
+  },
+  searchBox: {
+    display: "flex",
+    alignItems: "center",
+  },
+  searchText: {
+    fontSize: "20px",
+    fontWeight: 700,
+    lineHeight: "24px",
+    letterSpacing: "0em",
+    marginRight: "14px",
+  },
+  search: {
+    border: "1px solid #AEAEAE",
+    margin: 0,
+    "& .MuiInputBase-root": {
+      borderRadius: 0,
+    },
+    "& input": {
+      padding: "2px 6px",
+      height: "21px",
     },
   },
+
+  sessionCard: {
+    marginTop: "10px",
+    padding: "3px 26px 62px",
+    boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.1)",
+  },
+
   padding: {
     padding: "30px",
     "@media (max-width:780px)": {
       padding: "10px",
-    },
-  },
-  MessageButton: {
-    backgroundColor: "#51B6A5",
-    border: "1px solid #51B6A5",
-    borderRadius: 50,
-    marginTop: 20,
-    width: "191px",
-    height: "40px",
-    textTransform: "capitalize",
-    fontWeight: "bold",
-    "@media (max-width:780px)": {
-      width: "auto",
-      minWidth: "102px",
-      height: "29px",
-    },
-  },
-  MessageButton1: {
-    backgroundColor: "#51B6A5",
-    border: "1px solid #51B6A5",
-    borderRadius: 50,
-    marginTop: 20,
-    width: "141px",
-    height: "40px",
-    textTransform: "capitalize",
-    fontWeight: "bold",
-    "@media (max-width:780px)": {
-      width: "auto",
-      minWidth: "102px",
-      height: "29px",
-    },
-  },
-  CancelButton: {
-    backgroundColor: "transpernt",
-    border: "none",
-    borderRadius: 50,
-    marginTop: 20,
-    width: "141px",
-    height: "40px",
-    textTransform: "capitalize",
-    fontWeight: "bold",
-    "@media (max-width:780px)": {
-      width: "auto",
-      height: "29px",
-      minWidth: "102px",
-    },
-  },
-  Decline: {
-    backgroundColor: "transpernt",
-    border: "1px solid #51B6A5",
-    borderRadius: 50,
-    marginTop: 20,
-    width: "191px",
-    height: "40px",
-    textTransform: "capitalize",
-    fontWeight: "bold",
-    "@media (max-width:780px)": {
-      width: "auto",
-      height: "29px",
-      minWidth: "102px",
     },
   },
   RightGrid: {
@@ -109,24 +69,13 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: "0px",
     },
   },
-  Interest: {
-    paddingLeft: "60px",
-    fontWeight: "bold",
-    fontSize: "18px",
-    lineHeight: "27px",
-    marginTop: 30,
-    marginBottom: 5,
-    "@media (max-width:780px)": {
-      paddingLeft: "0px",
-    },
-  },
   subHead: {
     color: "#6D6D6D",
     fontSize: "18px",
     lineHeight: "27px",
     fontWeight: "bold",
     paddingLeft: "70px",
-    width: "400px",
+    maxWidth: "400px",
     opacity: 0.8,
     marginTop: 10,
     display: "block",
@@ -135,87 +84,16 @@ const useStyles = makeStyles((theme) => ({
       width: "250px",
     },
   },
-  BodyText: {
-    fontSize: "16px",
-    lineHeight: "27px",
-    paddingLeft: "60px",
-    fontWeight: "normal",
-    fontFamily: "Roboto",
-    marginTop: 20,
-    "@media (max-width:780px)": {
-      paddingLeft: "0px",
-      width: "auto",
-    },
-  },
-  InterestDetail: {
-    paddingLeft: "60px",
-    "@media (max-width:780px)": {
-      paddingLeft: "0px",
-    },
-  },
-  ButtonBox: {
-    // display:'flex',
-    paddingLeft: "60px",
-    paddingRight: "60px",
-    width: "600px",
-    lineHeight: 2.5,
-    "@media (max-width:780px)": {
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      width: "300px",
-    },
-  },
-  Mock: {
-    minWidth: "110px",
-    backgroundColor: "#F1F1F1",
-    color: "black",
-    fontSize: 12,
-    textTransform: "capitalize",
-    height: "30px",
-    marginRight: "10px",
-  },
-  Reconnevt: {
-    backgroundColor: "#EFEFEF",
-    borderRadius: "4px",
-    padding: 30,
-    height: "auto",
-    marginBottom: 20,
-    marginTop: 20,
-    width: "100%",
-  },
-  Meghan: {
-    fontSize: 22,
-    lineHeight: "27px",
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  mentor: {
-    fontWeight: "normal",
-    fontSize: "16px",
-    lineHeight: "19px",
-  },
-  MessageArea: {
-    height: 312,
-    backgroundColor: "white",
-    padding: 30,
-    marginTop: 30,
-  },
-  MessageInput: {
-    border: "none",
-    width:'100%',
-    padding:20,
-    marginTop:20
-  },
-  buttonFlex: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
   BoxImage: {
     display: "block",
+
     "@media (max-width:780px)": {
       width: "117px",
       height: "120px",
     },
+  },
+  linkedinLogo: {
+    marginLeft: "13px",
   },
   FlexImageBox: {
     display: "block",
@@ -223,68 +101,42 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
     },
   },
-  MobileRightGrid: {
-    display: "none",
-    fontWeight: "bold",
-    fontSize: "14px",
-    lineHeight: "27px",
-    paddingLeft: 10,
-    "@media (max-width:780px)": {
-      display: "block",
-    },
-  },
-  MobileSubHead: {
-    display: "none",
-    "@media (max-width:780px)": {
-      display: "block",
-      color: "#6D6D6D",
-      fontSize: "12px",
-      lineHeight: "17px",
-      fontWeight: "bold",
-      paddingLeft: 10,
-      width: "auto",
-      opacity: 0.8,
-      marginTop: 10,
-    },
-  },
-  Connections: {
-    display: "none",
-    "@media (max-width:780px)": {
-      display: "block",
-      width: 29,
-      height: 29,
-      marginTop: 20,
-      marginRight: 7,
-    },
-  },
   NumberFlex: {
-    display:'flex',
-    justifyContent:'space-between',
-    width:340,
-    marginLeft:30,
+    display: "flex",
+    // justifyContent: "space-between",
+    // width: 340,
+    // marginLeft: 30,
     "@media (max-width:780px)": {
       display: "block",
-      width:'auto',
-      marginLeft:30,
-    justifyContent:'center',
-
+      width: "auto",
+      marginLeft: 30,
+      justifyContent: "center",
     },
+  },
+  MatchText: {
+    color: "#000000",
+    fontSize: "14px",
+    fontWeight: 400,
+    lineHeight: "27px",
+    letterSpacing: "0em",
+  },
+  SessionText: {
+    color: "#000000",
+    fontSize: "14px",
+    fontWeight: 400,
+    lineHeight: "27px",
+    letterSpacing: "0em",
+    marginLeft: "23px",
   },
   BorderText: {
-    border:'1px solid gray',
-    padding:2
-  }
+    marginLeft: "12px",
+  },
 }));
 
-const theme = createMuiTheme({
-  typography: {
-    fontFamily: '"Roboto"',
-  },
-});
 export default function SessionCard(props) {
+  console.log("props:", props);
   const classes = useStyles();
-  const [reconnect, setReconnect] = useState(false);
-  const [data, setData] = useState([
+  const [data] = useState([
     {
       name: "Meghan Raab",
       title:
@@ -308,52 +160,87 @@ export default function SessionCard(props) {
         "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
     },
   ]);
-  const Mock = [
-    "Mock interview",
-    "Project review",
-    "Collaboration on an idea",
-    "Resume review",
-    "Career change advice",
-    "Career advice",
-  ];
 
-  const handleReconnect = () => {
-    setReconnect(true);
-    window.scrollTo(0,document.body.scrollHeight);
-    // document.getElementById('scroll').scrollTop =  document.getElementById('scroll').scrollHeight
-    // const scrollingElement = document.scrollingElement || document.body;
-    // scrollingElement.scrollTop = scrollingElement.scrollHeight;
-  };
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-          <Box className={classes.NumberFlex}>
-            <Typography variant="p">Match date : <span className={classes.BorderText}>01/01/2021</span></Typography>
-            <Typography  variant="p">Match ID:: <span  className={classes.BorderText}>00023</span></Typography>
+    <Container>
+      <Box className={classes.tabsBox}>
+        <Box>
+          <Typography className={classes.sessionsText}>
+            {props.sessionType} Sessions
+          </Typography>
+        </Box>
+        <Box className={classes.searchBox}>
+          <Typography className={classes.searchText}>Search</Typography>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            placeholder="userID/Name"
+            className={classes.search}
+          />
+        </Box>
+      </Box>
 
-            </Box>
-          {data.map((x) => (
-            // <Card className={classes.MenteeCard} raised={true}>
-              <Grid container spacing={8} className={classes.padding}>
-                <Grid item lg={2}>
-                  <Box className={classes.FlexImageBox}>
-                    <img src={boxImage} className={classes.BoxImage} />
-                  </Box>
-                </Grid>
-                <Grid item lg={10}>
-                  <Typography variant="h5" className={classes.RightGrid}>
-                    {x.name} <img src={Linkedin} />
-                  </Typography>
-                  <Typography variant="h5" className={classes.subHead}>
-                    {x.title}
-                  </Typography>
-                </Grid>
+      {props.sessions.map((x) => (
+        <Box className={classes.sessionCard} key={x._id}>
+          <Grid container spacing={8} className={classes.padding}>
+            <Grid item xs={12}>
+              <Box className={classes.NumberFlex}>
+                <Typography className={classes.MatchText}>
+                  Match date:
+                  <span className={classes.BorderText}>
+                    {new Date(x.match.createdAt).toLocaleDateString()}
+                  </span>
+                </Typography>
+                <Typography className={classes.SessionText}>
+                  Session ID:
+                  <span className={classes.BorderText}>
+                    {x.match.latestSession}
+                  </span>
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item lg={2}>
+              <Box className={classes.FlexImageBox}>
+                <img src={boxImage} className={classes.BoxImage} />
+              </Box>
+            </Grid>
+            <Grid item lg={10}>
+              <Typography variant="h5" className={classes.RightGrid}>
+                {`${x.match.mentor.firstName} ${x.match.mentor.lastName}`}
+                <img src={Linkedin} className={classes.linkedinLogo} />
+              </Typography>
+              <Box className={classes.descriptionSection}>
+                <Typography variant="h5" className={classes.subHead}>
+                  {x.match.mentor.headline}
+                </Typography>
+                <Typography variant="h5" className={classes.subHead}>
+                  {x.match.mentor.bio}
+                </Typography>
+              </Box>
+            </Grid>
 
-              </Grid>
-            // </Card>
-          ))}
-        {/* </Container> */}
-      </ThemeProvider>
-    </div>
+            <Grid item lg={2}>
+              <Box className={classes.FlexImageBox}>
+                <img src={boxImage} className={classes.BoxImage} />
+              </Box>
+            </Grid>
+            <Grid item lg={10}>
+              <Typography variant="h5" className={classes.RightGrid}>
+                {`${x.match.mentee.firstName} ${x.match.mentee.lastName}`}
+                <img src={Linkedin} className={classes.linkedinLogo} />
+              </Typography>
+              <Box className={classes.descriptionSection}>
+                <Typography variant="h5" className={classes.subHead}>
+                  {x.match.mentee.headline}
+                </Typography>
+                <Typography variant="h5" className={classes.subHead}>
+                  {x.match.mentee.bio}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+      ))}
+    </Container>
   );
 }
