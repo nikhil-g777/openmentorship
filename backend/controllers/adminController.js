@@ -101,7 +101,7 @@ const fetchUserProfile = async (req, res) => {
         })
         .lean();
 
-      sessions.push(matchSessions);
+      sessions.extend(matchSessions);
     }
 
     // return response with posts, total pages, and current page
