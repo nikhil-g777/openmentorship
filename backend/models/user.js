@@ -55,4 +55,6 @@ const User = new Schema(
   },
 );
 
+User.index({ '$**': 'text' });
+
 module.exports = mongoose.model('user', User);

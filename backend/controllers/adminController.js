@@ -59,7 +59,7 @@ const userList = async (req, res) => {
     const count = await User.countDocuments({ userType });
 
     // return response with posts, total pages, and current page
-    res.json({
+    return res.json({
       success: true,
       users,
       totalPages: Math.ceil(count / limit),
@@ -67,7 +67,36 @@ const userList = async (req, res) => {
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({
+    return res.status(500).json({
+      success: false,
+      error: 'Could not process request',
+    });
+  }
+};
+
+/*
+  Search for a user based on the search term
+  
+  TODO : Can improve the search by giving weight to certain
+
+*/
+const userSearch = async (req, res) => {
+  try {
+    const { page = 1, limit = 20 } = req.query;
+    const { searchString } = req.query;
+
+    const users = await User.find({ $text: { $search: searchString } })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+
+    // return response with posts, total pages, and current page
+    return res.json({
+      success: true,
+      users,
+    });
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).json({
       success: false,
       error: 'Could not process request',
     });
@@ -101,7 +130,7 @@ const fetchUserProfile = async (req, res) => {
         })
         .lean();
 
-      sessions.push(matchSessions);
+      sessions.push(...matchSessions);
     }
 
     // return response with posts, total pages, and current page
@@ -151,6 +180,37 @@ const sessionList = async (req, res) => {
 };
 
 /*
+  search for sessions based on user id / name
+
+  Query Params : 
+  - searchString: <str>
+*/
+const sessionSearch = async (req, res) => {
+  try {
+    const { page = 1, limit = 20 } = req.query;
+
+    const sessions = await Session.find({})
+      .populate({
+        path: 'match',
+        populate: { path: 'mentee mentor' },
+      })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+
+    return res.json({
+      success: true,
+      sessions,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      success: false,
+      error: 'Could not process request',
+    });
+  }
+};
+
+/*
   Update status of mentor applications
   request body :  
 
@@ -179,10 +239,11 @@ const updateMentorRegistration = async (req, res) => {
 
     return res.json({
       success: true,
+      mentor: response,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Could not process the request',
     });
@@ -192,7 +253,9 @@ const updateMentorRegistration = async (req, res) => {
 module.exports = {
   statistics,
   userList,
+  userSearch,
   fetchUserProfile,
   sessionList,
+  sessionSearch,
   updateMentorRegistration,
 };
