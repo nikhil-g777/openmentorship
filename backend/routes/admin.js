@@ -28,6 +28,13 @@ router.get(
 );
 
 router.get(
+  '/userSearch',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.admin]),
+  adminController.userSearch,
+);
+
+router.get(
   '/userProfile',
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.admin]),
@@ -39,6 +46,13 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.admin]),
   adminController.sessionList,
+);
+
+router.get(
+  '/sessionSearch',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.admin]),
+  adminController.sessionSearch,
 );
 
 router.post(
