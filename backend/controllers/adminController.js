@@ -179,6 +179,7 @@ const updateMentorRegistration = async (req, res) => {
 
     return res.json({
       success: true,
+      mentor: response,
     });
   } catch (err) {
     console.error(err);
