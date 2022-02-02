@@ -134,67 +134,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SessionCard(props) {
-  console.log("props:", props);
   const classes = useStyles();
-  const [data] = useState([
-    {
-      name: "Meghan Raab",
-      title:
-        "Product Marketing Manager at Snap Inc. 5 years of experience in marketing",
-      decription:
-        "I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.",
-      interest:
-        "Product marketing, content marketing, media, global tech, project management",
-      skills:
-        "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
-    },
-    {
-      name: "Meghan Raab",
-      title:
-        "Product Marketing Manager at Snap Inc. 5 years of experience in marketing",
-      decription:
-        "I have previously worked with Sephora, LinkedIn, Blue Shield of California, and University of San Francisco. I’m interested in growth marketing, product marketing, content marketing, user acquisition and retention, and customer experience.",
-      interest:
-        "Product marketing, content marketing, media, global tech, project management",
-      skills:
-        "User acquisition, digital marketing, product marketing, leadership, marketing analytics",
-    },
-  ]);
 
   return (
     <Container>
-      <Box className={classes.tabsBox}>
-        <Box>
-          <Typography className={classes.sessionsText}>
-            {props.sessionType} Sessions
-          </Typography>
+      {props.isSessionsPage ? (
+        <Box className={classes.tabsBox}>
+          <Box>
+            <Typography className={classes.sessionsText}>
+              {props.sessionType} Sessions
+            </Typography>
+          </Box>
+          <Box className={classes.searchBox}>
+            <Typography className={classes.searchText}>Search</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              placeholder="userID/Name"
+              className={classes.search}
+            />
+          </Box>
         </Box>
-        <Box className={classes.searchBox}>
-          <Typography className={classes.searchText}>Search</Typography>
-          <TextField
-            id="outlined-basic"
-            variant="outlined"
-            placeholder="userID/Name"
-            className={classes.search}
-          />
-        </Box>
-      </Box>
+      ) : (
+        ""
+      )}
 
-      {props.sessions.map((x) => (
-        <Box className={classes.sessionCard} key={x._id}>
+      {props.sessions?.map((x) => (
+        <Box className={classes.sessionCard} key={x?._id}>
           <Grid container spacing={8} className={classes.padding}>
             <Grid item xs={12}>
               <Box className={classes.NumberFlex}>
                 <Typography className={classes.MatchText}>
                   Match date:
                   <span className={classes.BorderText}>
-                    {new Date(x.match.createdAt).toLocaleDateString()}
+                    {new Date(x?.match?.createdAt).toLocaleDateString()}
                   </span>
                 </Typography>
                 <Typography className={classes.SessionText}>
                   Session ID:
                   <span className={classes.BorderText}>
-                    {x.match.latestSession}
+                    {x?.match?.latestSession}
                   </span>
                 </Typography>
               </Box>
@@ -206,15 +185,15 @@ export default function SessionCard(props) {
             </Grid>
             <Grid item lg={10}>
               <Typography variant="h5" className={classes.RightGrid}>
-                {`${x.match.mentor.firstName} ${x.match.mentor.lastName}`}
+                {`${x?.match?.mentor?.firstName} ${x?.match?.mentor?.lastName}`}
                 <img src={Linkedin} className={classes.linkedinLogo} />
               </Typography>
               <Box className={classes.descriptionSection}>
                 <Typography variant="h5" className={classes.subHead}>
-                  {x.match.mentor.headline}
+                  {x?.match?.mentor?.headline}
                 </Typography>
                 <Typography variant="h5" className={classes.subHead}>
-                  {x.match.mentor.bio}
+                  {x?.match?.mentor?.bio}
                 </Typography>
               </Box>
             </Grid>
@@ -226,15 +205,15 @@ export default function SessionCard(props) {
             </Grid>
             <Grid item lg={10}>
               <Typography variant="h5" className={classes.RightGrid}>
-                {`${x.match.mentee.firstName} ${x.match.mentee.lastName}`}
+                {`${x?.match?.mentee?.firstName} ${x?.match?.mentee?.lastName}`}
                 <img src={Linkedin} className={classes.linkedinLogo} />
               </Typography>
               <Box className={classes.descriptionSection}>
                 <Typography variant="h5" className={classes.subHead}>
-                  {x.match.mentee.headline}
+                  {x?.match?.mentee?.headline}
                 </Typography>
                 <Typography variant="h5" className={classes.subHead}>
-                  {x.match.mentee.bio}
+                  {x?.match?.mentee?.bio}
                 </Typography>
               </Box>
             </Grid>

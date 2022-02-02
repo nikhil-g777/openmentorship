@@ -60,11 +60,9 @@ const Dashboard = () => {
     const fetchStats = async () => {
       await dispatch(getDashboardStats());
     };
-    console.log("fetching lists");
     const fetchUsersList = async () => {
       await dispatch(getUsersList());
     };
-    console.log("after fetching lists");
     if (
       dashboardState.stats &&
       Object.keys(dashboardState.stats).length === 0
@@ -79,22 +77,15 @@ const Dashboard = () => {
     }
   }, []);
 
-  useEffect(
-    () => console.log("dashboardState: ", dashboardState),
-    [dashboardState]
-  );
-
   return (
     <Box className={classes.backGroundNav}>
       <Box className={classes.navWrapper}>
         <Box className={classes.backGroundNav}>
-          <Container>
-            <Menu1
-              handleBack={() => history.push("/")}
-              registrationMenu={true}
-              showBackButton={false}
-            />
-          </Container>
+          <Menu1
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
         </Box>
         <Tabs
           centered

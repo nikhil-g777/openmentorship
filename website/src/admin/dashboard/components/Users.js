@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   Box,
   Container,
+  Grid,
   Tab,
   Tabs,
   TextField,
@@ -10,8 +11,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Mentors from "./Mentors";
-import Mentees from "./Mentees";
+import ProfileCard from "../../../components/ProfileCard/ProfileCard";
 
 const useStyles = makeStyles((theme) => ({
   tabsRoot: {
@@ -69,11 +69,17 @@ const useStyles = makeStyles((theme) => ({
       height: "21px",
     },
   },
+  profile_container: {
+    backgroundColor: "white",
+    boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.1)",
+    padding: "30px",
+    marginTop: "8px",
+  },
 }));
 
 const Users = (props) => {
-  console.log("props: ", props);
   const classes = useStyles();
+  const { mentors, mentees } = props;
   const [activeTab, setActiveTab] = useState(0);
 
   const handleChangeTabs = (e, value) => {
@@ -93,9 +99,6 @@ const Users = (props) => {
             <Tab label="Mentors" />
             <Tab label="Mentees" />
           </Tabs>
-
-          {activeTab === 0 && <Mentors />}
-          {activeTab === 1 && <Mentees />}
         </Box>
         <Box className={classes.searchBox}>
           <Typography className={classes.searchText}>Search</Typography>
@@ -106,6 +109,28 @@ const Users = (props) => {
             className={classes.search}
           />
         </Box>
+      </Box>
+      <Box>
+        {activeTab === 0 &&
+          mentors?.map((mentor) => (
+            <Grid
+              container
+              key={mentor._id}
+              className={classes.profile_container}
+            >
+              <ProfileCard data={mentor} isUserPage={true} />
+            </Grid>
+          ))}
+        {activeTab === 1 &&
+          mentees?.map((mentee) => (
+            <Grid
+              container
+              key={mentee._id}
+              className={classes.profile_container}
+            >
+              <ProfileCard data={mentee} isUserPage={true} />
+            </Grid>
+          ))}
       </Box>
     </Container>
   );
