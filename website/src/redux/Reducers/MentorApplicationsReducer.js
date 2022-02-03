@@ -9,9 +9,9 @@ import {
 
 const initialState = {
   mentor: {},
-  mentorApplications: [],
+  mentorApplications: {},
   loading: false,
-  error: "",
+  mentorError: "",
 };
 
 export default function reducer(state = initialState, action) {
@@ -34,7 +34,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        mentorApplications: [],
+        mentorApplications: {},
         error: action.payload,
       };
 
@@ -50,14 +50,17 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: false,
         mentor: action.payload.data,
-        error: "",
+        mentorApplications: state.mentorApplications?.users?.filter(
+          (a) => a._id !== action.payload.data?.mentor?._id
+        ),
+        mentorError: "",
       };
 
     case UPDATE_MENTOR_REGISTERATION_ERROR:
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        mentorError: action.payload,
       };
 
     default:

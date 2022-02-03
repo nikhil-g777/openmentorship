@@ -2,9 +2,12 @@ import {
   GET_STATISTICS,
   GET_STATISTICS_SUCCESS,
   GET_STATISTICS_ERROR,
-  GET_USERS_LIST,
-  GET_USERS_LIST_SUCCESS,
-  GET_USERS_LIST_ERROR,
+  GET_MENTORS_LIST,
+  GET_MENTORS_LIST_SUCCESS,
+  GET_MENTORS_LIST_ERROR,
+  GET_MENTEES_LIST,
+  GET_MENTEES_LIST_SUCCESS,
+  GET_MENTEES_LIST_ERROR,
   GET_USER_PROFILE,
   GET_USER_PROFILE_SUCCESS,
   GET_USER_PROFILE_ERROR,
@@ -18,8 +21,8 @@ import {
 
 const initialState = {
   stats: {},
-  mentorsList: [],
-  menteesList: [],
+  mentorsList: {},
+  menteesList: {},
   user: {},
   activeSessions: [],
   closedSessions: [],
@@ -56,31 +59,47 @@ export default function reducer(state = initialState, action) {
         statsError: action.payload,
       };
 
-    case GET_USERS_LIST:
+    case GET_MENTORS_LIST:
       return {
         ...state,
         loading: true,
       };
 
-    case GET_USERS_LIST_SUCCESS:
+    case GET_MENTORS_LIST_SUCCESS:
       return {
         ...state,
         loading: false,
         usersListError: "",
-        mentorsList: action.payload.data?.users?.filter((c) => {
-          return c.userType === "mentor";
-        }),
-        menteesList: action.payload.data?.users?.filter((c) => {
-          return c.userType === "mentee";
-        }),
+        mentorsList: action.payload.data,
       };
 
-    case GET_USERS_LIST_ERROR:
+    case GET_MENTORS_LIST_ERROR:
       return {
         ...state,
         loading: false,
         mentorsList: [],
-        menteesList: [],
+        usersListError: action.payload,
+      };
+
+    case GET_MENTEES_LIST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case GET_MENTEES_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        usersListError: "",
+        menteesList: action.payload.data,
+      };
+
+    case GET_MENTEES_LIST_ERROR:
+      return {
+        ...state,
+        loading: false,
+        menteessList: [],
         usersListError: action.payload,
       };
 

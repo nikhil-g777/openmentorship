@@ -11,7 +11,8 @@ import Users from "./components/Users";
 
 import {
   getDashboardStats,
-  getUsersList,
+  getMentorsList,
+  getMenteesList,
 } from "../../redux/Actions/DashboardActions";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +50,8 @@ const Dashboard = () => {
   const classes = useStyles();
 
   const [activeTab, setActiveTab] = useState(0);
+  const [mentorPageNumber, setMentorPageNumber] = useState(1);
+  const [menteePageNumber, setMenteePageNumber] = useState(1);
 
   const handleChangeTabs = (e, value) => {
     setActiveTab(value);
@@ -60,8 +63,11 @@ const Dashboard = () => {
     const fetchStats = async () => {
       await dispatch(getDashboardStats());
     };
-    const fetchUsersList = async () => {
-      await dispatch(getUsersList());
+    const fetchMentorsList = async () => {
+      await dispatch(getMentorsList(mentorPageNumber));
+    };
+    const fetchMenteesList = async () => {
+      await dispatch(getMenteesList(menteePageNumber));
     };
     if (
       dashboardState.stats &&
@@ -70,12 +76,26 @@ const Dashboard = () => {
       fetchStats();
     }
     if (
-      dashboardState.mentorsList?.length === 0 ||
-      dashboardState.menteesList?.length === 0
+      !dashboardState.mentorsList?.users ||
+      mentorPageNumber !== Number(dashboardState.mentorsList?.currentPage)
     ) {
-      fetchUsersList();
+      fetchMentorsList();
     }
-  }, []);
+    if (
+      !dashboardState.menteesList?.users ||
+      menteePageNumber !== Number(dashboardState.menteesList?.currentPage)
+    ) {
+      fetchMenteesList();
+    }
+  }, [mentorPageNumber, menteePageNumber]);
+
+  const handleMentorPagination = (event, value) => {
+    setMentorPageNumber(value);
+  };
+
+  const handleMenteePagination = (event, value) => {
+    setMenteePageNumber(value);
+  };
 
   return (
     <Box className={classes.backGroundNav}>
@@ -108,6 +128,10 @@ const Dashboard = () => {
         <Users
           mentors={dashboardState.mentorsList}
           mentees={dashboardState.menteesList}
+          mentorPageNumber={mentorPageNumber}
+          handleMentorPagination={handleMentorPagination}
+          menteePageNumber={menteePageNumber}
+          handleMenteePagination={handleMenteePagination}
         />
       )}
     </Box>

@@ -18,6 +18,9 @@ import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import SessionCard from "../Component/SessionCard/SessionCard";
 
 const useStyles = makeStyles((theme) => ({
+  backgroundNav: {
+    boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)",
+  },
   tabsBox: {
     display: "flex",
     alignItems: "center",
@@ -75,46 +78,55 @@ const UserProfile = () => {
   }, []);
 
   return (
-    <Container>
-      <Box className={classes.tabsBox}>
-        <Link to={{ pathname: "/admin/dashboard", state: { activeTab: 1 } }}>
-          <svg
-            width="11"
-            height="12"
-            viewBox="0 0 11 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10.8531 11.84V9.584L2.33313 5.984L10.8531 2.336V0.079999L0.149125 4.88V7.064L10.8531 11.84Z"
-              fill="black"
-            />
-          </svg>
-        </Link>
+    <>
+      <Box className={classes.backgroundNav}>
+        <Menu1
+          registrationMenu={true}
+          showBackButton={false}
+          // pageNumber={pageNumber}
+        />
       </Box>
-      {dashboardState?.loading ? (
-        <Box className={classes.progressWrapper}>
-          <CircularProgress />
+      <Container>
+        <Box className={classes.tabsBox}>
+          <Link to={{ pathname: "/admin/dashboard", state: { activeTab: 1 } }}>
+            <svg
+              width="11"
+              height="12"
+              viewBox="0 0 11 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.8531 11.84V9.584L2.33313 5.984L10.8531 2.336V0.079999L0.149125 4.88V7.064L10.8531 11.84Z"
+                fill="black"
+              />
+            </svg>
+          </Link>
         </Box>
-      ) : (
-        <Box>
-          <Box className={classes.profileSection}>
-            <Grid container className={classes.profile_container}>
-              <ProfileCard data={dashboardState?.user?.userProfile} />
-
-              <Box className={classes.sessionWrapper}>
-                <Typography className={classes.sessionHeading}>
-                  Session history
-                </Typography>
-                <Box className={classes.sessionsSection}>
-                  <SessionCard sessions={dashboardState?.user?.sessions} />
-                </Box>
-              </Box>
-            </Grid>
+        {dashboardState?.loading ? (
+          <Box className={classes.progressWrapper}>
+            <CircularProgress />
           </Box>
-        </Box>
-      )}
-    </Container>
+        ) : (
+          <Box>
+            <Box className={classes.profileSection}>
+              <Grid container className={classes.profile_container}>
+                <ProfileCard data={dashboardState?.user?.userProfile} />
+
+                <Box className={classes.sessionWrapper}>
+                  <Typography className={classes.sessionHeading}>
+                    Session history
+                  </Typography>
+                  <Box className={classes.sessionsSection}>
+                    <SessionCard sessions={dashboardState?.user?.sessions} />
+                  </Box>
+                </Box>
+              </Grid>
+            </Box>
+          </Box>
+        )}
+      </Container>
+    </>
   );
 };
 export default UserProfile;

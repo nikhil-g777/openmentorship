@@ -69,7 +69,7 @@ function App() {
             <Route path="/admin/match" component={Match} />
             <Route path="/admin/edit-profile" component={AdminEditProfile} />
             <PrivateRoute
-              path="/admin/mentor-applications"
+              path="/admin/mentor-applications/:page?"
               component={MentorApplications}
             />
             <PrivateRoute

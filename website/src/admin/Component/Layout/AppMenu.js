@@ -306,7 +306,7 @@ const AppMenu = (props) => {
         </Link>
 
         <Link
-          to="/admin/mentor-applications"
+          to={`/admin/mentor-applications/1`}
           className={classes.LinkDashboard}
           style={{ textDecoration: "none" }}
         >

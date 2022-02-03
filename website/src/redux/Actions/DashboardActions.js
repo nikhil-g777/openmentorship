@@ -2,9 +2,12 @@ import {
   GET_STATISTICS,
   GET_STATISTICS_SUCCESS,
   GET_STATISTICS_ERROR,
-  GET_USERS_LIST,
-  GET_USERS_LIST_SUCCESS,
-  GET_USERS_LIST_ERROR,
+  GET_MENTORS_LIST,
+  GET_MENTORS_LIST_SUCCESS,
+  GET_MENTORS_LIST_ERROR,
+  GET_MENTEES_LIST,
+  GET_MENTEES_LIST_SUCCESS,
+  GET_MENTEES_LIST_ERROR,
   GET_USER_PROFILE,
   GET_USER_PROFILE_SUCCESS,
   GET_USER_PROFILE_ERROR,
@@ -26,14 +29,30 @@ export const getDashboardStats = () => async (dispatch) => {
   }
 };
 
-export const getUsersList = () => async (dispatch) => {
-  dispatch({ type: GET_USERS_LIST });
+export const getMentorsList = (pageNumber) => async (dispatch) => {
+  dispatch({ type: GET_MENTORS_LIST });
   try {
-    const result = await axiosClient().get(`/admin/userList?page=1&limit=20`);
+    const result = await axiosClient().get(
+      `/admin/userList?page=${pageNumber}&limit=20&userType=mentor`
+    );
     console.log("result: ", result);
-    return dispatch({ type: GET_USERS_LIST_SUCCESS, payload: result });
+    return dispatch({ type: GET_MENTORS_LIST_SUCCESS, payload: result });
   } catch (err) {
-    return dispatch({ type: GET_USERS_LIST_ERROR });
+    return dispatch({ type: GET_MENTORS_LIST_ERROR });
+  }
+};
+
+export const getMenteesList = (pageNumber) => async (dispatch) => {
+  dispatch({ type: GET_MENTEES_LIST });
+  try {
+    const result = await axiosClient().get(
+      `/admin/userList?page=${pageNumber}&limit=20&userType=mentee`
+    );
+
+    console.log("result: ", result);
+    return dispatch({ type: GET_MENTEES_LIST_SUCCESS, payload: result });
+  } catch (err) {
+    return dispatch({ type: GET_MENTEES_LIST_ERROR });
   }
 };
 

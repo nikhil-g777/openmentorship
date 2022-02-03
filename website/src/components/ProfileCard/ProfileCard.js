@@ -2,13 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { Box, Button, Grid, Typography } from "@material-ui/core";
 import "fontsource-roboto";
 
 //images
@@ -125,9 +119,9 @@ const useStyles = makeStyles((theme) => ({
     height: "32px",
     marginRight: "12px",
   },
-  userInfoWrapper: {
-    marginTop: "25px",
-  },
+  // userInfoWrapper: {
+  //   marginTop: "25px",
+  // },
   emailButton: { border: "1px solid #51B6A5" },
   accountButton: { border: "1px solid #6D6D6D", marginTop: "11px" },
   buttonsText: {
@@ -193,6 +187,7 @@ const ProfileCard = (props) => {
           <img
             className={classes.profile_img}
             src="https://wallpaperaccess.com/full/2969091.jpg"
+            alt=""
           />
           <Link to={isUserPage ? `/admin/user-profile/${data?._id}` : "#"}>
             <Typography className={classes.pro_typo1_sm}>
@@ -289,12 +284,12 @@ const ProfileCard = (props) => {
                 {`${data?.firstName} ${data?.lastName}`}
               </Typography>
             </Link>
-            <img src={linked} style={{ marginLeft: 10 }} />
+            <img src={linked} alt="" style={{ marginLeft: 10 }} />
           </Box>
           {props.isProfilePage ? (
             <Link to="/edit-profile" className={classes.editProfileLink}>
               <Box component="div" className={classes.pro_typo_div2}>
-                <img src={editIcon} width="23px" height="23px" />
+                <img src={editIcon} alt="" width="23px" height="23px" />
                 <Typography className={classes.edit_txt}>Edit</Typography>
               </Box>
             </Link>
@@ -334,7 +329,12 @@ const ProfileCard = (props) => {
         <Box component="div" className={classes.social_div}>
           {Object.keys(data || {}).length > 0 &&
             Object.entries(data?.socialLinks || {}).map(([key, value]) => (
-              <a href={value} target="_blank" key={key}>
+              <a
+                href={value}
+                target="_blank"
+                rel="noopener noreferrer"
+                key={key}
+              >
                 {value && (
                   <img
                     src={
@@ -352,6 +352,7 @@ const ProfileCard = (props) => {
                         ? otherIcon
                         : ""
                     }
+                    alt=""
                     className={classes.logoIcons}
                   />
                 )}

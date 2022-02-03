@@ -12,8 +12,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
+import Pagination from "@material-ui/lab/Pagination";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 
 import {
   getMentorApplications,
@@ -77,6 +79,14 @@ const useStyles = makeStyles((theme) => ({
       outline: "none",
     },
   },
+
+  paginationWrapper: {
+    marginTop: "40px",
+    marginBottom: "30px",
+    "& ul": {
+      justifyContent: "center",
+    },
+  },
 }));
 
 const Alert = (props) => {
@@ -85,24 +95,33 @@ const Alert = (props) => {
 
 const MentorApplications = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const params = useParams();
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [snackbar, setSnackbar] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const mentorApplicationsState = useSelector(
     (store) => store.mentorapplicationsreducer
   );
 
   useEffect(() => {
+    setPageNumber(params.page);
     const fetchMentorApplications = async () => {
-      await dispatch(getMentorApplications());
+      await dispatch(getMentorApplications(Number(params.page)));
     };
-
-    if (mentorApplicationsState.mentorApplications?.length === 0) {
+    if (
+      !mentorApplicationsState.mentorApplications?.users ||
+      mentorApplicationsState.mentorApplications?.currentPage !== params.page
+    ) {
       fetchMentorApplications();
     }
-  }, []);
+  }, [
+    mentorApplicationsState.mentorApplications?.users?.length,
+    Number(params.page),
+  ]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -120,21 +139,29 @@ const MentorApplications = () => {
     setSnackbar(false);
   };
 
-  const handleApproveMentor = (mentor) => {
+  const handleApproveMentor = async (e, mentor) => {
+    e.preventDefault();
     let data = {
       mentorId: mentor?._id,
       registrationStatus: "complete",
     };
-    updateMentorRegisteration(data);
+    await dispatch(updateMentorRegisteration(data));
     handleOpenSnackbar();
   };
 
-  const handleDenyMentor = (mentor) => {
+  const handleDenyMentor = async (e, mentor) => {
+    e.preventDefault();
     let data = {
       mentorId: mentor?._id,
       registrationStatus: "denied",
     };
-    dispatch(updateMentorRegisteration(data));
+    await dispatch(updateMentorRegisteration(data));
+    handleOpenSnackbar();
+  };
+
+  const handlePagination = (event, value) => {
+    setPageNumber(value);
+    history.push(`/admin/mentor-applications/${value}`);
   };
 
   return (
@@ -145,13 +172,22 @@ const MentorApplications = () => {
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
       >
-        <Alert onClose={handleCloseSnackbar} severity="success">
-          Status updated succesfully!
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={mentorApplicationsState?.mentorError ? "error" : "success"}
+        >
+          {mentorApplicationsState?.mentorError
+            ? "Error updating status"
+            : "Status updated succesfully!"}
         </Alert>
       </Snackbar>
 
       <Box className={classes.backgroundNav}>
-        <Menu1 registrationMenu={true} showBackButton={false} />
+        <Menu1
+          registrationMenu={true}
+          showBackButton={false}
+          pageNumber={pageNumber}
+        />
       </Box>
 
       <Container>
@@ -206,13 +242,24 @@ const MentorApplications = () => {
                 <ProfileCard
                   data={mentor}
                   isMentorApplicationPage={true}
-                  handleApproveMentor={() => handleApproveMentor(mentor)}
-                  handleDenyMentor={() => handleDenyMentor(mentor)}
+                  handleApproveMentor={(e) => handleApproveMentor(e, mentor)}
+                  handleDenyMentor={(e) => handleDenyMentor(e, mentor)}
                 />
               </Grid>
             ))
           )}
         </Box>
+        {mentorApplicationsState?.mentorApplications?.users?.length > 0 ? (
+          <Box className={classes.paginationWrapper}>
+            <Pagination
+              count={mentorApplicationsState?.mentorApplications?.totalPages}
+              page={Number(pageNumber)}
+              onChange={handlePagination}
+            />
+          </Box>
+        ) : (
+          ""
+        )}
       </Container>
     </>
   );

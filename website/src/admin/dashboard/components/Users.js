@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Pagination from "@material-ui/lab/Pagination";
 
 import ProfileCard from "../../../components/ProfileCard/ProfileCard";
 
@@ -75,11 +76,26 @@ const useStyles = makeStyles((theme) => ({
     padding: "30px",
     marginTop: "8px",
   },
+  paginationWrapper: {
+    marginTop: "40px",
+    marginBottom: "30px",
+    "& ul": {
+      justifyContent: "center",
+    },
+  },
 }));
 
 const Users = (props) => {
+  console.log("props: ", props);
   const classes = useStyles();
-  const { mentors, mentees } = props;
+  const {
+    mentors,
+    mentees,
+    mentorPageNumber,
+    menteePageNumber,
+    handleMenteePagination,
+    handleMentorPagination,
+  } = props;
   const [activeTab, setActiveTab] = useState(0);
 
   const handleChangeTabs = (e, value) => {
@@ -111,26 +127,54 @@ const Users = (props) => {
         </Box>
       </Box>
       <Box>
-        {activeTab === 0 &&
-          mentors?.map((mentor) => (
-            <Grid
-              container
-              key={mentor._id}
-              className={classes.profile_container}
-            >
-              <ProfileCard data={mentor} isUserPage={true} />
-            </Grid>
-          ))}
-        {activeTab === 1 &&
-          mentees?.map((mentee) => (
-            <Grid
-              container
-              key={mentee._id}
-              className={classes.profile_container}
-            >
-              <ProfileCard data={mentee} isUserPage={true} />
-            </Grid>
-          ))}
+        {activeTab === 0 && (
+          <>
+            {mentors?.users?.map((mentor) => (
+              <Grid
+                container
+                key={mentor._id}
+                className={classes.profile_container}
+              >
+                <ProfileCard data={mentor} isUserPage={true} />
+              </Grid>
+            ))}
+            {mentors?.users?.length > 0 ? (
+              <Box className={classes.paginationWrapper}>
+                <Pagination
+                  count={mentors?.totalPages}
+                  page={Number(mentorPageNumber)}
+                  onChange={handleMentorPagination}
+                />
+              </Box>
+            ) : (
+              ""
+            )}
+          </>
+        )}
+        {activeTab === 1 && (
+          <>
+            {mentees?.users?.map((mentee) => (
+              <Grid
+                container
+                key={mentee._id}
+                className={classes.profile_container}
+              >
+                <ProfileCard data={mentee} isUserPage={true} />
+              </Grid>
+            ))}
+            {mentees?.users?.length > 0 ? (
+              <Box className={classes.paginationWrapper}>
+                <Pagination
+                  count={mentees?.totalPages}
+                  page={Number(menteePageNumber)}
+                  onChange={handleMenteePagination}
+                />
+              </Box>
+            ) : (
+              ""
+            )}
+          </>
+        )}
       </Box>
     </Container>
   );
