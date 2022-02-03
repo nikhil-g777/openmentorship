@@ -2,12 +2,8 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import styled from "styled-components";
-import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider,
-} from "@material-ui/core/styles";
-import { Divider, MenuItem, Menu, Box, Container } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Divider, MenuItem, Menu, Box } from "@material-ui/core";
 
 import LogoNavBar from "../../../images/LogoNavBar.png";
 import userIcon from "../../../images/user.svg";
@@ -21,13 +17,18 @@ const Wrapper = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 53px;
+  padding-right: 53px;
   padding-top: 14px;
   padding-bottom: 14.69px;
   // -webkit-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
   // -moz-box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
   // box-shadow: 0px 6px 12px -9px rgba(0, 0, 0, 0.75);
+  maxheight: 90px;
+  @media (max-width: 600px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 `;
 
 const Picture = styled.div`
@@ -252,6 +253,20 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     opacity: 0.8,
   },
+  imgWrapper: {
+    maxWidth: "55px",
+    maxHeight: "57px",
+    marginRight: "150px",
+    "&>img": {
+      maxWidth: "100%",
+    },
+
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "38px",
+      maxHeight: "38px",
+      marginRight: "0px",
+    },
+  },
 }));
 
 const AppMenu = (props) => {
@@ -291,14 +306,18 @@ const AppMenu = (props) => {
         </Link>
 
         <Link
-          to="/admin/match"
+          to={`/admin/mentor-applications/1`}
           className={classes.LinkDashboard}
           style={{ textDecoration: "none" }}
         >
-          Match
+          Mentors
         </Link>
       </Box>
-      <LogoImg />
+      {/* <LogoImg /> */}
+      <Box className={classes.imgWrapper}>
+        <img src={LogoNavBar} alt="logo" />
+      </Box>
+
       <UserIconWrapper>
         <UserIcon onClick={handleMenu} />
       </UserIconWrapper>

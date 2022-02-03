@@ -12,7 +12,14 @@ import PrivateRoute from "./PrivateRoute";
 import { theme } from "./GlobalTheme";
 import Store from "../redux/Store";
 
-import { AdminEditProfile, Dashboard, Match, Session } from "../admin/pages";
+import {
+  AdminEditProfile,
+  Dashboard,
+  Match,
+  MentorApplications,
+  Session,
+  UserProfile,
+} from "../admin/pages";
 
 import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
 import {
@@ -28,7 +35,6 @@ import {
   EditProfile,
 } from "../pages";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { UserProvider } from "../context/UserContext";
 
 function App() {
   return (
@@ -62,6 +68,14 @@ function App() {
             <Route path="/admin/sessions" component={Session} />
             <Route path="/admin/match" component={Match} />
             <Route path="/admin/edit-profile" component={AdminEditProfile} />
+            <PrivateRoute
+              path="/admin/mentor-applications/:page?"
+              component={MentorApplications}
+            />
+            <PrivateRoute
+              path="/admin/user-profile/:id"
+              component={UserProfile}
+            />
           </Switch>
         </ThemeProvider>
       </Router>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, Tab, Tabs } from "@material-ui/core";
+import { Box, Tab, Tabs } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Menu1 } from "../Component";
@@ -11,7 +11,8 @@ import Users from "./components/Users";
 
 import {
   getDashboardStats,
-  getUsersList,
+  getMentorsList,
+  getMenteesList,
 } from "../../redux/Actions/DashboardActions";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +50,8 @@ const Dashboard = () => {
   const classes = useStyles();
 
   const [activeTab, setActiveTab] = useState(0);
+  const [mentorPageNumber, setMentorPageNumber] = useState(1);
+  const [menteePageNumber, setMenteePageNumber] = useState(1);
 
   const handleChangeTabs = (e, value) => {
     setActiveTab(value);
@@ -60,11 +63,12 @@ const Dashboard = () => {
     const fetchStats = async () => {
       await dispatch(getDashboardStats());
     };
-    console.log("fetching lists");
-    const fetchUsersList = async () => {
-      await dispatch(getUsersList());
+    const fetchMentorsList = async () => {
+      await dispatch(getMentorsList(mentorPageNumber));
     };
-    console.log("after fetching lists");
+    const fetchMenteesList = async () => {
+      await dispatch(getMenteesList(menteePageNumber));
+    };
     if (
       dashboardState.stats &&
       Object.keys(dashboardState.stats).length === 0
@@ -72,29 +76,36 @@ const Dashboard = () => {
       fetchStats();
     }
     if (
-      dashboardState.mentorsList?.length === 0 ||
-      dashboardState.menteesList?.length === 0
+      !dashboardState.mentorsList?.users ||
+      mentorPageNumber !== Number(dashboardState.mentorsList?.currentPage)
     ) {
-      fetchUsersList();
+      fetchMentorsList();
     }
-  }, []);
+    if (
+      !dashboardState.menteesList?.users ||
+      menteePageNumber !== Number(dashboardState.menteesList?.currentPage)
+    ) {
+      fetchMenteesList();
+    }
+  }, [mentorPageNumber, menteePageNumber]);
 
-  useEffect(
-    () => console.log("dashboardState: ", dashboardState),
-    [dashboardState]
-  );
+  const handleMentorPagination = (event, value) => {
+    setMentorPageNumber(value);
+  };
+
+  const handleMenteePagination = (event, value) => {
+    setMenteePageNumber(value);
+  };
 
   return (
     <Box className={classes.backGroundNav}>
       <Box className={classes.navWrapper}>
         <Box className={classes.backGroundNav}>
-          <Container>
-            <Menu1
-              handleBack={() => history.push("/")}
-              registrationMenu={true}
-              showBackButton={false}
-            />
-          </Container>
+          <Menu1
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
         </Box>
         <Tabs
           centered
@@ -117,6 +128,10 @@ const Dashboard = () => {
         <Users
           mentors={dashboardState.mentorsList}
           mentees={dashboardState.menteesList}
+          mentorPageNumber={mentorPageNumber}
+          handleMentorPagination={handleMentorPagination}
+          menteePageNumber={menteePageNumber}
+          handleMenteePagination={handleMenteePagination}
         />
       )}
     </Box>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Container, CircularProgress, Tab, Tabs } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -51,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Session = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -76,22 +74,11 @@ const Session = () => {
     }
   }, []);
 
-  useEffect(
-    () => console.log("dashboardState: ", dashboardState),
-    [dashboardState]
-  );
-
   return (
     <Box className={classes.backGroundNav}>
       <Box className={classes.navWrapper}>
         <Box className={classes.backGroundNav}>
-          <Container>
-            <Menu1
-              handleBack={() => history.push("/")}
-              registrationMenu={true}
-              showBackButton={false}
-            />
-          </Container>
+          <Menu1 registrationMenu={true} showBackButton={false} />
         </Box>
         <Tabs
           centered
@@ -115,12 +102,14 @@ const Session = () => {
               <SessionCard
                 sessions={dashboardState.activeSessions}
                 sessionType="Active"
+                isSessionsPage={true}
               />
             )}
             {activeTab === 1 && (
               <SessionCard
                 sessions={dashboardState.closedSessions}
                 sessionType="Closed"
+                isSessionsPage={true}
               />
             )}
           </>

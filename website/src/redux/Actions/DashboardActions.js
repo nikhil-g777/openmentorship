@@ -2,18 +2,18 @@ import {
   GET_STATISTICS,
   GET_STATISTICS_SUCCESS,
   GET_STATISTICS_ERROR,
-  GET_USERS_LIST,
-  GET_USERS_LIST_SUCCESS,
-  GET_USERS_LIST_ERROR,
+  GET_MENTORS_LIST,
+  GET_MENTORS_LIST_SUCCESS,
+  GET_MENTORS_LIST_ERROR,
+  GET_MENTEES_LIST,
+  GET_MENTEES_LIST_SUCCESS,
+  GET_MENTEES_LIST_ERROR,
   GET_USER_PROFILE,
   GET_USER_PROFILE_SUCCESS,
   GET_USER_PROFILE_ERROR,
   GET_ADMIN_SESSIONS,
   GET_ADMIN_SESSIONS_SUCCESS,
   GET_ADMIN_SESSIONS_ERROR,
-  UPDATE_MENTOR_REGISTERATION,
-  UPDATE_MENTOR_REGISTERATION_SUCCESS,
-  UPDATE_MENTOR_REGISTERATION_ERROR,
 } from "../Types/UserTypes";
 
 import axiosClient from "../../helper";
@@ -29,18 +29,36 @@ export const getDashboardStats = () => async (dispatch) => {
   }
 };
 
-export const getUsersList = () => async (dispatch) => {
-  dispatch({ type: GET_USERS_LIST });
+export const getMentorsList = (pageNumber) => async (dispatch) => {
+  dispatch({ type: GET_MENTORS_LIST });
   try {
-    const result = await axiosClient().get(`/admin/userList?page=1&limit=20`);
+    const result = await axiosClient().get(
+      `/admin/userList?page=${pageNumber}&limit=20&userType=mentor`
+    );
     console.log("result: ", result);
-    return dispatch({ type: GET_USERS_LIST_SUCCESS, payload: result });
+    return dispatch({ type: GET_MENTORS_LIST_SUCCESS, payload: result });
   } catch (err) {
-    return dispatch({ type: GET_USERS_LIST_ERROR });
+    return dispatch({ type: GET_MENTORS_LIST_ERROR });
+  }
+};
+
+export const getMenteesList = (pageNumber) => async (dispatch) => {
+  dispatch({ type: GET_MENTEES_LIST });
+  try {
+    const result = await axiosClient().get(
+      `/admin/userList?page=${pageNumber}&limit=20&userType=mentee`
+    );
+
+    console.log("result: ", result);
+    return dispatch({ type: GET_MENTEES_LIST_SUCCESS, payload: result });
+  } catch (err) {
+    return dispatch({ type: GET_MENTEES_LIST_ERROR });
   }
 };
 
 export const getUserProfile = (userId) => async (dispatch) => {
+  console.log("in get user profile");
+  console.log("userId: ", userId);
   dispatch({ type: GET_USER_PROFILE });
   try {
     const result = await axiosClient().get(
@@ -61,23 +79,5 @@ export const getSessionsList = () => async (dispatch) => {
     return dispatch({ type: GET_ADMIN_SESSIONS_SUCCESS, payload: result });
   } catch (err) {
     return dispatch({ type: GET_ADMIN_SESSIONS_ERROR });
-  }
-};
-
-export const updateMentorRegisteration = (data) => async (dispatch) => {
-  dispatch({ type: UPDATE_MENTOR_REGISTERATION });
-  try {
-    const result = await axiosClient().post(
-      `/admin/updateMentorRegistration`,
-      data
-    );
-    localStorage.setItem("token", JSON.stringify(result.data.token));
-    return dispatch({
-      type: UPDATE_MENTOR_REGISTERATION_SUCCESS,
-      payload: result,
-    });
-  } catch (err) {
-    console.log("error loggingin: ", err);
-    return dispatch({ type: UPDATE_MENTOR_REGISTERATION_ERROR });
   }
 };
