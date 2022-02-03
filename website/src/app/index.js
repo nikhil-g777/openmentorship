@@ -28,7 +28,6 @@ import {
   Matches,
   LandingPage,
   LoginPage,
-  Sessions,
   // Mentee,
   Chat,
   Profile,
@@ -61,7 +60,6 @@ function App() {
               path="/postRegistration"
               component={PostRegistration}
             />
-            <PrivateRoute path="/sessions" component={Sessions} />
 
             {/* admin routes */}
             <Route path="/admin/dashboard" component={Dashboard} />

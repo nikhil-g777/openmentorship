@@ -139,14 +139,6 @@ const DropDownMenu = (props) => {
                   Profile
                 </MenuItem>
               </MenuLink>
-              <MenuLink to="/sessions">
-                <MenuItem
-                  onClick={props.handleClose}
-                  selected={pathname === "/sessions"}
-                >
-                  Sessions
-                </MenuItem>
-              </MenuLink>
               <MenuLink to="/matches">
                 <MenuItem
                   onClick={props.handleClose}
@@ -190,14 +182,6 @@ const DropDownMenu = (props) => {
                 selected={pathname === "/profile"}
               >
                 Profile
-              </MenuItem>
-            </MenuLink>
-            <MenuLink to="/sessions">
-              <MenuItem
-                onClick={props.handleClose}
-                selected={pathname === "/sessions"}
-              >
-                Sessions
               </MenuItem>
             </MenuLink>
             <MenuLink to="/matches">
