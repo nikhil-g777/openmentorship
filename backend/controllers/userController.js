@@ -19,14 +19,21 @@ const linkedinApi = axios.create({
   baseURL: 'https://api.linkedin.com/',
 });
 
-const getLinkedInProfile = (authCode) =>
+const getLinkedInProfile = (authCode, isLocal = false) =>
   new Promise((resolve, reject) => {
+    let redirectUri = '';
+    if (isLocal) {
+      redirectUri = process.env.LINKEDIN_REDIRECT_URI_LOCAL;
+    } else {
+      redirectUri = process.env.LINKEDIN_REDIRECT_URI;
+    }
+
     const authUrl = queryString.stringifyUrl({
       url: '/oauth/v2/accessToken',
       query: {
         grant_type: 'authorization_code',
         code: authCode,
-        redirect_uri: process.env.LINKEDIN_REDIRECT_URI,
+        redirect_uri: redirectUri,
         client_id: process.env.LINKEDIN_CLIENT_ID,
         client_secret: process.env.LINKEDIN_CLIENT_SECRET,
       },
@@ -89,7 +96,9 @@ const loginUser = (req, res) => {
       .json({ success: false, error: 'authCode missing in the body' });
   }
 
-  getLinkedInProfile(body.authCode)
+  const isLocal = body.isLocal == true;
+
+  getLinkedInProfile(body.authCode, isLocal)
     .then((linkedInProfile) => {
       return User.findOne({ linkedInId: linkedInProfile.linkedInId }).exec();
     })
@@ -154,7 +163,10 @@ const registerUser = (req, res) => {
         .json({ success: false, error: 'authCode missing in the body' });
     }
     const results = {};
-    getLinkedInProfile(body.authCode)
+
+    const isLocal = body.isLocal == true;
+
+    getLinkedInProfile(body.authCode, isLocal)
       .then((linkedInProfile) => {
         results.linkedInProfile = linkedInProfile;
         return User.findOne({ linkedInId: linkedInProfile.linkedInId }).exec();

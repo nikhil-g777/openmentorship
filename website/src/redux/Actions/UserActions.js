@@ -18,6 +18,13 @@ import axiosClient from "../../helper";
 export const loginUser = (data) => async (dispatch) => {
   dispatch({ type: USER_LOGIN_START });
   try {
+    if (
+      process.env.REACT_APP_IS_LOCAL &&
+      process.env.REACT_APP_IS_LOCAL == "true"
+    ) {
+      data.isLocal = true;
+    }
+
     const result = await axiosClient().post(`/users/login`, data);
     localStorage.setItem("token", JSON.stringify(result.data.token));
     return dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
