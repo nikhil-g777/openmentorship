@@ -2,7 +2,6 @@ import FAQ from "../pages/FAQ/FAQ";
 import Home from "../pages/Home";
 import RegisterForm from "./Register/RegisterForm";
 import LandingPage from "./LandingPage/LandingPage";
-import LoginPage from "./LoginPage";
 import Sessions from "./Sessions/Sessions";
 import Matches from "./Matches/Matches";
 import EditProfile from "./Profile/editProfile";
@@ -15,7 +14,6 @@ export {
   Home,
   RegisterForm,
   LandingPage,
-  LoginPage,
   Sessions,
   Chat,
   Profile,

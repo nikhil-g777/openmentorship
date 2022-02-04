@@ -142,7 +142,7 @@ const loginUser = (req, res) => {
       console.log(err);
       return res.status(500).json({
         success: false,
-        error: 'Unable to query database',
+        error: 'Unable to validate linkedin profile',
       });
     });
 };

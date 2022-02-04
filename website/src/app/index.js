@@ -27,7 +27,6 @@ import {
   RegisterForm,
   Matches,
   LandingPage,
-  LoginPage,
   // Mentee,
   Chat,
   Profile,
@@ -55,17 +54,20 @@ function App() {
 
             <PrivateRoute path="/profile" component={LandingPage} />
             <Route path="/register" component={RegisterForm} />
-            <Route path="/login" component={LoginPage} />
+            <Route path="/login" component={LandingPage} />
             <PrivateRoute
               path="/postRegistration"
               component={PostRegistration}
             />
 
             {/* admin routes */}
-            <Route path="/admin/dashboard" component={Dashboard} />
-            <Route path="/admin/sessions" component={Session} />
-            <Route path="/admin/match" component={Match} />
-            <Route path="/admin/edit-profile" component={AdminEditProfile} />
+            <PrivateRoute path="/admin/dashboard" component={Dashboard} />
+            <PrivateRoute path="/admin/sessions" component={Session} />
+            <PrivateRoute path="/admin/match" component={Match} />
+            <PrivateRoute
+              path="/admin/edit-profile"
+              component={AdminEditProfile}
+            />
             <PrivateRoute
               path="/admin/mentor-applications/:page?"
               component={MentorApplications}
