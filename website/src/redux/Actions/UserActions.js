@@ -27,6 +27,7 @@ export const loginUser = (data) => async (dispatch) => {
 
     const result = await axiosClient().post(`/users/login`, data);
     localStorage.setItem("token", JSON.stringify(result.data.token));
+    dispatch(getUserInfo());
     return dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
   } catch (err) {
     console.log("error loggingin: ", err);
