@@ -14,6 +14,12 @@ import {
   GET_ADMIN_SESSIONS,
   GET_ADMIN_SESSIONS_SUCCESS,
   GET_ADMIN_SESSIONS_ERROR,
+  SEARCH_USERS_LIST,
+  SEARCH_USERS_LIST_SUCCESS,
+  SEARCH_USERS_LIST_ERROR,
+  SEARCH_SESSIONS_LIST,
+  SEARCH_SESSIONS_LIST_SUCCESS,
+  SEARCH_SESSIONS_LIST_ERROR,
 } from "../Types/UserTypes";
 
 import axiosClient from "../../helper";
@@ -79,5 +85,31 @@ export const getSessionsList = () => async (dispatch) => {
     return dispatch({ type: GET_ADMIN_SESSIONS_SUCCESS, payload: result });
   } catch (err) {
     return dispatch({ type: GET_ADMIN_SESSIONS_ERROR });
+  }
+};
+
+export const searchUsersList = (searchString) => async (dispatch) => {
+  dispatch({ type: SEARCH_USERS_LIST });
+  try {
+    const result = await axiosClient().get(
+      `/admin/userSearch?searchString=${searchString}`
+    );
+    console.log("search result: ", result);
+    return dispatch({ type: SEARCH_USERS_LIST_SUCCESS, payload: result });
+  } catch (err) {
+    return dispatch({ type: SEARCH_USERS_LIST_ERROR });
+  }
+};
+
+export const searchSessionsList = (searchString) => async (dispatch) => {
+  dispatch({ type: SEARCH_SESSIONS_LIST });
+  try {
+    const result = await axiosClient().get(
+      `/admin/sessionSearch?searchString=${searchString}`
+    );
+    console.log("search result: ", result);
+    return dispatch({ type: SEARCH_SESSIONS_LIST_SUCCESS, payload: result });
+  } catch (err) {
+    return dispatch({ type: SEARCH_SESSIONS_LIST_ERROR });
   }
 };

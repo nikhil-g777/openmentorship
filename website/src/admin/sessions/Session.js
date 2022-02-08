@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, CircularProgress, Tab, Tabs } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  CircularProgress,
+  Tab,
+  Tabs,
+  Typography,
+  TextField,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Menu1 } from "../Component";
 
 import SessionCard from "../Component/SessionCard/SessionCard";
 
-import { getSessionsList } from "../../redux/Actions/DashboardActions";
+import {
+  getSessionsList,
+  searchSessionsList,
+} from "../../redux/Actions/DashboardActions";
 
 const useStyles = makeStyles((theme) => ({
   backGroundNav: {
@@ -47,6 +58,43 @@ const useStyles = makeStyles((theme) => ({
       height: "56px!important",
     },
   },
+
+  tabsBox: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: "1.8%",
+    boxShadow: "4px 8px 8px rgb(201 199 199 / 25%)",
+    padding: "21px 26px 8px",
+  },
+  sessionsText: {
+    fontSize: "20px",
+    fontWeight: 700,
+    lineHeight: "24px",
+    letterSpacing: "0em",
+  },
+  searchBox: {
+    display: "flex",
+    alignItems: "center",
+  },
+  searchText: {
+    fontSize: "20px",
+    fontWeight: 700,
+    lineHeight: "24px",
+    letterSpacing: "0em",
+    marginRight: "14px",
+  },
+  search: {
+    border: "1px solid #AEAEAE",
+    margin: 0,
+    "& .MuiInputBase-root": {
+      borderRadius: 0,
+    },
+    "& input": {
+      padding: "2px 6px",
+      height: "21px",
+    },
+  },
 }));
 
 const Session = () => {
@@ -54,6 +102,7 @@ const Session = () => {
   const classes = useStyles();
 
   const [activeTab, setActiveTab] = useState(0);
+  const [search, setSearch] = useState("");
 
   const handleChangeTabs = (e, value) => {
     setActiveTab(value);
@@ -62,10 +111,6 @@ const Session = () => {
   const dashboardState = useSelector((store) => store.dashboardreducer);
 
   useEffect(() => {
-    const fetchSessions = async () => {
-      await dispatch(getSessionsList());
-    };
-
     if (
       dashboardState.activeSessions?.length === 0 ||
       dashboardState.closedSessions?.length === 0
@@ -73,6 +118,27 @@ const Session = () => {
       fetchSessions();
     }
   }, []);
+
+  const fetchSessions = async () => {
+    await dispatch(getSessionsList());
+  };
+
+  const handleChangeSearch = (e) => {
+    if (!e.target.value) {
+      setSearch(e.target.value);
+      fetchSessions();
+    } else {
+      setSearch(e.target.value);
+      dispatch(searchSessionsList(e.target.value));
+    }
+  };
+
+  const handleUserSearch = (e) => {
+    if (e.key === "Enter") {
+      console.log("search onEnter: ", search);
+      dispatch(searchSessionsList(search));
+    }
+  };
 
   return (
     <Box className={classes.backGroundNav}>
@@ -92,6 +158,26 @@ const Session = () => {
         </Tabs>
       </Box>
       <>
+        <Container>
+          <Box className={classes.tabsBox}>
+            <Box>
+              <Typography className={classes.sessionsText}>
+                {activeTab === 0 ? "Active" : "Closed"} Sessions
+              </Typography>
+            </Box>
+            <Box className={classes.searchBox}>
+              <Typography className={classes.searchText}>Search</Typography>
+              <TextField
+                id="outlined-basic"
+                variant="outlined"
+                placeholder="userID/Name"
+                className={classes.search}
+                onKeyPress={handleUserSearch}
+                onChange={handleChangeSearch}
+              />
+            </Box>
+          </Box>
+        </Container>
         {dashboardState.loading ? (
           <Box className={classes.progressWrapper}>
             <CircularProgress />
@@ -99,18 +185,10 @@ const Session = () => {
         ) : (
           <>
             {activeTab === 0 && (
-              <SessionCard
-                sessions={dashboardState.activeSessions}
-                sessionType="Active"
-                isSessionsPage={true}
-              />
+              <SessionCard sessions={dashboardState.activeSessions} />
             )}
             {activeTab === 1 && (
-              <SessionCard
-                sessions={dashboardState.closedSessions}
-                sessionType="Closed"
-                isSessionsPage={true}
-              />
+              <SessionCard sessions={dashboardState.closedSessions} />
             )}
           </>
         )}

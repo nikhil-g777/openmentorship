@@ -13,6 +13,7 @@ import {
   getDashboardStats,
   getMentorsList,
   getMenteesList,
+  searchUsersList,
 } from "../../redux/Actions/DashboardActions";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +53,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [mentorPageNumber, setMentorPageNumber] = useState(1);
   const [menteePageNumber, setMenteePageNumber] = useState(1);
+  const [search, setSearch] = useState("");
 
   const handleChangeTabs = (e, value) => {
     setActiveTab(value);
@@ -60,15 +62,6 @@ const Dashboard = () => {
   const dashboardState = useSelector((store) => store.dashboardreducer);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      await dispatch(getDashboardStats());
-    };
-    const fetchMentorsList = async () => {
-      await dispatch(getMentorsList(mentorPageNumber));
-    };
-    const fetchMenteesList = async () => {
-      await dispatch(getMenteesList(menteePageNumber));
-    };
     if (
       dashboardState.stats &&
       Object.keys(dashboardState.stats).length === 0
@@ -89,12 +82,41 @@ const Dashboard = () => {
     }
   }, [mentorPageNumber, menteePageNumber]);
 
+  const fetchStats = async () => {
+    await dispatch(getDashboardStats());
+  };
+
+  const fetchMentorsList = async () => {
+    await dispatch(getMentorsList(mentorPageNumber));
+  };
+  const fetchMenteesList = async () => {
+    await dispatch(getMenteesList(menteePageNumber));
+  };
+
   const handleMentorPagination = (event, value) => {
     setMentorPageNumber(value);
   };
 
   const handleMenteePagination = (event, value) => {
     setMenteePageNumber(value);
+  };
+
+  const handleChangeSearch = (e) => {
+    if (!e.target.value) {
+      setSearch(e.target.value);
+      fetchMentorsList();
+      fetchMenteesList();
+    } else {
+      setSearch(e.target.value);
+      dispatch(searchUsersList(e.target.value));
+    }
+  };
+
+  const handleUserSearch = (e) => {
+    if (e.key === "Enter") {
+      console.log("search onEnter: ", search);
+      dispatch(searchUsersList(search));
+    }
   };
 
   return (
@@ -132,6 +154,10 @@ const Dashboard = () => {
           handleMentorPagination={handleMentorPagination}
           menteePageNumber={menteePageNumber}
           handleMenteePagination={handleMenteePagination}
+          search={search}
+          loading={dashboardState.loading}
+          handleChangeSearch={handleChangeSearch}
+          handleUserSearch={handleUserSearch}
         />
       )}
     </Box>
