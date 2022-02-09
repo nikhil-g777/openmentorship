@@ -4,7 +4,8 @@ import LogoNavBar from "../../images/LogoNavBar.png";
 import userIcon from "../../images/user.svg";
 import backIcon from "../../images/backIcon.svg";
 
-import { Divider, MenuItem, Menu, Box, Container } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Divider, MenuItem, Menu, Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
 // import { UserContext } from "../../context/UserContext";
 import "./index.css";
@@ -37,8 +38,10 @@ const LogoImg = styled(Picture)`
 const UserIconWrapper = styled.div`
   background: #4e96cb;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  // width: 32px;
+  // height: 32px;
+  width: 45px;
+  height: 45px;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
@@ -74,6 +77,23 @@ const MenuLink = styled(Link)`
     color: #000;
   }
 `;
+
+const useStyles = makeStyles((theme) => ({
+  imgWrapper: {
+    maxWidth: "55px",
+    maxHeight: "57px",
+    marginRight: "150px",
+    "&>img": {
+      maxWidth: "100%",
+    },
+
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "38px",
+      maxHeight: "38px",
+      marginRight: "0px",
+    },
+  },
+}));
 
 const DropDownMenu = (props) => {
   const pathname = window.location.pathname;
@@ -224,6 +244,7 @@ const DropDownMenu = (props) => {
 };
 
 const AppMenu = (props) => {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -262,7 +283,10 @@ const AppMenu = (props) => {
           Chat
         </Link>
       </Box>
-      <LogoImg />
+      {/* <LogoImg /> */}
+      <Box className={classes.imgWrapper}>
+        <img src={LogoNavBar} alt="logo" />
+      </Box>
       <UserIconWrapper>
         <UserIcon onClick={handleMenu} />
       </UserIconWrapper>

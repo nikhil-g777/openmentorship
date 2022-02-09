@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   Box,
   Container,
+  CircularProgress,
   Grid,
   Tab,
   Tabs,
@@ -70,6 +71,16 @@ const useStyles = makeStyles((theme) => ({
       height: "21px",
     },
   },
+  progressWrapper: {
+    height: "50vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "& > div": {
+      width: "56px!important",
+      height: "56px!important",
+    },
+  },
   profile_container: {
     backgroundColor: "white",
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.1)",
@@ -123,55 +134,66 @@ const Users = (props) => {
             variant="outlined"
             placeholder="userID/Name"
             className={classes.search}
+            // value={props.search}
+            onKeyPress={props.handleUserSearch}
+            onChange={props.handleChangeSearch}
           />
         </Box>
       </Box>
       <Box>
-        {activeTab === 0 && (
+        {props.loading ? (
+          <Box className={classes.progressWrapper}>
+            <CircularProgress />
+          </Box>
+        ) : (
           <>
-            {mentors?.users?.map((mentor) => (
-              <Grid
-                container
-                key={mentor._id}
-                className={classes.profile_container}
-              >
-                <ProfileCard data={mentor} isUserPage={true} />
-              </Grid>
-            ))}
-            {mentors?.users?.length > 0 ? (
-              <Box className={classes.paginationWrapper}>
-                <Pagination
-                  count={mentors?.totalPages}
-                  page={Number(mentorPageNumber)}
-                  onChange={handleMentorPagination}
-                />
-              </Box>
-            ) : (
-              ""
+            {activeTab === 0 && (
+              <>
+                {mentors?.users?.map((mentor) => (
+                  <Grid
+                    container
+                    key={mentor._id}
+                    className={classes.profile_container}
+                  >
+                    <ProfileCard data={mentor} isUserPage={true} />
+                  </Grid>
+                ))}
+                {mentors?.users?.length > 0 ? (
+                  <Box className={classes.paginationWrapper}>
+                    <Pagination
+                      count={mentors?.totalPages}
+                      page={Number(mentorPageNumber)}
+                      onChange={handleMentorPagination}
+                    />
+                  </Box>
+                ) : (
+                  ""
+                )}
+              </>
             )}
-          </>
-        )}
-        {activeTab === 1 && (
-          <>
-            {mentees?.users?.map((mentee) => (
-              <Grid
-                container
-                key={mentee._id}
-                className={classes.profile_container}
-              >
-                <ProfileCard data={mentee} isUserPage={true} />
-              </Grid>
-            ))}
-            {mentees?.users?.length > 0 ? (
-              <Box className={classes.paginationWrapper}>
-                <Pagination
-                  count={mentees?.totalPages}
-                  page={Number(menteePageNumber)}
-                  onChange={handleMenteePagination}
-                />
-              </Box>
-            ) : (
-              ""
+            {activeTab === 1 && (
+              <>
+                {mentees?.users?.map((mentee) => (
+                  <Grid
+                    container
+                    key={mentee._id}
+                    className={classes.profile_container}
+                  >
+                    <ProfileCard data={mentee} isUserPage={true} />
+                  </Grid>
+                ))}
+                {mentees?.users?.length > 0 ? (
+                  <Box className={classes.paginationWrapper}>
+                    <Pagination
+                      count={mentees?.totalPages}
+                      page={Number(menteePageNumber)}
+                      onChange={handleMenteePagination}
+                    />
+                  </Box>
+                ) : (
+                  ""
+                )}
+              </>
             )}
           </>
         )}

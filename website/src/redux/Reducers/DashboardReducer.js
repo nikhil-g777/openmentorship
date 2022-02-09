@@ -17,6 +17,12 @@ import {
   UPDATE_MENTOR_REGISTERATION,
   UPDATE_MENTOR_REGISTERATION_SUCCESS,
   UPDATE_MENTOR_REGISTERATION_ERROR,
+  SEARCH_USERS_LIST,
+  SEARCH_USERS_LIST_SUCCESS,
+  SEARCH_USERS_LIST_ERROR,
+  SEARCH_SESSIONS_LIST,
+  SEARCH_SESSIONS_LIST_SUCCESS,
+  SEARCH_SESSIONS_LIST_ERROR,
 } from "../Types/UserTypes";
 
 const initialState = {
@@ -27,12 +33,15 @@ const initialState = {
   activeSessions: [],
   closedSessions: [],
   mentor: {},
+  userSearchResult: [],
   loading: false,
+  userSearchLoading: false,
   statsError: "",
   usersListError: "",
   userError: "",
   sessionsError: "",
   mentorError: "",
+  userSearchError: "",
 };
 
 export default function reducer(state = initialState, action) {
@@ -103,6 +112,39 @@ export default function reducer(state = initialState, action) {
         usersListError: action.payload,
       };
 
+    case SEARCH_USERS_LIST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case SEARCH_USERS_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userSearchError: "",
+        mentorsList: {
+          ...state.mentorsList,
+          users: action.payload.data?.users?.filter((c) => {
+            return c.userType === "mentor";
+          }),
+        },
+        menteesList: {
+          ...state.mentorsList,
+          users: action.payload.data?.users?.filter((c) => {
+            return c.userType === "mentee";
+          }),
+        },
+      };
+
+    case SEARCH_USERS_LIST_ERROR:
+      return {
+        ...state,
+        loading: false,
+        userSearchResult: [],
+        userSearchError: action.payload,
+      };
+
     case GET_USER_PROFILE:
       return {
         ...state,
@@ -152,6 +194,32 @@ export default function reducer(state = initialState, action) {
         activeSessions: [],
         closedSessions: [],
         sessionsError: action.payload,
+      };
+
+    case SEARCH_SESSIONS_LIST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case SEARCH_SESSIONS_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        sessionSearchError: "",
+        activeSessions: action.payload.data?.sessions?.filter((c) => {
+          return c.status === "active";
+        }),
+        closedSessions: action.payload.data?.sessions?.filter((c) => {
+          return c.status === "closed";
+        }),
+      };
+
+    case SEARCH_SESSIONS_LIST_ERROR:
+      return {
+        ...state,
+        loading: false,
+        sessionSearchError: action.payload,
       };
 
     case UPDATE_MENTOR_REGISTERATION:

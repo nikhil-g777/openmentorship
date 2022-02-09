@@ -10,43 +10,6 @@ import Linkedin from "../../../components/images/linkedin.svg";
 import "fontsource-roboto";
 
 const useStyles = makeStyles((theme) => ({
-  tabsBox: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: "1.8%",
-    boxShadow: "4px 8px 8px rgb(201 199 199 / 25%)",
-    padding: "21px 26px 8px",
-  },
-  sessionsText: {
-    fontSize: "20px",
-    fontWeight: 700,
-    lineHeight: "24px",
-    letterSpacing: "0em",
-  },
-  searchBox: {
-    display: "flex",
-    alignItems: "center",
-  },
-  searchText: {
-    fontSize: "20px",
-    fontWeight: 700,
-    lineHeight: "24px",
-    letterSpacing: "0em",
-    marginRight: "14px",
-  },
-  search: {
-    border: "1px solid #AEAEAE",
-    margin: 0,
-    "& .MuiInputBase-root": {
-      borderRadius: 0,
-    },
-    "& input": {
-      padding: "2px 6px",
-      height: "21px",
-    },
-  },
-
   sessionCard: {
     marginTop: "10px",
     padding: "3px 26px 62px",
@@ -103,9 +66,6 @@ const useStyles = makeStyles((theme) => ({
   },
   NumberFlex: {
     display: "flex",
-    // justifyContent: "space-between",
-    // width: 340,
-    // marginLeft: 30,
     "@media (max-width:780px)": {
       display: "block",
       width: "auto",
@@ -138,27 +98,6 @@ export default function SessionCard(props) {
 
   return (
     <Container>
-      {props.isSessionsPage ? (
-        <Box className={classes.tabsBox}>
-          <Box>
-            <Typography className={classes.sessionsText}>
-              {props.sessionType} Sessions
-            </Typography>
-          </Box>
-          <Box className={classes.searchBox}>
-            <Typography className={classes.searchText}>Search</Typography>
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              placeholder="userID/Name"
-              className={classes.search}
-            />
-          </Box>
-        </Box>
-      ) : (
-        ""
-      )}
-
       {props.sessions?.map((x) => (
         <Box className={classes.sessionCard} key={x?._id}>
           <Grid container spacing={8} className={classes.padding}>

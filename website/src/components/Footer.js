@@ -14,10 +14,11 @@ const Container = styled.div`
   width: 100%;
   padding-top: 50px;
   padding-bottom: 40px;
-  padding-left: 200px;
-  padding-right: 200px;
+  // padding-left: 200px;
+  // padding-right: 200px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-radius: 10px;
   @media (max-width: 780px) {
     padding-top: 50px;
@@ -29,10 +30,10 @@ const Container = styled.div`
 `;
 const MLogo = styled.img`
   width: 45px;
-  height: 43px;
-  margin-right: 15px;
-  margin-left: 30px;
-  margin-top: -10px;
+  height: 45px;
+  // margin-right: 15px;
+  // margin-left: 30px;
+  // margin-top: -10px;
 `;
 
 const useStyles = makeStyles({
