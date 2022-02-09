@@ -45,8 +45,10 @@ const LogoImg = styled(Picture)`
 const UserIconWrapper = styled.div`
   background: #4e96cb;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  // width: 32px;
+  // height: 32px;
+  width: 45px;
+  height: 45px;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;

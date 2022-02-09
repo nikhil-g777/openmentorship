@@ -40,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
       height: "56px!important",
     },
   },
+  profileWrapper: {
+    backgroundColor: "#F1F4F4",
+    paddingBottom: 50,
+    minHeight: "93vh",
+  },
   profile_container: {
     backgroundColor: "white",
     boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.1)",
@@ -254,22 +259,19 @@ export default function Mentee(props) {
 
   return (
     <>
-      <Menu
-        handleBack={() => history.push("/")}
-        registrationMenu={true}
-        showBackButton={false}
-      />
+      <Container>
+        <Menu
+          handleBack={() => history.push("/")}
+          registrationMenu={true}
+          showBackButton={false}
+        />
+      </Container>
       {userState?.loading ? (
         <Box className={classes.progressWrapper}>
           <CircularProgress />
         </Box>
       ) : (
-        <div
-          style={{
-            backgroundColor: "#F1F4F4",
-            paddingBottom: 50,
-          }}
-        >
+        <Box className={classes.profileWrapper}>
           <ThemeProvider theme={theme}>
             <Container style={{ display: "flex", justifyContent: "center" }}>
               <Grid
@@ -676,7 +678,7 @@ export default function Mentee(props) {
               </Grid>
             </Container>
           </ThemeProvider>
-        </div>
+        </Box>
       )}
       <div style={{ backgroundColor: "#f5f3f8" }}>
         <Container>

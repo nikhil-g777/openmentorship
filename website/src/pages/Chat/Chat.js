@@ -19,13 +19,20 @@ import upload from "../../images/upload.svg";
 import sendMessage from "../../images/sendMessage.svg";
 
 const useStyles = makeStyles((theme) => ({
+  navWrapper: {
+    marginBottom: "12px",
+  },
   padding: {
     padding: "20px",
     "@media (max-width:780px)": {
       padding: "10px",
     },
   },
-
+  chatWrapper: {
+    backgroundColor: "#F1F4F4",
+    paddingBottom: 30,
+    minHeight: "93vh",
+  },
   Chat: {
     fontWeight: "normal",
     fontSize: "28px",
@@ -197,11 +204,15 @@ export default function MenteeCard() {
 
   return (
     <>
-      <Menu
-        handleBack={() => history.push("/")}
-        registrationMenu={true}
-        showBackButton={false}
-      />
+      <Box className={classes.navWrapper}>
+        <Container>
+          <Menu
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
+        </Container>
+      </Box>
       <ThemeProvider theme={theme}>
         {/* <div
           style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
@@ -216,7 +227,7 @@ export default function MenteeCard() {
             </Box>
           </Container>
         </div> */}
-        <div style={{ backgroundColor: "#F1F4F4", paddingBottom: 30 }}>
+        <Box className={classes.chatWrapper}>
           <Container>
             <Box className={classes.Background}>
               <Grid container spacing={3} className={classes.padding}>
@@ -273,7 +284,7 @@ export default function MenteeCard() {
               </Grid>
             </Box>
           </Container>
-        </div>
+        </Box>
       </ThemeProvider>
       <div style={{ backgroundColor: "#f5f3f8" }}>
         <Container>

@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#F1F4F4",
     paddingBottom: 50,
     paddingTop: 80,
+    minHeight: "93vh",
   },
   profile_container: {
     backgroundColor: "white",
