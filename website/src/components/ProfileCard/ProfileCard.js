@@ -189,7 +189,13 @@ const ProfileCard = (props) => {
             src="https://wallpaperaccess.com/full/2969091.jpg"
             alt=""
           />
-          <Link to={isUserPage ? `/admin/user-profile/${data?._id}` : "#"}>
+          <Link
+            to={
+              isUserPage || isMentorApplicationPage
+                ? `/admin/user-profile/${data?._id}`
+                : "#"
+            }
+          >
             <Typography className={classes.pro_typo1_sm}>
               {`${data?.firstName} ${data?.lastName}`}
             </Typography>
@@ -279,7 +285,13 @@ const ProfileCard = (props) => {
       <Grid item xs={12} lg={9} md={9} className={classes.userDataWrapper}>
         <Box component="div" className={classes.pro_typo_div_main}>
           <Box component="div" className={classes.pro_typo_div}>
-            <Link to={isUserPage ? `/admin/user-profile/${data?._id}` : "#"}>
+            <Link
+              to={
+                isUserPage || isMentorApplicationPage
+                  ? `/admin/user-profile/${data?._id}`
+                  : "#"
+              }
+            >
               <Typography className={classes.pro_typo1}>
                 {`${data?.firstName} ${data?.lastName}`}
               </Typography>
