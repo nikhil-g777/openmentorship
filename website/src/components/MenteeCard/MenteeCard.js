@@ -287,7 +287,14 @@ export default function MenteeCard(props) {
                 <Grid container spacing={3} className={classes.padding}>
                   <Grid item lg={2}>
                     <Box className={classes.FlexImageBox}>
-                      <img src={boxImage} className={classes.BoxImage} />
+                      <img
+                        src={
+                          x[props.userType].profileImageUrls.default
+                            ? x[props.userType].profileImageUrls.default
+                            : boxImage
+                        }
+                        className={classes.BoxImage}
+                      />
                       <Box>
                         <Typography
                           variant="h5"

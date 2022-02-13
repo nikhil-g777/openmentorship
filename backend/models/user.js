@@ -32,6 +32,7 @@ const User = new Schema(
       default: 'mentee',
     },
     linkedInId: { type: String, required: true, unique: true, index: true },
+    profileImageUrls: { type: Object, default: { default: '' } },
     areasOfInterest: { type: Object, default: {} },
     experiences: { type: [Experience], default: [] },
     education: { type: [Education], defaukt: [] },

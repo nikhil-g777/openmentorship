@@ -14,6 +14,7 @@ import portfolioIcon from "../../images/portfolio-icon.png";
 import otherIcon from "../../images/other-icon.png";
 import linked from "../../images/image 16.png";
 import editIcon from "../../images/edit 1.png";
+import boxImage from "../images/imagebox.png";
 
 const useStyles = makeStyles((theme) => ({
   profile_img: {
@@ -186,7 +187,11 @@ const ProfileCard = (props) => {
         <Box component="div" className={classes.img_div_xs}>
           <img
             className={classes.profile_img}
-            src="https://wallpaperaccess.com/full/2969091.jpg"
+            src={
+              data?.profileImageUrls?.default
+                ? data.profileImageUrls.default
+                : boxImage
+            }
             alt=""
           />
           <Link
