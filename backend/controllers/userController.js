@@ -122,7 +122,15 @@ const loginUser = (req, res) => {
 
   getLinkedInProfile(body.authCode, isLocal)
     .then((linkedInProfile) => {
-      return User.findOne({ linkedInId: linkedInProfile.linkedInId }).exec();
+      const updateData = { profileImageUrls: linkedInProfile.profileImageUrls };
+
+      return User.findOneAndUpdate(
+        {
+          linkedInId: linkedInProfile.linkedInId,
+        },
+        updateData,
+        { new: true },
+      ).exec();
     })
     .then((user) => {
       if (user) {
