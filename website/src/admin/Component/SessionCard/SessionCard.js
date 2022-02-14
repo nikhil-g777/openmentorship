@@ -119,7 +119,14 @@ export default function SessionCard(props) {
             </Grid>
             <Grid item lg={2}>
               <Box className={classes.FlexImageBox}>
-                <img src={boxImage} className={classes.BoxImage} />
+                <img
+                  src={
+                    x?.match?.mentor?.profileImageUrls?.default
+                      ? x?.match?.mentor?.profileImageUrls?.default
+                      : boxImage
+                  }
+                  className={classes.BoxImage}
+                />
               </Box>
             </Grid>
             <Grid item lg={10}>
@@ -139,7 +146,14 @@ export default function SessionCard(props) {
 
             <Grid item lg={2}>
               <Box className={classes.FlexImageBox}>
-                <img src={boxImage} className={classes.BoxImage} />
+                <img
+                  src={
+                    x?.match?.mentee?.profileImageUrls?.default
+                      ? x?.match?.mentee?.profileImageUrls?.default
+                      : boxImage
+                  }
+                  className={classes.BoxImage}
+                />
               </Box>
             </Grid>
             <Grid item lg={10}>

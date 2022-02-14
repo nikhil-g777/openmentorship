@@ -90,7 +90,7 @@ const PostRegistration = (props) => {
       //     </Wrapper>
       //   )
       case "CONTINUE":
-        return <Redirect to="/sessions" />;
+        return <Redirect to="/matches" />;
 
       case "WAIT":
         return (

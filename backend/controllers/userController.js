@@ -19,6 +19,27 @@ const linkedinApi = axios.create({
   baseURL: 'https://api.linkedin.com/',
 });
 
+const extractImageUrls = (profileResponse) => {
+  const displayImages =
+    profileResponse.data.profilePicture['displayImage~'].elements;
+  const res = {};
+
+  displayImages.forEach((element) => {
+    const { displaySize } = element.data[
+      'com.linkedin.digitalmedia.mediaartifact.StillImage'
+    ];
+    const imageKey = `${displaySize.width}x${displaySize.height}`;
+    const imageUrl = element.identifiers[0].identifier;
+
+    res[imageKey] = imageUrl;
+
+    if (imageKey == '200x200') {
+      res.default = imageUrl;
+    }
+  });
+  return res;
+};
+
 const getLinkedInProfile = (authCode, isLocal = false) =>
   new Promise((resolve, reject) => {
     let redirectUri = '';
@@ -38,7 +59,8 @@ const getLinkedInProfile = (authCode, isLocal = false) =>
         client_secret: process.env.LINKEDIN_CLIENT_SECRET,
       },
     });
-    const profileUrl = '/v2/me';
+    const profileUrl =
+      '/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))';
     const emaileUrl = `/v2/emailAddress?q=members&projection=(elements*(handle~))`;
 
     const results = {};
@@ -56,8 +78,7 @@ const getLinkedInProfile = (authCode, isLocal = false) =>
       })
       .then((profileResponse) => {
         results.profileResponse = profileResponse;
-        console.log('profile response');
-        console.log(JSON.stringify(profileResponse.data), null, 4);
+        results.profileImageUrls = extractImageUrls(profileResponse);
         return linkedinApi.get(emaileUrl, {
           headers: {
             Authorization: `Bearer ${results.access_token}`,
@@ -70,6 +91,7 @@ const getLinkedInProfile = (authCode, isLocal = false) =>
           lastName: results.profileResponse.data.localizedLastName,
           linkedInId: results.profileResponse.data.id,
           email: emailResponse.data.elements[0]['handle~'].emailAddress,
+          profileImageUrls: results.profileImageUrls,
         };
         resolve(response);
       })
@@ -100,7 +122,15 @@ const loginUser = (req, res) => {
 
   getLinkedInProfile(body.authCode, isLocal)
     .then((linkedInProfile) => {
-      return User.findOne({ linkedInId: linkedInProfile.linkedInId }).exec();
+      const updateData = { profileImageUrls: linkedInProfile.profileImageUrls };
+
+      return User.findOneAndUpdate(
+        {
+          linkedInId: linkedInProfile.linkedInId,
+        },
+        updateData,
+        { new: true },
+      ).exec();
     })
     .then((user) => {
       if (user) {
@@ -178,6 +208,7 @@ const registerUser = (req, res) => {
         } else {
           userObj = new User(results.linkedInProfile);
         }
+        userObj.profileImageUrls = results.linkedInProfile.profileImageUrls;
         return userObj.save();
       })
       .then((updatedUser) => {
