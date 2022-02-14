@@ -6,6 +6,41 @@ const { createChatConversation } = require('../config/twilio');
 
 const Match = require('../models/match');
 const Session = require('../models/session');
+const User = require('../models/user');
+
+const constructExploreFilter = (query) => {
+  const {
+    areasOfInterest,
+    goals,
+    communicationFrequency,
+    communicationPreferences,
+  } = query;
+
+  const filter = { userType: 'mentor' };
+  if (areasOfInterest && areasOfInterest.length > 0) {
+    areasOfInterest.split(',').forEach((val) => {
+      filter[`areasOfInterest.${val}`] = true;
+    });
+  }
+
+  if (goals && goals.length > 0) {
+    goals.split(',').forEach((val) => {
+      filter[`goals.${val}`] = true;
+    });
+  }
+
+  if (communicationFrequency) {
+    filter.communicationFrequency = communicationFrequency;
+  }
+
+  if (communicationPreferences) {
+    const preferences = communicationPreferences.split(',');
+    console.log(preferences);
+    filter.communicationPreferences = { $all: preferences };
+  }
+
+  return filter;
+};
 
 // Created when there is a request from a mentee
 const createMatch = (req, res) => {
@@ -150,7 +185,47 @@ const updateMatch = (req, res) => {
     });
 };
 
+const searchMentors = async (req, res) => {
+  const { _id } = req.user;
+
+  const { page, limit } = req.query;
+
+  if (!page || !limit) {
+    return res.status(400).json({
+      success: false,
+      error: 'page and limit needs to be sent',
+    });
+  }
+
+  try {
+    const result = {
+      recommendations: [],
+      results: [],
+    };
+
+    // Improve recommendations based on users profile
+    result.recommendations = await User.find({ userType: 'mentor' }, null, {
+      limit: 10,
+    });
+
+    const filter = constructExploreFilter(req.query);
+
+    result.results = await User.find(filter)
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+
+    return res.status(200).json({ success: true, ...result });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: 'Could not process request',
+    });
+  }
+};
+
 module.exports = {
   createMatch,
   updateMatch,
+  searchMentors,
 };

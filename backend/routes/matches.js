@@ -27,4 +27,12 @@ router.post(
   matchController.updateMatch,
 );
 
+// Search for mentors
+router.get(
+  '/searchMentors',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee, role.admin]),
+  matchController.searchMentors,
+);
+
 module.exports = router;
