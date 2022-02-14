@@ -329,10 +329,26 @@ export default function MenteeCard(props) {
                     ) : props.mentorType === "MentorPending" ? (
                       <Box className={classes.FlexImageBox}>
                         <img src={Linkedin} className={classes.Connections} />
-                        <Button className={classes.MessageButton}>
+                        <Button
+                          className={classes.MessageButton}
+                          onClick={() =>
+                            props.handleUpdateConnectionRequest(
+                              x?._id,
+                              "active"
+                            )
+                          }
+                        >
                           Approve request
                         </Button>
-                        <Button className={classes.Decline}>
+                        <Button
+                          className={classes.Decline}
+                          onClick={() =>
+                            props.handleUpdateConnectionRequest(
+                              x?._id,
+                              "closed"
+                            )
+                          }
+                        >
                           Decline request
                         </Button>
                       </Box>
