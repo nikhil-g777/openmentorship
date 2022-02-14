@@ -87,7 +87,7 @@ const RegisterStep5 = (props) => {
         );
       })}
       <DotStepper
-        activeStep={4}
+        activeStep={5}
         handleNext={handleUpdateUser}
         positionBottom={true}
       />
