@@ -102,7 +102,11 @@ const updateMatch = (req, res) => {
                 status,
                 latestSession: session._id,
                 requestMessage,
-              }).exec();
+              })
+                .populate('mentor')
+                .populate('mentee')
+                .populate('latestSession')
+                .exec();
             });
           })
           .then((updatedMatch) => {
@@ -125,6 +129,9 @@ const updateMatch = (req, res) => {
           status,
         })
           .exec()
+          .populate('mentor')
+          .populate('mentee')
+          .populate('latestSession')
           .then((updatedMatch) => {
             results.updatedMatch = updatedMatch;
             return Session.findByIdAndUpdate(updatedMatch.latestSession, {
