@@ -77,7 +77,6 @@ const updateMatch = (req, res) => {
     .exec()
     .then((match) => {
       const { mentee, mentor } = match;
-      const results = {};
       if (
         (match.status == 'pending' || match.status == 'closed') &&
         status === 'active'
@@ -110,6 +109,7 @@ const updateMatch = (req, res) => {
             console.log(updatedMatch);
             return res.status(200).json({
               success: true,
+              updatedMatch,
             });
           })
           .catch((e) => {
@@ -120,20 +120,22 @@ const updateMatch = (req, res) => {
         (match.status == 'active' || match.status == 'pending') &&
         status == 'closed'
       ) {
+        const results = {};
         return Match.findByIdAndUpdate(matchId, {
           status,
         })
           .exec()
-          .then((updadedMatch) => {
-            return Session.findByIdAndUpdate(updadedMatch.latestSession, {
+          .then((updatedMatch) => {
+            results.updatedMatch = updatedMatch;
+            return Session.findByIdAndUpdate(updatedMatch.latestSession, {
               status,
               emdDate: moment.utc().toDate().toUTCString(),
             });
           })
           .then((updatedSession) => {
-            console.log(updatedSession);
             return res.status(200).json({
               success: true,
+              updatedMatch: results.updatedMatch,
             });
           })
           .catch((e) => {
