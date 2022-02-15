@@ -98,11 +98,15 @@ const updateMatch = (req, res) => {
               status: 'active',
               twilioConversationSid: chatResult.conversationSid,
             }).then((session) => {
-              return Match.findByIdAndUpdate(matchId, {
-                status,
-                latestSession: session._id,
-                requestMessage,
-              })
+              return Match.findByIdAndUpdate(
+                matchId,
+                {
+                  status,
+                  latestSession: session._id,
+                  requestMessage,
+                },
+                { new: true },
+              )
                 .populate('mentor')
                 .populate('mentee')
                 .populate('latestSession')
@@ -125,9 +129,13 @@ const updateMatch = (req, res) => {
         status == 'closed'
       ) {
         const results = {};
-        return Match.findByIdAndUpdate(matchId, {
-          status,
-        })
+        return Match.findByIdAndUpdate(
+          matchId,
+          {
+            status,
+          },
+          { new: true },
+        )
           .exec()
           .populate('mentor')
           .populate('mentee')
