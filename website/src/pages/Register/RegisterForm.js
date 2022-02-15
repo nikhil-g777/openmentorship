@@ -11,6 +11,8 @@ import { Menu } from "../../components";
 
 import { useHistory } from "react-router-dom";
 
+import { Box } from "@material-ui/core";
+
 export default function RegisterForm() {
   const history = useHistory();
 
@@ -197,7 +199,12 @@ export default function RegisterForm() {
     case 0:
       return (
         <>
-          <Menu handleBack={() => history.push("/")} registrationMenu={true} />
+          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+            <Menu
+              handleBack={() => history.push("/")}
+              registrationMenu={true}
+            />
+          </Box>
           <RegisterMain
             handleInput={handleInput}
             values={values}
@@ -209,7 +216,9 @@ export default function RegisterForm() {
     case 1:
       return (
         <>
-          <Menu handleBack={handleBack} registrationMenu={true} />
+          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+            <Menu handleBack={handleBack} registrationMenu={true} />
+          </Box>
           <RegisterStep1
             handleUserType={handleUserType}
             handleCareerStatus={handleCareerStatus}
@@ -222,28 +231,34 @@ export default function RegisterForm() {
     case 11:
       return (
         <>
-          <Menu handleBack={handleBack} registrationMenu={false} />
+          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+            <Menu handleBack={handleBack} registrationMenu={false} />
+          </Box>
           <SorryPage />
         </>
       );
     case 2:
       return (
         <>
-          <Menu handleBack={handleBack} registrationMenu={true} />
-          <RegisterStep2
-            handleInput={handleInput}
-            handleCheckbox={handleCheckbox}
-            handleUpdate={handleUpdate}
-            values={values}
-            handleBack={handleBack}
-            handleNextStep2={handleNextStep2}
-          />
+          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+            <Menu handleBack={handleBack} registrationMenu={true} />
+            <RegisterStep2
+              handleInput={handleInput}
+              handleCheckbox={handleCheckbox}
+              handleUpdate={handleUpdate}
+              values={values}
+              handleBack={handleBack}
+              handleNextStep2={handleNextStep2}
+            />
+          </Box>
         </>
       );
     case 3:
       return (
         <>
-          <Menu handleBack={handleBack} registrationMenu={true} />
+          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+            <Menu handleBack={handleBack} registrationMenu={true} />
+          </Box>
           <RegisterStep3
             handleNext={handleNext}
             handleSkills={handleSkills}
@@ -255,7 +270,9 @@ export default function RegisterForm() {
     case 4:
       return (
         <>
-          <Menu handleBack={handleBack} registrationMenu={true} />
+          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+            <Menu handleBack={handleBack} registrationMenu={true} />
+          </Box>
           <RegisterStep4
             handleNext={handleNextStep4}
             handleInput={handleInput}
@@ -269,7 +286,9 @@ export default function RegisterForm() {
     case 5:
       return (
         <>
-          <Menu handleBack={handleBack} registrationMenu={true} />
+          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+            <Menu handleBack={handleBack} registrationMenu={true} />
+          </Box>
           <RegisterStep5
             handleNext={handleNext}
             handlesocialLinks={handlesocialLinks}
@@ -280,8 +299,10 @@ export default function RegisterForm() {
     case 6:
       return (
         <>
-          <Menu handleBack={handleBack} registrationMenu={true} />
-          <PostRegistration />
+          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+            <Menu handleBack={handleBack} registrationMenu={true} />
+          </Box>
+          <PostRegistration userType={userType} />
         </>
       );
   }
