@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
       width: "56px!important",
       height: "56px!important",
     },
+    "& > div > svg": {
+      color: "#51b6a5",
+    },
   },
   profileWrapper: {
     backgroundColor: "#F1F4F4",
