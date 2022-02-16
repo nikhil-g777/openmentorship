@@ -77,7 +77,6 @@ const updateMatch = (req, res) => {
     .exec()
     .then((match) => {
       const { mentee, mentor } = match;
-      const results = {};
       if (
         (match.status == 'pending' || match.status == 'closed') &&
         status === 'active'
@@ -99,17 +98,26 @@ const updateMatch = (req, res) => {
               status: 'active',
               twilioConversationSid: chatResult.conversationSid,
             }).then((session) => {
-              return Match.findByIdAndUpdate(matchId, {
-                status,
-                latestSession: session._id,
-                requestMessage,
-              }).exec();
+              return Match.findByIdAndUpdate(
+                matchId,
+                {
+                  status,
+                  latestSession: session._id,
+                  requestMessage,
+                },
+                { new: true },
+              )
+                .populate('mentor')
+                .populate('mentee')
+                .populate('latestSession')
+                .exec();
             });
           })
           .then((updatedMatch) => {
             console.log(updatedMatch);
             return res.status(200).json({
               success: true,
+              updatedMatch,
             });
           })
           .catch((e) => {
@@ -120,20 +128,29 @@ const updateMatch = (req, res) => {
         (match.status == 'active' || match.status == 'pending') &&
         status == 'closed'
       ) {
-        return Match.findByIdAndUpdate(matchId, {
-          status,
-        })
+        const results = {};
+        return Match.findByIdAndUpdate(
+          matchId,
+          {
+            status,
+          },
+          { new: true },
+        )
           .exec()
-          .then((updadedMatch) => {
-            return Session.findByIdAndUpdate(updadedMatch.latestSession, {
+          .populate('mentor')
+          .populate('mentee')
+          .populate('latestSession')
+          .then((updatedMatch) => {
+            results.updatedMatch = updatedMatch;
+            return Session.findByIdAndUpdate(updatedMatch.latestSession, {
               status,
               emdDate: moment.utc().toDate().toUTCString(),
             });
           })
           .then((updatedSession) => {
-            console.log(updatedSession);
             return res.status(200).json({
               success: true,
+              updatedMatch: results.updatedMatch,
             });
           })
           .catch((e) => {
