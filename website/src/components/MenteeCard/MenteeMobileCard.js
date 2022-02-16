@@ -83,7 +83,14 @@ export default function MenteeMobileCard(props) {
         <Container>
           {props.matchData[props.menteeType]?.map((x) => (
             <Card key={x._id} className={classes.MenteeCard} raised={true}>
-              <img src={boxImage} className={classes.BoxImage} />
+              <img
+                src={
+                  x[props.userType]?.profileImageUrls?.default
+                    ? x[props.userType].profileImageUrls.default
+                    : boxImage
+                }
+                className={classes.BoxImage}
+              />
               <Box>
                 <Typography variant="h5" className={classes.MobileRightGrid}>
                   {`${x[props.userType]?.firstName}  ${
