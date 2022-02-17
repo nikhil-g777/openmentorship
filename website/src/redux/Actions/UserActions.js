@@ -38,6 +38,13 @@ export const loginUser = (data) => async (dispatch) => {
 export const registerUser = (data) => async (dispatch) => {
   dispatch({ type: USER_REGISTER_START });
   try {
+    if (
+      process.env.REACT_APP_IS_LOCAL &&
+      process.env.REACT_APP_IS_LOCAL == "true"
+    ) {
+      data.isLocal = true;
+    }
+
     const result = await axiosClient().post(`/users/register`, data);
     localStorage.setItem("token", JSON.stringify(result.data.token));
     return dispatch({ type: USER_REGISTER_SUCCESS, payload: result });
