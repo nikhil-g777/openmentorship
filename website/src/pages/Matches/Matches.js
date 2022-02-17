@@ -9,7 +9,14 @@ import {
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import { Container, Box, Typography } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  CircularProgress,
+  Snackbar,
+  Typography,
+} from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import "fontsource-roboto";
 
 import MenteeMobileCard from "../../components/MenteeCard/MenteeMobileCard";
@@ -24,6 +31,19 @@ import {
 import { getUserInfo } from "../../redux/Actions/UserActions";
 
 const useStyles = makeStyles((theme) => ({
+  progressWrapper: {
+    height: "40vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "& > div": {
+      width: "56px!important",
+      height: "56px!important",
+    },
+    "& > div > svg": {
+      color: "#51b6a5",
+    },
+  },
   tilte: {
     textAlign: "center",
     // paddingTop: "2%",
@@ -72,6 +92,10 @@ const theme = createMuiTheme({
   },
 });
 
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
+
 export default function Matches() {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -79,11 +103,14 @@ export default function Matches() {
 
   const [menteeType, setMenteeType] = useState("active");
   const [mentorType, setMentorType] = useState("active");
+  const [snackbar, setSnackbar] = useState(false);
   const [viewType, setViewType] = useState(false);
   const [connectionRequestMessage, setConnectionRequestMessage] = useState("");
 
   const matches = useSelector((store) => store.matchesreducer.matches);
   const user = useSelector((store) => store.userreducer.user);
+
+  const matchesState = useSelector((store) => store.matchesreducer);
 
   useEffect(() => {
     async function fetchmatches() {
@@ -127,10 +154,34 @@ export default function Matches() {
     };
     console.log("payload: ", payload);
     await dispatch(updateMatch(payload));
+    handleOpenSnackbar();
+  };
+
+  const handleOpenSnackbar = () => {
+    setSnackbar(true);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar(false);
   };
 
   return (
     <>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={snackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={matchesState?.matchError ? "error" : "success"}
+        >
+          {matchesState?.matchError
+            ? "Error updating status"
+            : "Status updated succesfully!"}
+        </Alert>
+      </Snackbar>
       <Menu
         handleBack={() => history.push("/")}
         registrationMenu={true}
@@ -179,70 +230,76 @@ export default function Matches() {
         </div>
 
         <Box className={classes.Background}>
-          <Container>
-            <Typography variant="h6" className={classes.tilte}>
-              {menteeType === "active"
-                ? "Your active connections"
-                : menteeType === "pending"
-                ? "Your pending connections"
-                : "Your past connections"}
-            </Typography>
-            <Box
-              className={classes.MobileCard}
-              style={{ display: viewType ? "none" : "" }}
-            >
-              <MenteeMobileCard
-                viewProfile={viewProfile}
-                menteeType={menteeType}
-                mentorType={mentorType}
-                matchData={matches}
-                handleUpdateConnectionRequest={handleUpdateConnectionRequest}
-                handleChangeRequestMessage={handleChangeRequestMessage}
-                connectionRequestMessage={connectionRequestMessage}
-                userType={
-                  user?.user?.userType === "mentee"
-                    ? "mentor"
-                    : user?.user?.userType === "mentor"
-                    ? "mentee"
-                    : ""
-                }
-              />
+          {matchesState?.loading ? (
+            <Box className={classes.progressWrapper}>
+              <CircularProgress />
             </Box>
-            <Box style={{ display: viewType ? "" : "none" }}>
-              <MenteeCard
-                menteeType={menteeType}
-                mentorType={mentorType}
-                matchData={matches}
-                handleUpdateConnectionRequest={handleUpdateConnectionRequest}
-                handleChangeRequestMessage={handleChangeRequestMessage}
-                connectionRequestMessage={connectionRequestMessage}
-                userType={
-                  user?.user?.userType === "mentee"
-                    ? "mentor"
-                    : user?.user?.userType === "mentor"
-                    ? "mentee"
-                    : ""
-                }
-              />
-            </Box>
-            <Box className={classes.WebCard}>
-              <MenteeCard
-                menteeType={menteeType}
-                mentorType={mentorType}
-                matchData={matches}
-                handleUpdateConnectionRequest={handleUpdateConnectionRequest}
-                handleChangeRequestMessage={handleChangeRequestMessage}
-                connectionRequestMessage={connectionRequestMessage}
-                userType={
-                  user?.user?.userType === "mentee"
-                    ? "mentor"
-                    : user?.user?.userType === "mentor"
-                    ? "mentee"
-                    : ""
-                }
-              />
-            </Box>
-          </Container>
+          ) : (
+            <Container>
+              <Typography variant="h6" className={classes.tilte}>
+                {menteeType === "active"
+                  ? "Your active connections"
+                  : menteeType === "pending"
+                  ? "Your pending connections"
+                  : "Your past connections"}
+              </Typography>
+              <Box
+                className={classes.MobileCard}
+                style={{ display: viewType ? "none" : "" }}
+              >
+                <MenteeMobileCard
+                  viewProfile={viewProfile}
+                  menteeType={menteeType}
+                  mentorType={mentorType}
+                  matchData={matches}
+                  handleUpdateConnectionRequest={handleUpdateConnectionRequest}
+                  handleChangeRequestMessage={handleChangeRequestMessage}
+                  connectionRequestMessage={connectionRequestMessage}
+                  userType={
+                    user?.user?.userType === "mentee"
+                      ? "mentor"
+                      : user?.user?.userType === "mentor"
+                      ? "mentee"
+                      : ""
+                  }
+                />
+              </Box>
+              <Box style={{ display: viewType ? "" : "none" }}>
+                <MenteeCard
+                  menteeType={menteeType}
+                  mentorType={mentorType}
+                  matchData={matches}
+                  handleUpdateConnectionRequest={handleUpdateConnectionRequest}
+                  handleChangeRequestMessage={handleChangeRequestMessage}
+                  connectionRequestMessage={connectionRequestMessage}
+                  userType={
+                    user?.user?.userType === "mentee"
+                      ? "mentor"
+                      : user?.user?.userType === "mentor"
+                      ? "mentee"
+                      : ""
+                  }
+                />
+              </Box>
+              <Box className={classes.WebCard}>
+                <MenteeCard
+                  menteeType={menteeType}
+                  mentorType={mentorType}
+                  matchData={matches}
+                  handleUpdateConnectionRequest={handleUpdateConnectionRequest}
+                  handleChangeRequestMessage={handleChangeRequestMessage}
+                  connectionRequestMessage={connectionRequestMessage}
+                  userType={
+                    user?.user?.userType === "mentee"
+                      ? "mentor"
+                      : user?.user?.userType === "mentor"
+                      ? "mentee"
+                      : ""
+                  }
+                />
+              </Box>
+            </Container>
+          )}
         </Box>
       </ThemeProvider>
       <div style={{ backgroundColor: "#f5f3f8" }}>

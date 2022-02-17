@@ -222,6 +222,10 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
     },
   },
+  buttonsBox: {
+    display: "flex",
+    flexDirection: "column",
+  },
   MobileRightGrid: {
     display: "none",
     fontWeight: "bold",
@@ -265,7 +269,7 @@ const theme = createMuiTheme({
 });
 
 export default function MenteeCard(props) {
-  console.log("props: ", props);
+  // console.log("props: ", props);
   const classes = useStyles();
   const [reconnect, setReconnect] = useState(false);
 
@@ -278,49 +282,72 @@ export default function MenteeCard(props) {
   };
 
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-        <Container>
-          {Object.keys(props.matchData).length > 0 &&
-            props.matchData[props.menteeType]?.map((x) => (
-              <Card className={classes.MenteeCard} raised={true}>
-                <Grid container spacing={3} className={classes.padding}>
-                  <Grid item lg={2}>
-                    <Box className={classes.FlexImageBox}>
-                      <img
-                        src={
-                          x[props.userType].profileImageUrls.default
-                            ? x[props.userType].profileImageUrls.default
-                            : boxImage
-                        }
-                        className={classes.BoxImage}
-                      />
-                      <Box>
-                        <Typography
-                          variant="h5"
-                          className={classes.MobileRightGrid}
-                        >
-                          {`${x[props.userType]?.firstName}  ${
-                            x[props.userType]?.lastName
-                          }`}
-                        </Typography>
-                        <Typography
-                          variant="h5"
-                          className={classes.MobileSubHead}
-                        >
-                          {x[props.userType]?.headline}
-                        </Typography>
-                      </Box>
+    <ThemeProvider theme={theme}>
+      <Container>
+        {Object.keys(props.matchData).length > 0 &&
+          props.matchData[props.menteeType]?.map((x) => (
+            <Card key={x._id} className={classes.MenteeCard} raised={true}>
+              <Grid container spacing={3} className={classes.padding}>
+                <Grid item lg={2}>
+                  <Box className={classes.FlexImageBox}>
+                    <img
+                      src={
+                        x[props.userType]?.profileImageUrls?.default
+                          ? x[props.userType].profileImageUrls.default
+                          : boxImage
+                      }
+                      className={classes.BoxImage}
+                    />
+                    <Box>
+                      <Typography
+                        variant="h5"
+                        className={classes.MobileRightGrid}
+                      >
+                        {`${x[props.userType]?.firstName}  ${
+                          x[props.userType]?.lastName
+                        }`}
+                      </Typography>
+                      <Typography
+                        variant="h5"
+                        className={classes.MobileSubHead}
+                      >
+                        {x[props.userType]?.headline}
+                      </Typography>
                     </Box>
-                    {props.menteeType === "active" ? (
-                      <Box className={classes.FlexImageBox}>
-                        <img src={Linkedin} className={classes.Connections} />
-                        <Button className={classes.MessageButton}> Chat</Button>
-                      </Box>
-                    ) : props.menteeType === "pending" &&
-                      props.mentorType !== "MentorPending" ? (
-                      <Box className={classes.FlexImageBox}>
-                        <img src={Linkedin} className={classes.Connections} />
+                  </Box>
+                  {props.menteeType === "active" ? (
+                    <Box className={classes.FlexImageBox}>
+                      <img src={Linkedin} className={classes.Connections} />
+                      <Button className={classes.MessageButton}> Chat</Button>
+                    </Box>
+                  ) : props.menteeType === "pending" &&
+                    props.mentorType !== "MentorPending" ? (
+                    <Box className={classes.FlexImageBox}>
+                      <img src={Linkedin} className={classes.Connections} />
+                      <Button
+                        className={classes.Decline}
+                        onClick={() =>
+                          props.handleUpdateConnectionRequest(x?._id, "closed")
+                        }
+                      >
+                        Withdraw request
+                      </Button>
+                    </Box>
+                  ) : props.mentorType === "MentorPending" ? (
+                    <Box className={classes.FlexImageBox}>
+                      <img src={Linkedin} className={classes.Connections} />
+                      <Box className={classes.buttonsBox}>
+                        <Button
+                          className={classes.MessageButton}
+                          onClick={() =>
+                            props.handleUpdateConnectionRequest(
+                              x?._id,
+                              "active"
+                            )
+                          }
+                        >
+                          Approve request
+                        </Button>
                         <Button
                           className={classes.Decline}
                           onClick={() =>
@@ -330,130 +357,115 @@ export default function MenteeCard(props) {
                             )
                           }
                         >
-                          Withdraw request
-                        </Button>
-                      </Box>
-                    ) : props.mentorType === "MentorPending" ? (
-                      <Box className={classes.FlexImageBox}>
-                        <img src={Linkedin} className={classes.Connections} />
-                        <Button className={classes.MessageButton}>
-                          Approve request
-                        </Button>
-                        <Button className={classes.Decline}>
                           Decline request
                         </Button>
                       </Box>
-                    ) : props.mentorType === "MentorClosed" ? (
-                      <Box className={classes.FlexImageBox}>
-                        <img src={Linkedin} className={classes.Connections} />
-                        <Button className={classes.Decline}>
-                          Archived chat
-                        </Button>
-                      </Box>
-                    ) : (
-                      <Box className={classes.FlexImageBox}>
-                        <img src={Linkedin} className={classes.Connections} />{" "}
-                        <Button className={classes.Decline}>
-                          Archived chat
-                        </Button>
-                        <Button
-                          className={classes.MessageButton}
-                          onClick={handleReconnect}
-                        >
-                          Reconnect
-                        </Button>
-                      </Box>
-                    )}
-                  </Grid>
-                  <Grid item lg={10}>
-                    <Typography variant="h5" className={classes.RightGrid}>
-                      {`${x[props.userType]?.firstName} ${
-                        x[props.userType]?.lastName
-                      }`}{" "}
-                      <img src={Linkedin} />
-                    </Typography>
-                    <Typography variant="h5" className={classes.subHead}>
-                      {x[props.userType]?.headline}
-                    </Typography>
-
-                    <Typography variant="h5" className={classes.BodyText}>
-                      {x[props.userType]?.bio}
-                    </Typography>
-                    <Typography variant="h5" className={classes.Interest}>
-                      Areas of interest{" "}
-                    </Typography>
-                    <Typography variant="p" className={classes.InterestDetail}>
-                      {x[props.userType]?.interests.map((interest) => (
-                        <span>{interest},&nbsp;</span>
-                      ))}
-                    </Typography>
-
-                    <Typography variant="h5" className={classes.Interest}>
-                      Top skills
-                    </Typography>
-                    <Typography variant="p" className={classes.InterestDetail}>
-                      {x[props.userType]?.skills.map((skill) => (
-                        <span>{skill},&nbsp;</span>
-                      ))}
-                    </Typography>
-                    <Typography variant="h5" className={classes.Interest}>
-                      Open to providing
-                    </Typography>
-                    <Box className={classes.ButtonBox}>
-                      {Object.keys(x[props.userType]?.goals || {}).length > 0 &&
-                        Object.entries(x[props.userType]?.goals || {}).map(
-                          ([key, value]) =>
-                            value && (
-                              <Button className={classes.Mock}>{key}</Button>
-                            )
-                        )}
                     </Box>
-                  </Grid>
-                  {reconnect ? (
-                    <Box className={classes.Reconnevt}>
-                      <Typography variant="h5" className={classes.Meghan}>
-                        Send a request to {x[props.userType]?.firstName}
-                      </Typography>
-                      <Typography variant="h6" className={classes.mentor}>
-                        Let {x[props.userType]?.firstName} know why you want
-                        them as your mentor.{" "}
-                      </Typography>
-                      {/* <Box className={classes.MessageArea}> */}
-                      <textarea
-                        rows={10}
-                        placeholder="Type message here..."
-                        className={classes.MessageInput}
-                        value={props.connectionRequestMessage}
-                        onChange={props.handleChangeRequestMessage}
-                      />
-                      {/* </Box> */}
-                      <Box className={classes.buttonFlex}>
-                        <Button
-                          className={classes.CancelButton}
-                          onClick={() => setReconnect(false)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          className={classes.MessageButton1}
-                          onClick={() =>
-                            props.handleUpdateConnectionRequest(
-                              x?._id,
-                              "active"
-                            )
-                          }
-                        >
-                          Send
-                        </Button>
-                      </Box>
+                  ) : props.mentorType === "MentorClosed" ? (
+                    <Box className={classes.FlexImageBox}>
+                      <img src={Linkedin} className={classes.Connections} />
+                      <Button className={classes.Decline}>Archived chat</Button>
                     </Box>
-                  ) : null}
+                  ) : (
+                    <Box className={classes.FlexImageBox}>
+                      <img src={Linkedin} className={classes.Connections} />{" "}
+                      <Button className={classes.Decline}>Archived chat</Button>
+                      <Button
+                        className={classes.MessageButton}
+                        onClick={handleReconnect}
+                      >
+                        Reconnect
+                      </Button>
+                    </Box>
+                  )}
                 </Grid>
-              </Card>
-            ))}
-          <Box id="scroll"></Box>
-        </Container>
-      </ThemeProvider>
-    </div>
+                <Grid item lg={10}>
+                  <Typography variant="h5" className={classes.RightGrid}>
+                    {`${x[props.userType]?.firstName} ${
+                      x[props.userType]?.lastName
+                    }`}{" "}
+                    <img src={Linkedin} />
+                  </Typography>
+                  <Typography variant="h5" className={classes.subHead}>
+                    {x[props.userType]?.headline}
+                  </Typography>
+
+                  <Typography variant="h5" className={classes.BodyText}>
+                    {x[props.userType]?.bio}
+                  </Typography>
+                  <Typography variant="h5" className={classes.Interest}>
+                    Areas of interest{" "}
+                  </Typography>
+                  <Typography variant="p" className={classes.InterestDetail}>
+                    {x[props.userType]?.interests.map((interest, i) => (
+                      <span key={i}>{interest},&nbsp;</span>
+                    ))}
+                  </Typography>
+
+                  <Typography variant="h5" className={classes.Interest}>
+                    Top skills
+                  </Typography>
+                  <Typography variant="p" className={classes.InterestDetail}>
+                    {x[props.userType]?.skills.map((skill, i) => (
+                      <span key={i}>{skill},&nbsp;</span>
+                    ))}
+                  </Typography>
+                  <Typography variant="h5" className={classes.Interest}>
+                    Open to providing
+                  </Typography>
+                  <Box className={classes.ButtonBox}>
+                    {Object.keys(x[props.userType]?.goals || {}).length > 0 &&
+                      Object.entries(x[props.userType]?.goals || {}).map(
+                        ([key, value]) =>
+                          value && (
+                            <Button key={key} className={classes.Mock}>
+                              {key}
+                            </Button>
+                          )
+                      )}
+                  </Box>
+                </Grid>
+                {reconnect ? (
+                  <Box className={classes.Reconnevt}>
+                    <Typography variant="h5" className={classes.Meghan}>
+                      Send a request to {x[props.userType]?.firstName}
+                    </Typography>
+                    <Typography variant="h6" className={classes.mentor}>
+                      Let {x[props.userType]?.firstName} know why you want them
+                      as your mentor.{" "}
+                    </Typography>
+                    {/* <Box className={classes.MessageArea}> */}
+                    <textarea
+                      rows={10}
+                      placeholder="Type message here..."
+                      className={classes.MessageInput}
+                      value={props.connectionRequestMessage}
+                      onChange={props.handleChangeRequestMessage}
+                    />
+                    {/* </Box> */}
+                    <Box className={classes.buttonFlex}>
+                      <Button
+                        className={classes.CancelButton}
+                        onClick={() => setReconnect(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        className={classes.MessageButton1}
+                        onClick={() =>
+                          props.handleUpdateConnectionRequest(x?._id, "active")
+                        }
+                      >
+                        Send
+                      </Button>
+                    </Box>
+                  </Box>
+                ) : null}
+              </Grid>
+            </Card>
+          ))}
+        <Box id="scroll"></Box>
+      </Container>
+    </ThemeProvider>
   );
 }

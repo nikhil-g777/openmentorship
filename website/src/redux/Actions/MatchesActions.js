@@ -16,7 +16,6 @@ export const getUserMatches = () => async (dispatch) => {
   dispatch({ type: GET_USER_MATCHES });
   try {
     const result = await axiosClient().get(`/users/matches`);
-    console.log("get matches: ", result);
     return dispatch({ type: GET_USER_MATCHES_SUCCESS, payload: result });
   } catch (err) {
     console.log("error in get matches: ", err);
@@ -38,7 +37,7 @@ export const updateMatch = (payload) => async (dispatch) => {
   dispatch({ type: UPDATE_MATCHES });
   try {
     const result = await axiosClient().post(`/matches/update`, payload);
-    console.log("result updated match: ", result);
+    await dispatch(getUserMatches());
     return dispatch({ type: UPDATE_MATCHES_SUCCESS, payload: result });
   } catch (err) {
     return dispatch({ type: UPDATE_MATCHES_ERROR, payload: err });
