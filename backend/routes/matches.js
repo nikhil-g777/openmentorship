@@ -35,4 +35,12 @@ router.get(
   matchController.searchMentors,
 );
 
+// Search for mentors
+router.get(
+  '/userRecommendations',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee, role.admin]),
+  matchController.userRecommendations,
+);
+
 module.exports = router;

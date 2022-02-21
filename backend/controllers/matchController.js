@@ -185,9 +185,27 @@ const updateMatch = (req, res) => {
     });
 };
 
-const searchMentors = async (req, res) => {
-  const { _id } = req.user;
+const userRecommendations = async (req, res) => {
+  try {
+    // Improve recommendations based on users profile
+    const recommendations = await User.find({ userType: 'mentor' }, null, {
+      limit: 10,
+    });
 
+    return res.status(200).json({
+      success: true,
+      recommendations,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: 'Could not process request',
+    });
+  }
+};
+
+const searchMentors = async (req, res) => {
   const { page, limit } = req.query;
 
   if (!page || !limit) {
@@ -198,23 +216,23 @@ const searchMentors = async (req, res) => {
   }
 
   try {
-    const result = {
-      recommendations: [],
-      results: [],
-    };
-
-    // Improve recommendations based on users profile
-    result.recommendations = await User.find({ userType: 'mentor' }, null, {
-      limit: 10,
-    });
+    let results = [];
 
     const filter = constructExploreFilter(req.query);
 
-    result.results = await User.find(filter)
+    results = await User.find(filter)
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
-    return res.status(200).json({ success: true, ...result });
+    // get total documents in the Posts collection
+    const count = await User.countDocuments(filter);
+
+    return res.status(200).json({
+      success: true,
+      mentors: results,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({
@@ -228,4 +246,5 @@ module.exports = {
   createMatch,
   updateMatch,
   searchMentors,
+  userRecommendations,
 };
