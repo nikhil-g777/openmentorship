@@ -54,7 +54,6 @@ app.use('/users', usersRouter);
 app.use('/matches', matchesRouter);
 app.use('/sessions', sessionsRouter);
 app.use('/waitlist', waitlistRouter);
-app.use('/matches', matchesRouter);
 app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
