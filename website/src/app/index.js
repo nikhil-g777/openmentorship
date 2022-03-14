@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
-
+import Explore from "../pages/Explore/Explore";
 import PrivateRoute from "./PrivateRoute";
 import { theme } from "./GlobalTheme";
 import Store from "../redux/Store";
@@ -44,6 +44,7 @@ function App() {
             <Route exact path="/" component={LandingPage} />
             <PrivateRoute path="/FAQ" exact component={FAQ} />
             <Route exact path="/linkedin" component={LinkedInPopUp} />
+            <Route path="/explore" component={Explore} />
             {/* each route below needs to import their own Menu component. 
             ...See matches for example  */}
             <Route path="/chat" component={Chat} />

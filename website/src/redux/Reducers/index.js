@@ -4,6 +4,7 @@ import matchesreducer from "./MatchesReducer";
 import mentorapplicationsreducer from "./MentorApplicationsReducer";
 import sessionsreducer from "./SessionsReducer";
 import userreducer from "./UserReducer";
+import Explorereducer from "./ExploreReducer";
 
 export default combineReducers({
   dashboardreducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   mentorapplicationsreducer,
   sessionsreducer,
   userreducer,
+  Explorereducer,
 });
