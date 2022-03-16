@@ -136,6 +136,10 @@ export default function Explore() {
   console.log("Object.keys", Object.keys(filterOptions));
   console.log("Object.values", Object.values(filterOptions));
 
+  // for(let i=0; Object.keys(filterOptions).length; i++){
+  //   console.log("HI FROM: ", Object.keys(filterOptions))
+  // }
+
   const areaInterest = [
     { id: 101, name: "Software", type: "areaOfInterest", text: "software" },
     { id: 102, name: "Design", type: "areaOfInterest", text: "design" },
@@ -194,17 +198,17 @@ export default function Explore() {
           <div style={{ marginLeft: 40, marginRight: 40 }}>
             <Grid className="items-center">
               <Grid container className="flex" lg={12}>
-                {Object.keys(filterOptions).map((y, index) => (
+                {filterOptions.map((y, index) => (
                   <Grid item className="jj" xs={6} sm={6} md={4} lg={3}>
                     <Grid className="change_color">
                       <Typography className="change_color" variant="p">
-                        {y}
+                        {y.key}
                       </Typography>
 
                       <div className="line" />
-
+                      {console.log(y,"ee")}
                       <Grid lg={8} md={12} sm={12} xs={12} className="cen">
-                        {Object.values(filterOptions).map((x) => (
+                        {y.values.map((x) => (
                           <Button
                             className={
                               subAreaOfInterest === x.id ? "bt" : "round-button"
