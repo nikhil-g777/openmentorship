@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useState} from "react";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -124,6 +124,12 @@ const useStyles = makeStyles((theme) => ({
   //   marginTop: "25px",
   // },
   emailButton: { border: "1px solid #51B6A5" },
+  requestButton: {
+    marginTop: 20,
+    backgroundColor: "#51B6A5",
+    border: "1px solid #51B6A5",
+    height: 40,
+  },
   accountButton: { border: "1px solid #6D6D6D", marginTop: "11px" },
   buttonsText: {
     fontSize: "16px",
@@ -171,6 +177,9 @@ const ProfileCard = (props) => {
     isMentorApplicationPage,
     handleApproveMentor,
     handleDenyMentor,
+    isRequest,
+    setSelectedData,
+    setReconnect
   } = props;
 
   const handleSendEmail = () => {
@@ -180,7 +189,12 @@ const ProfileCard = (props) => {
   const handleDisableAccount = () => {
     console.log("Account Disable");
   };
+  const handleConnect = (data) => {
+    setSelectedData(data)
+    setReconnect(true);
+    window.scrollTo(0, document.body.scrollHeight);
 
+  }
   return (
     <>
       <Grid item xs={12} md={2} lg={2} style={{ marginTop: "10px" }}>
@@ -205,6 +219,17 @@ const ProfileCard = (props) => {
               {`${data?.firstName} ${data?.lastName}`}
             </Typography>
           </Link>
+          {isRequest ? (
+            <Button
+              variant="outlined"
+              className={`${classes.requestButton} ${classes.buttonsText}`}
+              // onClick={isUserPage ? handleSendEmail : handleApproveMentor}
+              onClick={() => handleConnect(data)}
+
+            >
+              Send Request
+            </Button>
+          ) : null}
           {isUserPage || isMentorApplicationPage ? (
             <Box className={classes.userInfoWrapper}>
               <Box>
@@ -376,6 +401,7 @@ const ProfileCard = (props) => {
               </a>
             ))}
         </Box>
+
       </Grid>
     </>
   );

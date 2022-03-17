@@ -19,19 +19,20 @@ const filterOptions = [
   {
     key: "frequency",
     values: [
-      { id: 101, name: "Software", type: "areaOfInterest", text: "software" },
-      { id: 102, name: "Design", type: "areaOfInterest", text: "design" },
-    ],
+        { id: 108, name: "Weekly", type: "communicationFrequency", text: "weekly" },
+        { id: 109, name: "Bi-weekly", type: "communicationFrequency", text: "biweekly" },
+        { id: 110, name: "Once a month", type: "communicationFrequency", text: "onceamonth" },
+    ]
   },
   {
     key: "prefernces",
     values: [
-      { id: 111, name: "phone call", type: "prefernces", text: "phoneCall" },
-      { id: 112, name: "video call", type: "prefernces", text: "videoCall" },
+      { id: 111, name: "phone call", type: "communicationPreferences", text: "phoneCall" },
+      { id: 112, name: "video call", type: "communicationPreferences", text: "videoCall" },
       {
         id: 113,
         name: "chat or message",
-        type: "prefernces",
+        type: "communicationPreferences",
         text: "chatOrMessaging",
       },
     ],
