@@ -192,7 +192,6 @@ const ProfileCard = (props) => {
   const handleConnect = (data) => {
     setSelectedData(data)
     setReconnect(true);
-    window.scrollTo(0, document.body.scrollHeight);
 
   }
   return (

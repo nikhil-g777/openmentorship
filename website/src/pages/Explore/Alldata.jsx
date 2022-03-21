@@ -13,16 +13,22 @@ import {
 import "fontsource-roboto";
 import "../../style/Explore.css";
 import { GoAlert } from "react-icons/go";
+import Dialog from "@material-ui/core/Dialog";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 //components
 
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import Footer from "../../components/Footer";
+import { withStyles } from "@material-ui/core/styles";
 
 //redux actions
 import { createMatch } from "../../redux/Actions/MatchesActions";
 import { getUserInfo } from "../../redux/Actions/UserActions";
-
 
 const useStyles = makeStyles((theme) => ({
   progressWrapper: {
@@ -181,6 +187,49 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const DialogTitle = withStyles(styles)((props) => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
 
 export default function Alldata(props) {
   const { data, loading } = props;
@@ -194,14 +243,14 @@ export default function Alldata(props) {
 
   const { user } = userState;
   console.log(user, "userid");
-    useEffect(() => {
-      const fetchUser = async () => {
-        await dispatch(getUserInfo());
-      };
-      if (user && Object.keys(userState?.user?.user || {}).length === 0) {
-        fetchUser();
-      }
-    }, []);
+  useEffect(() => {
+    const fetchUser = async () => {
+      await dispatch(getUserInfo());
+    };
+    if (user && Object.keys(userState?.user?.user || {}).length === 0) {
+      fetchUser();
+    }
+  }, []);
   const handleRequest = async () => {
     const data = {
       match: {
@@ -211,15 +260,20 @@ export default function Alldata(props) {
       },
     };
     const response = await dispatch(createMatch(data));
+    console.log(response,"response")
     if (response?.payload?.data?.success) {
       alert("success");
       setMessage("");
       setReconnect(false);
+    } else {
+      alert(response?.payload?.response?.data?.error);
+      setMessage("");
+      setReconnect(false);
     }
-    else {
-      alert("Failed");
-
-    }
+  };
+  const handleClose = () => {
+    setReconnect(false);
+    setMessage("");
   };
   return (
     <>
@@ -272,16 +326,28 @@ export default function Alldata(props) {
                       </Grid>
                     ))}
                   </Grid>
-                  {reconnect ? (
-                    <Box className={classes.Reconnevt}>
-                      <Typography variant="h5" className={classes.Meghan}>
-                        Send a request to {selectedData?.firstName}
-                      </Typography>
-                      <Typography variant="h6" className={classes.mentor}>
+                  <Dialog
+                    onClose={handleClose}
+                    aria-labelledby="customized-dialog-title"
+                    open={reconnect}
+                    maxWidth="md"
+                    fullWidth
+                  >
+                    <DialogTitle
+                      id="customized-dialog-title"
+                      onClose={handleClose}
+                    >
+                      Send a request to {selectedData?.firstName}
+                    </DialogTitle>
+                    <DialogContent dividers>
+                      <Typography
+                        gutterBottom
+                        variant="h6"
+                        className={classes.mentor}
+                      >
                         Let {selectedData?.firstName} know why you want them as
                         your mentor.{" "}
                       </Typography>
-                      {/* <Box className={classes.MessageArea}> */}
                       <textarea
                         rows={10}
                         placeholder="Type message here..."
@@ -289,7 +355,8 @@ export default function Alldata(props) {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                       />
-                      {/* </Box> */}
+                    </DialogContent>
+                    <DialogActions>
                       <Box className={classes.buttonFlex}>
                         <Button
                           className={classes.CancelButton}
@@ -304,8 +371,8 @@ export default function Alldata(props) {
                           Send
                         </Button>
                       </Box>
-                    </Box>
-                  ) : null}
+                    </DialogActions>
+                  </Dialog>
                 </Container>
               </Container>
             </Box>

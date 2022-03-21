@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 // mui
 import {
@@ -17,6 +18,8 @@ import chat from "../../images/chat.svg";
 import arrow from "../../images/arrow.svg";
 import upload from "../../images/upload.svg";
 import sendMessage from "../../images/sendMessage.svg";
+import { getUserMatches } from "../../redux/Actions/MatchesActions";
+import { getUserInfo } from "../../redux/Actions/UserActions";
 
 const useStyles = makeStyles((theme) => ({
   navWrapper: {
@@ -38,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "28px",
     lineHeight: "34px",
     fontStyle: "normal",
+    marginBottom: "30px",
   },
   Background: {
     backgroundColor: "#F1F4F4",
@@ -201,7 +205,22 @@ const theme = createMuiTheme({
 export default function MenteeCard() {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      await dispatch(getUserInfo());
+    };
+    if (user && Object.keys(userState?.user?.user || {}).length === 0) {
+      fetchUser();
+    }
+    dispatch(getUserMatches());
+  }, []);
+  const matches = useSelector((store) => store.matchesreducer);
+  const userState = useSelector((store) => store.userreducer);
+  const { user } = userState;
+
+  // console.log(matches.matches.active,"matches",user?.user?.userType)
   return (
     <>
       <Box className={classes.navWrapper}>
@@ -235,20 +254,33 @@ export default function MenteeCard() {
                   <Typography variant="h5" className={classes.Chat}>
                     Chat
                   </Typography>
-                  <Box className={classes.GreenBox}>
+                  {/* <Box className={classes.GreenBox}>
                     <Typography variant="h6">
-                      <img src={chat} className={classes.MarginImage} /> Meghan
+                      <img src={chat} className={classes.MarginImage} /> 
+                      Meghan
                       Raab
                     </Typography>
                     <img src={arrow} className={classes.ArrowImage} />
-                  </Box>
-                  <Box className={classes.WhiteBox}>
-                    <Typography variant="h6">
-                      <img src={chat} className={classes.MarginImage} /> Erin
-                      Rapaport
+                  </Box> */}
+                  {matches?.matches?.active?.length > 0 ? (
+                    <>
+                      {matches?.matches?.active?.map((x, index) => (
+                        <Box className={classes.WhiteBox} key={index}>
+                          <Typography variant="h6">
+                            <img src={chat} className={classes.MarginImage} />
+                            {user?.user?.userType === "mentee"
+                              ? x?.mentor?.firstName
+                              : x?.mentee?.firstName}
+                          </Typography>
+                          <img src={arrow} className={classes.ArrowImage} />
+                        </Box>
+                      ))}
+                    </>
+                  ) : (
+                    <Typography variant="h6" style={{ textAlign: "center" }}>
+                      No Active User
                     </Typography>
-                    <img src={arrow} className={classes.ArrowImage} />
-                  </Box>
+                  )}
 
                   {/* <Box className={classes.Border}></Box> */}
                 </Grid>
