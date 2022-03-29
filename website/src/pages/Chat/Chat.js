@@ -1,15 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState,useRef } from "react";
 
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Client as ConversationsClient } from "@twilio/conversations";
 // mui
 import {
   createMuiTheme,
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import { Grid, Box, Typography, Container } from "@material-ui/core";
+import {
+  Grid,
+  Box,
+  Typography,
+  Container,
+  CircularProgress,
+} from "@material-ui/core";
 import "fontsource-roboto";
 
 import { Menu } from "../../components";
@@ -19,7 +25,7 @@ import arrow from "../../images/arrow.svg";
 import upload from "../../images/upload.svg";
 import sendMessage from "../../images/sendMessage.svg";
 import { getUserMatches } from "../../redux/Actions/MatchesActions";
-import { getUserInfo } from "../../redux/Actions/UserActions";
+import { getUserInfo, userChatToken } from "../../redux/Actions/UserActions";
 
 const useStyles = makeStyles((theme) => ({
   navWrapper: {
@@ -50,12 +56,12 @@ const useStyles = makeStyles((theme) => ({
     width: "339px",
     height: "76px",
     backgroundColor: "#D8EDE9",
-    marginTop: "30px",
     display: "flex",
     justifyContent: "space-between",
     padding: 15,
     paddingLeft: 25,
     paddingRight: 25,
+    cursor: "pointer",
     "@media (max-width:780px)": {
       width: "340px",
       padding: 15,
@@ -72,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 15,
     paddingLeft: 25,
     paddingRight: 25,
+    cursor: "pointer",
     "@media (max-width:780px)": {
       width: "340px",
       padding: 15,
@@ -138,11 +145,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     boxShadow: "0px 5px 13px rgba(0, 0, 0, 0.1)",
     padding: 15,
-    marginTop: 15,
+    marginTop: 5,
     float: "right",
     // display:'flex',
     marginRight: 30,
-    marginBottom: "10%",
+    marginBottom: "2%",
     "@media (max-width:780px)": {
       width: "auto",
       marginRight: 10,
@@ -153,15 +160,19 @@ const useStyles = makeStyles((theme) => ({
   },
   SendBox: {
     height: "100px",
+    width: "40%",
     border: "1px solid #DEDEDE",
     backgroundColor: "white",
     boxShadow: "0px 5px 13px rgba(0, 0, 0, 0.1)",
     padding: 25,
     justifyContent: "space-between",
     display: "flex",
+    bottom: 10,
+
     "@media (max-width:780px)": {
       padding: 10,
     },
+    position: "absolute",
   },
   Message: {
     width: "52px",
@@ -176,6 +187,7 @@ const useStyles = makeStyles((theme) => ({
   Input: {
     border: "none",
     width: "100%",
+    outline: "none",
   },
   Navbar: {
     backgroundColor: "white",
@@ -193,6 +205,7 @@ const useStyles = makeStyles((theme) => ({
   },
   styleFlex: {
     display: "flex",
+    width: "100%",
   },
 }));
 
@@ -206,6 +219,33 @@ export default function MenteeCard() {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+  const [twilloId, setTwilloId] = useState("");
+  const [conversations, setConversation] = useState();
+  const [typeMessage, setTypeMessage] = useState("");
+  const [selectedcon, setSelectedcon] = useState("");
+  const [selectedSID, setSelectedSID] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const [messages, setMessages] = useState([]);
+
+  const getToken = async () => {
+    // Paste your unique Chat token function
+    const data = await dispatch(userChatToken());
+    initConversations(data.data.twilioToken);
+  };
+
+  const initConversations = async (myToken) => {
+    window.conversationsClient = ConversationsClient;
+    const conversationsClient = await ConversationsClient.create(myToken);
+    console.log(
+      "Connect to twillo",
+      conversationsClient?.conversations?.conversations
+    );
+    setConversation(conversationsClient?.conversations?.conversations);
+    if (selectedSID) {
+      handleSelected(selectedSID);
+    }
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -215,12 +255,49 @@ export default function MenteeCard() {
       fetchUser();
     }
     dispatch(getUserMatches());
+    getToken();
   }, []);
   const matches = useSelector((store) => store.matchesreducer);
   const userState = useSelector((store) => store.userreducer);
   const { user } = userState;
 
-  // console.log(matches.matches.active,"matches",user?.user?.userType)
+  console.log(twilloId, "twilloId");
+  const handleSelected = (sid) => {
+    setSelectedSID(sid);
+    const selectedConversation = conversations.get(sid);
+
+    setSelectedcon(selectedConversation);
+    handleChat(selectedConversation,sid);
+
+  };
+  const handleChat = (selectedConversation,id) => {
+    selectedConversation
+      .getMessages()
+      .then((messagePaginator) => {
+        setLoading(false);
+        setMessages(messagePaginator.items);
+      })
+      .catch((err) => {
+        console.error("Couldn't fetch messages IMPLEMENT RETRY", err);
+      });
+
+  };
+
+  const sendMessagee = (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const message = typeMessage;
+    setTypeMessage("");
+    selectedcon.sendMessage(message);
+    getToken();
+  };
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      setLoading(true);
+      sendMessagee(event);
+    }
+  };
+
   return (
     <>
       <Box className={classes.navWrapper}>
@@ -233,19 +310,6 @@ export default function MenteeCard() {
         </Container>
       </Box>
       <ThemeProvider theme={theme}>
-        {/* <div
-          style={{ backgroundColor: "white", borderTop: "1px solid lightgrey" }}
-        >
-          <Container>
-            <Box className={classes.Navbar}>
-              <Typography variant="p" style={{ color: "#51B6A5" }}>
-                Chat
-              </Typography>
-              <Typography variant="p">Questions</Typography>
-              <Typography variant="p">Meetings</Typography>
-            </Box>
-          </Container>
-        </div> */}
         <Box className={classes.chatWrapper}>
           <Container>
             <Box className={classes.Background}>
@@ -254,18 +318,18 @@ export default function MenteeCard() {
                   <Typography variant="h5" className={classes.Chat}>
                     Chat
                   </Typography>
-                  {/* <Box className={classes.GreenBox}>
-                    <Typography variant="h6">
-                      <img src={chat} className={classes.MarginImage} /> 
-                      Meghan
-                      Raab
-                    </Typography>
-                    <img src={arrow} className={classes.ArrowImage} />
-                  </Box> */}
                   {matches?.matches?.active?.length > 0 ? (
                     <>
                       {matches?.matches?.active?.map((x, index) => (
-                        <Box className={classes.WhiteBox} key={index}>
+                        <Box
+                          className={x.latestSession.twilioConversationSid===selectedSID? classes.GreenBox:classes.WhiteBox}
+                          key={index}
+                          onClick={() =>
+                            handleSelected(
+                              x.latestSession.twilioConversationSid
+                            )
+                          }
+                        >
                           <Typography variant="h6">
                             <img src={chat} className={classes.MarginImage} />
                             {user?.user?.userType === "mentee"
@@ -281,38 +345,46 @@ export default function MenteeCard() {
                       No Active User
                     </Typography>
                   )}
-
-                  {/* <Box className={classes.Border}></Box> */}
                 </Grid>
-                <Grid item lg={8}>
-                  <Box className={classes.RightChat}>
-                    <Typography variant="p" className={classes.Datee}>
-                      MONDAY, APRIL 20
-                    </Typography>
-                    <Box className={classes.FlexChat}>
-                      <img src={chat} className={classes.MarginImage1} />
-                      <Box className={classes.GrayBox}>
-                        Hi! I’m looking forward to working with you!
+                {messages.length > 0 ? (
+                  <Grid item lg={8}>
+                    <Box style={{ maxHeight: 700, overflow: "scroll" }} >
+                      {messages.map((x) =>
+                        x.author === user?.user?._id ? (
+                          <Box className={classes.SenderChatBox}>{x.body}</Box>
+                          
+                        ) : (
+
+                          <Box className={classes.GrayBox}>{x.body}</Box>
+                        )
+                      )}
+                    </Box>
+                    <Box className={classes.SendBox}>
+                      <Box className={classes.styleFlex}>
+                        <img
+                          src={sendMessage}
+                          className={classes.uploadImage}
+                        />{" "}
+                        <input
+                          placeholder=" Type a message"
+                          className={classes.Input}
+                          value={typeMessage}
+                          onChange={(e) => setTypeMessage(e.target.value)}
+                          onKeyPress={handleKeyPress}
+                        />
                       </Box>
+                      {loading ? (
+                        <CircularProgress size={22} color="inherit" />
+                      ) : (
+                        <img
+                          src={upload}
+                          className={classes.Message}
+                          onClick={sendMessagee}
+                        />
+                      )}
                     </Box>
-
-                    <Box className={classes.SenderChatBox}>
-                      Hi Meghan! Thanks, I’m excited to get to know you more,
-                      and hopefully learn from each other!
-                    </Box>
-                  </Box>
-
-                  <Box className={classes.SendBox}>
-                    <Box className={classes.styleFlex}>
-                      <img src={sendMessage} className={classes.uploadImage} />{" "}
-                      <input
-                        placeholder=" Type a message"
-                        className={classes.Input}
-                      />
-                    </Box>
-                    <img src={upload} className={classes.Message} />
-                  </Box>
-                </Grid>
+                  </Grid>
+                ) : null}
               </Grid>
             </Box>
           </Container>
