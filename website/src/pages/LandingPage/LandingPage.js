@@ -386,22 +386,6 @@ export default function LandingPage(props) {
 
   const handleSuccess = async (data) => {
     await dispatch(loginUser({ authCode: data.code }));
-
-    // .then((response) => {
-    //   if (response.data.success) {
-    //     setUser({
-    //       _id: response.data.user._id,
-    //       userType: response.data.user.userType,
-    //       token: response.data.token,
-    //     });
-    // localStorage.setItem("token", JSON.stringify(response.data.token));
-    //   } else {
-    //     setIsError(true);
-    //   }
-    // })
-    // .catch((error) => {
-    //   setIsError(true);
-    // });
   };
 
   const handleFailure = (error) => {
