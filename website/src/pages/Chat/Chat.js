@@ -346,9 +346,8 @@ export default function MenteeCard() {
                     </Typography>
                   )}
                 </Grid>
-                {messages.length > 0 ? (
                   <Grid item lg={8}>
-                    <Box style={{ maxHeight: 700, overflow: "scroll" }} >
+                    <Box style={{ maxHeight: 600, overflow: "scroll" }} >
                       {messages.map((x) =>
                         x.author === user?.user?._id ? (
                           <Box className={classes.SenderChatBox}>{x.body}</Box>
@@ -359,6 +358,7 @@ export default function MenteeCard() {
                         )
                       )}
                     </Box>
+                    {selectedSID?
                     <Box className={classes.SendBox}>
                       <Box className={classes.styleFlex}>
                         <img
@@ -383,8 +383,8 @@ export default function MenteeCard() {
                         />
                       )}
                     </Box>
+                    :null}
                   </Grid>
-                ) : null}
               </Grid>
             </Box>
           </Container>
