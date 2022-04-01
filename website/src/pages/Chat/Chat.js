@@ -119,24 +119,20 @@ const useStyles = makeStyles((theme) => ({
   },
   GrayBox: {
     backgroundColor: "#F7F7F7",
-    width: "419px",
-    height: "50px",
+    width: "595px",
+    height: "73px",
     borderRadius: 10,
     boxShadow: "0px 5px 13px rgba(0, 0, 0, 0.1)",
     padding: 15,
-    marginTop: 15,
+    marginTop: 5,
+    marginBottom: "2%",
+    marginRight: 30,
+    float: "left",
+
     "@media (max-width:780px)": {
       width: "auto",
       height: "70px",
     },
-  },
-  FlexChat: {
-    display: "flex",
-    padding: 20,
-  },
-  MarginImage1: {
-    marginTop: 15,
-    marginRight: 30,
   },
   SenderChatBox: {
     backgroundColor: "#D8EDE9",
@@ -158,9 +154,17 @@ const useStyles = makeStyles((theme) => ({
     },
     // justifyContent:'flex-end'
   },
+  FlexChat: {
+    display: "flex",
+    padding: 20,
+  },
+  MarginImage1: {
+    marginTop: 15,
+    marginRight: 30,
+  },
   SendBox: {
     height: "100px",
-    width: "40%",
+    width: "53%",
     border: "1px solid #DEDEDE",
     backgroundColor: "white",
     boxShadow: "0px 5px 13px rgba(0, 0, 0, 0.1)",
@@ -242,12 +246,30 @@ export default function MenteeCard() {
       conversationsClient?.conversations?.conversations
     );
     setConversation(conversationsClient?.conversations?.conversations);
-    if (selectedSID) {
-      handleSelected(selectedSID);
+    // if(conversations){
+    console.log(selectedSID,"selectedSID")
+    const select = window.location.href.split("?")
+    console.log(select,"select")
+    if(select.length>1 && selectedSID ==="") {
+    console.log(select[1],"select")
+    firstSelected(select[1],conversationsClient?.conversations?.conversations);
     }
+    if (selectedSID) {
+      handleSelected(selectedSID,conversationsClient?.conversations?.conversations);
+    }
+  // }
+
   };
 
   useEffect(() => {
+    // const select = window.location.href.split("?")
+    // console.log(select,"select")
+    // if(select.length>1) {
+    // console.log(select[1],"select")
+
+    // setSelectedSID(select[1]);
+
+    // }
     const fetchUser = async () => {
       await dispatch(getUserInfo());
     };
@@ -256,16 +278,27 @@ export default function MenteeCard() {
     }
     dispatch(getUserMatches());
     getToken();
+    
   }, []);
   const matches = useSelector((store) => store.matchesreducer);
   const userState = useSelector((store) => store.userreducer);
   const { user } = userState;
 
   console.log(twilloId, "twilloId");
-  const handleSelected = (sid) => {
+  const firstSelected = (sid,convers) => {
+    console.log(sid,"fdfd")
+    // console.log(conversations,"conversations")
+    // setSelectedSID(sid);
+    const selectedConversation = convers.get(sid);
+    setSelectedcon(selectedConversation);
+    handleChat(selectedConversation,sid);
+
+  };
+  const handleSelected = (sid,convers) => {
+    console.log(sid,"fdfd")
+    console.log(conversations,"conversations")
     setSelectedSID(sid);
     const selectedConversation = conversations.get(sid);
-
     setSelectedcon(selectedConversation);
     handleChat(selectedConversation,sid);
 
@@ -347,7 +380,7 @@ export default function MenteeCard() {
                   )}
                 </Grid>
                   <Grid item lg={8}>
-                    <Box style={{ maxHeight: 600, overflow: "scroll" }} >
+                    <Box style={{ maxHeight: 500, overflow: "scroll" }} >
                       {messages.map((x) =>
                         x.author === user?.user?._id ? (
                           <Box className={classes.SenderChatBox}>{x.body}</Box>
