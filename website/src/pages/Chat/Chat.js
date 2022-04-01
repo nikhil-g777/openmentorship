@@ -288,10 +288,11 @@ export default function MenteeCard() {
   const firstSelected = (sid,convers) => {
     console.log(sid,"fdfd")
     // console.log(conversations,"conversations")
-    // setSelectedSID(sid);
     const selectedConversation = convers.get(sid);
     setSelectedcon(selectedConversation);
     handleChat(selectedConversation,sid);
+    setSelectedSID(sid);
+
 
   };
   const handleSelected = (sid,convers) => {
