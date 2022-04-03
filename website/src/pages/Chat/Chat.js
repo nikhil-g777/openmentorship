@@ -229,6 +229,7 @@ export default function MenteeCard() {
   const [selectedcon, setSelectedcon] = useState("");
   const [selectedSID, setSelectedSID] = useState("");
   const [loading, setLoading] = useState(false);
+  const [messageLoading, setMessageLoding] = useState(true);
 
   const [messages, setMessages] = useState([]);
 
@@ -252,8 +253,14 @@ export default function MenteeCard() {
     console.log(select,"select")
     if(select.length>1 && selectedSID ==="") {
     console.log(select[1],"select")
+
     firstSelected(select[1],conversationsClient?.conversations?.conversations);
     }
+    else{
+    setMessageLoding(false);
+
+    }
+
     if (selectedSID) {
       handleSelected(selectedSID,conversationsClient?.conversations?.conversations);
     }
@@ -286,6 +293,7 @@ export default function MenteeCard() {
 
   console.log(twilloId, "twilloId");
   const firstSelected = (sid,convers) => {
+
     console.log(sid,"fdfd")
     // console.log(conversations,"conversations")
     const selectedConversation = convers.get(sid);
@@ -305,16 +313,22 @@ export default function MenteeCard() {
 
   };
   const handleChat = (selectedConversation,id) => {
-    selectedConversation
-      .getMessages()
+    try{
+    selectedConversation.getMessages()
       .then((messagePaginator) => {
         setLoading(false);
         setMessages(messagePaginator.items);
       })
-      .catch((err) => {
-        console.error("Couldn't fetch messages IMPLEMENT RETRY", err);
-      });
+      setMessageLoding(false);
+      // .catch((err) => {
 
+      // });
+    }
+    catch{
+      alert("Request Failed By Fetching Messages");
+      setMessageLoding(false);
+
+    }
   };
 
   const sendMessagee = (event) => {
@@ -381,6 +395,9 @@ export default function MenteeCard() {
                   )}
                 </Grid>
                   <Grid item lg={8}>
+                    {messageLoading? 
+                        <CircularProgress size={42} color="inherit"  style={{marginLeft:'40%',marginTop:'10%'}}/>
+                      :
                     <Box style={{ maxHeight: 500, overflow: "scroll" }} >
                       {messages.map((x) =>
                         x.author === user?.user?._id ? (
@@ -392,6 +409,7 @@ export default function MenteeCard() {
                         )
                       )}
                     </Box>
+}
                     {selectedSID?
                     <Box className={classes.SendBox}>
                       <Box className={classes.styleFlex}>
