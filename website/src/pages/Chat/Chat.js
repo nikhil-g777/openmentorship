@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,10 +26,14 @@ import upload from "../../images/upload.svg";
 import sendMessage from "../../images/sendMessage.svg";
 import { getUserMatches } from "../../redux/Actions/MatchesActions";
 import { getUserInfo, userChatToken } from "../../redux/Actions/UserActions";
-
+import { MdArrowBackIosNew } from "react-icons/md";
 const useStyles = makeStyles((theme) => ({
   navWrapper: {
     marginBottom: "12px",
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
   },
   padding: {
     padding: "20px",
@@ -120,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
   GrayBox: {
     backgroundColor: "#F7F7F7",
     width: "595px",
-    height: "73px",
+    minHeight: "73px",
     borderRadius: 10,
     boxShadow: "0px 5px 13px rgba(0, 0, 0, 0.1)",
     padding: 15,
@@ -130,14 +134,14 @@ const useStyles = makeStyles((theme) => ({
     float: "left",
 
     "@media (max-width:780px)": {
-      width: "auto",
-      height: "70px",
+      width: "100%",
+      minHeight: "70px",
     },
   },
   SenderChatBox: {
     backgroundColor: "#D8EDE9",
     width: "595px",
-    height: "73px",
+    minHeight: "73px",
     borderRadius: 10,
     boxShadow: "0px 5px 13px rgba(0, 0, 0, 0.1)",
     padding: 15,
@@ -147,10 +151,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 30,
     marginBottom: "2%",
     "@media (max-width:780px)": {
-      width: "auto",
-      marginRight: 10,
-      height: "88px",
-      marginLeft: 10,
+      width: "100%",
+      minHeight: "70px",
+      float: "left",
     },
     // justifyContent:'flex-end'
   },
@@ -175,6 +178,9 @@ const useStyles = makeStyles((theme) => ({
 
     "@media (max-width:780px)": {
       padding: 10,
+      width: "87%",
+      bottom: 0,
+      position: "fixed",
     },
     position: "absolute",
   },
@@ -211,6 +217,25 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
   },
+  responsive: {
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
+  responsive1: {
+    display: "none",
+    "@media (max-width:780px)": {
+      display: "block",
+    },
+  },
+  foter: {
+    backgroundColor: "#f5f3f8",
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
 }));
 
 const theme = createMuiTheme({
@@ -230,11 +255,11 @@ export default function MenteeCard() {
   const [selectedSID, setSelectedSID] = useState("");
   const [loading, setLoading] = useState(false);
   const [messageLoading, setMessageLoding] = useState(true);
+  const [isShow, setIsShow] = useState(true);
 
   const [messages, setMessages] = useState([]);
 
   const getToken = async () => {
-    // Paste your unique Chat token function
     const data = await dispatch(userChatToken());
     initConversations(data.data.twilioToken);
   };
@@ -248,35 +273,31 @@ export default function MenteeCard() {
     );
     setConversation(conversationsClient?.conversations?.conversations);
     // if(conversations){
-    console.log(selectedSID,"selectedSID")
-    const select = window.location.href.split("?")
-    console.log(select,"select")
-    if(select.length>1 && selectedSID ==="") {
-    console.log(select[1],"select")
+    console.log(selectedSID, "selectedSID");
+    const select = window.location.href.split("?");
+    console.log(select, "select");
+    if (select.length > 1 && selectedSID === "") {
+      console.log(select[1], "select");
 
-    firstSelected(select[1],conversationsClient?.conversations?.conversations);
-    }
-    else{
-    setMessageLoding(false);
-
+      firstSelected(
+        select[1],
+        conversationsClient?.conversations?.conversations
+      );
+    } else {
+      setMessageLoding(false);
     }
 
     if (selectedSID) {
-      handleSelected(selectedSID,conversationsClient?.conversations?.conversations);
+      handleSelected(
+        selectedSID,
+        conversationsClient?.conversations?.conversations
+      );
     }
-  // }
 
+    // }
   };
 
   useEffect(() => {
-    // const select = window.location.href.split("?")
-    // console.log(select,"select")
-    // if(select.length>1) {
-    // console.log(select[1],"select")
-
-    // setSelectedSID(select[1]);
-
-    // }
     const fetchUser = async () => {
       await dispatch(getUserInfo());
     };
@@ -285,59 +306,60 @@ export default function MenteeCard() {
     }
     dispatch(getUserMatches());
     getToken();
-    
   }, []);
   const matches = useSelector((store) => store.matchesreducer);
   const userState = useSelector((store) => store.userreducer);
   const { user } = userState;
 
   console.log(twilloId, "twilloId");
-  const firstSelected = (sid,convers) => {
-
-    console.log(sid,"fdfd")
+  const firstSelected = (sid, convers) => {
+    console.log(sid, "fdfd");
+    setIsShow(false);
+    // if (windowDimensions.width > 700) {
+    //   setIsSmall(false);
+    // }
     // console.log(conversations,"conversations")
     const selectedConversation = convers.get(sid);
     setSelectedcon(selectedConversation);
-    handleChat(selectedConversation,sid);
+    handleChat(selectedConversation, sid);
     setSelectedSID(sid);
-
-
   };
-  const handleSelected = (sid,convers) => {
-    console.log(sid,"fdfd")
-    console.log(conversations,"conversations")
+  const handleSelected = (sid, convers) => {
+    console.log(sid, "fdfd");
+    console.log(conversations, "conversations");
     setSelectedSID(sid);
     const selectedConversation = conversations.get(sid);
     setSelectedcon(selectedConversation);
-    handleChat(selectedConversation,sid);
-
+    handleChat(selectedConversation, sid);
   };
-  const handleChat = (selectedConversation,id) => {
-    try{
-    selectedConversation.getMessages()
-      .then((messagePaginator) => {
+  const handleChat = (selectedConversation, id) => {
+    try {
+      selectedConversation.getMessages().then((messagePaginator) => {
         setLoading(false);
         setMessages(messagePaginator.items);
-      })
+      });
       setMessageLoding(false);
       // .catch((err) => {
 
       // });
-    }
-    catch{
+    } catch {
       alert("Request Failed By Fetching Messages");
       setMessageLoding(false);
-
     }
   };
 
   const sendMessagee = (event) => {
+    if(typeMessage.length>800){
+      alert("Message length should be less than 800 characters")
+    }
+    else{
     event.preventDefault();
     setLoading(true);
     const message = typeMessage;
     setTypeMessage("");
     selectedcon.sendMessage(message);
     getToken();
+    }
   };
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -345,7 +367,7 @@ export default function MenteeCard() {
       sendMessagee(event);
     }
   };
-
+  // console.log(windowDimensions.width, "windowDimensions", isSmall);
   return (
     <>
       <Box className={classes.navWrapper}>
@@ -362,7 +384,7 @@ export default function MenteeCard() {
           <Container>
             <Box className={classes.Background}>
               <Grid container spacing={3} className={classes.padding}>
-                <Grid item lg={4} sm={12}>
+                <Grid item lg={4} sm={12} className={classes.responsive}>
                   <Typography variant="h5" className={classes.Chat}>
                     Chat
                   </Typography>
@@ -370,7 +392,12 @@ export default function MenteeCard() {
                     <>
                       {matches?.matches?.active?.map((x, index) => (
                         <Box
-                          className={x.latestSession.twilioConversationSid===selectedSID? classes.GreenBox:classes.WhiteBox}
+                          className={
+                            x.latestSession.twilioConversationSid ===
+                            selectedSID
+                              ? classes.GreenBox
+                              : classes.WhiteBox
+                          }
                           key={index}
                           onClick={() =>
                             handleSelected(
@@ -394,23 +421,127 @@ export default function MenteeCard() {
                     </Typography>
                   )}
                 </Grid>
-                  <Grid item lg={8}>
-                    {messageLoading? 
-                        <CircularProgress size={42} color="inherit"  style={{marginLeft:'40%',marginTop:'10%'}}/>
-                      :
-                    <Box style={{ maxHeight: 500, overflow: "scroll" }} >
+                {isShow ? (
+                  <Grid item lg={4} sm={12} className={classes.responsive1}>
+                    <Typography variant="h5" className={classes.Chat}>
+                      Chat
+                    </Typography>
+                    {matches?.matches?.active?.length > 0 ? (
+                      <>
+                        {matches?.matches?.active?.map((x, index) => (
+                          <Box
+                            className={
+                              x.latestSession.twilioConversationSid ===
+                              selectedSID
+                                ? classes.GreenBox
+                                : classes.WhiteBox
+                            }
+                            key={index}
+                            onClick={() => {
+                              handleSelected(
+                                x.latestSession.twilioConversationSid
+                              );
+                              setIsShow(false);
+                            }}
+                          >
+                            <Typography variant="h6">
+                              <img src={chat} className={classes.MarginImage} />
+                              {user?.user?.userType === "mentee"
+                                ? x?.mentor?.firstName
+                                : x?.mentee?.firstName}
+                            </Typography>
+                            <img src={arrow} className={classes.ArrowImage} />
+                          </Box>
+                        ))}
+                      </>
+                    ) : (
+                      <Typography variant="h6" style={{ textAlign: "center" }}>
+                        No Active User
+                      </Typography>
+                    )}
+                  </Grid>
+                ) : (
+                  <Grid item lg={8} className={classes.responsive1}>
+                    {messageLoading ? (
+                      <CircularProgress
+                        size={42}
+                        color="inherit"
+                        style={{ marginLeft: "40%", marginTop: "10%" }}
+                      />
+                    ) : (
+                      <>
+                        <Box
+                          style={{
+                            display: "flex",
+                            padding: 10,
+                            marginBottom: "5%",
+                          }}
+                        >
+                          <MdArrowBackIosNew onClick={() => setIsShow(true)} />
+                          <Typography style={{ marginLeft: "40%" }}>
+                            Name
+                          </Typography>
+                        </Box>
+                        <Box style={{ maxHeight: 500, overflow: "scroll" }}>
+                          {messages.map((x) =>
+                            x.author === user?.user?._id ? (
+                              <Box className={classes.SenderChatBox}>
+                                {x.body}
+                              </Box>
+                            ) : (
+                              <Box className={classes.GrayBox}>{x.body}</Box>
+                            )
+                          )}
+                        </Box>
+                      </>
+                    )}
+                    {selectedSID ? (
+                      <Box className={classes.SendBox}>
+                        <Box className={classes.styleFlex}>
+                          <img
+                            src={sendMessage}
+                            className={classes.uploadImage}
+                          />{" "}
+                          <textarea
+                            placeholder=" Type a message"
+                            className={classes.Input}
+                            value={typeMessage}
+                            onChange={(e) => setTypeMessage(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                          />
+                        </Box>
+                        {loading ? (
+                          <CircularProgress size={22} color="inherit" />
+                        ) : (
+                          <img
+                            src={upload}
+                            className={classes.Message}
+                            onClick={sendMessagee}
+                          />
+                        )}
+                      </Box>
+                    ) : null}
+                  </Grid>
+                )}
+                <Grid item lg={8} className={classes.responsive}>
+                  {messageLoading ? (
+                    <CircularProgress
+                      size={42}
+                      color="inherit"
+                      style={{ marginLeft: "40%", marginTop: "10%" }}
+                    />
+                  ) : (
+                    <Box style={{ maxHeight: 500, overflow: "scroll" }}>
                       {messages.map((x) =>
                         x.author === user?.user?._id ? (
                           <Box className={classes.SenderChatBox}>{x.body}</Box>
-                          
                         ) : (
-
                           <Box className={classes.GrayBox}>{x.body}</Box>
                         )
                       )}
                     </Box>
-}
-                    {selectedSID?
+                  )}
+                  {selectedSID ? (
                     <Box className={classes.SendBox}>
                       <Box className={classes.styleFlex}>
                         <img
@@ -435,14 +566,14 @@ export default function MenteeCard() {
                         />
                       )}
                     </Box>
-                    :null}
-                  </Grid>
+                  ) : null}
+                </Grid>
               </Grid>
             </Box>
           </Container>
         </Box>
       </ThemeProvider>
-      <div style={{ backgroundColor: "#f5f3f8" }}>
+      <div className={classes.foter}>
         <Container>
           <Footer />
         </Container>
