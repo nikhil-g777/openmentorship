@@ -179,7 +179,8 @@ const ProfileCard = (props) => {
     handleDenyMentor,
     isRequest,
     setSelectedData,
-    setReconnect
+    setReconnect,
+    slide
   } = props;
 
   const handleSendEmail = () => {
@@ -366,8 +367,10 @@ const ProfileCard = (props) => {
               </Grid>
             ))}
         </Grid>
-        <Typography className={classes.pro_typo3}>Social Media</Typography>
-        <Box component="div" className={classes.social_div}>
+        {/* {slide?null: */}
+
+              <Typography className={classes.pro_typo3}>Social Media</Typography>
+        <Box component="div" className={classes.social_div} style={{display:'flex'}}>
           {Object.keys(data || {}).length > 0 &&
             Object.entries(data?.socialLinks || {}).map(([key, value]) => (
               <a
@@ -400,7 +403,6 @@ const ProfileCard = (props) => {
               </a>
             ))}
         </Box>
-
       </Grid>
     </>
   );

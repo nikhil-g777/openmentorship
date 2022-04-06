@@ -1,13 +1,13 @@
 const filterOptions = [
   {
-    key: "areaInterest",
+    key: "Areas of Interest",
     values: [
       { id: 101, name: "Software", type: "areaOfInterest", text: "software" },
       { id: 102, name: "Design", type: "areaOfInterest", text: "design" },
     ],
   },
   {
-    key: "goals",
+    key: "Goals",
     values: [
       { id: 103, name: "Career Advice", type: "goals", text: "careerAdvice" },
       { id: 104, name: "Resume Review", type: "goals", text: "resumeReview" },
@@ -17,7 +17,7 @@ const filterOptions = [
     ],
   },
   {
-    key: "frequency",
+    key: "Frequency",
     values: [
         { id: 108, name: "Weekly", type: "communicationFrequency", text: "weekly" },
         { id: 109, name: "Bi-weekly", type: "communicationFrequency", text: "biweekly" },
@@ -25,7 +25,7 @@ const filterOptions = [
     ]
   },
   {
-    key: "prefernces",
+    key: "Prefernces",
     values: [
       { id: 111, name: "phone call", type: "communicationPreferences", text: "phoneCall" },
       { id: 112, name: "video call", type: "communicationPreferences", text: "videoCall" },

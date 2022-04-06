@@ -285,10 +285,10 @@ export default function Alldata(props) {
         <>
           {data?.length === 0 ? (
             <Box className={classes.profileWrapper}>
-              <Container>
+              {/* <Container> */}
                 <Grid
                   container
-                  justify="space-around"
+                  // justify="space-around"
                   className={classes.profile_container}
                 >
                   <Grid item xs={12}>
@@ -300,16 +300,15 @@ export default function Alldata(props) {
                     </Box>
                   </Grid>
                 </Grid>
-              </Container>
+              {/* </Container> */}
             </Box>
           ) : (
             <Box className={classes.profileWrapper}>
-              <Container>
+              {/* <Container> */}
                 <Container>
                   <Grid lg={12}>
                     <Typography
                       className="color_pro"
-                      style={{ fontSize: "28px" }}
                     >
                       All results
                     </Typography>
@@ -373,7 +372,7 @@ export default function Alldata(props) {
                       </Box>
                     </DialogActions>
                   </Dialog>
-                </Container>
+                {/* </Container> */}
               </Container>
             </Box>
           )}

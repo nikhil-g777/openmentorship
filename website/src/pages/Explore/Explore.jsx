@@ -9,12 +9,12 @@ import "../../style/Explore.css";
 import { Container, Typography, Grid, Button } from "@material-ui/core";
 import Alldata from "./Alldata";
 import filterOptions from "./filterOptions";
-
+import Slider from "./Slider";
 export default function Explore() {
   const data = useSelector((store) => store.Explorereducer.Explore);
   const dispatch = useDispatch();
-  const [limit, ] = useState(10);
-  const [page, ] = useState(1);
+  const [limit] = useState(10);
+  const [page] = useState(1);
   const frequency = "communicationFrequency";
   const [mantorData, setMentorData] = useState([]);
   const [findMentor, setFindMentor] = useState({
@@ -67,13 +67,13 @@ export default function Explore() {
         findMentor.communicationPreferences.includes(text)
       ) {
         const trimStr = findMentor[type].replace(text, "");
-        console.log(trimStr,"trimstr")
-        const strtrim = trimStr.slice(0,-1)
-        console.log(strtrim,"strtrim")
+        console.log(trimStr, "trimstr");
+        const strtrim = trimStr.slice(0, -1);
+        console.log(strtrim, "strtrim");
 
         setFindMentor({
           ...findMentor,
-          [type]: strtrim
+          [type]: strtrim,
           // .replace(",", ""),
         });
       } else {
@@ -102,7 +102,6 @@ export default function Explore() {
               Filter <span className="span_text"> (hide)</span>
             </Typography>
           </Grid>
-          <div style={{ marginLeft: 40, marginRight: 40 }}>
             <Grid className="items-center">
               <Grid container className="flex" lg={12}>
                 {filterOptions.map((y, index) => (
@@ -138,29 +137,37 @@ export default function Explore() {
                 ))}
               </Grid>
             </Grid>
-          </div>
         </Container>
-      </div>
+        {/* </div>
 
-      {/* <div className="main">
-        <Container className="grid_center">
-          <Grid lg={12}></Grid>
-          <Container>
+      <div className="main"> */}
+        {/* <Container className="grid_center"> */}
+        {/* <Grid lg={12}></Grid> */}
+        {/* <Container> */}
+        {findMentor.areaOfInterest.length == 0 &&
+      findMentor.goals.length == 0 &&
+      findMentor.communicationFrequency === "" &&
+      findMentor.communicationPreferences.length == 0 ?
+        <Grid container>
+          <Grid item lg={2}></Grid>
+          <Grid item lg={8}>
+            <Typography className="color_pro" style={{marginLeft:25}}>
+              Recommended based on your profile{" "}
+            </Typography>
+
             <Slider data={data} />
-          </Container>
+          </Grid>
+        </Grid>
+        :null
+        }
+        {/* </Container>
         </Container>
       </div> */}
-      {/* <Container></Container> */}
-      <div className="main2">
-        <Container className="grid_center">
-          <Typography
-            className="color_pro"
-            style={{ marginLeft: 50, fontSize: "28px" }}
-          >
-            Recommended based on your profile
-          </Typography>
-          <Alldata data={mantorData} loading={loading} />
-        </Container>
+        {/* <Container></Container> */}
+        {/* <div className="main2"> */}
+        {/* <Container className="grid_center"> */}
+        <Alldata data={mantorData} loading={loading} />
+        {/* </Container> */}
       </div>
     </div>
   );

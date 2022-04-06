@@ -17,7 +17,7 @@ export default function Slick({ data }) {
       {data?.map((elm) => (
         <Container className="grid_center">
           <Grid container className="m-top">
-            <ProfileCard data={elm} isProfilePage={false} />
+            <ProfileCard data={elm} isProfilePage={false} slide={true}/>
           </Grid>
         </Container>
       ))}
