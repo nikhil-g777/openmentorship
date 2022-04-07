@@ -197,6 +197,7 @@ const ProfileCard = (props) => {
   }
   return (
     <>
+    {/* {slide?<Grid container>:null} */}
       <Grid item xs={12} md={2} lg={2} style={{ marginTop: "10px" }}>
         <Box component="div" className={classes.img_div_xs}>
           <img

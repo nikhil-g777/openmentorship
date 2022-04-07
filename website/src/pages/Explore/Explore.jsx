@@ -10,6 +10,8 @@ import { Container, Typography, Grid, Button } from "@material-ui/core";
 import Alldata from "./Alldata";
 import filterOptions from "./filterOptions";
 import Slider from "./Slider";
+import Footer from "../../components/Footer";
+
 export default function Explore() {
   const data = useSelector((store) => store.Explorereducer.Explore);
   const dispatch = useDispatch();
@@ -143,15 +145,16 @@ export default function Explore() {
       <div className="main"> */}
         {/* <Container className="grid_center"> */}
         {/* <Grid lg={12}></Grid> */}
-        {/* <Container> */}
+        <div className="mobile-nuull">
+        <Container>
         {findMentor.areaOfInterest.length == 0 &&
       findMentor.goals.length == 0 &&
       findMentor.communicationFrequency === "" &&
       findMentor.communicationPreferences.length == 0 ?
-        <Grid container>
-          <Grid item lg={2}></Grid>
-          <Grid item lg={8}>
-            <Typography className="color_pro" style={{marginLeft:25}}>
+        <Grid container justify="center">
+          {/* <Grid item lg={2}></Grid> */}
+          <Grid item lg={12} sm={12}>
+            <Typography className="color_pro" style={{marginTop:50}}>
               Recommended based on your profile{" "}
             </Typography>
 
@@ -160,6 +163,8 @@ export default function Explore() {
         </Grid>
         :null
         }
+        </Container>
+        </div>
         {/* </Container>
         </Container>
       </div> */}
@@ -168,6 +173,11 @@ export default function Explore() {
         {/* <Container className="grid_center"> */}
         <Alldata data={mantorData} loading={loading} />
         {/* </Container> */}
+      </div>
+      <div className="foter">
+        <Container>
+          <Footer />
+        </Container>
       </div>
     </div>
   );

@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   profileWrapper: {
     backgroundColor: "#F1F4F4",
     paddingBottom: 50,
-    paddingTop: 80,
+    paddingTop: 0,
     minHeight: "93vh",
   },
   // profile_container: {
@@ -252,6 +252,11 @@ export default function Alldata(props) {
     }
   }, []);
   const handleRequest = async () => {
+    if(message.length>2000){
+      alert("Message length should be less than 2000 characters")
+    }
+    else {
+
     const data = {
       match: {
         menteeId: user.user._id,
@@ -270,6 +275,8 @@ export default function Alldata(props) {
       setMessage("");
       setReconnect(false);
     }
+  }
+
   };
   const handleClose = () => {
     setReconnect(false);

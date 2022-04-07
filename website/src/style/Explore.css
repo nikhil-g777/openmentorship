@@ -34,9 +34,13 @@
   height: 15vh;
 }
 .text {
+  font-style: normal;
+  font-weight: 400 !important;
+  font-size: 28px !important;
+  line-height: 34px !important;
   text-align: center;
-  font-weight: bold;
-}
+  
+  color: #000000;}
 
 .grid_center {
   display: flex;
@@ -45,7 +49,7 @@
   background-color: #f1f4f4;
   /* margin-top: 30px !important; */
   /* height: 45vh; */
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 .cen {
   display: flex;
@@ -65,15 +69,16 @@
   min-height: fit-content !important;
 }
 .round-button {
-  height: 18px !important;
+  height: 28px !important;
   color: #6d6d6d !important;
   border-radius: 50px !important;
   border: 1px solid gray !important;
   margin-top: 10px !important;
-  font-size: 9px !important;
+  font-size: 14px !important;
   background-color: white !important;
   margin-bottom: 10px !important;
   text-transform: capitalize !important;
+  width: 150px;
 }
 .round-button:focus {
   outline: none !important;
@@ -90,15 +95,17 @@
   /* padding-top: 10% !important; */
 }
 .bt {
-  height: 18px !important;
+  height: 28px !important;
   color: black !important;
   border-radius: 50px !important;
   border: 1px solid gray !important;
-  font-size: 9px !important;
+  font-size: 14px !important;
   background-color: #59b6a5 !important;
   margin-top: 10px !important;
   margin-bottom: 10px !important;
   text-transform: capitalize !important;
+  width: 150px;
+
 }
 .bt:focus {
   outline: none !important;
@@ -114,6 +121,12 @@
   /* position: relative;
   top: 3.5vh;
   left: 6.5vw; */
+}
+.foter {
+  background-color: #f5f3f8 !important;
+  display: block;
+  width: 100%;
+
 }
 .span_text {
   color: #6d6d6d;
@@ -141,4 +154,13 @@
   display: flex !important;
   justify-content: center !important;
   padding: 10px;
+  padding-bottom: 40px;
+}
+.mobile-nuull {
+  display: block;
+}
+@media screen and (max-width:600px){
+  .mobile-nuull {
+    display: none;
+  }
 }
