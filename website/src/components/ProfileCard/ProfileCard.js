@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "5px",
     width: "191px",
     height: "191px",
+    marginTop:-6,
+    marginLeft:-6,
     [theme.breakpoints.down("sm")]: {
       width: "117px",
       height: "120px",
@@ -140,7 +142,8 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     borderRadius: "40px",
     textTransform: "inherit",
-    width: "-webkit-fill-available",
+    width:180,
+    // width: "-webkit-fill-available",
     "&:focus": {
       outline: "none",
     },
@@ -198,7 +201,7 @@ const ProfileCard = (props) => {
   return (
     <>
     {/* {slide?<Grid container>:null} */}
-      <Grid item xs={12} md={2} lg={2} style={{ marginTop: "10px" }}>
+      <Grid item xs={12} md={2} lg={2} style={{}}>
         <Box component="div" className={classes.img_div_xs}>
           <img
             className={classes.profile_img}

@@ -158,7 +158,7 @@ export default function Explore() {
               Recommended based on your profile{" "}
             </Typography>
 
-            <Slider data={data} />
+            <Slider data={data} loading={loading} />
           </Grid>
         </Grid>
         :null

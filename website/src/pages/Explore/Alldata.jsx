@@ -9,6 +9,7 @@ import {
   Grid,
   Typography,
   Button,
+  Modal
 } from "@material-ui/core";
 import "fontsource-roboto";
 import "../../style/Explore.css";
@@ -88,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "normal",
     fontSize: "16px",
     lineHeight: "19px",
+    marginTop:10
   },
   MessageArea: {
     height: 312,
@@ -332,7 +334,61 @@ export default function Alldata(props) {
                       </Grid>
                     ))}
                   </Grid>
-                  <Dialog
+                  <Modal
+        open={reconnect}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        width={500}
+      >
+        <Box
+          style={{
+            justifyContent: "center",
+            backgroundColor: "white",
+            padding: 40,
+            width: "50%",
+            margin: "auto",
+            marginTop: "10%",
+            borderRadius: 5,
+          }}
+        >
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              borderBottom: "1px solid lightgray",
+              paddingBottom:10,
+              marginTop:5
+            }}
+          >
+            <Typography variant="h5">
+              Send a request to {selectedData?.firstName}
+            </Typography>
+          </Box>
+          <Typography gutterBottom variant="h6" className={classes.mentor}>
+            Let {selectedData?.firstName} know why you want them as your mentor.{" "}
+          </Typography>
+          <textarea
+            rows={10}
+            placeholder="Type message here..."
+            className={classes.MessageInput}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <Box className={classes.buttonFlex}>
+            <Button
+              className={classes.CancelButton}
+              onClick={() => setReconnect(false)}
+            >
+              Cancel
+            </Button>
+            <Button className={classes.MessageButton1} onClick={handleRequest}>
+              Send
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+                  {/* <Dialog
                     onClose={handleClose}
                     aria-labelledby="customized-dialog-title"
                     open={reconnect}
@@ -378,7 +434,7 @@ export default function Alldata(props) {
                         </Button>
                       </Box>
                     </DialogActions>
-                  </Dialog>
+                  </Dialog> */}
                 {/* </Container> */}
               </Container>
             </Box>
