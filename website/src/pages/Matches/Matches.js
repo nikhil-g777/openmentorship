@@ -302,7 +302,14 @@ export default function Matches() {
           )}
         </Box>
       </ThemeProvider>
-      <div style={{ backgroundColor: "#f5f3f8" }}>
+      <div
+        style={{
+          backgroundColor: "#f5f3f8",
+          bottom: 0,
+          position: "fixed",
+          width: "100%",
+        }}
+      >
         <Container>
           <Footer />
         </Container>
