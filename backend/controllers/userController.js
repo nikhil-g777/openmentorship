@@ -2,14 +2,15 @@ const _ = require('lodash');
 const axios = require('axios');
 const queryString = require('query-string');
 const util = require('../lib/utils');
+const config = require('../config/config');
 
 const { generateTwilioToken } = require('../config/twilio');
+const { sendMail } = require('../lib/mailer');
+const constants = require('../lib/constants');
 
 const Match = require('../models/match');
 const Token = require('../models/token');
 const User = require('../models/user');
-
-const RegistrationStatus = require('../lib/registrationStatus');
 
 const linkedinAuth = axios.create({
   baseURL: 'https://www.linkedin.com/',
@@ -38,6 +39,36 @@ const extractImageUrls = (profileResponse) => {
     }
   });
   return res;
+};
+
+const fetchUserToken = async (user) => {
+  const token = await Token.findOne({ userId: user._id });
+  if (!token) {
+    // encrypt information
+    const t = util.refreshToken(user._id);
+    Token.create({ refreshToken: t, userId: user._id });
+  }
+  // send the access token
+  const accessToken = util.accessToken(user._id);
+
+  return {
+    token: accessToken,
+  };
+};
+
+const sendRegistrationMail = async (user) => {
+  const confirmationToken = util.encodeRegistrationToken(user._id);
+  const confirmationLink = `https://${process.env.BASE_URL}:${process.env.APP_PORT}/users/confirmRegistration?confirmationToken=${confirmationToken}`;
+  const response = await sendMail(
+    user.email,
+    'Openmentorship Email Confirmation',
+    {
+      name: `${user.firstName} ${user.lastName}`,
+      confirmationLink,
+    },
+    config.sendgrid.templates.registration,
+  );
+  return response;
 };
 
 const getLinkedInProfile = (authCode, isLocal = false) =>
@@ -101,7 +132,7 @@ const getLinkedInProfile = (authCode, isLocal = false) =>
       });
   });
 
-const loginUser = (req, res) => {
+const loginUser = async (req, res) => {
   const { body } = req;
 
   console.log('Login');
@@ -118,63 +149,54 @@ const loginUser = (req, res) => {
       .json({ success: false, error: 'authCode missing in the body' });
   }
 
-  const isLocal = body.isLocal == true;
+  try {
+    // Adding this flag to enable login from local env ( due to different redirect URI )
+    const isLocal = body.isLocal == true;
 
-  getLinkedInProfile(body.authCode, isLocal)
-    .then((linkedInProfile) => {
-      const updateData = { profileImageUrls: linkedInProfile.profileImageUrls };
+    const linkedInProfile = await getLinkedInProfile(body.authCode, isLocal);
 
-      return User.findOneAndUpdate(
-        {
-          linkedInId: linkedInProfile.linkedInId,
-        },
-        updateData,
-        { new: true },
-      ).exec();
-    })
-    .then((user) => {
-      if (user) {
-        Token.findOne({ userId: user._id }).then((token) => {
-          // if token isn't in our DB, store
-          if (!token) {
-            // encrypt information
-            const t = util.refreshToken(user._id);
-            Token.create({ refreshToken: t, userId: user._id });
-          }
-          // send the access token
-          const accessToken = util.accessToken(user._id);
+    // Update LinkedIn profile image URLs for the user
+    const updateData = { profileImageUrls: linkedInProfile.profileImageUrls };
+    const updatedUser = await User.findOneAndUpdate(
+      { linkedInId: linkedInProfile.linkedInId },
+      updateData,
+      { new: true },
+    ).exec();
 
-          return (
-            res
-              // .cookie('accessToken', accessToken, {
-              //   sameSite: 'none',
-              //   secure: true,
-              // })
-              .json({
-                success: true,
-                message: 'Login Successful',
-                token: accessToken,
-                user: {
-                  _id: user._id,
-                  userType: user.userType,
-                },
-              })
-          );
-        });
-      } else {
-        return res.status(200).json({
-          success: false,
-          message: 'User does not exist',
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        error: 'Unable to validate linkedin profile',
-      });
+    if (
+      updatedUser.registrationStatus == constants.registrationStatus.complete
+    ) {
+      const { token } = fetchUserToken(updatedUser);
+      return (
+        res
+          // .cookie('accessToken', accessToken, {
+          //   sameSite: 'none',
+          //   secure: true,
+          // })
+          .json({
+            success: true,
+            message: 'Login Successful',
+            token,
+            user: {
+              _id: updatedUser._id,
+              userType: updatedUser.userType,
+            },
+          })
+      );
+    }
+    // If status is not complete
+    return res.status(401).json({
+      success: false,
+      message: 'Login Failed',
+      registrationStatus: updatedUser.registrationStatus,
     });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: 'Unable to login user',
+    });
+  }
 };
 
 const registerUser = (req, res) => {
@@ -306,8 +328,9 @@ const tempAuth = (req, res) => {
   }
 };
 
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
   const { _id } = req.user._id;
+  const userRecord = req.user;
   const { body } = req;
 
   if (!body) {
@@ -323,31 +346,24 @@ const updateUser = (req, res) => {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const { role, registrationStatus, ...userObj } = req.body.user; // making sure role and registrationStatus are not updated by the request, for security
+  try {
+    // eslint-disable-next-line no-unused-vars
+    const { role, registrationStatus, ...userObj } = req.body.user; // making sure role and registrationStatus are not updated by the request, for security
 
-  if (req.body.type == 'completeRegistration') {
-    // if final step of the registration process
-    if (userObj.userType == 'mentee') {
-      userObj.registrationStatus = RegistrationStatus.complete;
-    } else if (userObj.userType == 'mentor') {
-      userObj.registrationStatus = RegistrationStatus.pendingApproval;
+    if (req.body.type == 'completeRegistration') {
+      // if final step of the registration process
+      userObj.registrationStatus =
+        constants.registrationStatus.pendingConfirmation;
+      sendRegistrationMail(userRecord);
+    } else if (req.body.type == 'updateUser') {
+      console.log('updateUser');
     } else {
-      return res
-        .status(400)
-        .json({ success: false, error: 'Invalid User Type' });
+      return res.status(400).json({ success: false, error: 'Invalid type' });
     }
-  } else if (req.body.type == 'updateUser') {
-    console.log('updateUser');
-  } else {
-    return res.status(400).json({ success: false, error: 'Invalid type' });
-  }
 
-  User.findByIdAndUpdate(_id, userObj, { new: true }, (err, user) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ success: false, error: err });
-    }
+    const user = await User.findByIdAndUpdate(_id, userObj, {
+      new: true,
+    }).exec();
     if (!user) {
       return res.status(404).json({ success: false, error: 'user not found' });
     }
@@ -357,7 +373,12 @@ const updateUser = (req, res) => {
       message: 'User Updated',
       user,
     });
-  });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ success: false, error: 'unable to update user' });
+  }
 };
 
 const userInfo = (req, res) => {
@@ -457,6 +478,50 @@ const twilioToken = (req, res) => {
   });
 };
 
+const confirmRegistration = async (req, res) => {
+  const { confirmationToken } = req.query;
+
+  if (!confirmationToken) {
+    return res
+      .status(400)
+      .json({ success: false, err: 'Missing confirmation token' });
+  }
+
+  try {
+    const tokenResponse = util.decodeRegistrationToken(confirmationToken);
+
+    if (!tokenResponse.success) {
+      return res.status(400).json({ success: false, err: 'Invalid Token' });
+    }
+
+    const { userId } = tokenResponse;
+
+    const user = await User.findById(userId).exec();
+
+    if (!user) {
+      return res.status(400).json({ success: false, err: 'Invalid User' });
+    }
+
+    let newRegistrationStatus = null;
+    if (user.userType == constants.userTypes.mentee) {
+      newRegistrationStatus = constants.registrationStatus.complete;
+    } else if (user.userType == constants.userTypes.mentor) {
+      newRegistrationStatus = constants.registrationStatus.pendingApproval;
+    } else {
+      res.status(500).json({ success: false, err: 'Invalid user type' });
+    }
+
+    await User.findByIdAndUpdate(userId, {
+      registrationStatus: newRegistrationStatus,
+    }).exec();
+
+    return res.json({ success: true, msg: 'Registration Confirmed' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json('Unable to confirm User Registration');
+  }
+};
+
 module.exports = {
   loginUser,
   registerUser,
@@ -465,4 +530,5 @@ module.exports = {
   userInfo,
   matches,
   twilioToken,
+  confirmRegistration,
 };
