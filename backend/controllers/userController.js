@@ -186,7 +186,7 @@ const loginUser = async (req, res) => {
     }
     // If status is not complete
     return res.status(401).json({
-      success: true,
+      success: false,
       message: 'Login Failed',
       registrationStatus: updatedUser.registrationStatus,
     });
