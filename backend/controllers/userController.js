@@ -166,7 +166,7 @@ const loginUser = async (req, res) => {
     if (
       updatedUser.registrationStatus == constants.registrationStatus.complete
     ) {
-      const { token } = fetchUserToken(updatedUser);
+      const { token } = await fetchUserToken(updatedUser);
       return (
         res
           // .cookie('accessToken', accessToken, {
@@ -176,7 +176,7 @@ const loginUser = async (req, res) => {
           .json({
             success: true,
             message: 'Login Successful',
-            token: accessToken,
+            token,
             user: {
               _id: updatedUser._id,
               userType: updatedUser.userType,
