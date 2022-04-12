@@ -176,7 +176,7 @@ const loginUser = async (req, res) => {
           .json({
             success: true,
             message: 'Login Successful',
-            token,
+            token: accessToken,
             user: {
               _id: updatedUser._id,
               userType: updatedUser.userType,
