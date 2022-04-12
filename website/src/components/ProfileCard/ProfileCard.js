@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useState} from "react";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "5px",
     width: "191px",
     height: "191px",
+    marginTop:-6,
+    marginLeft:-6,
     [theme.breakpoints.down("sm")]: {
       width: "117px",
       height: "120px",
@@ -124,6 +126,12 @@ const useStyles = makeStyles((theme) => ({
   //   marginTop: "25px",
   // },
   emailButton: { border: "1px solid #51B6A5" },
+  requestButton: {
+    marginTop: 20,
+    backgroundColor: "#51B6A5",
+    border: "1px solid #51B6A5",
+    height: 40,
+  },
   accountButton: { border: "1px solid #6D6D6D", marginTop: "11px" },
   buttonsText: {
     fontSize: "16px",
@@ -134,7 +142,8 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     borderRadius: "40px",
     textTransform: "inherit",
-    width: "-webkit-fill-available",
+    width:180,
+    // width: "-webkit-fill-available",
     "&:focus": {
       outline: "none",
     },
@@ -171,6 +180,10 @@ const ProfileCard = (props) => {
     isMentorApplicationPage,
     handleApproveMentor,
     handleDenyMentor,
+    isRequest,
+    setSelectedData,
+    setReconnect,
+    slide
   } = props;
 
   const handleSendEmail = () => {
@@ -180,10 +193,15 @@ const ProfileCard = (props) => {
   const handleDisableAccount = () => {
     console.log("Account Disable");
   };
+  const handleConnect = (data) => {
+    setSelectedData(data)
+    setReconnect(true);
 
+  }
   return (
     <>
-      <Grid item xs={12} md={2} lg={2} style={{ marginTop: "10px" }}>
+    {/* {slide?<Grid container>:null} */}
+      <Grid item xs={12} md={2} lg={2} style={{}}>
         <Box component="div" className={classes.img_div_xs}>
           <img
             className={classes.profile_img}
@@ -205,6 +223,17 @@ const ProfileCard = (props) => {
               {`${data?.firstName} ${data?.lastName}`}
             </Typography>
           </Link>
+          {isRequest ? (
+            <Button
+              variant="outlined"
+              className={`${classes.requestButton} ${classes.buttonsText}`}
+              // onClick={isUserPage ? handleSendEmail : handleApproveMentor}
+              onClick={() => handleConnect(data)}
+
+            >
+              Send Request
+            </Button>
+          ) : null}
           {isUserPage || isMentorApplicationPage ? (
             <Box className={classes.userInfoWrapper}>
               <Box>
@@ -342,8 +371,10 @@ const ProfileCard = (props) => {
               </Grid>
             ))}
         </Grid>
-        <Typography className={classes.pro_typo3}>Social Media</Typography>
-        <Box component="div" className={classes.social_div}>
+        {/* {slide?null: */}
+
+              <Typography className={classes.pro_typo3}>Social Media</Typography>
+        <Box component="div" className={classes.social_div} style={{display:'flex'}}>
           {Object.keys(data || {}).length > 0 &&
             Object.entries(data?.socialLinks || {}).map(([key, value]) => (
               <a

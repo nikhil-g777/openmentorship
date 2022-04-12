@@ -77,3 +77,11 @@ export const updateUser = (payload) => async (dispatch) => {
     return dispatch({ type: UPDATE_USER_ERROR });
   }
 };
+export const userChatToken = () => async () => {
+  try {
+    const result = await axiosClient().get(`/users/chatToken?`);
+    return result;
+  } catch (err) {
+    console.log("error in update user: ", err);
+  }
+};

@@ -17,6 +17,7 @@ import {
 
 import boxImage from "../images/imagebox.png";
 import Linkedin from "../images/linkedin.svg";
+import { useHistory } from "react-router-dom";
 
 // additional packages
 import "fontsource-roboto";
@@ -271,6 +272,7 @@ const theme = createMuiTheme({
 export default function MenteeCard(props) {
   // console.log("props: ", props);
   const classes = useStyles();
+  const history = useHistory();
   const [reconnect, setReconnect] = useState(false);
 
   const handleReconnect = () => {
@@ -280,7 +282,10 @@ export default function MenteeCard(props) {
     // const scrollingElement = document.scrollingElement || document.body;
     // scrollingElement.scrollTop = scrollingElement.scrollHeight;
   };
-
+const handleNavigate= (id) => {
+console.log(id,' id here')
+history.push(`/chat?${id}`)
+}
   return (
     <ThemeProvider theme={theme}>
       <Container>
@@ -318,7 +323,7 @@ export default function MenteeCard(props) {
                   {props.menteeType === "active" ? (
                     <Box className={classes.FlexImageBox}>
                       <img src={Linkedin} className={classes.Connections} />
-                      <Button className={classes.MessageButton}> Chat</Button>
+                      <Button className={classes.MessageButton} onClick={() => handleNavigate(x?.latestSession?.twilioConversationSid)}> Chat</Button>
                     </Box>
                   ) : props.menteeType === "pending" &&
                     props.mentorType !== "MentorPending" ? (
