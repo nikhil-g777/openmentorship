@@ -267,7 +267,7 @@ const AppMenu = (props) => {
       )} */}
       <Box className="web-navbar">
         <Link
-          to="#"
+          to="/explore"
           style={{ marginRight: 30, color: "black", textDecoration: "none" }}
         >
           Discover
