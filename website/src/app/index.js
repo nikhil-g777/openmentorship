@@ -7,6 +7,7 @@ import {
   LandingPage,
   LoginPage,
   Sessions,
+  PageNotFound404
 } from "../pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -19,6 +20,7 @@ import { theme } from "./GlobalTheme";
 import PostRegistration from "../pages/Register/postRegistration/PostRegistration";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { getUserInfo } from "../api";
+
 
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
               component={PostRegistration}
             />
             <PrivateRoute path="/sessions" component={Sessions} />
+            <Route path= "/*" component={PageNotFound404} />
           </Switch>
         </ThemeProvider>
       </Router>
