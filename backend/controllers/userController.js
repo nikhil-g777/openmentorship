@@ -42,7 +42,7 @@ const extractImageUrls = (profileResponse) => {
 };
 
 const fetchUserToken = async (user) => {
-  const token = await Token.findOne({ userId: user._id });
+  const token = await Token.findOne({ userId: user._id }).exec();
   if (!token) {
     // encrypt information
     const t = util.refreshToken(user._id);
