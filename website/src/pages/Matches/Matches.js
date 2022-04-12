@@ -31,6 +31,13 @@ import {
 import { getUserInfo } from "../../redux/Actions/UserActions";
 
 const useStyles = makeStyles((theme) => ({
+  navWrapper: {
+    marginBottom: "12px",
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
   progressWrapper: {
     height: "40vh",
     display: "flex",
@@ -182,11 +189,16 @@ export default function Matches() {
             : "Status updated succesfully!"}
         </Alert>
       </Snackbar>
-      <Menu
-        handleBack={() => history.push("/")}
-        registrationMenu={true}
-        showBackButton={false}
-      />
+      <Box className={classes.navWrapper}>
+        <Container>
+          <Menu
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
+        </Container>
+      </Box>
+
       <ThemeProvider theme={theme}>
         {/* <div
           style={{

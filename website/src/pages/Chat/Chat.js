@@ -188,6 +188,11 @@ const useStyles = makeStyles((theme) => ({
     width: "52px",
     height: "52px",
   },
+  TimeDate: {
+    color: "#747474",
+    display: "block",
+    fontSize: 12,
+  },
   uploadImage: {
     width: "34px",
     height: "34px",
@@ -349,16 +354,15 @@ export default function MenteeCard() {
   };
 
   const sendMessagee = (event) => {
-    if(typeMessage.length>800){
-      alert("Message length should be less than 800 characters")
-    }
-    else{
-    event.preventDefault();
-    setLoading(true);
-    const message = typeMessage;
-    setTypeMessage("");
-    selectedcon.sendMessage(message);
-    getToken();
+    if (typeMessage.length > 800) {
+      alert("Message length should be less than 800 characters");
+    } else {
+      event.preventDefault();
+      setLoading(true);
+      const message = typeMessage;
+      setTypeMessage("");
+      selectedcon.sendMessage(message);
+      getToken();
     }
   };
   const handleKeyPress = (event) => {
@@ -367,7 +371,7 @@ export default function MenteeCard() {
       sendMessagee(event);
     }
   };
-  // console.log(windowDimensions.width, "windowDimensions", isSmall);
+  console.log(messages, "messages");
   return (
     <>
       <Box className={classes.navWrapper}>
@@ -487,9 +491,17 @@ export default function MenteeCard() {
                             x.author === user?.user?._id ? (
                               <Box className={classes.SenderChatBox}>
                                 {x.body}
+                                {/* <br/><span className={classes.TimeDate}>
+                              {x.state.timestamp.toLocaleString()}
+                            </span> */}
                               </Box>
                             ) : (
-                              <Box className={classes.GrayBox}>{x.body}</Box>
+                              <Box className={classes.GrayBox}>
+                                {x.body}
+                                {/* <br/><span className={classes.TimeDate}>
+                              {x.state.timestamp.toLocaleString()}
+                            </span> */}
+                              </Box>
                             )
                           )}
                         </Box>

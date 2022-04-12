@@ -284,9 +284,10 @@ const AppMenu = (props) => {
         </Link>
       </Box>
       {/* <LogoImg /> */}
-      <Box className={classes.imgWrapper}>
-        <img src={LogoNavBar} alt="logo" />
+      <Link to="/"><Box className={classes.imgWrapper}>
+      <img src={LogoNavBar} alt="logo" />
       </Box>
+      </Link>
       <UserIconWrapper>
         <UserIcon onClick={handleMenu} />
       </UserIconWrapper>
