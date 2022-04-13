@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
   WebCard: {
     display: "block",
+    minHeight: 900,
     "@media (max-width:780px)": {
       display: "none",
     },
@@ -257,7 +258,7 @@ export default function Matches() {
               </Typography>
               <Box
                 className={classes.MobileCard}
-                style={{ display: viewType ? "none" : "" }}
+                style={{ display: viewType ? "none" : "", minHeight: 800 }}
               >
                 <MenteeMobileCard
                   viewProfile={viewProfile}
@@ -276,7 +277,7 @@ export default function Matches() {
                   }
                 />
               </Box>
-              <Box style={{ display: viewType ? "" : "none" }}>
+              <Box style={{ display: viewType ? "" : "none", minHeight: 900 }}>
                 <MenteeCard
                   menteeType={menteeType}
                   mentorType={mentorType}
@@ -317,9 +318,6 @@ export default function Matches() {
       <div
         style={{
           backgroundColor: "#f5f3f8",
-          bottom: 0,
-          position: "fixed",
-          width: "100%",
         }}
       >
         <Container>

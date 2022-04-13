@@ -8,13 +8,23 @@ import RegisterStep4 from "./RegisterStep4";
 import RegisterStep5 from "./RegisterStep5";
 import PostRegistration from "./postRegistration/PostRegistration";
 import { Menu } from "../../components";
-
+import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 
-import { Box } from "@material-ui/core";
-
+import { Box, Container } from "@material-ui/core";
+const useStyles = makeStyles((theme) => ({
+  navWrapper: {
+    marginBottom: "12px",
+    display: "block",
+    boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
+}));
 export default function RegisterForm() {
   const history = useHistory();
+  const classes = useStyles();
 
   const [state, setState] = useState({
     headline: "",
@@ -199,11 +209,19 @@ export default function RegisterForm() {
     case 0:
       return (
         <>
-          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+          {/* <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
             <Menu
               handleBack={() => history.push("/")}
               registrationMenu={true}
             />
+          </Box> */}
+          <Box className={classes.navWrapper}>
+            <Container>
+              <Menu
+                handleBack={() => history.push("/")}
+                registrationMenu={true}
+              />
+            </Container>
           </Box>
           <RegisterMain
             handleInput={handleInput}
@@ -216,8 +234,13 @@ export default function RegisterForm() {
     case 1:
       return (
         <>
-          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
+          {/* <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
             <Menu handleBack={handleBack} registrationMenu={true} />
+          </Box> */}
+          <Box className={classes.navWrapper}>
+            <Container>
+              <Menu handleBack={handleBack} registrationMenu={true} />
+            </Container>
           </Box>
           <RegisterStep1
             handleUserType={handleUserType}
@@ -231,8 +254,10 @@ export default function RegisterForm() {
     case 11:
       return (
         <>
-          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
-            <Menu handleBack={handleBack} registrationMenu={false} />
+          <Box className={classes.navWrapper}>
+            <Container>
+              <Menu handleBack={handleBack} registrationMenu={true} />
+            </Container>
           </Box>
           <SorryPage />
         </>
@@ -240,24 +265,29 @@ export default function RegisterForm() {
     case 2:
       return (
         <>
-          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
-            <Menu handleBack={handleBack} registrationMenu={true} />
-            <RegisterStep2
-              handleInput={handleInput}
-              handleCheckbox={handleCheckbox}
-              handleUpdate={handleUpdate}
-              values={values}
-              handleBack={handleBack}
-              handleNextStep2={handleNextStep2}
-            />
+          <Box className={classes.navWrapper}>
+            <Container>
+              <Menu handleBack={handleBack} registrationMenu={true} />
+            </Container>
           </Box>
+          <RegisterStep2
+            handleInput={handleInput}
+            handleCheckbox={handleCheckbox}
+            handleUpdate={handleUpdate}
+            values={values}
+            handleBack={handleBack}
+            handleNextStep2={handleNextStep2}
+          />
+          {/* </Box> */}
         </>
       );
     case 3:
       return (
         <>
-          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
-            <Menu handleBack={handleBack} registrationMenu={true} />
+          <Box className={classes.navWrapper}>
+            <Container>
+              <Menu handleBack={handleBack} registrationMenu={true} />
+            </Container>
           </Box>
           <RegisterStep3
             handleNext={handleNext}
@@ -270,8 +300,10 @@ export default function RegisterForm() {
     case 4:
       return (
         <>
-          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
-            <Menu handleBack={handleBack} registrationMenu={true} />
+          <Box className={classes.navWrapper}>
+            <Container>
+              <Menu handleBack={handleBack} registrationMenu={true} />
+            </Container>
           </Box>
           <RegisterStep4
             handleNext={handleNextStep4}
@@ -286,8 +318,10 @@ export default function RegisterForm() {
     case 5:
       return (
         <>
-          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
-            <Menu handleBack={handleBack} registrationMenu={true} />
+          <Box className={classes.navWrapper}>
+            <Container>
+              <Menu handleBack={handleBack} registrationMenu={true} />
+            </Container>
           </Box>
           <RegisterStep5
             handleNext={handleNext}
@@ -299,8 +333,10 @@ export default function RegisterForm() {
     case 6:
       return (
         <>
-          <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
-            <Menu handleBack={handleBack} registrationMenu={true} />
+          <Box className={classes.navWrapper}>
+            <Container>
+              <Menu handleBack={handleBack} registrationMenu={true} />
+            </Container>
           </Box>
           <PostRegistration userType={userType} />
         </>

@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, MenuItem, Menu, Box } from "@material-ui/core";
-
+import { getUserInfo,  } from "../../../redux/Actions/UserActions";
+import { useDispatch, useSelector } from "react-redux";
 import LogoNavBar from "../../../images/LogoNavBar.png";
 import userIcon from "../../../images/user.svg";
 import backIcon from "../../../images/backIcon.svg";
@@ -95,6 +96,7 @@ const DropDownMenu = (props) => {
   }
 
   let token = localStorage.getItem("token");
+
   return (
     <>
       <Menu
@@ -258,6 +260,7 @@ const AppMenu = (props) => {
   const open = Boolean(anchorEl);
   const classes = useStyles();
 
+  const dispatch = useDispatch();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -265,7 +268,17 @@ const AppMenu = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  useEffect(() => {
+    const fetchUser = async () => {
+      await dispatch(getUserInfo());
+    };
+    if (user && Object.keys(userState?.user?.user || {}).length === 0) {
+      fetchUser();
+    }
+  }, []);
+  const userState = useSelector((store) => store.userreducer);
+  const { user } = userState;
+  console.log("header",user)
   return (
     <Wrapper>
       {/* {props.showBackButton == false ? (

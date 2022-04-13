@@ -404,9 +404,16 @@ export default function LandingPage(props) {
     console.log(result, "login result");
     if (result.type === "USER_LOGIN_SUCCESS") {
       NotificationManager.success(result.payload.data.message);
-      history.push(`/explore`);
+      const userData = await dispatch(getUserInfo());
+      if (userData?.payload?.data?.user?.userType === "mentee") {
+        history.push(`/explore`);
+      }
+      // else{
+      //   history.push(`/matches`);
+        
+      // }
     } else {
-      NotificationManager.error("Login Failed");
+      NotificationManager.error(result.payload.data.message);
     }
 
     // .then((response) => {
