@@ -40,6 +40,36 @@ const extractImageUrls = (profileResponse) => {
   return res;
 };
 
+const fetchUserToken = async (user) => {
+  const token = await Token.findOne({ userId: user._id });
+  if (!token) {
+    // encrypt information
+    const t = util.refreshToken(user._id);
+    Token.create({ refreshToken: t, userId: user._id });
+  }
+  // send the access token
+  const accessToken = util.accessToken(user._id);
+
+  return {
+    token: accessToken,
+  };
+};
+
+const sendRegistrationMail = async (user) => {
+  const confirmationToken = util.encodeRegistrationToken(user._id);
+  const confirmationLink = `https://${process.env.BASE_URL}:${process.env.APP_PORT}/users/confirmRegistration?confirmationToken=${confirmationToken}`;
+  const response = await sendMail(
+    user.email,
+    'Openmentorship Email Confirmation',
+    {
+      name: `${user.firstName} ${user.lastName}`,
+      confirmationLink,
+    },
+    config.sendgrid.templates.registration,
+  );
+  return response;
+};
+
 const getLinkedInProfile = (authCode, isLocal = false) =>
   new Promise((resolve, reject) => {
     let redirectUri = '';
