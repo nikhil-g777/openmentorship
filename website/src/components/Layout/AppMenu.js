@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import LogoNavBar from "../../images/LogoNavBar.png";
 import userIcon from "../../images/user.svg";
 import backIcon from "../../images/backIcon.svg";
+import { getUserInfo,  } from "../../redux/Actions/UserActions";
+import { useDispatch, useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, MenuItem, Menu, Box } from "@material-ui/core";
@@ -104,6 +106,7 @@ const DropDownMenu = (props) => {
   function logOut() {
     // setUser({});
     localStorage.removeItem("token");
+    window.location.href="/"
   }
 
   return (
@@ -245,6 +248,7 @@ const DropDownMenu = (props) => {
 
 const AppMenu = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -256,6 +260,16 @@ const AppMenu = (props) => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      await dispatch(getUserInfo());
+    };
+    if (user && Object.keys(userState?.user?.user || {}).length === 0) {
+      fetchUser();
+    }
+  }, []);
+  const userState = useSelector((store) => store.userreducer);
+  const { user } = userState;
   return (
     <Wrapper
     // style={{ padding: "0.75% 2.75%" }}
@@ -266,12 +280,14 @@ const AppMenu = (props) => {
         <BackButton onClick={props.handleBack} />
       )} */}
       <Box className="web-navbar">
+        {user?.user?.userType==="mentee"?
         <Link
           to="/explore"
           style={{ marginRight: 30, color: "black", textDecoration: "none" }}
         >
           Discover
         </Link>
+        :null}
         <Link
           to="/matches"
           style={{ marginRight: 30, color: "black", textDecoration: "none" }}
@@ -284,9 +300,10 @@ const AppMenu = (props) => {
         </Link>
       </Box>
       {/* <LogoImg /> */}
-      <Box className={classes.imgWrapper}>
-        <img src={LogoNavBar} alt="logo" />
+      <Link to="/"><Box className={classes.imgWrapper}>
+      <img src={LogoNavBar} alt="logo" />
       </Box>
+      </Link>
       <UserIconWrapper>
         <UserIcon onClick={handleMenu} />
       </UserIconWrapper>

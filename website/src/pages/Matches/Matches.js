@@ -31,6 +31,13 @@ import {
 import { getUserInfo } from "../../redux/Actions/UserActions";
 
 const useStyles = makeStyles((theme) => ({
+  navWrapper: {
+    marginBottom: "12px",
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
   progressWrapper: {
     height: "40vh",
     display: "flex",
@@ -74,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
   WebCard: {
     display: "block",
+    minHeight: 900,
     "@media (max-width:780px)": {
       display: "none",
     },
@@ -182,11 +190,16 @@ export default function Matches() {
             : "Status updated succesfully!"}
         </Alert>
       </Snackbar>
-      <Menu
-        handleBack={() => history.push("/")}
-        registrationMenu={true}
-        showBackButton={false}
-      />
+      <Box className={classes.navWrapper}>
+        <Container>
+          <Menu
+            handleBack={() => history.push("/")}
+            registrationMenu={true}
+            showBackButton={false}
+          />
+        </Container>
+      </Box>
+
       <ThemeProvider theme={theme}>
         {/* <div
           style={{
@@ -245,7 +258,7 @@ export default function Matches() {
               </Typography>
               <Box
                 className={classes.MobileCard}
-                style={{ display: viewType ? "none" : "" }}
+                style={{ display: viewType ? "none" : "", minHeight: 800 }}
               >
                 <MenteeMobileCard
                   viewProfile={viewProfile}
@@ -264,7 +277,7 @@ export default function Matches() {
                   }
                 />
               </Box>
-              <Box style={{ display: viewType ? "" : "none" }}>
+              <Box style={{ display: viewType ? "" : "none", minHeight: 900 }}>
                 <MenteeCard
                   menteeType={menteeType}
                   mentorType={mentorType}
@@ -302,7 +315,11 @@ export default function Matches() {
           )}
         </Box>
       </ThemeProvider>
-      <div style={{ backgroundColor: "#f5f3f8" }}>
+      <div
+        style={{
+          backgroundColor: "#f5f3f8",
+        }}
+      >
         <Container>
           <Footer />
         </Container>
