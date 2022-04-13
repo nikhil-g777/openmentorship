@@ -17,8 +17,6 @@ router.post('/login', userController.loginUser);
 
 router.post('/register', userController.registerUser);
 
-router.get('/confirmRegistration', userController.confirmRegistration);
-
 router.post('/tempAuth/:_id', userController.tempAuth);
 
 router.put(

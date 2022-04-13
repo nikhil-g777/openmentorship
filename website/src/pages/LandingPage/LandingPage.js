@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LinkedIn } from "react-linkedin-login-oauth2";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
 // import WaitlistCard from "./WaitListCard";
+import "react-notifications/lib/notifications.css";
 
 // import { loginUser } from "../../api";
-import { loginUser } from "../../redux/Actions/UserActions";
+import { loginUser, getUserInfo } from "../../redux/Actions/UserActions";
 // import { UserContext } from "../../context/UserContext";
+import { NotificationManager } from "react-notifications";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //mui
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Button, Container, Box } from "@material-ui/core";
+import { Container, Box, CircularProgress } from "@material-ui/core";
 
 //imgs
 import Stairs from "./images/stairs_large.png";
@@ -378,12 +380,25 @@ export default function LandingPage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles(props);
+  const [isUser, setIsUser] = useState(false);
 
   // const [isError, setIsError] = useState(false);
   // const [user, setUser] = useContext(UserContext);
 
   // const user = useSelector((store) => store.userreducer.user);
+  const userState = useSelector((store) => store.userreducer);
 
+  const { user } = userState;
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      await dispatch(getUserInfo());
+      setIsUser(true);
+    };
+    if (user && Object.keys(userState?.user?.user || {}).length === 0) {
+      fetchUser();
+    }
+  }, []);
   const handleSuccess = async (data) => {
     const result = await dispatch(loginUser({ authCode: data.code }));
     console.log(result, "login result");
@@ -393,13 +408,35 @@ export default function LandingPage(props) {
       if (userData?.payload?.data?.user?.userType === "mentee") {
         history.push(`/explore`);
       }
+      // else{
+      //   history.push(`/matches`);
+        
+      // }
     } else {
       NotificationManager.error(result.payload.data.message);
     }
+
+    // .then((response) => {
+    //   if (response.data.success) {
+    //     setUser({
+    //       _id: response.data.user._id,
+    //       userType: response.data.user.userType,
+    //       token: response.data.token,
+    //     });
+    // localStorage.setItem("token", JSON.stringify(response.data.token));
+    //   } else {
+    //     setIsError(true);
+    //   }
+    // })
+    // .catch((error) => {
+    //   setIsError(true);
+    // });
   };
 
   const handleFailure = (error) => {
     console.log(error);
+    history.push(`/error-found`);
+
     // setIsError(true);
   };
 
@@ -444,22 +481,35 @@ export default function LandingPage(props) {
                 <span className={classes.Or}>or</span>
                 <RegisterButton>Register</RegisterButton>
               </Box> */}
-              <SignInContainer className={classes.LinkedIn}>
-                <LinkedIn
-                  clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
-                  onFailure={handleFailure}
-                  onSuccess={handleSuccess}
-                  redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
-                  scope="r_emailaddress r_liteprofile"
-                  redirectPath="/register"
-                >
-                  <LinkedinImage src={LinkedinSignin} />
-                </LinkedIn>
-                <OrText> or </OrText>
-                <Link to="/register">
-                  <RegisterButton> Register </RegisterButton>
-                </Link>
-              </SignInContainer>
+              {isUser ? (
+                <>
+                  {user.user ? null : (
+                    <SignInContainer className={classes.LinkedIn}>
+                      <LinkedIn
+                        clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
+                        onFailure={handleFailure}
+                        onSuccess={handleSuccess}
+                        redirectUri={
+                          process.env.REACT_APP_LINKEDIN_REDIRECT_URI
+                        }
+                        scope="r_emailaddress r_liteprofile"
+                        redirectPath="/register"
+                      >
+                        <LinkedinImage src={LinkedinSignin} />
+                      </LinkedIn>
+                      <OrText> or </OrText>
+                      <Link to="/register">
+                        <RegisterButton> Register </RegisterButton>
+                      </Link>
+                    </SignInContainer>
+                  )}
+                </>
+              ) : (
+                <CircularProgress
+                  size={22}
+                  style={{ marginLeft: "25%", marginTop: "2%" }}
+                />
+              )}
             </OrderedSide>
           </HeroWrapper>
         </Container>

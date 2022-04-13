@@ -6,15 +6,28 @@ import {
   getexploredataByContent,
 } from "../../redux/Actions/ExploreAction";
 import "../../style/Explore.css";
-import { Container, Typography, Grid, Button } from "@material-ui/core";
+import { Container, Typography, Grid, Button,Box } from "@material-ui/core";
 import Alldata from "./Alldata";
 import filterOptions from "./filterOptions";
 import Slider from "./Slider";
 import Footer from "../../components/Footer";
-
+import {
+  makeStyles,
+} from "@material-ui/core/styles";
+const useStyles = makeStyles((theme) => ({
+  navWrapper: {
+    marginBottom: "12px",
+    display: "block",
+    "@media (max-width:780px)": {
+      display: "none",
+    },
+  },
+}))
 export default function Explore() {
   const data = useSelector((store) => store.Explorereducer.Explore);
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   const [limit] = useState(10);
   const [page] = useState(1);
   const frequency = "communicationFrequency";
@@ -91,7 +104,13 @@ export default function Explore() {
 
   return (
     <div>
-      <Nav />
+      {/* <Nav /> */}
+            <Box className={classes.navWrapper}>
+        <Container>
+       <Nav />
+
+        </Container>
+      </Box>
       <div className="main">
         <Grid className="top" lg={12}>
           <Typography varianr="h1" className="text">
