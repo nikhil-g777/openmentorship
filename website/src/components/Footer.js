@@ -40,7 +40,7 @@ const useStyles = makeStyles({
   Links: {
     fontFamily: "proxima_nova",
     fontSize: 16,
-    fontWeight:700,
+    fontWeight: "Bold",
     color: "black",
     "@media (max-width:780px)": {
       marginLeft: 10,
@@ -72,26 +72,26 @@ export default function Footer(props) {
         <div className={classes.logo}>
           <MLogo src={Logo} />
         </div>
-        {/* <Link to="/about">
+        <Link to="/about">
           <a className={classes.Links} href="">
             About
           </a>
-        </Link> */}
+        </Link>
         <Link to="">
-          <a style={{fontWeight:'bold',color:'black'}} href="">
+          <a className={classes.Links} href="">
             How it Works
           </a>
         </Link>
-        {/* <Link to="">
+        <Link to="">
           {" "}
           <a className={classes.Links} href="">
             Contact
           </a>
-        </Link> */}
+        </Link>
         <Link to="">
           {" "}
-          <a style={{fontWeight:'bold',color:'black'}} href="">
-            You can reach us at : hello@openmentorship.com
+          <a className={classes.Links} href="">
+            Sign In
           </a>
         </Link>
       </Container>
@@ -101,11 +101,11 @@ export default function Footer(props) {
             <MLogo src={Logo} />
           </Grid>
           <Grid item xs={4}>
-            {/* <Link to="/about">
+            <Link to="/about">
               <a className={classes.Links} href="">
                 About
               </a>
-            </Link> */}
+            </Link>
             <Link to="">
               <a className={classes.Links} href="">
                 How it Works
@@ -113,7 +113,7 @@ export default function Footer(props) {
             </Link>
           </Grid>
           <Grid item xs={4}>
-            {/* <Link to="">
+            <Link to="">
               {" "}
               <a className={classes.Links} href="">
                 Contact
@@ -124,13 +124,7 @@ export default function Footer(props) {
               <a className={classes.Links} href="">
                 Sign In
               </a>
-            </Link> */}
-                    <Link to="">
-          {" "}
-          <a className={classes.Links} href="">
-            You can reach us at : hello@openmentorship.com
-          </a>
-        </Link>
+            </Link>
           </Grid>
         </Grid>
       </Box>

@@ -1,17 +1,13 @@
 import React from "react";
 
-import { BrowserRouter as Router, Route, Switch,Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { LinkedInPopUp } from "react-linkedin-login-oauth2";
 import { Provider } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
-
-import 'react-notifications/lib/notifications.css';
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import Explore from "../pages/Explore/Explore";
-import ErrorFound from "../pages/Error/Error"
 import PrivateRoute from "./PrivateRoute";
 import { theme } from "./GlobalTheme";
 import Store from "../redux/Store";
@@ -44,14 +40,11 @@ function App() {
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-
           <Switch>
             <Route exact path="/" component={LandingPage} />
             <PrivateRoute path="/FAQ" exact component={FAQ} />
             <Route exact path="/linkedin" component={LinkedInPopUp} />
             <Route path="/explore" component={Explore} />
-            <Route path="/error-found" component={ErrorFound} />
-
             {/* each route below needs to import their own Menu component. 
             ...See matches for example  */}
             <Route path="/chat" component={Chat} />
@@ -84,10 +77,7 @@ function App() {
               path="/admin/user-profile/:id"
               component={UserProfile}
             />
-             <Redirect to="/error-found" />
           </Switch>
-      <NotificationContainer/>
-
         </ThemeProvider>
       </Router>
     </Provider>
