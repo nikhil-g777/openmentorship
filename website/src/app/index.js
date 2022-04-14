@@ -11,7 +11,9 @@ import 'react-notifications/lib/notifications.css';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import Explore from "../pages/Explore/Explore";
-import ErrorFound from "../pages/Error/Error"
+import ErrorFound from "../pages/Error/Error";
+import Access from "../pages/Error/Access";
+
 import PrivateRoute from "./PrivateRoute";
 import { theme } from "./GlobalTheme";
 import Store from "../redux/Store";
@@ -51,6 +53,8 @@ function App() {
             <Route exact path="/linkedin" component={LinkedInPopUp} />
             <Route path="/explore" component={Explore} />
             <Route path="/error-found" component={ErrorFound} />
+            <Route path="/route-access" component={Access} />
+
 
             {/* each route below needs to import their own Menu component. 
             ...See matches for example  */}

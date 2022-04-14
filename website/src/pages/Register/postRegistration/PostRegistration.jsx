@@ -247,7 +247,7 @@ const PostRegistration = (props) => {
       //     </Wrapper>
       //   )
       case "CONTINUE":
-        return <Redirect to="/matches" />;
+        return <Redirect to="/" />;
 
       case "WAIT":
         return (

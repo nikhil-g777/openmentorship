@@ -204,7 +204,7 @@ export default function RegisterForm() {
     communicationPreferences,
     socialLinks,
   };
-
+console.log(activeStep,"activestep")
   switch (activeStep) {
     case 0:
       return (
@@ -220,6 +220,7 @@ export default function RegisterForm() {
               <Menu
                 handleBack={() => history.push("/")}
                 registrationMenu={true}
+                showBackButton={false}
               />
             </Container>
           </Box>
@@ -239,7 +240,7 @@ export default function RegisterForm() {
           </Box> */}
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={handleBack} registrationMenu={true} />
+              <Menu handleBack={() => setActiveStep(0)} registrationMenu={true} showBackButton={true}/>
             </Container>
           </Box>
           <RegisterStep1
@@ -256,7 +257,7 @@ export default function RegisterForm() {
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={handleBack} registrationMenu={true} />
+              <Menu handleBack={() => setActiveStep(1)} registrationMenu={true} showBackButton={true}/>
             </Container>
           </Box>
           <SorryPage />
@@ -267,7 +268,7 @@ export default function RegisterForm() {
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={handleBack} registrationMenu={true} />
+              <Menu handleBack={() => setActiveStep(1)} registrationMenu={true} showBackButton={true}/>
             </Container>
           </Box>
           <RegisterStep2
@@ -286,7 +287,7 @@ export default function RegisterForm() {
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={handleBack} registrationMenu={true} />
+              <Menu handleBack={() => setActiveStep(2)} registrationMenu={true} showBackButton={true}/>
             </Container>
           </Box>
           <RegisterStep3
@@ -302,7 +303,7 @@ export default function RegisterForm() {
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={handleBack} registrationMenu={true} />
+              <Menu handleBack={() => setActiveStep(3)} registrationMenu={true} showBackButton={true}/>
             </Container>
           </Box>
           <RegisterStep4
@@ -320,7 +321,7 @@ export default function RegisterForm() {
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={handleBack} registrationMenu={true} />
+              <Menu handleBack={() => setActiveStep(4)} registrationMenu={false} showBackButton={false}/>
             </Container>
           </Box>
           <RegisterStep5
@@ -335,7 +336,7 @@ export default function RegisterForm() {
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={handleBack} registrationMenu={true} />
+              <Menu handleBack={() => setActiveStep(5)} registrationMenu={true} showBackButton={false}/>
             </Container>
           </Box>
           <PostRegistration userType={userType} />

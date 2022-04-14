@@ -192,6 +192,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#747474",
     display: "block",
     fontSize: 12,
+    float:'right'
   },
   uploadImage: {
     width: "34px",
@@ -491,16 +492,16 @@ export default function MenteeCard() {
                             x.author === user?.user?._id ? (
                               <Box className={classes.SenderChatBox}>
                                 {x.body}
-                                {/* <br/><span className={classes.TimeDate}>
+                                <br/><span className={classes.TimeDate}>
                               {x.state.timestamp.toLocaleString()}
-                            </span> */}
+                            </span>
                               </Box>
                             ) : (
                               <Box className={classes.GrayBox}>
                                 {x.body}
-                                {/* <br/><span className={classes.TimeDate}>
+                                <br/><span className={classes.TimeDate}>
                               {x.state.timestamp.toLocaleString()}
-                            </span> */}
+                            </span>
                               </Box>
                             )
                           )}
@@ -546,9 +547,15 @@ export default function MenteeCard() {
                     <Box style={{ maxHeight: 500, overflow: "scroll" }}>
                       {messages.map((x) =>
                         x.author === user?.user?._id ? (
-                          <Box className={classes.SenderChatBox}>{x.body}</Box>
+                          <Box className={classes.SenderChatBox}>{x.body}
+                          <br/><span className={classes.TimeDate}>
+                              {x.state.timestamp.toLocaleString()}
+                            </span></Box>
                         ) : (
-                          <Box className={classes.GrayBox}>{x.body}</Box>
+                          <Box className={classes.GrayBox}>{x.body}
+                          <br/><span className={classes.TimeDate}>
+                              {x.state.timestamp.toLocaleString()}
+                            </span></Box>
                         )
                       )}
                     </Box>

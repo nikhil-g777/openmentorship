@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "5px",
     width: "191px",
     height: "191px",
-    marginTop:-6,
-    marginLeft:-6,
+    marginTop: -6,
+    marginLeft: -6,
     [theme.breakpoints.down("sm")]: {
       width: "117px",
       height: "120px",
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
   pro_typo3: {
     fontStyle: "normal",
-    fontWeight: "bold",
+    fontWeight: "900 !important",
     fontSize: "20px",
     lineHeight: "27px",
     marginTop: "25px",
@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     borderRadius: "40px",
     textTransform: "inherit",
-    width:180,
+    width: 180,
     // width: "-webkit-fill-available",
     "&:focus": {
       outline: "none",
@@ -183,7 +183,7 @@ const ProfileCard = (props) => {
     isRequest,
     setSelectedData,
     setReconnect,
-    slide
+    slide,
   } = props;
 
   const handleSendEmail = () => {
@@ -194,13 +194,12 @@ const ProfileCard = (props) => {
     console.log("Account Disable");
   };
   const handleConnect = (data) => {
-    setSelectedData(data)
+    setSelectedData(data);
     setReconnect(true);
-
-  }
+  };
   return (
     <>
-    {/* {slide?<Grid container>:null} */}
+      {/* {slide?<Grid container>:null} */}
       <Grid item xs={12} md={2} lg={2} style={{}}>
         <Box component="div" className={classes.img_div_xs}>
           <img
@@ -229,7 +228,6 @@ const ProfileCard = (props) => {
               className={`${classes.requestButton} ${classes.buttonsText}`}
               // onClick={isUserPage ? handleSendEmail : handleApproveMentor}
               onClick={() => handleConnect(data)}
-
             >
               Send Request
             </Button>
@@ -373,8 +371,12 @@ const ProfileCard = (props) => {
         </Grid>
         {/* {slide?null: */}
 
-              <Typography className={classes.pro_typo3}>Social Media</Typography>
-        <Box component="div" className={classes.social_div} style={{display:'flex'}}>
+        <Typography className={classes.pro_typo3}>Social Media</Typography>
+        <Box
+          component="div"
+          className={classes.social_div}
+          style={{ display: "flex" }}
+        >
           {Object.keys(data || {}).length > 0 &&
             Object.entries(data?.socialLinks || {}).map(([key, value]) => (
               <a

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, MenuItem, Menu, Box } from "@material-ui/core";
-import { getUserInfo,  } from "../../../redux/Actions/UserActions";
+import { getUserInfo } from "../../../redux/Actions/UserActions";
 import { useDispatch, useSelector } from "react-redux";
 import LogoNavBar from "../../../images/LogoNavBar.png";
 import userIcon from "../../../images/user.svg";
@@ -259,6 +260,7 @@ const AppMenu = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const classes = useStyles();
+  const history = useHistory();
 
   const dispatch = useDispatch();
   const handleMenu = (event) => {
@@ -270,15 +272,16 @@ const AppMenu = (props) => {
   };
   useEffect(() => {
     const fetchUser = async () => {
-      await dispatch(getUserInfo());
+      const userRole = await dispatch(getUserInfo());
+      if (userRole.payload.data.user.role !== "admin") {
+        history.push(`/route-access`);
+      }
     };
-    if (user && Object.keys(userState?.user?.user || {}).length === 0) {
-      fetchUser();
-    }
+    fetchUser();
   }, []);
-  const userState = useSelector((store) => store.userreducer);
-  const { user } = userState;
-  console.log("header",user)
+  // const userState = useSelector((store) => store.userreducer);
+  // const { user } = userState;
+  // console.log("header",user)
   return (
     <Wrapper>
       {/* {props.showBackButton == false ? (
