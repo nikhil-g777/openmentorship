@@ -14,9 +14,7 @@ const ErrorFound = () => {
       <img src={Error} className="image-error" />
       <Typography variant="h4">Permission Denied</Typography>
       <Typography variant="h6" className="description-error">
-        Sorry, You don't have the access to the admin page.
-        <br />
-        We suggest that you return to main sections.
+        Sorry, You don't have the access to this page
       </Typography>
       <Button className="button-error" onClick={handleHome}>
         Go to the main page
