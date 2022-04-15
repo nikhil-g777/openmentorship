@@ -544,7 +544,7 @@ export default function MenteeCard() {
                       style={{ marginLeft: "40%", marginTop: "10%" }}
                     />
                   ) : (
-                    <Box style={{ maxHeight: 500, overflow: "scroll" }}>
+                    <Box style={{ maxHeight: '70vh', overflow: "scroll" }}>
                       {messages.map((x) =>
                         x.author === user?.user?._id ? (
                           <Box className={classes.SenderChatBox}>{x.body}

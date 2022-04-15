@@ -403,17 +403,17 @@ export default function LandingPage(props) {
     const result = await dispatch(loginUser({ authCode: data.code }));
     console.log(result, "login result");
     if (result.type === "USER_LOGIN_SUCCESS") {
-      NotificationManager.success(result.payload.data.message);
+      NotificationManager.success(result?.payload?.data?.message);
       const userData = await dispatch(getUserInfo());
       if (userData?.payload?.data?.user?.userType === "mentee") {
         history.push(`/explore`);
       }
       // else{
       //   history.push(`/matches`);
-        
+
       // }
     } else {
-      NotificationManager.error(result.payload.data.message);
+      NotificationManager.error(result?.payload?.data?.message);
     }
 
     // .then((response) => {
@@ -481,35 +481,33 @@ export default function LandingPage(props) {
                 <span className={classes.Or}>or</span>
                 <RegisterButton>Register</RegisterButton>
               </Box> */}
-              {isUser ? (
-                <>
-                  {user.user ? null : (
-                    <SignInContainer className={classes.LinkedIn}>
-                      <LinkedIn
-                        clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
-                        onFailure={handleFailure}
-                        onSuccess={handleSuccess}
-                        redirectUri={
-                          process.env.REACT_APP_LINKEDIN_REDIRECT_URI
-                        }
-                        scope="r_emailaddress r_liteprofile"
-                        redirectPath="/register"
-                      >
-                        <LinkedinImage src={LinkedinSignin} />
-                      </LinkedIn>
-                      <OrText> or </OrText>
-                      <Link to="/register">
-                        <RegisterButton> Register </RegisterButton>
-                      </Link>
-                    </SignInContainer>
-                  )}
-                </>
+              {/* {isUser ? (
+                <> */}
+              {user.user ? null : (
+                <SignInContainer className={classes.LinkedIn}>
+                  <LinkedIn
+                    clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
+                    onFailure={handleFailure}
+                    onSuccess={handleSuccess}
+                    redirectUri={process.env.REACT_APP_LINKEDIN_REDIRECT_URI}
+                    scope="r_emailaddress r_liteprofile"
+                    redirectPath="/register"
+                  >
+                    <LinkedinImage src={LinkedinSignin} />
+                  </LinkedIn>
+                  <OrText> or </OrText>
+                  <Link to="/register">
+                    <RegisterButton> Register </RegisterButton>
+                  </Link>
+                </SignInContainer>
+              )}
+              {/* </>
               ) : (
                 <CircularProgress
                   size={22}
                   style={{ marginLeft: "25%", marginTop: "2%" }}
                 />
-              )}
+              )} */}
             </OrderedSide>
           </HeroWrapper>
         </Container>

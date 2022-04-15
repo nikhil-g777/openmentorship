@@ -107,7 +107,8 @@ export default function Explore() {
       {/* <Nav /> */}
             <Box className={classes.navWrapper}>
         <Container>
-       <Nav />
+       <Nav
+       showBackButton={false} />
 
         </Container>
       </Box>

@@ -10,6 +10,7 @@ import PostRegistration from "./postRegistration/PostRegistration";
 import { Menu } from "../../components";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import { NotificationManager } from "react-notifications";
 
 import { Box, Container } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
@@ -66,12 +67,17 @@ export default function RegisterForm() {
       state.experiences.forEach((exp) => {
         if (exp.organization == "" || exp.title == "") {
           valid = false;
+      NotificationManager.error("Please select at least one option“");
+
+          
         }
       });
 
       state.education.forEach((edu) => {
         if (edu.college == "" || edu.degree == "") {
           valid = false;
+      NotificationManager.error("Please select at least one option“");
+
         }
       });
       if (valid == false) {
@@ -92,6 +98,8 @@ export default function RegisterForm() {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
       setState({ ...state, emptyField: true });
+      NotificationManager.error("Please select at least one option“");
+
     }
   };
 
