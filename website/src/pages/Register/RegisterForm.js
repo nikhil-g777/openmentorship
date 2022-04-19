@@ -49,6 +49,8 @@ export default function RegisterForm() {
 
   //change back to 0
   const [activeStep, setActiveStep] = useState(0);
+  const [errorState, setErrorState] = useState(false);
+
 
   const handleNext = () => {
     console.log(activeStep);
@@ -67,7 +69,8 @@ export default function RegisterForm() {
       state.experiences.forEach((exp) => {
         if (exp.organization == "" || exp.title == "") {
           valid = false;
-      NotificationManager.error("Please select at least one option“");
+      // NotificationManager.error("Please select at least one option“");
+      setErrorState(true);
 
           
         }
@@ -76,16 +79,20 @@ export default function RegisterForm() {
       state.education.forEach((edu) => {
         if (edu.college == "" || edu.degree == "") {
           valid = false;
-      NotificationManager.error("Please select at least one option“");
+          setErrorState(true);
 
         }
       });
       if (valid == false) {
         setState({ ...state, emptyField: true });
       } else {
+        setErrorState(false);
+
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     } else {
+      setErrorState(false);
+
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
@@ -96,9 +103,11 @@ export default function RegisterForm() {
       state.goals.length !== 0
     ) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setErrorState(false);
+
     } else {
       setState({ ...state, emptyField: true });
-      NotificationManager.error("Please select at least one option“");
+      setErrorState(true);
 
     }
   };
@@ -286,6 +295,7 @@ console.log(activeStep,"activestep")
             values={values}
             handleBack={handleBack}
             handleNextStep2={handleNextStep2}
+            errorState={errorState}
           />
           {/* </Box> */}
         </>
@@ -321,6 +331,8 @@ console.log(activeStep,"activestep")
             handleCommunicationFrequency={handleCommunicationFrequency}
             handleCommunicationPreferences={handleCommunicationPreferences}
             values={values}
+            errorState={errorState}
+
           />
         </>
       );

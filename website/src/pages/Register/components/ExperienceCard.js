@@ -34,7 +34,7 @@ const StyledButton = withStyles({
 })(Button);
 
 const ExperienceCard = (props) => {
-  const { id, title1, value1, title2, value2, handleChange, handleClear } =
+  const { id, title1, value1, title2, value2, handleChange, handleClear ,errorState} =
     props;
 
   const classes = useStyles();
@@ -54,6 +54,7 @@ const ExperienceCard = (props) => {
           style={{
             margin: "1rem 1rem 1rem 0",
           }}
+          error={errorState? true:false}
         />
         <TextField
           id={"title2_" + id}
@@ -67,6 +68,8 @@ const ExperienceCard = (props) => {
           style={{
             margin: "1rem 1rem 1rem 0",
           }}
+          error={errorState? true:false}
+
         />
         <StyledButton id={id} onClick={handleClear}>
           <CloseIcon disabled />

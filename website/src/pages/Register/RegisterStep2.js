@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Container, DotStepper, Title, TitleWrapper } from "../../components";
-import { Button, makeStyles, withStyles } from "@material-ui/core";
+import {
+  Button,
+  makeStyles,
+  withStyles,
+  Box,
+  Typography,
+} from "@material-ui/core";
 import ExperienceCard from "./components/ExperienceCard";
 
 import styled from "styled-components";
@@ -24,8 +30,7 @@ const AddButton = withStyles({
 })(Button);
 
 const RegisterStep2 = (props) => {
-  const { handleUpdate, values, handleNextStep2 } = props;
-
+  const { handleUpdate, values, handleNextStep2, errorState } = props;
   const [experiences, setExperiences] = useState([
     {
       id: generateId(),
@@ -135,6 +140,7 @@ const RegisterStep2 = (props) => {
             value2={exp.title}
             handleChange={handleChangeExperience}
             handleClear={handleClearExperience}
+            errorState={errorState}
           ></ExperienceCard>
         );
       })}
@@ -159,6 +165,7 @@ const RegisterStep2 = (props) => {
             value2={edu.title}
             handleChange={handleChangeEducation}
             handleClear={handleClearEducation}
+            errorState={errorState}
           ></ExperienceCard>
         );
       })}
@@ -169,8 +176,12 @@ const RegisterStep2 = (props) => {
         </AddContainer>
       )}
 
-      {values.emptyField && (
-        <p style={{ textAlign: "center" }}>Please fill the required fields</p>
+      {errorState && (
+        <Box style={{ backgroundColor: "#F2DEE0", minHeight: 40, padding: 10 }}>
+          <Typography style={{ color: "#A16F70" }}>
+            Please fill the required fields
+          </Typography>
+        </Box>
       )}
       <DotStepper
         activeStep={1}

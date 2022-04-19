@@ -9,6 +9,8 @@ import {
   Radio,
   RadioGroup,
   SnackbarContent,
+  Box,
+  Typography
 } from "@material-ui/core";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
@@ -236,8 +238,12 @@ const RegisterStep4 = (props) => {
           />
         </FormGroup>
       </SectionWrapper>
-      {props.values.emptyField && (
-        <p style={{ textAlign: "center" }}>Please choose at least one option</p>
+      {props.errorState && (
+        <Box style={{ backgroundColor: "#F2DEE0", minHeight: 40, padding: 10 }}>
+          <Typography style={{ color: "#A16F70" }}>
+            Please choose at least one option on every section
+          </Typography>
+        </Box>
       )}
       <DotStepper
         activeStep={3}
