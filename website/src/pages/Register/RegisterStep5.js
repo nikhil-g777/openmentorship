@@ -42,9 +42,9 @@ const RegisterStep5 = (props) => {
         },
       })
     );
-    if (userState.isUserUpdated) {
+    // if (userState.isUserUpdated) {
       props.handleNext();
-    }
+    // }
     // .then((response) => {
     //   props.handleNext();
     // })
