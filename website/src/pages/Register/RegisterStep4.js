@@ -206,7 +206,7 @@ const RegisterStep4 = (props) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={communicationPreferences.phoneCall}
+                checked={communicationPreferences?.phoneCall}
                 onChange={handleChangeCommPreferences}
                 name="phoneCall"
                 color="primary"
@@ -217,7 +217,7 @@ const RegisterStep4 = (props) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={communicationPreferences.videoCall}
+                checked={communicationPreferences?.videoCall}
                 onChange={handleChangeCommPreferences}
                 name="videoCall"
                 color="primary"
@@ -228,7 +228,7 @@ const RegisterStep4 = (props) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={communicationPreferences.chatOrMessaging}
+                checked={communicationPreferences?.chatOrMessaging}
                 onChange={handleChangeCommPreferences}
                 name="chatOrMessaging"
                 color="primary"

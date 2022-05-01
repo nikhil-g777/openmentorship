@@ -341,7 +341,7 @@ console.log(activeStep,"activestep")
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={() => setActiveStep(4)} registrationMenu={false} showBackButton={false}/>
+              <Menu handleBack={() => setActiveStep(4)} registrationMenu={false} showBackButton={true}/>
             </Container>
           </Box>
           <RegisterStep5

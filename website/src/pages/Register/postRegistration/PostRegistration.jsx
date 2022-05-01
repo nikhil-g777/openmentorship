@@ -247,7 +247,7 @@ const PostRegistration = (props) => {
       //     </Wrapper>
       //   )
       case "CONTINUE":
-        return <Redirect to="/" />;
+        return (window.location.href = "/");
 
       case "WAIT":
         return (
