@@ -7,6 +7,16 @@ const Wrapper = styled.div`
   margin: 1em 0;
 `;
 
+const Span = styled.span`
+font-size: 1.4rem;
+line-height: 1.42857;
+font-weight: 600;
+color: rgba(0,0,0,0.9);
+margin: 4px 0 12px 0;
+text-align: left;
+color: #d11124;
+font-weight: 500;`
+
 class RegisterStep3 extends React.Component {
   state = {
     skills: this.props.values.skills,
@@ -19,6 +29,11 @@ class RegisterStep3 extends React.Component {
     const interests = this.state.interests;
     interests.push("Tech");
     this.setState({ skills, interests });
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevState !== this.state)
+      console.log(this.state.interests.length < 3 || this.state.skills.length < 3)
   }
 
   addSkill = (value) => {
@@ -54,6 +69,7 @@ class RegisterStep3 extends React.Component {
     console.log("this.props.values.skills: ", this.props.values.skills);
     return (
       <Container>
+        
         <TitleWrapper>
           <Title>Lets get more specific.</Title>
         </TitleWrapper>
@@ -65,6 +81,7 @@ class RegisterStep3 extends React.Component {
             onSubmit={(value) => this.addSkill(value)}
             onRemove={(index) => this.removeSkill(index)}
           />
+          {this.state.skills.length < 3 && <Span>You must input a total of 3 skills!</Span>}
         </Wrapper>
         <Wrapper style={{ marginTop: "3em" }}>
           <p>What are your areas of interest?</p>
@@ -74,8 +91,9 @@ class RegisterStep3 extends React.Component {
             onSubmit={(value) => this.addInterests(value)}
             onRemove={(index) => this.removeInterests(index)}
           />
+          {this.state.interests.length<3 && <Span>You must input a total of 3 interests!</Span>}
         </Wrapper>
-        <DotStepper activeStep={2} handleNext={this.props.handleNext} />
+        <DotStepper activeStep={2} handleNext={this.props.handleNext} disabled = {this.state.interests.length < 3 || this.state.skills.length < 3}/>
       </Container>
     );
   }
