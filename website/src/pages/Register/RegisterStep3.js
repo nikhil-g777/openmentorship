@@ -15,9 +15,13 @@ class RegisterStep3 extends React.Component {
 
   componentDidMount() {
     const skills = this.state.skills;
-    skills.push("Communication");
+    if (skills.length == 0) {
+      skills.push("Communication");
+    }
     const interests = this.state.interests;
-    interests.push("Tech");
+    if (interests.length == 0) {
+      interests.push("Tech");
+    }
     this.setState({ skills, interests });
   }
 

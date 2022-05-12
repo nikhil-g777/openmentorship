@@ -210,7 +210,7 @@ const PostRegistration = (props) => {
   }, []);
 
   const userState = useSelector((store) => store.userreducer);
-
+console.log(userState,"usestate")
   const userContinue = async () => {
     await dispatch(
       updateUser({
@@ -218,10 +218,13 @@ const PostRegistration = (props) => {
         user: {
           active: true,
         },
+        type: "completeRegistration",
+
       })
     );
 
     if (userState.isUserUpdated) {
+      console.log("hsiadjks")
       setSignUpResult("CONTINUE");
     }
   };
@@ -231,6 +234,7 @@ const PostRegistration = (props) => {
   };
 
   const renderComponent = (param) => {
+    console.log(param,"paramss")
     switch (param) {
       // Commenting for now but might need to use this once we implement email verification
       // case 'CONTINUE':

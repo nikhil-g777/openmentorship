@@ -10,9 +10,10 @@ import PostRegistration from "./postRegistration/PostRegistration";
 import { Menu } from "../../components";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
-import { NotificationManager } from "react-notifications";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 import { Box, Container } from "@material-ui/core";
+import { useEffect } from "react";
 const useStyles = makeStyles((theme) => ({
   navWrapper: {
     marginBottom: "12px",
@@ -50,7 +51,32 @@ export default function RegisterForm() {
   //change back to 0
   const [activeStep, setActiveStep] = useState(0);
   const [errorState, setErrorState] = useState(false);
+  // const [pagestate, setPageState] = useState(false);
 
+  // useEffect(() => {
+  //   window.history.pushState(
+  //     { name: "browserBack" },
+  //     "on browser back click",
+  //     window.location.href
+  //   );
+  //   window.history.pushState(
+  //     { name: "browserBack" },
+  //     "on browser back click",
+  //     window.location.href
+  //   );
+  // }, []);
+  // window.addEventListener(
+  //   "popstate",
+  //   (event) => {
+  //     if (event.state) {
+  //       setPageState(true);
+  //     } else {
+  //       history.push("/");
+  //       setPageState(false);
+  //     }
+  //   },
+  //   false
+  // );
 
   const handleNext = () => {
     console.log(activeStep);
@@ -69,10 +95,8 @@ export default function RegisterForm() {
       state.experiences.forEach((exp) => {
         if (exp.organization == "" || exp.title == "") {
           valid = false;
-      // NotificationManager.error("Please select at least one option“");
-      setErrorState(true);
-
-          
+          // NotificationManager.error("Please select at least one option“");
+          setErrorState(true);
         }
       });
 
@@ -80,7 +104,6 @@ export default function RegisterForm() {
         if (edu.college == "" || edu.degree == "") {
           valid = false;
           setErrorState(true);
-
         }
       });
       if (valid == false) {
@@ -99,16 +122,16 @@ export default function RegisterForm() {
 
   const handleNextStep4 = () => {
     if (
-      (activeStep == 4 && state.communicationFrequency !== "") ||
-      state.goals.length !== 0
+      activeStep == 4 &&
+      state.communicationFrequency !== "" &&
+      state.goals.length !== 0 &&
+      state.communicationPreferences.length !== 0
     ) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setErrorState(false);
-
     } else {
       setState({ ...state, emptyField: true });
       setErrorState(true);
-
     }
   };
 
@@ -162,15 +185,7 @@ export default function RegisterForm() {
   };
 
   const handleCommunicationPreferences = (value) => {
-    console.log(
-      "proferences on change: ",
-      value,
-      "value.name: ",
-      value.name,
-      "communicationPreferences: ",
-      communicationPreferences
-    );
-    setState({ ...state, communicationPreferences: value.name });
+    setState({ ...state, communicationPreferences: value });
   };
 
   const handlesocialLinks = (event) => {
@@ -221,7 +236,6 @@ export default function RegisterForm() {
     communicationPreferences,
     socialLinks,
   };
-console.log(activeStep,"activestep")
   switch (activeStep) {
     case 0:
       return (
@@ -257,7 +271,11 @@ console.log(activeStep,"activestep")
           </Box> */}
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={() => setActiveStep(0)} registrationMenu={true} showBackButton={true}/>
+              <Menu
+                handleBack={() => setActiveStep(0)}
+                registrationMenu={true}
+                showBackButton={true}
+              />
             </Container>
           </Box>
           <RegisterStep1
@@ -274,7 +292,11 @@ console.log(activeStep,"activestep")
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={() => setActiveStep(1)} registrationMenu={true} showBackButton={true}/>
+              <Menu
+                handleBack={() => setActiveStep(1)}
+                registrationMenu={true}
+                showBackButton={true}
+              />
             </Container>
           </Box>
           <SorryPage />
@@ -285,7 +307,11 @@ console.log(activeStep,"activestep")
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={() => setActiveStep(1)} registrationMenu={true} showBackButton={true}/>
+              <Menu
+                handleBack={() => setActiveStep(1)}
+                registrationMenu={true}
+                showBackButton={true}
+              />
             </Container>
           </Box>
           <RegisterStep2
@@ -305,7 +331,11 @@ console.log(activeStep,"activestep")
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={() => setActiveStep(2)} registrationMenu={true} showBackButton={true}/>
+              <Menu
+                handleBack={() => setActiveStep(2)}
+                registrationMenu={true}
+                showBackButton={true}
+              />
             </Container>
           </Box>
           <RegisterStep3
@@ -321,7 +351,11 @@ console.log(activeStep,"activestep")
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={() => setActiveStep(3)} registrationMenu={true} showBackButton={true}/>
+              <Menu
+                handleBack={() => setActiveStep(3)}
+                registrationMenu={true}
+                showBackButton={true}
+              />
             </Container>
           </Box>
           <RegisterStep4
@@ -332,7 +366,6 @@ console.log(activeStep,"activestep")
             handleCommunicationPreferences={handleCommunicationPreferences}
             values={values}
             errorState={errorState}
-
           />
         </>
       );
@@ -341,7 +374,11 @@ console.log(activeStep,"activestep")
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={() => setActiveStep(4)} registrationMenu={false} showBackButton={true}/>
+              <Menu
+                handleBack={() => setActiveStep(4)}
+                registrationMenu={false}
+                showBackButton={true}
+              />
             </Container>
           </Box>
           <RegisterStep5
@@ -356,11 +393,16 @@ console.log(activeStep,"activestep")
         <>
           <Box className={classes.navWrapper}>
             <Container>
-              <Menu handleBack={() => setActiveStep(5)} registrationMenu={true} showBackButton={false}/>
+              <Menu
+                handleBack={() => setActiveStep(5)}
+                registrationMenu={true}
+                showBackButton={false}
+              />
             </Container>
           </Box>
           <PostRegistration userType={userType} />
         </>
       );
   }
+
 }

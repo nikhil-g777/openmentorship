@@ -31,14 +31,14 @@ const AddButton = withStyles({
 
 const RegisterStep2 = (props) => {
   const { handleUpdate, values, handleNextStep2, errorState } = props;
-  const [experiences, setExperiences] = useState([
+  const [experiences, setExperiences] = useState(values.experiences.length>0? values.experiences: [
     {
       id: generateId(),
       organization: "",
       title: "",
     },
   ]);
-  const [education, setEducation] = useState([
+  const [education, setEducation] = useState(values.education.length>0? values.education: [
     {
       id: generateId(),
       school: "",
@@ -123,7 +123,7 @@ const RegisterStep2 = (props) => {
       ]);
     }
   };
-
+console.log(experiences,"eccc")
   return (
     <Container>
       <TitleWrapper>
@@ -160,9 +160,9 @@ const RegisterStep2 = (props) => {
             key={edu.id}
             id={edu.id}
             title1="school"
-            value1={edu.organization}
+            value1={edu.school}
             title2="degree"
-            value2={edu.title}
+            value2={edu.degree}
             handleChange={handleChangeEducation}
             handleClear={handleClearEducation}
             errorState={errorState}

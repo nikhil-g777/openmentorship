@@ -10,7 +10,7 @@ import {
   RadioGroup,
   SnackbarContent,
   Box,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
@@ -31,26 +31,34 @@ const useStyles = makeStyles((theme) => ({
 const RegisterStep4 = (props) => {
   const classes = useStyles();
   const [mentorNeeds, setMentorNeeds] = useState(props.values.mentorship);
-  const [goals, setGoals] = useState(props.values.goals);
+  const [goals, setGoals] = useState(props.values.goals || []);
   const [communicationFrequency, setCommunicationFrequency] = useState(
     props.values.communicationFrequency
   );
 
   const [communicationPreferences, setCommunicationPreferences] = useState(
-    props.values.communicationPreferences
+    props.values.communicationPreferences || []
   );
 
-  const handleChange = (event) => {
+  const handleChange = (event, index) => {
     const { name, checked } = event.target;
-    setGoals({ ...goals, [name]: checked });
+    // setGoals({ ...goals, [name]: checked });
+    if (checked) {
+      goals.push({ [name]: checked });
+    } else {
+      goals.splice(index);
+    }
     props.handleGoals(goals);
   };
 
-  const handleChangeCommPreferences = (event) => {
+  const handleChangeCommPreferences = (event, index) => {
     const { name, checked } = event.target;
-    console.log("event.target.name: ", event.target.name, "name: ", name);
-    setCommunicationPreferences({ ...communicationPreferences, name });
-    console.log("communicationPreferences----: ", communicationPreferences);
+    // setCommunicationPreferences({ ...communicationPreferences, name });
+    if (checked) {
+      communicationPreferences.push({ [name]: checked });
+    } else {
+      communicationPreferences.splice(index);
+    }
     props.handleCommunicationPreferences(communicationPreferences);
   };
 
@@ -59,6 +67,38 @@ const RegisterStep4 = (props) => {
     setCommunicationFrequency(event.target.value);
   };
 
+  const checkIfExist = (x) => {
+    let isChecked = false;
+    goals.forEach((g) => {
+      if (g[x.name]) isChecked = true;
+    });
+    return isChecked;
+  };
+
+  const PreferencesIfExist = (x) => {
+    let isChecked = false;
+    communicationPreferences.forEach((g) => {
+      if (g[x.name]) isChecked = true;
+    });
+    return isChecked;
+  };
+
+  console.log(goals, "goals", props.values.goals);
+  const goalArray = [
+    { name: "careerAdvice", label: "Career advice" },
+    { name: "resumeReview", label: "Resume review" },
+    { name: "mockInterview", label: "Mock interview" },
+    { name: "projectReview", label: "Project review" },
+    { name: "collaboration", label: "Collaboration on an idea" },
+    { name: "businessAdvice", label: "Business Advice" },
+    { name: "skillDevelopment", label: "Skill Development" },
+  ];
+
+  const commArray = [
+    { name: "phoneCall", label: "Phone call" },
+    { name: "videoCall", label: "Video call" },
+    { name: "chatOrMessaging", label: "Chat or Messaging" },
+  ];
   return (
     <Container>
       <TitleWrapper>
@@ -71,83 +111,23 @@ const RegisterStep4 = (props) => {
           style={{ background: "#69b595", margin: "15px 0" }}
         />
         <FormGroup column>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={goals.careerAdvice}
-                onChange={handleChange}
-                name="careerAdvice"
-                color="primary"
+          {goalArray.map((x, index) => {
+            // console.log("xxxxx",x)
+            // console.log("goals[x.name]",x)
+            return (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checkIfExist(x)}
+                    onChange={(e) => handleChange(e, index)}
+                    name={x.name}
+                    color="primary"
+                  />
+                }
+                label={x.label}
               />
-            }
-            label="Career advice"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={goals.resumeReview}
-                onChange={handleChange}
-                name="resumeReview"
-                color="primary"
-              />
-            }
-            label="Resume review"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={goals.mockInterview}
-                onChange={handleChange}
-                name="mockInterview"
-                color="primary"
-              />
-            }
-            label="Mock interview"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={goals.projectReview}
-                onChange={handleChange}
-                name="projectReview"
-                color="primary"
-              />
-            }
-            label="Project review"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={goals.collaboration}
-                onChange={handleChange}
-                name="collaboration"
-                color="primary"
-              />
-            }
-            label="Collaboration on an idea"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={goals.businessAdvice}
-                onChange={handleChange}
-                name="businessAdvice"
-                color="primary"
-              />
-            }
-            label="Business Advice"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={goals.skillDevelopment}
-                onChange={handleChange}
-                name="skillDevelopment"
-                color="primary"
-              />
-            }
-            label="Skill Development"
-          />
+            );
+          })}
         </FormGroup>
       </SectionWrapper>
       <SectionWrapper>
@@ -203,39 +183,19 @@ const RegisterStep4 = (props) => {
           apply.
         </p>
         <FormGroup column>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={communicationPreferences?.phoneCall}
-                onChange={handleChangeCommPreferences}
-                name="phoneCall"
-                color="primary"
-              />
-            }
-            label="Phone call"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={communicationPreferences?.videoCall}
-                onChange={handleChangeCommPreferences}
-                name="videoCall"
-                color="primary"
-              />
-            }
-            label="Video call"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={communicationPreferences?.chatOrMessaging}
-                onChange={handleChangeCommPreferences}
-                name="chatOrMessaging"
-                color="primary"
-              />
-            }
-            label="Chat or Messaging"
-          />
+          {commArray.map((x, index) => (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={PreferencesIfExist(x)}
+                  onChange={(e) => handleChangeCommPreferences(e, index)}
+                  name={x.name}
+                  color="primary"
+                />
+              }
+              label={x.label}
+            />
+          ))}
         </FormGroup>
       </SectionWrapper>
       {props.errorState && (

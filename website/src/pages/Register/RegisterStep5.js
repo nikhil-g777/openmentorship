@@ -12,12 +12,25 @@ const RegisterStep5 = (props) => {
   const userState = useSelector((store) => store.userreducer);
 
   async function handleUpdateUser() {
-    console.log("user in handleUpdateUser: ", userState);
-    console.log("values to update: ", props.values);
+    const reGoals = props.values.goals.reduce(function (result, item) {
+      var key = Object.keys(item)[0]; //first property: a, b, c
+      result[key] = item[key];
+      return result;
+    }, {});
+    let prefrences = [];
+    props.values.communicationPreferences.forEach((item, index) => {
+      if (item["phoneCall"]) {
+        prefrences.push("phone");
+      } else if (item["videoCall"]) {
+        prefrences.push("video");
+      } else {
+        prefrences.push("chat");
+      }
+    });
     await dispatch(
       updateUser({
         type: "completeRegistration",
-        // _id: userState?.user?.user?._id,
+        _id: userState?.user?.user?._id,
         register: true,
         user: {
           headline: props.values.headline,
@@ -29,10 +42,11 @@ const RegisterStep5 = (props) => {
           education: props.values.education,
           skills: props.values.skills,
           interests: props.values.interests,
-          goals: props.values.goals,
+          goals: reGoals,
           communicationFrequency: props.values.communicationFrequency,
-          communicationPreferences: props.values.communicationPreferences,
+          communicationPreferences: prefrences,
           socialLinks: props.values.socialLinks,
+          registrationStatus: "complete",
 
           // firstName: props.values.firstName,
           // lastName: props.values.lastName,
@@ -43,7 +57,7 @@ const RegisterStep5 = (props) => {
       })
     );
     // if (userState.isUserUpdated) {
-      props.handleNext();
+    props.handleNext();
     // }
     // .then((response) => {
     //   props.handleNext();
