@@ -51,7 +51,6 @@ export default function RegisterForm() {
   //change back to 0
   const [activeStep, setActiveStep] = useState(0);
   const [errorState, setErrorState] = useState(false);
-  // const [pagestate, setPageState] = useState(false);
 
   // useEffect(() => {
   //   window.history.pushState(
@@ -77,6 +76,7 @@ export default function RegisterForm() {
   //   },
   //   false
   // );
+
 
   const handleNext = () => {
     console.log(activeStep);
