@@ -10,8 +10,7 @@ import PostRegistration from "./postRegistration/PostRegistration";
 import { Menu } from "../../components";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
-import SweetAlert from "react-bootstrap-sweetalert";
-
+import SweetAlert from "../../components/sweetAlert";
 import { Box, Container } from "@material-ui/core";
 import { useEffect } from "react";
 const useStyles = makeStyles((theme) => ({
@@ -51,32 +50,25 @@ export default function RegisterForm() {
   //change back to 0
   const [activeStep, setActiveStep] = useState(0);
   const [errorState, setErrorState] = useState(false);
+  const [pageState, setPageState] = useState(false);
 
-  // useEffect(() => {
-  //   window.history.pushState(
-  //     { name: "browserBack" },
-  //     "on browser back click",
-  //     window.location.href
-  //   );
-  //   window.history.pushState(
-  //     { name: "browserBack" },
-  //     "on browser back click",
-  //     window.location.href
-  //   );
-  // }, []);
-  // window.addEventListener(
-  //   "popstate",
-  //   (event) => {
-  //     if (event.state) {
-  //       setPageState(true);
-  //     } else {
-  //       history.push("/");
-  //       setPageState(false);
-  //     }
-  //   },
-  //   false
-  // );
-
+  useEffect(() => {
+    window.history.pushState({name: "browserBack"}, "on browser back click", window.location.href);
+    window.history.pushState({name: "browserBack"}, "on browser back click", window.location.href);
+  }, []);
+  window.addEventListener(
+    "popstate",
+    (event) => {
+      console.log(event,'event')
+      if (event.state) {
+        setPageState(true);
+      } else {
+        // history.push("/");
+        setPageState(false);
+      }
+    },
+    false
+  );
 
   const handleNext = () => {
     console.log(activeStep);
@@ -84,7 +76,16 @@ export default function RegisterForm() {
     if (activeStep == 1 && state.areasOfInterest.other == true) {
       // Soory page for other areas
       setActiveStep(11);
+    } else if (
+      activeStep == 1 &&
+      state.areasOfInterest.other == false &&
+      state.areasOfInterest.software == false &&
+      state.areasOfInterest.design == false
+    ) {
+      setErrorState(true);
     } else {
+      setErrorState(false);
+
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
@@ -240,6 +241,11 @@ export default function RegisterForm() {
     case 0:
       return (
         <>
+          <SweetAlert
+            pageState={pageState}
+            setPageState={setPageState}
+            handleConfirm={() => history.push("/")}
+          />
           {/* <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
             <Menu
               handleBack={() => history.push("/")}
@@ -266,6 +272,12 @@ export default function RegisterForm() {
     case 1:
       return (
         <>
+          <SweetAlert
+            pageState={pageState}
+            setPageState={setPageState}
+            handleConfirm={() => history.push("/")}
+          />
+
           {/* <Box style={{ boxShadow: "0px 4px 4px rgb(151 151 151 / 25%)" }}>
             <Menu handleBack={handleBack} registrationMenu={true} />
           </Box> */}
@@ -284,12 +296,19 @@ export default function RegisterForm() {
             handleUpdate={handleUpdate}
             values={values}
             handleNext={handleNext}
+            errorState={errorState}
           />
         </>
       );
     case 11:
       return (
         <>
+          <SweetAlert
+            pageState={pageState}
+            setPageState={setPageState}
+            handleConfirm={() => history.push("/")}
+          />
+
           <Box className={classes.navWrapper}>
             <Container>
               <Menu
@@ -305,6 +324,12 @@ export default function RegisterForm() {
     case 2:
       return (
         <>
+          <SweetAlert
+            pageState={pageState}
+            setPageState={setPageState}
+            handleConfirm={() => history.push("/")}
+          />
+
           <Box className={classes.navWrapper}>
             <Container>
               <Menu
@@ -329,6 +354,12 @@ export default function RegisterForm() {
     case 3:
       return (
         <>
+          <SweetAlert
+            pageState={pageState}
+            setPageState={setPageState}
+            handleConfirm={() => history.push("/")}
+          />
+
           <Box className={classes.navWrapper}>
             <Container>
               <Menu
@@ -349,6 +380,12 @@ export default function RegisterForm() {
     case 4:
       return (
         <>
+          <SweetAlert
+            pageState={pageState}
+            setPageState={setPageState}
+            handleConfirm={() => history.push("/")}
+          />
+
           <Box className={classes.navWrapper}>
             <Container>
               <Menu
@@ -372,6 +409,12 @@ export default function RegisterForm() {
     case 5:
       return (
         <>
+          <SweetAlert
+            pageState={pageState}
+            setPageState={setPageState}
+            handleConfirm={() => history.push("/")}
+          />
+
           <Box className={classes.navWrapper}>
             <Container>
               <Menu
@@ -391,6 +434,12 @@ export default function RegisterForm() {
     case 6:
       return (
         <>
+          <SweetAlert
+            pageState={pageState}
+            setPageState={setPageState}
+            handleConfirm={() => history.push("/")}
+          />
+
           <Box className={classes.navWrapper}>
             <Container>
               <Menu
@@ -404,5 +453,4 @@ export default function RegisterForm() {
         </>
       );
   }
-
 }

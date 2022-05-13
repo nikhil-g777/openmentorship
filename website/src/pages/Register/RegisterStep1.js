@@ -13,6 +13,8 @@ import {
   FormGroup,
   MenuItem,
   Select,
+  Box,
+  Typography
 } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -129,6 +131,13 @@ const RegisterStep1 = (props) => {
             label="Other"
           />
         </FormGroup>
+        {props.errorState && (
+        <Box style={{ backgroundColor: "#F2DEE0", minHeight: 40, padding: 10 }}>
+          <Typography style={{ color: "#A16F70" }}>
+            Please choose at least one option on area of interest
+          </Typography>
+        </Box>
+      )}
         <DotStepper activeStep={0} handleNext={props.handleNext} />
       </ThemeProvider>
     </Container>
