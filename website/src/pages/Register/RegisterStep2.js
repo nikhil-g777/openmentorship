@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Container, DotStepper, Title, TitleWrapper } from "../../components";
-import { Button, makeStyles, withStyles } from "@material-ui/core";
+import {
+  Button,
+  makeStyles,
+  withStyles,
+  Box,
+  Typography,
+} from "@material-ui/core";
 import ExperienceCard from "./components/ExperienceCard";
 
 import styled from "styled-components";
@@ -24,16 +30,15 @@ const AddButton = withStyles({
 })(Button);
 
 const RegisterStep2 = (props) => {
-  const { handleUpdate, values, handleNextStep2 } = props;
-
-  const [experiences, setExperiences] = useState([
+  const { handleUpdate, values, handleNextStep2, errorState } = props;
+  const [experiences, setExperiences] = useState(values.experiences.length>0? values.experiences: [
     {
       id: generateId(),
       organization: "",
       title: "",
     },
   ]);
-  const [education, setEducation] = useState([
+  const [education, setEducation] = useState(values.education.length>0? values.education: [
     {
       id: generateId(),
       school: "",
@@ -118,7 +123,7 @@ const RegisterStep2 = (props) => {
       ]);
     }
   };
-
+console.log(experiences,"eccc")
   return (
     <Container>
       <TitleWrapper>
@@ -135,6 +140,7 @@ const RegisterStep2 = (props) => {
             value2={exp.title}
             handleChange={handleChangeExperience}
             handleClear={handleClearExperience}
+            errorState={errorState}
           ></ExperienceCard>
         );
       })}
@@ -154,11 +160,12 @@ const RegisterStep2 = (props) => {
             key={edu.id}
             id={edu.id}
             title1="school"
-            value1={edu.organization}
+            value1={edu.school}
             title2="degree"
-            value2={edu.title}
+            value2={edu.degree}
             handleChange={handleChangeEducation}
             handleClear={handleClearEducation}
+            errorState={errorState}
           ></ExperienceCard>
         );
       })}
@@ -169,8 +176,12 @@ const RegisterStep2 = (props) => {
         </AddContainer>
       )}
 
-      {values.emptyField && (
-        <p style={{ textAlign: "center" }}>Please fill the required fields</p>
+      {errorState && (
+        <Box style={{ backgroundColor: "#F2DEE0", minHeight: 40, padding: 10 }}>
+          <Typography style={{ color: "#A16F70" }}>
+            Please fill the required fields
+          </Typography>
+        </Box>
       )}
       <DotStepper
         activeStep={1}

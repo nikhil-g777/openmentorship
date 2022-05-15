@@ -15,9 +15,12 @@ import {
   Typography,
   Container,
   CircularProgress,
+  Button,
 } from "@material-ui/core";
 import "fontsource-roboto";
+import Dialog from "@material-ui/core/Dialog";
 
+import SpeakerNotesOffIcon from "@material-ui/icons/SpeakerNotesOff";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
 import chat from "../../images/chat.svg";
@@ -25,6 +28,7 @@ import arrow from "../../images/arrow.svg";
 import upload from "../../images/upload.svg";
 import sendMessage from "../../images/sendMessage.svg";
 import { getUserMatches } from "../../redux/Actions/MatchesActions";
+import { endChatSession } from "../../redux/Actions/SessionActions";
 import { getUserInfo, userChatToken } from "../../redux/Actions/UserActions";
 import { MdArrowBackIosNew } from "react-icons/md";
 const useStyles = makeStyles((theme) => ({
@@ -192,6 +196,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#747474",
     display: "block",
     fontSize: 12,
+    float: "right",
   },
   uploadImage: {
     width: "34px",
@@ -241,6 +246,21 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  flexModal: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  sure: {
+    width: 300,
+    fontSize: 16,
+    margin: 10,
+    fontWeight: "300",
+  },
+  buttonEnd: {
+    textTransform: "capitalize",
+    boxShadow: "none",
+    backgroundColor:'transparent'
+  },
 }));
 
 const theme = createMuiTheme({
@@ -256,6 +276,11 @@ export default function MenteeCard() {
   const [twilloId, setTwilloId] = useState("");
   const [conversations, setConversation] = useState();
   const [typeMessage, setTypeMessage] = useState("");
+  const [chatName, setChatName] = useState("");
+  const [matchId, setMatchId] = useState("");
+
+  const [open, setOpen] = useState(false);
+
   const [selectedcon, setSelectedcon] = useState("");
   const [selectedSID, setSelectedSID] = useState("");
   const [loading, setLoading] = useState(false);
@@ -372,6 +397,26 @@ export default function MenteeCard() {
     }
   };
   console.log(messages, "messages");
+  const handleHeader = (data) => {
+    console.log(data, "data here");
+    if (user?.user?.userType === "mentee") {
+      setChatName(data.mentor.firstName);
+      setMatchId(data._id);
+    } else {
+      setChatName(data.mentee.firstName);
+      setMatchId(data._id);
+    }
+  };
+  const endSession = async () => {
+    const data = {
+      matchId: matchId,
+      status: "closed",
+      requestMessage: "I want to disconnect",
+    };
+    await dispatch(endChatSession(data));
+    setOpen(false);
+    window.location.reload();
+  };
   return (
     <>
       <Box className={classes.navWrapper}>
@@ -403,11 +448,12 @@ export default function MenteeCard() {
                               : classes.WhiteBox
                           }
                           key={index}
-                          onClick={() =>
+                          onClick={() => {
                             handleSelected(
                               x.latestSession.twilioConversationSid
-                            )
-                          }
+                            );
+                            handleHeader(x);
+                          }}
                         >
                           <Typography variant="h6">
                             <img src={chat} className={classes.MarginImage} />
@@ -446,6 +492,7 @@ export default function MenteeCard() {
                                 x.latestSession.twilioConversationSid
                               );
                               setIsShow(false);
+                              handleHeader(x);
                             }}
                           >
                             <Typography variant="h6">
@@ -479,28 +526,33 @@ export default function MenteeCard() {
                             display: "flex",
                             padding: 10,
                             marginBottom: "5%",
+                            justifyContent: "space-between",
                           }}
                         >
                           <MdArrowBackIosNew onClick={() => setIsShow(true)} />
-                          <Typography style={{ marginLeft: "40%" }}>
-                            Name
-                          </Typography>
+                          <Typography>{chatName}</Typography>
+                          <SpeakerNotesOffIcon
+                            style={{ color: "green", cursor: "pointer" }}
+                            onClick={endSession}
+                          />
                         </Box>
                         <Box style={{ maxHeight: 500, overflow: "scroll" }}>
                           {messages.map((x) =>
                             x.author === user?.user?._id ? (
                               <Box className={classes.SenderChatBox}>
                                 {x.body}
-                                {/* <br/><span className={classes.TimeDate}>
-                              {x.state.timestamp.toLocaleString()}
-                            </span> */}
+                                <br />
+                                <span className={classes.TimeDate}>
+                                  {x.state.timestamp.toLocaleString()}
+                                </span>
                               </Box>
                             ) : (
                               <Box className={classes.GrayBox}>
                                 {x.body}
-                                {/* <br/><span className={classes.TimeDate}>
-                              {x.state.timestamp.toLocaleString()}
-                            </span> */}
+                                <br />
+                                <span className={classes.TimeDate}>
+                                  {x.state.timestamp.toLocaleString()}
+                                </span>
                               </Box>
                             )
                           )}
@@ -543,16 +595,52 @@ export default function MenteeCard() {
                       style={{ marginLeft: "40%", marginTop: "10%" }}
                     />
                   ) : (
-                    <Box style={{ maxHeight: 500, overflow: "scroll" }}>
-                      {messages.map((x) =>
-                        x.author === user?.user?._id ? (
-                          <Box className={classes.SenderChatBox}>{x.body}</Box>
-                        ) : (
-                          <Box className={classes.GrayBox}>{x.body}</Box>
-                        )
-                      )}
-                    </Box>
+                    <>
+                      {messages.length > 0 ? (
+                        <Box
+                          style={{
+                            display: "flex",
+                            padding: 10,
+                            marginBottom: "5%",
+                            borderBottom: "1px solid lightgray",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <Typography
+                            style={{ color: "darkgreen", marginRight: "45%" }}
+                          >
+                            {chatName}
+                          </Typography>
+                          <SpeakerNotesOffIcon
+                            style={{ color: "green", cursor: "pointer" }}
+                            onClick={() => setOpen(true)}
+                          />
+                        </Box>
+                      ) : null}
+                      <Box style={{ maxHeight: "70vh", overflow: "scroll" }}>
+                        {messages.map((x) =>
+                          x.author === user?.user?._id ? (
+                            <Box className={classes.SenderChatBox}>
+                              {x.body}
+                              <br />
+                              <span className={classes.TimeDate}>
+                                {x.state.timestamp.toLocaleString()}
+                              </span>
+                            </Box>
+                          ) : (
+                            <Box className={classes.GrayBox}>
+                              {x.body}
+                              <br />
+                              <span className={classes.TimeDate}>
+                                {x.state.timestamp.toLocaleString()}
+                              </span>
+                            </Box>
+                          )
+                        )}
+                      </Box>
+                    </>
                   )}
+
                   {selectedSID ? (
                     <Box className={classes.SendBox}>
                       <Box className={classes.styleFlex}>
@@ -589,6 +677,36 @@ export default function MenteeCard() {
         <Container>
           <Footer />
         </Container>
+      </div>
+      <div>
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="simple-dialog-title"
+          maxWidth="xs"
+        >
+          <Typography variant="h6" className={classes.sure}>
+            Are you sure you would like to end the session?
+          </Typography>
+          <div className={classes.flexModal}>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="contained"
+              className={classes.buttonEnd}
+              style={{color: "black" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={endSession}
+              variant="contained"
+              className={classes.buttonEnd}
+              style={{  color: "red" }}
+            >
+              End Session
+            </Button>
+          </div>
+        </Dialog>
       </div>
     </>
   );

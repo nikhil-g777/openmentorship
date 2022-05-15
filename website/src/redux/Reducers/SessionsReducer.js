@@ -2,6 +2,9 @@ import {
   GET_SESSIONS,
   GET_SESSIONS_SUCCESS,
   GET_SESSIONS_ERROR,
+  UPDATE_SESSION,
+  UPDATE_SESSION_SUCCESS,
+  UPDATE_SESSION_ERROR,
 } from "../Types/UserTypes";
 
 const initialState = {
@@ -32,6 +35,25 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: false,
       };
+
+      case UPDATE_SESSION:
+        return {
+          ...state,
+          loading: true,
+        };
+  
+      case UPDATE_SESSION_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          // sessions: action.payload.sessions,
+        };
+  
+      case UPDATE_SESSION_ERROR:
+        return {
+          ...state,
+          loading: false,
+        };
 
     default:
       return state;

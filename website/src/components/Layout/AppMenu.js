@@ -5,7 +5,7 @@ import userIcon from "../../images/user.svg";
 import backIcon from "../../images/backIcon.svg";
 import { getUserInfo,  } from "../../redux/Actions/UserActions";
 import { useDispatch, useSelector } from "react-redux";
-
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, MenuItem, Menu, Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -280,6 +280,16 @@ const AppMenu = (props) => {
         <BackButton onClick={props.handleBack} />
       )} */}
       <Box className="web-navbar">
+      {props.showBackButton !== false ? (
+      //   <Link
+      //   to=""
+      //   style={{ marginRight: 30, color: "black", textDecoration: "none" ,marginTop:-5}}
+      // >
+        <ArrowBackIcon onClick={props.handleBack} style={{ marginRight: 30, color: "black", textDecoration: "none" ,cursor:'pointer'}}/>
+      // </Link>
+      ) : (
+       null
+      )}
         {user?.user?.userType==="mentee"?
         <Link
           to="/explore"
