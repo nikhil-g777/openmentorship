@@ -50,11 +50,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "10px",
   },
   pro_typo3: {
-    fontStyle: "normal",
-    fontWeight: "900 !important",
-    fontSize: "20px",
+    color: "#000000",
+    fontWeight: "bolder",
+    fontSize: "21px",
     lineHeight: "27px",
     marginTop: "25px",
+    // fontWeight:'bolder'
   },
   pro_typo4: {
     fontStyle: "normal",
@@ -342,19 +343,22 @@ const ProfileCard = (props) => {
           )}
         </Box>
         <Typography className={classes.pro_typo2}>{data?.headline}</Typography>
-        <Typography className={classes.pro_typo3}>About</Typography>
+        <Typography className={classes.pro_typo3} style={{fontWeight:'bold !important'}}><b>About</b></Typography>
         <Typography className={classes.pro_typo4}>{data?.bio}</Typography>
         <Typography className={classes.pro_typo3}>Areas of interest</Typography>
         <Typography className={classes.pro_typo4}>
-          {data?.interests?.map((interest, i) => (
+          {/* {data?.interests?.map((interest, i) => (
             <span key={i}>{interest},</span>
-          ))}
+          ))} */}
+         {data?.interests?.toString()}
         </Typography>
         <Typography className={classes.pro_typo3}>Top skills</Typography>
         <Typography className={classes.pro_typo4}>
-          {data?.skills?.map((skill, i) => (
+          {/* {data?.skills?.map((skill, i) => (
             <span key={i}>{skill},</span>
-          ))}
+          ))} */}
+         {data?.skills?.toString()}
+
         </Typography>
         <Typography className={classes.pro_typo3}>Looking for</Typography>
         <Grid item container spacing={1} style={{ marginTop: "10px" }}>

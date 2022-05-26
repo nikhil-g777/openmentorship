@@ -9,8 +9,13 @@ import "../../style/Explore.css";
 import { Container, Typography, Grid, Button,Box } from "@material-ui/core";
 import Alldata from "./Alldata";
 import filterOptions from "./filterOptions";
-import Slider from "./Slider";
+import Slider1 from "./Slider";
 import Footer from "../../components/Footer";
+import Slider from "react-slick";
+import ProfileCard from "../../components/ProfileCard/ProfileCard";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import {
   makeStyles,
 } from "@material-ui/core/styles";
@@ -38,7 +43,76 @@ export default function Explore() {
     communicationFrequency: "",
     communicationPreferences: [],
   });
-
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    pauseOnHover: false,
+    arrows:false,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          background: "#51B6A5",
+          color: "#51B6A5",
+          borderRadius: 50,
+          fontSize: 40,
+        }}
+        onClick={onClick}
+      />
+    );
+  }
+  function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          background: "#51B6A5",
+          color: "#51B6A5",
+          borderRadius: 50,
+        }}
+        onClick={onClick}
+      />
+    );
+  }
   useEffect(() => {
     setMentorData(data);
   }, [data]);
@@ -178,11 +252,32 @@ export default function Explore() {
               Recommended based on your profile{" "}
             </Typography>
 
-            <Slider data={data} loading={loading} />
+            <Slider1 data={data} loading={loading} />
           </Grid>
         </Grid>
-        :null
+        :
+        null
         }
+
+        
+        </Container>
+        </div>
+        <div className="mobile-view-slider-shown">
+
+        <Container>
+        <Typography className="color_pro" style={{marginTop:50}}>
+              Recommended based on your profile{" "}
+            </Typography>
+        <Slider {...settings}>
+                     {data?.map((elm) => (
+                      <Grid container className="m-top">
+                        <ProfileCard
+                          data={elm}
+                          isRequest={true}
+                        />
+                      </Grid>
+                    ))}
+        </Slider>
         </Container>
         </div>
         {/* </Container>

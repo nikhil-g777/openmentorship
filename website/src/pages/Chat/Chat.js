@@ -19,7 +19,7 @@ import {
 } from "@material-ui/core";
 import "fontsource-roboto";
 import Dialog from "@material-ui/core/Dialog";
-
+import { Scrollbars } from "react-custom-scrollbars";
 import SpeakerNotesOffIcon from "@material-ui/icons/SpeakerNotesOff";
 import { Menu } from "../../components";
 import Footer from "../../components/Footer";
@@ -259,7 +259,7 @@ const useStyles = makeStyles((theme) => ({
   buttonEnd: {
     textTransform: "capitalize",
     boxShadow: "none",
-    backgroundColor:'transparent'
+    backgroundColor: "transparent",
   },
 }));
 
@@ -272,6 +272,7 @@ const theme = createMuiTheme({
 export default function MenteeCard() {
   const classes = useStyles();
   const history = useHistory();
+  const refDisplay = useRef(null);
   const dispatch = useDispatch();
   const [twilloId, setTwilloId] = useState("");
   const [conversations, setConversation] = useState();
@@ -378,6 +379,7 @@ export default function MenteeCard() {
     }
   };
 
+
   const sendMessagee = (event) => {
     if (typeMessage.length > 800) {
       alert("Message length should be less than 800 characters");
@@ -387,7 +389,10 @@ export default function MenteeCard() {
       const message = typeMessage;
       setTypeMessage("");
       selectedcon.sendMessage(message);
-      getToken();
+      // getToken();
+      // if(refDisplay.current){
+      //   refDisplay.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      // }
     }
   };
   const handleKeyPress = (event) => {
@@ -417,6 +422,7 @@ export default function MenteeCard() {
     setOpen(false);
     window.location.reload();
   };
+  // console.log(refDisplay,"refDisplay")
   return (
     <>
       <Box className={classes.navWrapper}>
@@ -617,27 +623,32 @@ export default function MenteeCard() {
                           />
                         </Box>
                       ) : null}
-                      <Box style={{ maxHeight: "70vh", overflow: "scroll" }}>
-                        {messages.map((x) =>
-                          x.author === user?.user?._id ? (
-                            <Box className={classes.SenderChatBox}>
-                              {x.body}
-                              <br />
-                              <span className={classes.TimeDate}>
-                                {x.state.timestamp.toLocaleString()}
-                              </span>
-                            </Box>
-                          ) : (
-                            <Box className={classes.GrayBox}>
-                              {x.body}
-                              <br />
-                              <span className={classes.TimeDate}>
-                                {x.state.timestamp.toLocaleString()}
-                              </span>
-                            </Box>
-                          )
-                        )}
-                      </Box>
+                      <Scrollbars style={{ height: "60vh" }}>
+                        <div ref={refDisplay}>
+                          {messages.map((x, index) =>
+                            x.author === user?.user?._id ? (
+                              <Box
+                                className={classes.SenderChatBox}
+                                key={index}
+                              >
+                                {x.body}
+                                <br />
+                                <span className={classes.TimeDate}>
+                                  {x.state.timestamp.toLocaleString()}
+                                </span>
+                              </Box>
+                            ) : (
+                              <Box className={classes.GrayBox}>
+                                {x.body}
+                                <br />
+                                <span className={classes.TimeDate}>
+                                  {x.state.timestamp.toLocaleString()}
+                                </span>
+                              </Box>
+                            )
+                          )}
+                        </div>
+                      </Scrollbars>
                     </>
                   )}
 
@@ -693,7 +704,7 @@ export default function MenteeCard() {
               onClick={() => setOpen(false)}
               variant="contained"
               className={classes.buttonEnd}
-              style={{color: "black" }}
+              style={{ color: "black" }}
             >
               Cancel
             </Button>
@@ -701,7 +712,7 @@ export default function MenteeCard() {
               onClick={endSession}
               variant="contained"
               className={classes.buttonEnd}
-              style={{  color: "red" }}
+              style={{ color: "red" }}
             >
               End Session
             </Button>

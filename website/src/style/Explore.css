@@ -159,8 +159,15 @@
 .mobile-nuull {
   display: block;
 }
+.mobile-view-slider-shown {
+  display: none ;
+
+}
 @media screen and (max-width:600px){
   .mobile-nuull {
     display: none;
+  }
+  .mobile-view-slider-shown {
+    display: block ;
   }
 }
