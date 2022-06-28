@@ -15,11 +15,17 @@ const useStyles = makeStyles(() => ({
 const ExperienceContainer = styled.div`
   display: flex;
   flex-direction: column;
+  @media (max-width: 780px) {
+    display: block;
+  }
 `;
 
 const Entity = styled.div`
   display: flex;
   justify-contect: space-evenly;
+  @media (max-width: 780px) {
+    display: block;
+  }
 `;
 
 const StyledButton = withStyles({
@@ -34,8 +40,17 @@ const StyledButton = withStyles({
 })(Button);
 
 const ExperienceCard = (props) => {
-  const { id, title1, value1, title2, value2, handleChange, handleClear ,errorState} =
-    props;
+  const {
+    id,
+    title1,
+    value1,
+    title2,
+    value2,
+    handleChange,
+    handleClear,
+    errorState,
+    removebutton,
+  } = props;
 
   const classes = useStyles();
 
@@ -54,7 +69,7 @@ const ExperienceCard = (props) => {
           style={{
             margin: "1rem 1rem 1rem 0",
           }}
-          error={errorState? true:false}
+          error={errorState ? true : false}
         />
         <TextField
           id={"title2_" + id}
@@ -68,12 +83,11 @@ const ExperienceCard = (props) => {
           style={{
             margin: "1rem 1rem 1rem 0",
           }}
-          error={errorState? true:false}
-
+          error={errorState ? true : false}
         />
-        <StyledButton id={id} onClick={handleClear}>
-          <CloseIcon disabled />
-        </StyledButton>
+          <StyledButton id={id} onClick={handleClear}>
+            <CloseIcon disabled />
+          </StyledButton>
       </Entity>
     </ExperienceContainer>
   );

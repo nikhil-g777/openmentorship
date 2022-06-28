@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -6,
     marginLeft: -6,
     [theme.breakpoints.down("sm")]: {
-      width: "117px",
-      height: "120px",
+      width: "100px",
+      height: "100px",
     },
   },
   userDataWrapper: {
@@ -48,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
     linHeight: "27px",
     color: "#6D6D6D",
     marginTop: "10px",
+    "@media (max-width:780px)": {
+      fontSize: "15px",
+      marginTop: "5px",
+    },
   },
   pro_typo3: {
     color: "#000000",
@@ -55,7 +59,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "21px",
     lineHeight: "27px",
     marginTop: "25px",
-    // fontWeight:'bolder'
+    "@media (max-width:780px)": {
+      fontSize: "16px",
+    lineHeight: "20px",
+
+    },
   },
   pro_typo4: {
     fontStyle: "normal",
@@ -63,6 +71,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
     lineHeight: "27px",
     marginTop: "10px",
+    "@media (max-width:780px)": {
+      fontSize: "13px",
+      marginTop: "5px",
+    lineHeight: "17px",
+
+    },
   },
   pro_typo_btn: {
     backgroundColor: "#F1F1F1",
@@ -105,8 +119,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       color: "#000000",
       fontWeight: "bold",
-      fontSize: "20px",
-      lineHeight: "27px",
+      fontSize: "15px",
+      lineHeight: "20px",
       display: "block",
       marginTop: "4%",
     },
@@ -135,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
   },
   accountButton: { border: "1px solid #6D6D6D", marginTop: "11px" },
   buttonsText: {
-    fontSize: "16px",
+    fontSize: "14px",
     fontWeight: 700,
     lineHeight: "19px",
     letterSpacing: "0em",
@@ -143,7 +157,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     borderRadius: "40px",
     textTransform: "inherit",
-    width: 180,
+    width: 150,
     // width: "-webkit-fill-available",
     "&:focus": {
       outline: "none",
@@ -343,22 +357,26 @@ const ProfileCard = (props) => {
           )}
         </Box>
         <Typography className={classes.pro_typo2}>{data?.headline}</Typography>
-        <Typography className={classes.pro_typo3} style={{fontWeight:'bold !important'}}><b>About</b></Typography>
+        <Typography
+          className={classes.pro_typo3}
+          style={{ fontWeight: "bold !important" }}
+        >
+          <b>About</b>
+        </Typography>
         <Typography className={classes.pro_typo4}>{data?.bio}</Typography>
         <Typography className={classes.pro_typo3}>Areas of interest</Typography>
         <Typography className={classes.pro_typo4}>
           {/* {data?.interests?.map((interest, i) => (
             <span key={i}>{interest},</span>
           ))} */}
-         {data?.interests?.toString()}
+          {data?.interests?.toString()}
         </Typography>
         <Typography className={classes.pro_typo3}>Top skills</Typography>
         <Typography className={classes.pro_typo4}>
           {/* {data?.skills?.map((skill, i) => (
             <span key={i}>{skill},</span>
           ))} */}
-         {data?.skills?.toString()}
-
+          {data?.skills?.toString()}
         </Typography>
         <Typography className={classes.pro_typo3}>Looking for</Typography>
         <Grid item container spacing={1} style={{ marginTop: "10px" }}>

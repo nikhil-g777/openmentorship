@@ -6,35 +6,34 @@ import {
   getexploredataByContent,
 } from "../../redux/Actions/ExploreAction";
 import "../../style/Explore.css";
-import { Container, Typography, Grid, Button,Box } from "@material-ui/core";
+import { Container, Typography, Grid, Button, Box } from "@material-ui/core";
 import Alldata from "./Alldata";
 import filterOptions from "./filterOptions";
 import Slider1 from "./Slider";
 import Footer from "../../components/Footer";
 import Slider from "react-slick";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
+import Pagination from '@material-ui/lab/Pagination';
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {
-  makeStyles,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   navWrapper: {
     marginBottom: "12px",
     display: "block",
-    "@media (max-width:780px)": {
-      display: "none",
-    },
+    // "@media (max-width:780px)": {
+    //   display: "none",
+    // },
   },
-}))
+}));
 export default function Explore() {
   const data = useSelector((store) => store.Explorereducer.Explore);
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const [limit] = useState(10);
-  const [page] = useState(1);
+  const [page,setPage] = useState(1);
   const frequency = "communicationFrequency";
   const [mantorData, setMentorData] = useState([]);
   const [findMentor, setFindMentor] = useState({
@@ -51,7 +50,7 @@ export default function Explore() {
     slidesToScroll: 1,
     autoplay: true,
     pauseOnHover: false,
-    arrows:false,
+    arrows: false,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
@@ -114,9 +113,9 @@ export default function Explore() {
     );
   }
   useEffect(() => {
-    setMentorData(data);
+    setMentorData(data.mentors);
   }, [data]);
-
+  console.log(data, "data");
   const loading = useSelector((store) => store.Explorereducer.loading);
   useEffect(() => {
     if (
@@ -126,6 +125,7 @@ export default function Explore() {
       findMentor.communicationPreferences !== []
     ) {
       dispatch(getexploredataByContent(page, limit, findMentor));
+      // window.scroll(0,0);
     } else {
       dispatch(getexploredata());
     }
@@ -134,6 +134,7 @@ export default function Explore() {
     findMentor.goals,
     findMentor.communicationFrequency,
     findMentor.communicationPreferences,
+    page
   ]);
 
   const handleToggle = (text, type) => {
@@ -175,15 +176,16 @@ export default function Explore() {
     }
   };
   console.log(findMentor, "findMentor");
+const handleChange = (event, value) => {
+  setPage(value)
+}
 
   return (
     <div>
       {/* <Nav /> */}
-            <Box className={classes.navWrapper}>
+      <Box className={classes.navWrapper}>
         <Container>
-       <Nav
-       showBackButton={false} />
-
+          <Nav showBackButton={false} />
         </Container>
       </Box>
       <div className="main">
@@ -198,41 +200,39 @@ export default function Explore() {
               Filter <span className="span_text"> (hide)</span>
             </Typography>
           </Grid>
-            <Grid className="items-center">
-              <Grid container className="flex" lg={12}>
-                {filterOptions.map((y, index) => (
-                  <Grid item className="jj" xs={6} sm={6} md={4} lg={3}>
-                    <Grid className="change_color">
-                      <Typography className="change_color" variant="p">
-                        {y.key}
-                      </Typography>
+          <Grid className="items-center">
+            <Grid container className="flex" lg={12}>
+              {filterOptions.map((y, index) => (
+                <Grid item className="jj" xs={6} sm={6} md={4} lg={3}>
+                  <Grid className="change_color">
+                    <Typography className="change_color" variant="p">
+                      {y.key}
+                    </Typography>
 
-                      <div className="line" />
-                      {console.log(y, "ee")}
-                      <Grid lg={8} md={12} sm={12} xs={12} className="cen">
-                        {y.values.map((x) => (
-                          <Button
-                            className={
-                              findMentor.areaOfInterest.includes(x.text) ||
-                              findMentor.goals.includes(x.text) ||
-                              findMentor.communicationFrequency === x.text ||
-                              findMentor.communicationPreferences.includes(
-                                x.text
-                              )
-                                ? "bt"
-                                : "round-button"
-                            }
-                            onClick={() => handleToggle(x.text, x.type)}
-                          >
-                            {x.name}
-                          </Button>
-                        ))}
-                      </Grid>
+                    <div className="line" />
+                    {console.log(y, "ee")}
+                    <Grid lg={8} md={12} sm={12} xs={12} className="cen">
+                      {y.values.map((x) => (
+                        <Button
+                          className={
+                            findMentor.areaOfInterest.includes(x.text) ||
+                            findMentor.goals.includes(x.text) ||
+                            findMentor.communicationFrequency === x.text ||
+                            findMentor.communicationPreferences.includes(x.text)
+                              ? "bt"
+                              : "round-button"
+                          }
+                          onClick={() => handleToggle(x.text, x.type)}
+                        >
+                          {x.name}
+                        </Button>
+                      ))}
                     </Grid>
                   </Grid>
-                ))}
-              </Grid>
+                </Grid>
+              ))}
             </Grid>
+          </Grid>
         </Container>
         {/* </div>
 
@@ -240,45 +240,37 @@ export default function Explore() {
         {/* <Container className="grid_center"> */}
         {/* <Grid lg={12}></Grid> */}
         <div className="mobile-nuull">
-        <Container>
-        {findMentor.areaOfInterest.length == 0 &&
-      findMentor.goals.length == 0 &&
-      findMentor.communicationFrequency === "" &&
-      findMentor.communicationPreferences.length == 0 ?
-        <Grid container justify="center">
-          {/* <Grid item lg={2}></Grid> */}
-          <Grid item lg={12} sm={12}>
-            <Typography className="color_pro" style={{marginTop:50}}>
-              Recommended based on your profile{" "}
-            </Typography>
+          <Container>
+            {findMentor.areaOfInterest.length == 0 &&
+            findMentor.goals.length == 0 &&
+            findMentor.communicationFrequency === "" &&
+            findMentor.communicationPreferences.length == 0 ? (
+              <Grid container justify="center">
+                {/* <Grid item lg={2}></Grid> */}
+                <Grid item lg={12} sm={12}>
+                  <Typography className="color_pro" style={{ marginTop: 50 }}>
+                    Recommended based on your profile{" "}
+                  </Typography>
 
-            <Slider1 data={data} loading={loading} />
-          </Grid>
-        </Grid>
-        :
-        null
-        }
-
-        
-        </Container>
+                  <Slider1 data={data?.mentors} loading={loading} />
+                </Grid>
+              </Grid>
+            ) : null}
+          </Container>
         </div>
         <div className="mobile-view-slider-shown">
-
-        <Container>
-        <Typography className="color_pro" style={{marginTop:50}}>
+          <Container>
+            <Typography className="color_pro" style={{ marginTop: 50 }}>
               Recommended based on your profile{" "}
             </Typography>
-        <Slider {...settings}>
-                     {data?.map((elm) => (
-                      <Grid container className="m-top">
-                        <ProfileCard
-                          data={elm}
-                          isRequest={true}
-                        />
-                      </Grid>
-                    ))}
-        </Slider>
-        </Container>
+            <Slider {...settings}>
+              {data?.mentors?.map((elm) => (
+                <Grid container className="m-top">
+                  <ProfileCard data={elm} isRequest={true} />
+                </Grid>
+              ))}
+            </Slider>
+          </Container>
         </div>
         {/* </Container>
         </Container>
@@ -289,6 +281,14 @@ export default function Explore() {
         <Alldata data={mantorData} loading={loading} />
         {/* </Container> */}
       </div>
+        <div style={{backgroundColor:'#F1F4F4'}}>
+      <Container>
+      <div className="pagination">
+        <Pagination count={data.totalPages} onChange={handleChange} />
+        </div>
+      </Container>
+
+        </div>
       <div className="foter">
         <Container>
           <Footer />

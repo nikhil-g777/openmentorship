@@ -16,6 +16,7 @@ import {
   Container,
   CircularProgress,
   Button,
+  List,
 } from "@material-ui/core";
 import "fontsource-roboto";
 import Dialog from "@material-ui/core/Dialog";
@@ -31,6 +32,7 @@ import { getUserMatches } from "../../redux/Actions/MatchesActions";
 import { endChatSession } from "../../redux/Actions/SessionActions";
 import { getUserInfo, userChatToken } from "../../redux/Actions/UserActions";
 import { MdArrowBackIosNew } from "react-icons/md";
+import "../../style/Explore.css"
 const useStyles = makeStyles((theme) => ({
   navWrapper: {
     marginBottom: "12px",
@@ -228,7 +230,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   responsive: {
-    display: "block",
     "@media (max-width:780px)": {
       display: "none",
     },
@@ -370,17 +371,21 @@ export default function MenteeCard() {
         setMessages(messagePaginator.items);
       });
       setMessageLoding(false);
-      // .catch((err) => {
+      setTimeout(() => {
+        
+      const scrollHeight = refDisplay.current.scrollHeight;
+      const height = refDisplay.current.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      refDisplay.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }, 1000);
 
-      // });
     } catch {
       alert("Request Failed By Fetching Messages");
       setMessageLoding(false);
     }
   };
 
-
-  const sendMessagee = (event) => {
+  const sendMessagee = async(event) => {
     if (typeMessage.length > 800) {
       alert("Message length should be less than 800 characters");
     } else {
@@ -389,12 +394,17 @@ export default function MenteeCard() {
       const message = typeMessage;
       setTypeMessage("");
       selectedcon.sendMessage(message);
-      // getToken();
-      // if(refDisplay.current){
-      //   refDisplay.current.scrollIntoView({ behavior: "smooth", block: "start" });
-      // }
+       getToken();
+       setTimeout(() => {
+        const scrollHeight = refDisplay.current.scrollHeight;
+        const height = refDisplay.current.clientHeight;
+        const maxScrollTop = scrollHeight - height;
+        refDisplay.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+      }, 1000);
+
     }
   };
+
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       setLoading(true);
@@ -422,7 +432,7 @@ export default function MenteeCard() {
     setOpen(false);
     window.location.reload();
   };
-  // console.log(refDisplay,"refDisplay")
+
   return (
     <>
       <Box className={classes.navWrapper}>
@@ -593,7 +603,13 @@ export default function MenteeCard() {
                     ) : null}
                   </Grid>
                 )}
-                <Grid item lg={8} className={classes.responsive}>
+                <Grid
+                  item
+                  lg={8}
+                  className="responsivee"
+                  ref={refDisplay}
+                  style={{ height: "70vh",overflowY:'scroll'}}
+                >
                   {messageLoading ? (
                     <CircularProgress
                       size={42}
@@ -623,35 +639,36 @@ export default function MenteeCard() {
                           />
                         </Box>
                       ) : null}
-                      <Scrollbars style={{ height: "60vh" }}>
-                        <div ref={refDisplay}>
-                          {messages.map((x, index) =>
-                            x.author === user?.user?._id ? (
-                              <Box
-                                className={classes.SenderChatBox}
-                                key={index}
-                              >
-                                {x.body}
-                                <br />
-                                <span className={classes.TimeDate}>
-                                  {x.state.timestamp.toLocaleString()}
-                                </span>
-                              </Box>
-                            ) : (
-                              <Box className={classes.GrayBox}>
-                                {x.body}
-                                <br />
-                                <span className={classes.TimeDate}>
-                                  {x.state.timestamp.toLocaleString()}
-                                </span>
-                              </Box>
-                            )
-                          )}
-                        </div>
-                      </Scrollbars>
+                      {/* <Scrollbars> */}
+                      <div>
+                        {messages.map((x, index) =>
+                          x.author === user?.user?._id ? (
+                            <Box className={classes.SenderChatBox} key={index}>
+                              {x.body}
+                              <br />
+                              <span className={classes.TimeDate}>
+                                {x.state.timestamp.toLocaleString()}
+                              </span>
+                            </Box>
+                          ) : (
+                            <Box className={classes.GrayBox}>
+                              {x.body}
+                              <br />
+                              <span className={classes.TimeDate}>
+                                {x.state.timestamp.toLocaleString()}
+                              </span>
+                            </Box>
+                          )
+                        )}
+                      </div>
+                      {/* </Scrollbars> */}
                     </>
                   )}
-
+                </Grid>
+              </Grid>
+              <Grid container justifyContent="flex-end">
+                <Grid item lg={4}></Grid>
+                <Grid item lg={8}>
                   {selectedSID ? (
                     <Box className={classes.SendBox}>
                       <Box className={classes.styleFlex}>
