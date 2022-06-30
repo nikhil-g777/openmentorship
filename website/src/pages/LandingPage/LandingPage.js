@@ -408,11 +408,9 @@ export default function LandingPage(props) {
       if (userData?.payload?.data?.user?.userType === "mentee") {
         history.push(`/explore`);
       }
-
     } else {
-      NotificationManager.error(result?.payload?.data?.message);
+      NotificationManager.error(result?.payload?.data?.error);
     }
-
   };
 
   const handleFailure = (error) => {

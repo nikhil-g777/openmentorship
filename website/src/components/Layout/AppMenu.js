@@ -155,7 +155,6 @@ const DropDownMenu = (props) => {
             <div className="mobile-navbar">
               <MenuLink to="/profile">
                 <MenuItem
-                  disabled
                   onClick={props.handleClose}
                   selected={pathname === "/profile"}
                 >
@@ -173,7 +172,6 @@ const DropDownMenu = (props) => {
 
               <MenuLink to="/chat">
                 <MenuItem
-                  disabled
                   onClick={props.handleClose}
                   selected={pathname === "/chat"}
                 >
@@ -201,7 +199,6 @@ const DropDownMenu = (props) => {
           <div>
             <MenuLink to="/profile">
               <MenuItem
-                disabled
                 onClick={props.handleClose}
                 selected={pathname === "/profile"}
               >
@@ -228,7 +225,6 @@ const DropDownMenu = (props) => {
             ) : null}
             <MenuLink to="/chat">
               <MenuItem
-                disabled
                 onClick={props.handleClose}
                 selected={pathname === "/chat"}
               >
