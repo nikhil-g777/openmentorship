@@ -1,11 +1,11 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import LogoNavBar from "../../images/LogoNavBar.png";
 import userIcon from "../../images/user.svg";
 import backIcon from "../../images/backIcon.svg";
-import { getUserInfo,  } from "../../redux/Actions/UserActions";
+import { getUserInfo } from "../../redux/Actions/UserActions";
 import { useDispatch, useSelector } from "react-redux";
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, MenuItem, Menu, Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -106,7 +106,7 @@ const DropDownMenu = (props) => {
   function logOut() {
     // setUser({});
     localStorage.removeItem("token");
-    window.location.href="/"
+    window.location.href = "/";
   }
 
   return (
@@ -155,7 +155,6 @@ const DropDownMenu = (props) => {
             <div className="mobile-navbar">
               <MenuLink to="/profile">
                 <MenuItem
-                  disabled
                   onClick={props.handleClose}
                   selected={pathname === "/profile"}
                 >
@@ -170,9 +169,9 @@ const DropDownMenu = (props) => {
                   Matches
                 </MenuItem>
               </MenuLink>
+
               <MenuLink to="/chat">
                 <MenuItem
-                  disabled
                   onClick={props.handleClose}
                   selected={pathname === "/chat"}
                 >
@@ -200,7 +199,6 @@ const DropDownMenu = (props) => {
           <div>
             <MenuLink to="/profile">
               <MenuItem
-                disabled
                 onClick={props.handleClose}
                 selected={pathname === "/profile"}
               >
@@ -215,9 +213,18 @@ const DropDownMenu = (props) => {
                 Matches
               </MenuItem>
             </MenuLink>
+            {props.user?.user?.userType === "mentee" ? (
+              <MenuLink to="/explore">
+                <MenuItem
+                  onClick={props.handleClose}
+                  selected={pathname === "/explore"}
+                >
+                  Discover
+                </MenuItem>
+              </MenuLink>
+            ) : null}
             <MenuLink to="/chat">
               <MenuItem
-                disabled
                 onClick={props.handleClose}
                 selected={pathname === "/chat"}
               >
@@ -280,24 +287,30 @@ const AppMenu = (props) => {
         <BackButton onClick={props.handleBack} />
       )} */}
       <Box className="web-navbar">
-      {props.showBackButton !== false ? (
-      //   <Link
-      //   to=""
-      //   style={{ marginRight: 30, color: "black", textDecoration: "none" ,marginTop:-5}}
-      // >
-        <ArrowBackIcon onClick={props.handleBack} style={{ marginRight: 30, color: "black", textDecoration: "none" ,cursor:'pointer'}}/>
-      // </Link>
-      ) : (
-       null
-      )}
-        {user?.user?.userType==="mentee"?
-        <Link
-          to="/explore"
-          style={{ marginRight: 30, color: "black", textDecoration: "none" }}
-        >
-          Discover
-        </Link>
-        :null}
+        {props.showBackButton !== false ? (
+          //   <Link
+          //   to=""
+          //   style={{ marginRight: 30, color: "black", textDecoration: "none" ,marginTop:-5}}
+          // >
+          <ArrowBackIcon
+            onClick={props.handleBack}
+            style={{
+              marginRight: 30,
+              color: "black",
+              textDecoration: "none",
+              cursor: "pointer",
+            }}
+          />
+        ) : // </Link>
+        null}
+        {user?.user?.userType === "mentee" ? (
+          <Link
+            to="/explore"
+            style={{ marginRight: 30, color: "black", textDecoration: "none" }}
+          >
+            Discover
+          </Link>
+        ) : null}
         <Link
           to="/matches"
           style={{ marginRight: 30, color: "black", textDecoration: "none" }}
@@ -310,9 +323,10 @@ const AppMenu = (props) => {
         </Link>
       </Box>
       {/* <LogoImg /> */}
-      <Link to="/"><Box className={classes.imgWrapper}>
-      <img src={LogoNavBar} alt="logo" />
-      </Box>
+      <Link to="/">
+        <Box className={classes.imgWrapper}>
+          <img src={LogoNavBar} alt="logo" />
+        </Box>
       </Link>
       <UserIconWrapper>
         <UserIcon onClick={handleMenu} />
@@ -322,6 +336,7 @@ const AppMenu = (props) => {
         handleClose={handleClose}
         open={open}
         registrationMenu={props.registrationMenu}
+        user={user}
       />
     </Wrapper>
   );

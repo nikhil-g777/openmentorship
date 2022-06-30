@@ -82,6 +82,7 @@ export default function Footer(props) {
             How it Works
           </a>
         </Link>
+        
         {/* <Link to="">
           {" "}
           <a className={classes.Links} href="">
@@ -97,10 +98,10 @@ export default function Footer(props) {
       </Container>
       <Box className={classes.MobileFooter}>
         <Grid container spacing={0}>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <MLogo src={Logo} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             {/* <Link to="/about">
               <a className={classes.Links} href="">
                 About
@@ -112,7 +113,7 @@ export default function Footer(props) {
               </a>
             </Link>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             {/* <Link to="">
               {" "}
               <a className={classes.Links} href="">

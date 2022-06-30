@@ -14,21 +14,53 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
+  FormGroup,
   Grid,
   TextField,
+  withStyles,
 } from "@material-ui/core";
-import { Container, CircularProgress, Typography } from "@material-ui/core";
+import {
+  Container,
+  CircularProgress,
+  Typography,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControl,
+} from "@material-ui/core";
 import { CheckBoxOutlineBlank, StopRounded } from "@material-ui/icons";
 import "fontsource-roboto";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import styled from "styled-components";
 
 import linked from "../../images/image 16.png";
 import editIcon from "../../images/edit 1.png";
 
-import { Menu } from "../../components";
+import { Title, TitleWrapper, Menu, FormItem } from "../../components";
+
 import Footer from "../../components/Footer";
+import ExperienceCard from "../Register/components/ExperienceCard";
 
 import { getUserInfo, updateUser } from "../../redux/Actions/UserActions";
+const maxExperience = 3;
 
+const AddExpContainer = styled.div`
+  margin-bottom: 4.5rem;
+`;
+
+const AddContainer = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const generateId = () => Math.floor(Math.random() * 10000);
+
+const AddButton = withStyles({
+  label: {
+    "text-decoration": "underline",
+    textTransform: "capitalize",
+  },
+})(Button);
 const useStyles = makeStyles((theme) => ({
   progressWrapper: {
     height: "80vh",
@@ -90,6 +122,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
     lineHeight: "27px",
     marginTop: "25px",
+    color: "black",
   },
   pro_typo4: {
     fontStyle: "normal",
@@ -162,6 +195,12 @@ const useStyles = makeStyles((theme) => ({
       width: "auto",
     },
   },
+  radio: {
+    "&$checked": {
+      color: "#69b595",
+    },
+  },
+  checked: {},
   /* or 135% */
 }));
 
@@ -175,17 +214,58 @@ export default function Mentee(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
+  const userState = useSelector((store) => store.userreducer);
+
+  const user = userState?.user?.user;
+  // console.log(user, "user heree");
 
   const [about, setAbout] = useState("");
   const [interest, setInterest] = useState([]);
   const [skills, setSkills] = useState([]);
   const [goals, setGoals] = useState([]);
   const [socialLinks, setSocialLinks] = useState([]);
-
-  const userState = useSelector((store) => store.userreducer);
-
-  const user = userState?.user?.user;
-
+  const commArray = [
+    { label: "Phone call", value: "phone" },
+    { label: "Video call", value: "video" },
+    { label: "Chat or Messaging", value: "chat" },
+  ];
+  const [communicationFrequency, setCommunicationFrequency] = useState("");
+  const [areasOfInterest, setAreasOfInterest] = useState({
+    software: false,
+    design: false,
+    other: true,
+  });
+  const [experiences, setExperiences] = useState([
+    {
+      id: generateId(),
+      organization: "",
+      title: "",
+    },
+  ]);
+  const [education, setEducation] = useState([
+    {
+      id: generateId(),
+      school: "",
+      degree: "",
+    },
+  ]);
+  const [communicationPreferences, setCommunicationPreferences] = useState([]);
+  const [alignment, setAlignment] = useState("");
+  const handleAlignment = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
+  const handleChangeAreaOfInterest = (event) => {
+    const { name, checked } = event.target;
+    if (name == "other" && checked) {
+      setAreasOfInterest({
+        software: false,
+        design: false,
+        other: true,
+      });
+    } else {
+      setAreasOfInterest({ ...areasOfInterest, [name]: checked, other: false });
+    }
+  };
   useEffect(() => {
     const fetchUser = async () => {
       await dispatch(getUserInfo());
@@ -197,11 +277,17 @@ export default function Mentee(props) {
 
   useEffect(() => {
     if (user && Object.keys(user).length > 0) {
-      setAbout(user?.headline);
+      setAbout(user?.bio);
       setInterest(user?.interests);
       setSkills(user?.skills);
       setGoals(user?.goals);
       setSocialLinks(user?.socialLinks);
+      setCommunicationFrequency(user?.communicationFrequency);
+      setAlignment(user?.userType);
+      setExperiences(user?.experiences);
+      setEducation(user?.education);
+      setAreasOfInterest(user?.areasOfInterest);
+      setCommunicationPreferences(user?.communicationPreferences);
     }
   }, [user]);
 
@@ -250,6 +336,11 @@ export default function Mentee(props) {
       skills: skills,
       goals: goals,
       socialLinks: socialLinks,
+      experiences: experiences,
+      education: education,
+      areasOfInterest: areasOfInterest,
+      communicationFrequency: communicationFrequency,
+      userType: alignment,
     };
     await dispatch(
       updateUser({
@@ -259,7 +350,94 @@ export default function Mentee(props) {
     );
     history.push("/profile");
   };
+  const handleClearExperience = (event) => {
+    let id = event.currentTarget.id;
+    let updatedExperiences = experiences.filter((exp) => {
+      return exp.id != id;
+    });
+    setExperiences(updatedExperiences);
+  };
 
+  const handleChangeExperience = (event) => {
+    let textFieldId = event.currentTarget.id;
+    let id = textFieldId.split("_")[1];
+    let { name, value } = event.currentTarget;
+    console.log(name,"name",value,"value")
+
+    let updatedExperiences = [];
+    experiences.forEach((exp) => {
+
+      if (exp._id == id) {
+        exp[name] = value;
+      }
+      updatedExperiences.push(exp);
+    });
+    console.log(updatedExperiences,"updatedExperiences")
+    setExperiences(updatedExperiences);
+  };
+
+  const handleAddExperience = () => {
+    if (experiences.length < maxExperience) {
+      setExperiences((prevExperiences) => [
+        ...prevExperiences,
+        {
+          id: generateId(),
+          organization: "",
+          title: "",
+        },
+      ]);
+    }
+  };
+
+  const handleClearEducation = (event) => {
+    let id = event.currentTarget.id;
+    let updatedEducation = education.filter((edu) => {
+      return edu._id != id;
+    });
+    setEducation(updatedEducation);
+  };
+
+  const handleChangeEducation = (event) => {
+    let textFieldId = event.currentTarget.id;
+    let id = textFieldId.split("_")[1];
+    let { name, value } = event.currentTarget;
+    let updatedEducation = [];
+    education.forEach((exp) => {
+      if (exp._id == id) {
+        exp[name] = value;
+      }
+      updatedEducation.push(exp);
+    });
+    setEducation(updatedEducation);
+  };
+
+  const handleAddEducation = () => {
+    if (education.length < maxExperience) {
+      setEducation((prevEducation) => [
+        ...prevEducation,
+        {
+          id: generateId(),
+          school: "",
+          degree: "",
+        },
+      ]);
+    }
+  };
+  const handleChangeCommPreferences = (event, index) => {
+    const { name, checked } = event.target;
+    let dummyArray = [...communicationPreferences];
+    if (checked) {
+      dummyArray.push(name);
+    } else {
+      dummyArray.splice(index);
+    }
+    setCommunicationPreferences(dummyArray);
+  };
+
+  console.log(communicationPreferences, "communicationPreferences");
+  const handleFrequency = (event) => {
+    setCommunicationFrequency(event.target.value);
+  };
   return (
     <>
       <Container>
@@ -331,37 +509,232 @@ export default function Mentee(props) {
                   <Typography className={classes.pro_typo2}>
                     {user?.headline}
                   </Typography>
+                  <FormItem>
+                    <Typography className={classes.pro_typo3}>
+                      Switch profile type:
+                    </Typography>
+                    <ToggleButtonGroup
+                      value={alignment}
+                      exclusive
+                      onChange={handleAlignment}
+                      aria-label="text alignment"
+                      size="large"
+                      className="mt-3"
+                    >
+                      <ToggleButton
+                        value="mentee"
+                        aria-label="left aligned"
+                        style={{
+                          backgroundColor:
+                            alignment === "mentee" ? "#51B6A5" : "white",
+                          // marginRight: 20,
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        Mentee
+                      </ToggleButton>
+                      <ToggleButton
+                        value="mentor"
+                        aria-label="right aligned"
+                        style={{
+                          backgroundColor:
+                            alignment === "mentor" ? "#51B6A5" : "white",
+                          textTransform: "capitalize",
+                          border: "1px solid gray",
+                        }}
+                      >
+                        Mentor
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  </FormItem>
+                  <Typography className={classes.pro_typo3}>
+                    About me:
+                  </Typography>
+
                   <Typography className={classes.pro_typo3}>About</Typography>
+
                   <TextField
-                    style={{ marginTop: "10px" }}
+                    style={{ marginTop: "10px", marginBottom: "50px" }}
                     multiline
                     variant="outlined"
                     fullWidth
                     value={about}
                     onChange={(event) => setAbout(event.target.value)}
                   />
-
-                  <Typography className={classes.pro_typo3}>
-                    Areas of interest
+                  <Typography className={classes.pro_typo4}>
+                    Which of the following best describes you?{" "}
                   </Typography>
-                  <ReactChipInput
-                    placeholder="dddsv"
-                    chips={interest}
-                    onSubmit={(value) => addInterests(value)}
-                    onRemove={(index) => removeInterests(index)}
+                  <TextField
+                    style={{
+                      marginTop: "10px",
+                      width: "65%",
+                      marginBottom: "50px",
+                    }}
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Looking for a job"
+                    // value={about}
+                    // onChange={(event) => setAbout(event.target.value)}
                   />
+                  <FormGroup>
+                    <Typography className={classes.pro_typo4}>
+                      What is your area of interest?{" "}
+                    </Typography>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                        icon={
+                          <CheckBoxOutlineBlank
+                            style={{ fontSize: "30px" }}
+                          />
+                        }
+                        checkedIcon={
+                          <StopRounded
+                            style={{ color: "#51B6A5", fontSize: "30px" }}
+                          />
+                        }
+                          checked={areasOfInterest.software}
+                          onChange={handleChangeAreaOfInterest}
+                          name="software"
+                          color="primary"
+                        />
+                      }
+                      label="Software"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                        icon={
+                          <CheckBoxOutlineBlank
+                            style={{ fontSize: "30px" }}
+                          />
+                        }
+                        checkedIcon={
+                          <StopRounded
+                            style={{ color: "#51B6A5", fontSize: "30px" }}
+                          />
+                        }
+                          checked={areasOfInterest.design}
+                          onChange={handleChangeAreaOfInterest}
+                          name="design"
+                          color="primary"
+                        />
+                      }
+                      label="Design"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                        icon={
+                          <CheckBoxOutlineBlank
+                            style={{ fontSize: "30px" }}
+                          />
+                        }
+                        checkedIcon={
+                          <StopRounded
+                            style={{ color: "#51B6A5", fontSize: "30px" }}
+                          />
+                        }
+                          checked={areasOfInterest.other}
+                          onChange={handleChangeAreaOfInterest}
+                          name="other"
+                          color="primary"
+                        />
+                      }
+                      label="Other"
+                    />
+                  </FormGroup>
+                  <Typography className={classes.pro_typo3}>
+                    Experience:
+                  </Typography>
 
                   <Typography className={classes.pro_typo3}>
+                    Work Experience
+                  </Typography>
+                  {experiences.map((exp) => {
+                    return (
+                      <ExperienceCard
+                        key={exp._id}
+                        id={exp._id}
+                        title1="organization"
+                        value1={exp.organization}
+                        title2="title"
+                        value2={exp.title}
+                        handleChange={handleChangeExperience}
+                        handleClear={handleClearExperience}
+                      ></ExperienceCard>
+                    );
+                  })}
+                  {experiences.length < maxExperience && (
+                    <AddExpContainer>
+                      <AddButton onClick={handleAddExperience}>
+                        Add Another Experience
+                      </AddButton>
+                    </AddExpContainer>
+                  )}
+
+                  <TitleWrapper>
+                    <Title>Education</Title>
+                  </TitleWrapper>
+
+                  {education.map((edu) => {
+                    return (
+                      <ExperienceCard
+                        key={edu._id}
+                        id={edu._id}
+                        title1="school"
+                        value1={edu.school}
+                        title2="degree"
+                        value2={edu.degree}
+                        handleChange={handleChangeEducation}
+                        handleClear={handleClearEducation}
+
+                      ></ExperienceCard>
+                    );
+                  })}
+
+                  {education.length < maxExperience && (
+                    <AddContainer>
+                      <AddButton onClick={handleAddEducation}>
+                        Add Another Education
+                      </AddButton>
+                    </AddContainer>
+                  )}
+                  <Typography className={classes.pro_typo3}>
+                    Skills and Interest
+                  </Typography>
+                  <Typography
+                    className={classes.pro_typo4}
+                    style={{ marginTop: 30 }}
+                  >
+                    What are some of your top skills?
+                  </Typography>
+                  <Box style={{ marginTop: 10, marginBottom: 30 }}>
+                    <ReactChipInput
+                      chips={skills}
+                      onSubmit={(value) => addSkill(value)}
+                      onRemove={(index) => removeSkill(index)}
+                    />
+                  </Box>
+                  {/* <Typography className={classes.pro_typo3}>
                     Top skills
+                  </Typography> */}
+                  <Typography className={classes.pro_typo4}>
+                    What are your areas of interest?
                   </Typography>
-                  <ReactChipInput
-                    chips={skills}
-                    onSubmit={(value) => addSkill(value)}
-                    onRemove={(index) => removeSkill(index)}
-                  />
-
+                  <Box style={{ marginTop: 10, marginBottom: 30 }}>
+                    <ReactChipInput
+                      placeholder="dddsv"
+                      chips={interest}
+                      onSubmit={(value) => addInterests(value)}
+                      onRemove={(index) => removeInterests(index)}
+                    />
+                  </Box>
                   <Typography className={classes.pro_typo3}>
-                    Looking for
+                    Mentorship Preferences
+                  </Typography>
+                  <Typography className={classes.pro_typo4}>
+                    What do you need from your mentor? Select all that apply.{" "}
                   </Typography>
                   <Box component="div" style={{ display: "grid" }}>
                     <FormControlLabel
@@ -537,7 +910,110 @@ export default function Mentee(props) {
                       label="Skill development"
                     />
                   </Box>
-                  <Typography className={classes.pro_typo3}>
+                  <Typography
+                    className={classes.pro_typo4}
+                    style={{ marginTop: 40, marginBottom: 20 }}
+                  >
+                    How often do you expect to communicate in your mentorship?{" "}
+                  </Typography>
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      name="frequency"
+                      value={communicationFrequency}
+                      onChange={handleFrequency}
+                    >
+                      <FormControlLabel
+                        value="weekly"
+                        control={
+                          <Radio
+                            classes={{
+                              root: classes.radio,
+                              checked: classes.checked,
+                            }}
+                          />
+                        }
+                        label="Weekly"
+                      />
+                      <FormControlLabel
+                        value="biweekly"
+                        control={
+                          <Radio
+                            classes={{
+                              root: classes.radio,
+                              checked: classes.checked,
+                            }}
+                          />
+                        }
+                        label="Bi-weekly"
+                      />
+                      <FormControlLabel
+                        value="onceamonth"
+                        control={
+                          <Radio
+                            classes={{
+                              root: classes.radio,
+                              checked: classes.checked,
+                            }}
+                          />
+                        }
+                        label="Once a month"
+                      />
+                      <FormControlLabel
+                        value="nopreference"
+                        control={
+                          <Radio
+                            classes={{
+                              root: classes.radio,
+                              checked: classes.checked,
+                            }}
+                          />
+                        }
+                        label="No preference"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <Typography
+                    className={classes.pro_typo4}
+                    style={{ marginTop: 40, marginBottom: 20 }}
+                  >
+                    What are your communication preferences? Select all that
+                    apply{" "}
+                  </Typography>
+                  <FormGroup column>
+                    {commArray.map((x, index) => (
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            icon={
+                              <CheckBoxOutlineBlank
+                                style={{ fontSize: "30px" }}
+                              />
+                            }
+                            checkedIcon={
+                              <StopRounded
+                                style={{ color: "#51B6A5", fontSize: "30px" }}
+                              />
+                            }
+                            checked={
+                              communicationPreferences.includes(x.value)
+                                ? true
+                                : false
+                            }
+                            onChange={(e) =>
+                              handleChangeCommPreferences(e, index)
+                            }
+                            name={x.value}
+                            // color="primary"
+                          />
+                        }
+                        label={x.label}
+                      />
+                    ))}
+                  </FormGroup>
+                  <Typography
+                    className={classes.pro_typo3}
+                    style={{ marginTop: 40 }}
+                  >
                     Social Media
                   </Typography>
 

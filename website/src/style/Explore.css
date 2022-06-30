@@ -159,8 +159,38 @@
 .mobile-nuull {
   display: block;
 }
+.mobile-view-slider-shown {
+  display: none ;
+
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 20px;
+}
+.responsivee {
+  display: block;
+}
+
+.responsivee::-webkit-scrollbar {
+  width: 5px;
+}
+.responsivee::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.responsivee::-webkit-scrollbar-thumb {
+  background-color: lightgray; /* color of the scroll thumb */
+  border-radius: 10px; /* roundness of the scroll thumb */
+  border: 0px solid rgba(0, 0, 0, 0); /* creates padding around scroll thumb */
+}
 @media screen and (max-width:600px){
   .mobile-nuull {
+    display: none;
+  }
+  .mobile-view-slider-shown {
+    display: block ;
+  }
+  .responsivee {
     display: none;
   }
 }

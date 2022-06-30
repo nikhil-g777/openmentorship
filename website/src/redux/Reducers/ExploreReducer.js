@@ -28,7 +28,7 @@ export default function Explorereducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        Explore: action.payload.data.mentors,
+        Explore: action.payload.data,
       };
 
     case GET_EXPLORE_DATA_BY_CONTENT_ERROR:

@@ -31,20 +31,8 @@ const AddButton = withStyles({
 
 const RegisterStep2 = (props) => {
   const { handleUpdate, values, handleNextStep2, errorState } = props;
-  const [experiences, setExperiences] = useState(values.experiences.length>0? values.experiences: [
-    {
-      id: generateId(),
-      organization: "",
-      title: "",
-    },
-  ]);
-  const [education, setEducation] = useState(values.education.length>0? values.education: [
-    {
-      id: generateId(),
-      school: "",
-      degree: "",
-    },
-  ]);
+  const [experiences, setExperiences] = useState([]);
+  const [education, setEducation] = useState([]);
 
   useEffect(() => {
     handleUpdate("experiences", experiences);
