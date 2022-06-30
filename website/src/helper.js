@@ -25,9 +25,6 @@ export function axiosClient() {
     return config;
   });
 
-  // instance.defaults.headers.common[
-  //   "Authorization"
-  // ] = store.getState().mainStore.accessToken;
 
   return instance;
 }
