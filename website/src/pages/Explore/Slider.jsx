@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import Slider from "react-slick";
-import { Grid, Button, Typography, Box } from "@material-ui/core";
+import { Grid, Button, Typography, Box ,Snackbar} from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
 
 import "slick-carousel/slick/slick.css";
@@ -11,6 +11,7 @@ import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Alldata from "./Alldata";
+import Alert from "@material-ui/lab/Alert";
 
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -299,7 +300,9 @@ export default function Slick({ data }) {
   const [reconnect, setReconnect] = useState(false);
   const [selectedData, setSelectedData] = useState({});
   const [message, setMessage] = useState("");
-
+  const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [severity, setSeverity] = useState("");
   const { user } = userState;
   console.log(user, "userid");
   useEffect(() => {
@@ -324,11 +327,15 @@ export default function Slick({ data }) {
       const response = await dispatch(createMatch(data));
       console.log(response, "response");
       if (response?.payload?.data?.success) {
-        alert("success");
+        setErrorMessage("success");
+        setSeverity("success")
+        setOpen(true);
         setMessage("");
         setReconnect(false);
       } else {
-        alert(response?.payload?.response?.data?.error);
+        setErrorMessage(response?.payload?.response?.data?.error)
+        setSeverity("error")
+        setOpen(true);
         setMessage("");
         setReconnect(false);
       }
@@ -340,6 +347,15 @@ export default function Slick({ data }) {
   };
   return (
     <>
+              <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert variant="filled" severity={severity}>
+         {errorMessage}
+        </Alert>
+      </Snackbar>
       <Slider {...settings}>
         {/* <Grid container> */}
         {data?.map((elm) => (

@@ -4,8 +4,9 @@ import { LinkedIn } from "react-linkedin-login-oauth2";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Snackbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
 
 import { registerUser, getUserInfo } from "../../redux/Actions/UserActions";
 
@@ -110,6 +111,12 @@ const RegisterMain = (props) => {
   const user = useSelector((store) => store.userreducer.user);
 
   const [showUserFields, setShowUserFields] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [severity, setSeverity] = useState("");
+
+
+
   const [localState, setLocalState] = useState({
     firstName: props.values.firstName,
     lastName: props.values.lastName,
@@ -146,6 +153,9 @@ const RegisterMain = (props) => {
       })
     );
     setDisabled(true);
+    setErrorMessage("Connected successfully")
+    setSeverity("success")
+    setOpen(true);
 
     if (Object.keys(user).length === 0) {
       await dispatch(getUserInfo());
@@ -177,7 +187,13 @@ const RegisterMain = (props) => {
     setShowUserFields(true);
   };
 
-  const handleFailure = (error) => {};
+  const handleFailure = (error) => {
+    console.log(error);
+    setErrorMessage(error.errorMessage)
+    setSeverity("error")
+
+    setOpen(true);
+  };
 
   const validateInput = () => {
     if (
@@ -205,6 +221,15 @@ const RegisterMain = (props) => {
 
   return (
     <>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert variant="filled" severity={severity}>
+         {errorMessage}
+        </Alert>
+      </Snackbar>
       <RootContainer>
         <ImageContainer>
           <img
@@ -213,6 +238,7 @@ const RegisterMain = (props) => {
             alt=""
           />
         </ImageContainer>
+
         <FormContainer>
           <Title>Open Mentorship</Title>
           <Info>Find a Mentor who can help guide you to success.</Info>

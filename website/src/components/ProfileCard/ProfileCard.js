@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, Grid, Typography } from "@material-ui/core";
+import { Box, Button, Grid, Typography ,Chip} from "@material-ui/core";
 import "fontsource-roboto";
 
 //images
@@ -365,19 +365,24 @@ const ProfileCard = (props) => {
         </Typography>
         <Typography className={classes.pro_typo4}>{data?.bio}</Typography>
         <Typography className={classes.pro_typo3}>Areas of interest</Typography>
-        <Typography className={classes.pro_typo4}>
+        {data?.interests?.map((interest, i) => (
+            <Chip label={interest} style={{marginRight:10,marginTop:20}}/>
+          ))} 
+        {/* <Typography className={classes.pro_typo4}>
           {/* {data?.interests?.map((interest, i) => (
             <span key={i}>{interest},</span>
-          ))} */}
+          ))} 
+
           {data?.interests?.toString()}
-        </Typography>
+        </Typography> */}
         <Typography className={classes.pro_typo3}>Top skills</Typography>
-        <Typography className={classes.pro_typo4}>
-          {/* {data?.skills?.map((skill, i) => (
-            <span key={i}>{skill},</span>
-          ))} */}
+        {data?.skills?.map((interest, i) => (
+            <Chip label={interest} style={{marginRight:10,marginTop:20}}/>
+          ))} 
+        {/* <Typography className={classes.pro_typo4}>
+   
           {data?.skills?.toString()}
-        </Typography>
+        </Typography> */}
         <Typography className={classes.pro_typo3}>Looking for</Typography>
         <Grid item container spacing={1} style={{ marginTop: "10px" }}>
           {Object.keys(data || {}).length > 0 &&
@@ -392,7 +397,8 @@ const ProfileCard = (props) => {
             ))}
         </Grid>
         {/* {slide?null: */}
-
+        {props.isProfilePage ? null :
+        <>
         <Typography className={classes.pro_typo3}>Social Media</Typography>
         <Box
           component="div"
@@ -431,6 +437,8 @@ const ProfileCard = (props) => {
               </a>
             ))}
         </Box>
+        </>
+        }
       </Grid>
     </>
   );

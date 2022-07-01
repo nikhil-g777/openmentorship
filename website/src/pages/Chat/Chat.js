@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#F1F4F4",
     paddingBottom: 30,
     minHeight: "93vh",
+    // 
   },
   Chat: {
     fontWeight: "normal",
@@ -61,9 +62,10 @@ const useStyles = makeStyles((theme) => ({
   },
   Background: {
     backgroundColor: "#F1F4F4",
+    width:'100%'
   },
   GreenBox: {
-    width: "339px",
+    width: "100%",
     height: "76px",
     backgroundColor: "#D8EDE9",
     display: "flex",
@@ -80,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   WhiteBox: {
-    width: "339px",
+    width: "100%",
     height: "76px",
     backgroundColor: "white",
     display: "flex",
@@ -182,7 +184,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     bottom: 10,
 
-    "@media (max-width:780px)": {
+    "@media (max-width:1280px)": {
       padding: 10,
       width: "87%",
       bottom: 0,
@@ -230,13 +232,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   responsive: {
-    "@media (max-width:780px)": {
+    "@media (max-width:680px)": {
       display: "none",
     },
   },
   responsive1: {
     display: "none",
-    "@media (max-width:780px)": {
+    "@media (max-width:680px)": {
       display: "block",
     },
   },
@@ -288,6 +290,7 @@ export default function MenteeCard() {
   const [loading, setLoading] = useState(false);
   const [messageLoading, setMessageLoding] = useState(true);
   const [isShow, setIsShow] = useState(true);
+  const [addMessage, setAddMessage] = useState("");
 
   const [messages, setMessages] = useState([]);
 
@@ -299,10 +302,20 @@ export default function MenteeCard() {
   const initConversations = async (myToken) => {
     window.conversationsClient = ConversationsClient;
     const conversationsClient = await ConversationsClient.create(myToken);
+
     console.log(
       "Connect to twillo",
       conversationsClient?.conversations?.conversations
     );
+    conversationsClient.on("messageAdded", (state) => {
+      // getting list of all messages since this is an existing channel
+      // const messages = await channel.getMessages();
+      setAddMessage(state);
+      console.log(state,"state")
+    });
+    // conversationsClient.on("conversationJoined", (conversation) => {
+    //   setConversation([...conversations, conversation]);
+    // });
     setConversation(conversationsClient?.conversations?.conversations);
     // if(conversations){
     console.log(selectedSID, "selectedSID");
@@ -338,12 +351,10 @@ export default function MenteeCard() {
     }
     dispatch(getUserMatches());
     getToken();
-  }, []);
+  }, [addMessage]);
   const matches = useSelector((store) => store.matchesreducer);
   const userState = useSelector((store) => store.userreducer);
   const { user } = userState;
-
-  console.log(twilloId, "twilloId");
   const firstSelected = (sid, convers) => {
     console.log(sid, "fdfd");
     setIsShow(false);
@@ -411,7 +422,7 @@ export default function MenteeCard() {
       sendMessagee(event);
     }
   };
-  console.log(messages, "messages");
+  // console.log(messages, "messages");
   const handleHeader = (data) => {
     console.log(data, "data here");
     if (user?.user?.userType === "mentee") {
@@ -449,7 +460,7 @@ export default function MenteeCard() {
           <Container>
             <Box className={classes.Background}>
               <Grid container spacing={3} className={classes.padding}>
-                <Grid item lg={4} sm={12} className={classes.responsive}>
+                <Grid item lg={4} xs={12} className={classes.responsive} md={12}>
                   <Typography variant="h5" className={classes.Chat}>
                     Chat
                   </Typography>
@@ -488,7 +499,7 @@ export default function MenteeCard() {
                   )}
                 </Grid>
                 {isShow ? (
-                  <Grid item lg={4} sm={12} className={classes.responsive1}>
+                  <Grid item lg={4} xs={12} className={classes.responsive1} md={12}>
                     <Typography variant="h5" className={classes.Chat}>
                       Chat
                     </Typography>
@@ -528,7 +539,7 @@ export default function MenteeCard() {
                     )}
                   </Grid>
                 ) : (
-                  <Grid item lg={8} className={classes.responsive1}>
+                  <Grid item lg={8} className={classes.responsive1} md={12}>
                     {messageLoading ? (
                       <CircularProgress
                         size={42}
@@ -552,7 +563,7 @@ export default function MenteeCard() {
                             onClick={endSession}
                           />
                         </Box>
-                        <Box style={{ maxHeight: 500, overflow: "scroll" }}>
+                        <Box style={{ maxHeight: '80vh', overflow: "scroll" }}>
                           {messages.map((x) =>
                             x.author === user?.user?._id ? (
                               <Box className={classes.SenderChatBox}>
@@ -606,6 +617,7 @@ export default function MenteeCard() {
                 <Grid
                   item
                   lg={8}
+                  md={12}
                   className="responsivee"
                   ref={refDisplay}
                   style={{ height: "70vh",overflowY:'scroll'}}
@@ -667,8 +679,8 @@ export default function MenteeCard() {
                 </Grid>
               </Grid>
               <Grid container justifyContent="flex-end">
-                <Grid item lg={4}></Grid>
-                <Grid item lg={8}>
+                <Grid item lg={4} ></Grid>
+                <Grid item lg={8} md={12}>
                   {selectedSID ? (
                     <Box className={classes.SendBox}>
                       <Box className={classes.styleFlex}>

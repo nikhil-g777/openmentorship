@@ -9,7 +9,8 @@ import {
   Grid,
   Typography,
   Button,
-  Modal
+  Modal,
+  Snackbar
 } from "@material-ui/core";
 import "fontsource-roboto";
 import "../../style/Explore.css";
@@ -20,6 +21,7 @@ import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import Alert from "@material-ui/lab/Alert";
 
 //components
 
@@ -242,7 +244,9 @@ export default function Alldata(props) {
   const [reconnect, setReconnect] = useState(false);
   const [selectedData, setSelectedData] = useState({});
   const [message, setMessage] = useState("");
-
+  const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [severity, setSeverity] = useState("");
   const { user } = userState;
   console.log(user, "userid");
   useEffect(() => {
@@ -269,11 +273,15 @@ export default function Alldata(props) {
     const response = await dispatch(createMatch(data));
     console.log(response,"response")
     if (response?.payload?.data?.success) {
-      alert("success");
+      setErrorMessage("success");
+      setSeverity("success")
+      setOpen(true);
       setMessage("");
       setReconnect(false);
     } else {
-      alert(response?.payload?.response?.data?.error);
+      setErrorMessage(response?.payload?.response?.data?.error)
+      setSeverity("error")
+      setOpen(true);
       setMessage("");
       setReconnect(false);
     }
@@ -286,6 +294,15 @@ export default function Alldata(props) {
   };
   return (
     <>
+          <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert variant="filled" severity={severity}>
+         {errorMessage}
+        </Alert>
+      </Snackbar>
       {loading ? (
         <Box className={classes.progressWrapper}>
           <CircularProgress />

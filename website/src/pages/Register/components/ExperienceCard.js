@@ -50,6 +50,7 @@ const ExperienceCard = (props) => {
     handleClear,
     errorState,
     removebutton,
+    disabled
   } = props;
 
   const classes = useStyles();
@@ -70,6 +71,8 @@ const ExperienceCard = (props) => {
             margin: "1rem 1rem 1rem 0",
           }}
           error={errorState ? true : false}
+          disabled={disabled}
+
         />
         <TextField
           id={"title2_" + id}
@@ -84,10 +87,13 @@ const ExperienceCard = (props) => {
             margin: "1rem 1rem 1rem 0",
           }}
           error={errorState ? true : false}
+          disabled={disabled}
         />
-          <StyledButton id={id} onClick={handleClear}>
+        {disabled?null:
+          <StyledButton id={id} onClick={handleClear} >
             <CloseIcon disabled />
           </StyledButton>
+}
       </Entity>
     </ExperienceContainer>
   );

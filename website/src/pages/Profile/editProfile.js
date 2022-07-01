@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ReactChipInput from "react-chip-input";
+import { Link } from "react-router-dom";
+import editIcon from "../../images/edit 1.png";
 
 // mui
 import {
@@ -35,7 +37,6 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import styled from "styled-components";
 
 import linked from "../../images/image 16.png";
-import editIcon from "../../images/edit 1.png";
 
 import { Title, TitleWrapper, Menu, FormItem } from "../../components";
 
@@ -210,7 +211,7 @@ const theme = createMuiTheme({
   },
 });
 
-export default function Mentee(props) {
+export default function Mentee({ viewable }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
@@ -237,14 +238,14 @@ export default function Mentee(props) {
   });
   const [experiences, setExperiences] = useState([
     {
-      id: generateId(),
+      _id: generateId(),
       organization: "",
       title: "",
     },
   ]);
   const [education, setEducation] = useState([
     {
-      id: generateId(),
+      _id: generateId(),
       school: "",
       degree: "",
     },
@@ -297,24 +298,36 @@ export default function Mentee(props) {
   };
 
   const addSkill = (value) => {
+    if(viewable){
+      return
+    }
     const newskills = skills.slice();
     newskills.push(value);
     setSkills(newskills);
   };
 
   const removeSkill = (index) => {
+    if(viewable){
+      return
+    }
     const newskills = skills.slice();
     newskills.splice(index, 1);
     setSkills(newskills);
   };
 
   const addInterests = (value) => {
+    if(viewable){
+      return
+    }
     const newinterests = interest.slice();
     newinterests.push(value);
     setInterest(newinterests);
   };
 
   const removeInterests = (index) => {
+    if(viewable){
+      return
+    }
     const newinterests = interest.slice();
     newinterests.splice(index, 1);
     setInterest(newinterests);
@@ -353,7 +366,7 @@ export default function Mentee(props) {
   const handleClearExperience = (event) => {
     let id = event.currentTarget.id;
     let updatedExperiences = experiences.filter((exp) => {
-      return exp.id != id;
+      return exp._id != id;
     });
     setExperiences(updatedExperiences);
   };
@@ -362,17 +375,16 @@ export default function Mentee(props) {
     let textFieldId = event.currentTarget.id;
     let id = textFieldId.split("_")[1];
     let { name, value } = event.currentTarget;
-    console.log(name,"name",value,"value")
+    console.log(name, "name", value, "value");
 
     let updatedExperiences = [];
     experiences.forEach((exp) => {
-
       if (exp._id == id) {
         exp[name] = value;
       }
       updatedExperiences.push(exp);
     });
-    console.log(updatedExperiences,"updatedExperiences")
+    console.log(updatedExperiences, "updatedExperiences");
     setExperiences(updatedExperiences);
   };
 
@@ -381,13 +393,14 @@ export default function Mentee(props) {
       setExperiences((prevExperiences) => [
         ...prevExperiences,
         {
-          id: generateId(),
+          _id: generateId(),
           organization: "",
           title: "",
         },
       ]);
     }
   };
+  console.log(education, "eeducation");
 
   const handleClearEducation = (event) => {
     let id = event.currentTarget.id;
@@ -416,7 +429,7 @@ export default function Mentee(props) {
       setEducation((prevEducation) => [
         ...prevEducation,
         {
-          id: generateId(),
+          _id: generateId(),
           school: "",
           degree: "",
         },
@@ -424,12 +437,15 @@ export default function Mentee(props) {
     }
   };
   const handleChangeCommPreferences = (event, index) => {
+    console.log(index, "inedex");
     const { name, checked } = event.target;
     let dummyArray = [...communicationPreferences];
+    const index1 = communicationPreferences.indexOf(name);
     if (checked) {
-      dummyArray.push(name);
+      // dummyArray.push(name);
+      dummyArray.splice(index, 0, name);
     } else {
-      dummyArray.splice(index);
+      dummyArray.splice(index1, 1);
     }
     setCommunicationPreferences(dummyArray);
   };
@@ -467,7 +483,11 @@ export default function Mentee(props) {
                   <Box component="div" className={classes.img_div_xs}>
                     <img
                       className={classes.profile_img}
-                      src="https://wallpaperaccess.com/full/2969091.jpg"
+                      src={
+                        user?.profileImageUrls?.default
+                          ? user.profileImageUrls.default
+                          : "https://wallpaperaccess.com/full/2969091.jpg"
+                      }
                     />
                     <Box component="div">
                       <Typography className={classes.pro_typo1_sm}>
@@ -497,14 +517,35 @@ export default function Mentee(props) {
 
                       <img src={linked} style={{ marginLeft: "3%" }} />
                     </Box>
-                    <Box
-                      component="div"
-                      className={classes.pro_typo_div2}
-                      onClick={handleUpdateUser}
-                    >
-                      <img src={editIcon} width="23px" height="23px" />
-                      <Typography className={classes.edit_txt}>Save</Typography>
-                    </Box>
+                    {viewable ? (
+                      <Link
+                        to="/edit-profile"
+                        className={classes.editProfileLink}
+                      >
+                        <Box component="div" className={classes.pro_typo_div2}>
+                          <img
+                            src={editIcon}
+                            alt=""
+                            width="23px"
+                            height="23px"
+                          />
+                          <Typography className={classes.edit_txt}>
+                            Edit
+                          </Typography>
+                        </Box>
+                      </Link>
+                    ) : (
+                      <Box
+                        component="div"
+                        className={classes.pro_typo_div2}
+                        onClick={handleUpdateUser}
+                      >
+                        <img src={editIcon} width="23px" height="23px" />
+                        <Typography className={classes.edit_txt}>
+                          Save
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
                   <Typography className={classes.pro_typo2}>
                     {user?.headline}
@@ -530,6 +571,7 @@ export default function Mentee(props) {
                           // marginRight: 20,
                           textTransform: "capitalize",
                         }}
+                        disabled={viewable ? true : false}
                       >
                         Mentee
                       </ToggleButton>
@@ -542,6 +584,7 @@ export default function Mentee(props) {
                           textTransform: "capitalize",
                           border: "1px solid gray",
                         }}
+                        disabled={viewable ? true : false}
                       >
                         Mentor
                       </ToggleButton>
@@ -560,6 +603,7 @@ export default function Mentee(props) {
                     fullWidth
                     value={about}
                     onChange={(event) => setAbout(event.target.value)}
+                    disabled={viewable ? true : false}
                   />
                   <Typography className={classes.pro_typo4}>
                     Which of the following best describes you?{" "}
@@ -573,6 +617,8 @@ export default function Mentee(props) {
                     variant="outlined"
                     fullWidth
                     placeholder="Looking for a job"
+                    disabled={viewable ? true : false}
+
                     // value={about}
                     // onChange={(event) => setAbout(event.target.value)}
                   />
@@ -583,20 +629,21 @@ export default function Mentee(props) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                        icon={
-                          <CheckBoxOutlineBlank
-                            style={{ fontSize: "30px" }}
-                          />
-                        }
-                        checkedIcon={
-                          <StopRounded
-                            style={{ color: "#51B6A5", fontSize: "30px" }}
-                          />
-                        }
+                          icon={
+                            <CheckBoxOutlineBlank
+                              style={{ fontSize: "30px" }}
+                            />
+                          }
+                          checkedIcon={
+                            <StopRounded
+                              style={{ color: "#51B6A5", fontSize: "30px" }}
+                            />
+                          }
                           checked={areasOfInterest.software}
                           onChange={handleChangeAreaOfInterest}
                           name="software"
                           color="primary"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Software"
@@ -604,20 +651,21 @@ export default function Mentee(props) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                        icon={
-                          <CheckBoxOutlineBlank
-                            style={{ fontSize: "30px" }}
-                          />
-                        }
-                        checkedIcon={
-                          <StopRounded
-                            style={{ color: "#51B6A5", fontSize: "30px" }}
-                          />
-                        }
+                          icon={
+                            <CheckBoxOutlineBlank
+                              style={{ fontSize: "30px" }}
+                            />
+                          }
+                          checkedIcon={
+                            <StopRounded
+                              style={{ color: "#51B6A5", fontSize: "30px" }}
+                            />
+                          }
                           checked={areasOfInterest.design}
                           onChange={handleChangeAreaOfInterest}
                           name="design"
                           color="primary"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Design"
@@ -625,20 +673,21 @@ export default function Mentee(props) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                        icon={
-                          <CheckBoxOutlineBlank
-                            style={{ fontSize: "30px" }}
-                          />
-                        }
-                        checkedIcon={
-                          <StopRounded
-                            style={{ color: "#51B6A5", fontSize: "30px" }}
-                          />
-                        }
+                          icon={
+                            <CheckBoxOutlineBlank
+                              style={{ fontSize: "30px" }}
+                            />
+                          }
+                          checkedIcon={
+                            <StopRounded
+                              style={{ color: "#51B6A5", fontSize: "30px" }}
+                            />
+                          }
                           checked={areasOfInterest.other}
                           onChange={handleChangeAreaOfInterest}
                           name="other"
                           color="primary"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Other"
@@ -662,14 +711,18 @@ export default function Mentee(props) {
                         value2={exp.title}
                         handleChange={handleChangeExperience}
                         handleClear={handleClearExperience}
+                        disabled={viewable ? true : false}
+                        
                       ></ExperienceCard>
                     );
                   })}
                   {experiences.length < maxExperience && (
                     <AddExpContainer>
+                      {viewable ?null:
                       <AddButton onClick={handleAddExperience}>
                         Add Another Experience
                       </AddButton>
+}
                     </AddExpContainer>
                   )}
 
@@ -688,6 +741,7 @@ export default function Mentee(props) {
                         value2={edu.degree}
                         handleChange={handleChangeEducation}
                         handleClear={handleClearEducation}
+                        disabled={viewable ? true : false}
 
                       ></ExperienceCard>
                     );
@@ -695,9 +749,12 @@ export default function Mentee(props) {
 
                   {education.length < maxExperience && (
                     <AddContainer>
+                      {viewable ?null:
+
                       <AddButton onClick={handleAddEducation}>
                         Add Another Education
                       </AddButton>
+}
                     </AddContainer>
                   )}
                   <Typography className={classes.pro_typo3}>
@@ -714,6 +771,7 @@ export default function Mentee(props) {
                       chips={skills}
                       onSubmit={(value) => addSkill(value)}
                       onRemove={(index) => removeSkill(index)}
+                      disabled={true}
                     />
                   </Box>
                   {/* <Typography className={classes.pro_typo3}>
@@ -753,6 +811,7 @@ export default function Mentee(props) {
                           checked={goals.careerAdvice ? true : false}
                           onChange={handleChangeGoals}
                           name="careerAdvice"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Career Advice"
@@ -773,6 +832,7 @@ export default function Mentee(props) {
                           checked={goals.resumeReview ? true : false}
                           onChange={handleChangeGoals}
                           name="resumeReview"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Resume review"
@@ -793,6 +853,7 @@ export default function Mentee(props) {
                           checked={goals.mockInterview ? true : false}
                           onChange={handleChangeGoals}
                           name="mockInterview"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Mock interview"
@@ -813,6 +874,7 @@ export default function Mentee(props) {
                           checked={goals.projectReview ? true : false}
                           onChange={handleChangeGoals}
                           name="projectReview"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Project review"
@@ -833,6 +895,7 @@ export default function Mentee(props) {
                           checked={goals?.collaboration ? true : false}
                           onChange={handleChangeGoals}
                           name="collaboration"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Collaboration on an idea"
@@ -869,6 +932,7 @@ export default function Mentee(props) {
                           checked={goals.businessAdvice ? true : false}
                           onChange={handleChangeGoals}
                           name="businessAdvice"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Business advice"
@@ -905,6 +969,7 @@ export default function Mentee(props) {
                           checked={goals.skillDevelopment ? true : false}
                           onChange={handleChangeGoals}
                           name="skillDevelopment"
+                          disabled={viewable ? true : false}
                         />
                       }
                       label="Skill development"
@@ -930,6 +995,7 @@ export default function Mentee(props) {
                               root: classes.radio,
                               checked: classes.checked,
                             }}
+                            disabled={viewable ? true : false}
                           />
                         }
                         label="Weekly"
@@ -942,6 +1008,7 @@ export default function Mentee(props) {
                               root: classes.radio,
                               checked: classes.checked,
                             }}
+                            disabled={viewable ? true : false}
                           />
                         }
                         label="Bi-weekly"
@@ -954,6 +1021,7 @@ export default function Mentee(props) {
                               root: classes.radio,
                               checked: classes.checked,
                             }}
+                            disabled={viewable ? true : false}
                           />
                         }
                         label="Once a month"
@@ -966,6 +1034,7 @@ export default function Mentee(props) {
                               root: classes.radio,
                               checked: classes.checked,
                             }}
+                            disabled={viewable ? true : false}
                           />
                         }
                         label="No preference"
@@ -1003,6 +1072,8 @@ export default function Mentee(props) {
                               handleChangeCommPreferences(e, index)
                             }
                             name={x.value}
+                            disabled={viewable ? true : false}
+
                             // color="primary"
                           />
                         }
@@ -1035,6 +1106,7 @@ export default function Mentee(props) {
                         value={socialLinks?.Twitter}
                         onChange={handleChangeSocialLinks}
                         name="Twitter"
+                        disabled={viewable ? true : false}
                       />
                     </Grid>
                   </Grid>
@@ -1057,6 +1129,7 @@ export default function Mentee(props) {
                         value={socialLinks?.Medium}
                         onChange={handleChangeSocialLinks}
                         name="Medium"
+                        disabled={viewable ? true : false}
                       />
                     </Grid>
                   </Grid>
@@ -1080,6 +1153,7 @@ export default function Mentee(props) {
                         value={socialLinks?.Behance}
                         onChange={handleChangeSocialLinks}
                         name="Behance"
+                        disabled={viewable ? true : false}
                       />
                     </Grid>
                   </Grid>
@@ -1103,6 +1177,7 @@ export default function Mentee(props) {
                         value={socialLinks?.Github}
                         onChange={handleChangeSocialLinks}
                         name="Github"
+                        disabled={viewable ? true : false}
                       />
                     </Grid>
                   </Grid>
@@ -1126,6 +1201,7 @@ export default function Mentee(props) {
                         value={socialLinks?.Portfolio}
                         onChange={handleChangeSocialLinks}
                         name="Portfolio"
+                        disabled={viewable ? true : false}
                       />
                     </Grid>
                   </Grid>
@@ -1149,6 +1225,7 @@ export default function Mentee(props) {
                         value={socialLinks?.Other}
                         onChange={handleChangeSocialLinks}
                         name="Other"
+                        disabled={viewable ? true : false}
                       />
                     </Grid>
                   </Grid>

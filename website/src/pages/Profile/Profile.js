@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import "fontsource-roboto";
 import { GoAlert } from "react-icons/go";
-
+import Edit from './editProfile'
 //components
 import { Menu } from "../../components";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
@@ -59,6 +59,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "22px",
     fontWeight: "600",
   },
+  modyFiybox: {
+    backgroundColor: "white",
+    boxShadow: "0px 4px 5px rgba(0, 0, 0, 0.1)",
+    padding: "42px 38px 37px 30px ",
+  }
 }));
 
 export default function Mentee() {
@@ -80,7 +85,8 @@ export default function Mentee() {
 
   return (
     <>
-      <Box
+    <Edit viewable={true}/>
+      {/* <Box
         style={{
           backgroundColor: "#ffffff",
         }}
@@ -131,7 +137,7 @@ export default function Mentee() {
         <Container>
           <Footer />
         </Container>
-      </Box>
+      </Box> */}
     </>
   );
 }
