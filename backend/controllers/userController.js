@@ -21,22 +21,24 @@ const linkedinApi = axios.create({
 });
 
 const extractImageUrls = (profileResponse) => {
-  const displayImages =
-    profileResponse.data.profilePicture['displayImage~'].elements;
   const res = {};
+  if (profileResponse.data.profilePicture) {
+    const displayImages =
+      profileResponse.data.profilePicture['displayImage~'].elements;
 
-  displayImages.forEach((element) => {
-    const { displaySize } =
-      element.data['com.linkedin.digitalmedia.mediaartifact.StillImage'];
-    const imageKey = `${displaySize.width}x${displaySize.height}`;
-    const imageUrl = element.identifiers[0].identifier;
+    displayImages.forEach((element) => {
+      const { displaySize } =
+        element.data['com.linkedin.digitalmedia.mediaartifact.StillImage'];
+      const imageKey = `${displaySize.width}x${displaySize.height}`;
+      const imageUrl = element.identifiers[0].identifier;
 
-    res[imageKey] = imageUrl;
+      res[imageKey] = imageUrl;
 
-    if (imageKey == '200x200') {
-      res.default = imageUrl;
-    }
-  });
+      if (imageKey == '200x200') {
+        res.default = imageUrl;
+      }
+    });
+  }
   return res;
 };
 
@@ -134,8 +136,6 @@ const getLinkedInProfile = (authCode, isLocal = false) =>
 const loginUser = async (req, res) => {
   const { body } = req;
 
-  console.log('Login');
-
   if (!body) {
     return res
       .status(400)
@@ -162,6 +162,14 @@ const loginUser = async (req, res) => {
       { new: true },
     ).exec();
 
+    if (!updatedUser) {
+      // If status is not complete
+      return res.status(401).json({
+        success: false,
+        error: 'Please register first',
+      });
+    }
+
     if (
       updatedUser.registrationStatus == constants.registrationStatus.complete
     ) {
@@ -186,7 +194,7 @@ const loginUser = async (req, res) => {
     // If status is not complete
     return res.status(401).json({
       success: false,
-      message: 'Login Failed',
+      error: constants.loginMessageByStatus[updatedUser.registrationStatus],
       registrationStatus: updatedUser.registrationStatus,
     });
   } catch (err) {

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devStart": "nodemon app.js",
+    "dev": "NODE_ENV=local nodemon app.js",
     "lint": "eslint --ignore-path .gitignore .",
     "format": "pretty-quick --staged"
   },
@@ -52,11 +52,8 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.18",
     "prettier": "^2.1.1",
     "pretty-quick": "^3.1.0"
-  },
-  "engines": {
-    "node": ">=12.0.0 <=16.4.0"
   }
 }

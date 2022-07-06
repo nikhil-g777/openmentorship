@@ -409,7 +409,7 @@ export default function LandingPage(props) {
         history.push(`/explore`);
       }
     } else {
-      NotificationManager.error(result?.payload?.data?.message);
+      NotificationManager.error(result?.payload?.data?.error);
     }
   };
 

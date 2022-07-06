@@ -13,7 +13,7 @@ import Slider1 from "./Slider";
 import Footer from "../../components/Footer";
 import Slider from "react-slick";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
-import Pagination from '@material-ui/lab/Pagination';
+import Pagination from "@material-ui/lab/Pagination";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -33,7 +33,7 @@ export default function Explore() {
   const classes = useStyles();
 
   const [limit] = useState(10);
-  const [page,setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const frequency = "communicationFrequency";
   const [mantorData, setMentorData] = useState([]);
   const [findMentor, setFindMentor] = useState({
@@ -134,7 +134,7 @@ export default function Explore() {
     findMentor.goals,
     findMentor.communicationFrequency,
     findMentor.communicationPreferences,
-    page
+    page,
   ]);
 
   const handleToggle = (text, type) => {
@@ -176,9 +176,9 @@ export default function Explore() {
     }
   };
   console.log(findMentor, "findMentor");
-const handleChange = (event, value) => {
-  setPage(value)
-}
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
 
   return (
     <div>
@@ -195,11 +195,11 @@ const handleChange = (event, value) => {
           </Typography>
         </Grid>
         <Container className="grid_center">
-          <Grid lg={12}>
+          {/* <Grid lg={12}>
             <Typography varianr="h1" className="text-color">
               Filter <span className="span_text"> (hide)</span>
             </Typography>
-          </Grid>
+          </Grid> */}
           <Grid className="items-center">
             <Grid container className="flex" lg={12}>
               {filterOptions.map((y, index) => (
@@ -281,14 +281,13 @@ const handleChange = (event, value) => {
         <Alldata data={mantorData} loading={loading} />
         {/* </Container> */}
       </div>
-        <div style={{backgroundColor:'#F1F4F4'}}>
-      <Container>
-      <div className="pagination">
-        <Pagination count={data.totalPages} onChange={handleChange} />
-        </div>
-      </Container>
-
-        </div>
+      <div style={{ backgroundColor: "#F1F4F4" }}>
+        <Container>
+          <div className="pagination">
+            <Pagination count={data.totalPages} onChange={handleChange} />
+          </div>
+        </Container>
+      </div>
       <div className="foter">
         <Container>
           <Footer />
