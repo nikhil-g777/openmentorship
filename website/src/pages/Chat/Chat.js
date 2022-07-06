@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "12px",
     display: "block",
     "@media (max-width:780px)": {
-      display: "none",
+      display: "block",
     },
   },
   padding: {
@@ -388,10 +388,10 @@ export default function MenteeCard() {
       const height = refDisplay.current.clientHeight;
       const maxScrollTop = scrollHeight - height;
       refDisplay.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
-    }, 1000);
+    }, 500);
 
     } catch {
-      alert("Request Failed By Fetching Messages");
+      alert("Request Failed Please reload ");
       setMessageLoding(false);
     }
   };

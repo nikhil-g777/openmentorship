@@ -363,7 +363,7 @@ export default function Alldata(props) {
             justifyContent: "center",
             backgroundColor: "white",
             padding: 40,
-            width: "50%",
+            width: "95%",
             margin: "auto",
             marginTop: "10%",
             borderRadius: 5,

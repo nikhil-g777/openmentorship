@@ -6,14 +6,24 @@ import {
   getexploredataByContent,
 } from "../../redux/Actions/ExploreAction";
 import "../../style/Explore.css";
-import { Container, Typography, Grid, Button, Box } from "@material-ui/core";
+import {
+  Container,
+  Typography,
+  Grid,
+  Button,
+  Box,
+  Snackbar,
+} from "@material-ui/core";
 import Alldata from "./Alldata";
 import filterOptions from "./filterOptions";
 import Slider1 from "./Slider";
 import Footer from "../../components/Footer";
 import Slider from "react-slick";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
-import Pagination from '@material-ui/lab/Pagination';
+import Pagination from "@material-ui/lab/Pagination";
+import Modal from "@material-ui/core/Modal";
+import { createMatch } from "../../redux/Actions/MatchesActions";
+import Alert from "@material-ui/lab/Alert";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -26,6 +36,46 @@ const useStyles = makeStyles((theme) => ({
     //   display: "none",
     // },
   },
+  MessageButton1: {
+    backgroundColor: "#51B6A5",
+    border: "1px solid #51B6A5",
+    borderRadius: 50,
+    marginTop: 20,
+    width: "141px",
+    height: "40px",
+    textTransform: "capitalize",
+    fontWeight: "bold",
+    "@media (max-width:780px)": {
+      width: "auto",
+      minWidth: "102px",
+      height: "29px",
+    },
+  },
+  MessageInput: {
+    border: "none",
+    width: "100%",
+    padding: 20,
+    marginTop: 20,
+  },
+  buttonFlex: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  CancelButton: {
+    backgroundColor: "transpernt",
+    border: "none",
+    borderRadius: 50,
+    marginTop: 20,
+    width: "141px",
+    height: "40px",
+    textTransform: "capitalize",
+    fontWeight: "bold",
+    "@media (max-width:780px)": {
+      width: "auto",
+      height: "29px",
+      minWidth: "102px",
+    },
+  },
 }));
 export default function Explore() {
   const data = useSelector((store) => store.Explorereducer.Explore);
@@ -33,9 +83,18 @@ export default function Explore() {
   const classes = useStyles();
 
   const [limit] = useState(10);
-  const [page,setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const frequency = "communicationFrequency";
   const [mantorData, setMentorData] = useState([]);
+  const [reconnect, setReconnect] = useState(false);
+  const [selectedData, setSelectedData] = useState({});
+  const [message, setMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [severity, setSeverity] = useState("");
+  const userState = useSelector((store) => store.userreducer);
+  const { user } = userState;
+
   const [findMentor, setFindMentor] = useState({
     areaOfInterest: [],
     goals: [],
@@ -134,7 +193,7 @@ export default function Explore() {
     findMentor.goals,
     findMentor.communicationFrequency,
     findMentor.communicationPreferences,
-    page
+    page,
   ]);
 
   const handleToggle = (text, type) => {
@@ -176,13 +235,53 @@ export default function Explore() {
     }
   };
   console.log(findMentor, "findMentor");
-const handleChange = (event, value) => {
-  setPage(value)
-}
-
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+  const handleClose = () => {
+    setReconnect(false);
+    setMessage("");
+  };
+  const handleRequest = async () => {
+    if (message.length > 2000) {
+      alert("Message length should be less than 2000 characters");
+    } else {
+      const data = {
+        match: {
+          menteeId: user.user._id,
+          mentorId: selectedData._id,
+          requestMessage: message,
+        },
+      };
+      const response = await dispatch(createMatch(data));
+      console.log(response, "response");
+      if (response?.payload?.data?.success) {
+        setErrorMessage("success");
+        setSeverity("success");
+        setOpen(true);
+        setMessage("");
+        setReconnect(false);
+      } else {
+        setErrorMessage(response?.payload?.response?.data?.error);
+        setSeverity("error");
+        setOpen(true);
+        setMessage("");
+        setReconnect(false);
+      }
+    }
+  };
   return (
     <div>
       {/* <Nav /> */}
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert variant="filled" severity={severity}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
       <Box className={classes.navWrapper}>
         <Container>
           <Nav showBackButton={false} />
@@ -260,16 +359,29 @@ const handleChange = (event, value) => {
         </div>
         <div className="mobile-view-slider-shown">
           <Container>
-            <Typography className="color_pro" style={{ marginTop: 50 }}>
-              Recommended based on your profile{" "}
-            </Typography>
-            <Slider {...settings}>
-              {data?.mentors?.map((elm) => (
-                <Grid container className="m-top">
-                  <ProfileCard data={elm} isRequest={true} />
-                </Grid>
-              ))}
-            </Slider>
+            {findMentor.areaOfInterest.length == 0 &&
+            findMentor.goals.length == 0 &&
+            findMentor.communicationFrequency === "" &&
+            findMentor.communicationPreferences.length == 0 ? (
+              <>
+                <Typography className="color_pro" style={{ marginTop: 50 }}>
+                  Recommended based on your profile{" "}
+                </Typography>
+
+                <Slider {...settings}>
+                  {data?.mentors?.map((elm) => (
+                    <Grid container className="m-top">
+                      <ProfileCard
+                        data={elm}
+                        isRequest={true}
+                        setSelectedData={setSelectedData}
+                        setReconnect={setReconnect}
+                      />
+                    </Grid>
+                  ))}
+                </Slider>
+              </>
+            ) : null}
           </Container>
         </div>
         {/* </Container>
@@ -281,14 +393,67 @@ const handleChange = (event, value) => {
         <Alldata data={mantorData} loading={loading} />
         {/* </Container> */}
       </div>
-        <div style={{backgroundColor:'#F1F4F4'}}>
-      <Container>
-      <div className="pagination">
-        <Pagination count={data.totalPages} onChange={handleChange} />
-        </div>
-      </Container>
-
-        </div>
+      <div style={{ backgroundColor: "#F1F4F4" }}>
+        <Container>
+          <div className="pagination">
+            <Pagination count={data.totalPages} onChange={handleChange} />
+          </div>
+        </Container>
+      </div>
+      <Modal
+        open={reconnect}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        
+      >
+        <Box
+          style={{
+            justifyContent: "center",
+            backgroundColor: "white",
+            padding: 40,
+            width: "95%",
+            margin: "auto",
+            marginTop: "10%",
+            borderRadius: 5,
+          }}
+        >
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              borderBottom: "1px solid lightgray",
+              paddingBottom: 10,
+              marginTop: 5,
+            }}
+          >
+            <Typography variant="h5">
+              Send a request to {selectedData?.firstName}
+            </Typography>
+          </Box>
+          <Typography gutterBottom variant="h6" className={classes.mentor}>
+            Let {selectedData?.firstName} know why you want them as your mentor.{" "}
+          </Typography>
+          <textarea
+            rows={10}
+            placeholder="Type message here..."
+            className={classes.MessageInput}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <Box className={classes.buttonFlex}>
+            <Button
+              className={classes.CancelButton}
+              onClick={() => setReconnect(false)}
+            >
+              Cancel
+            </Button>
+            <Button className={classes.MessageButton1} onClick={handleRequest}>
+              Send
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
       <div className="foter">
         <Container>
           <Footer />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Dialog from "@material-ui/core/Dialog";
 
 // mui
 import {
@@ -15,6 +16,7 @@ import {
   CircularProgress,
   Snackbar,
   Typography,
+  Button
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import "fontsource-roboto";
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "12px",
     display: "block",
     "@media (max-width:780px)": {
-      display: "none",
+      display: "block",
     },
   },
   progressWrapper: {
@@ -92,6 +94,21 @@ const useStyles = makeStyles((theme) => ({
       display: "block",
     },
   },
+  flexModal: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  sure: {
+    width: 300,
+    fontSize: 16,
+    margin: 10,
+    fontWeight: "300",
+  },
+  buttonEnd: {
+    textTransform: "capitalize",
+    boxShadow: "none",
+    backgroundColor: "transparent",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -111,9 +128,12 @@ export default function Matches() {
 
   const [menteeType, setMenteeType] = useState("active");
   const [mentorType, setMentorType] = useState("active");
+  const [matchIde, setMatchId] = useState("");
+
   const [snackbar, setSnackbar] = useState(false);
   const [viewType, setViewType] = useState(false);
-  const [connectionRequestMessage, setConnectionRequestMessage] = useState("");
+  const [connectionRequestMessage, setConnectionRequestMessage] = useState("i want to disconnect");
+  const [open, setOpen] = useState(false);
 
   const matches = useSelector((store) => store.matchesreducer.matches);
   const user = useSelector((store) => store.userreducer.user);
@@ -162,9 +182,21 @@ export default function Matches() {
     };
     console.log("payload: ", payload);
     await dispatch(updateMatch(payload));
+    await dispatch(getUserMatches());
     handleOpenSnackbar();
   };
-
+  const endSession = async () => {
+    setOpen(false)
+    let payload = {
+      matchId: matchIde,
+      status: 'closed',
+      requestMessage: connectionRequestMessage,
+    };
+    console.log("payload: ", payload);
+    await dispatch(updateMatch(payload));
+    await dispatch(getUserMatches());
+    setOpen(false)
+  };
   const handleOpenSnackbar = () => {
     setSnackbar(true);
   };
@@ -172,7 +204,7 @@ export default function Matches() {
   const handleCloseSnackbar = () => {
     setSnackbar(false);
   };
-
+console.log(matchesState,"matchesState")
   return (
     <>
       <Snackbar
@@ -268,6 +300,8 @@ export default function Matches() {
                   handleUpdateConnectionRequest={handleUpdateConnectionRequest}
                   handleChangeRequestMessage={handleChangeRequestMessage}
                   connectionRequestMessage={connectionRequestMessage}
+                  setOpen={setOpen}
+                  setMatchId={setMatchId}
                   userType={
                     user?.user?.userType === "mentee"
                       ? "mentor"
@@ -285,6 +319,8 @@ export default function Matches() {
                   handleUpdateConnectionRequest={handleUpdateConnectionRequest}
                   handleChangeRequestMessage={handleChangeRequestMessage}
                   connectionRequestMessage={connectionRequestMessage}
+                  setOpen={setOpen}
+                  setMatchId={setMatchId}
                   userType={
                     user?.user?.userType === "mentee"
                       ? "mentor"
@@ -302,6 +338,8 @@ export default function Matches() {
                   handleUpdateConnectionRequest={handleUpdateConnectionRequest}
                   handleChangeRequestMessage={handleChangeRequestMessage}
                   connectionRequestMessage={connectionRequestMessage}
+                  setOpen={setOpen}
+                  setMatchId={setMatchId}
                   userType={
                     user?.user?.userType === "mentee"
                       ? "mentor"
@@ -314,7 +352,38 @@ export default function Matches() {
             </Container>
           )}
         </Box>
+        <div>
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="simple-dialog-title"
+          maxWidth="xs"
+        >
+          <Typography variant="h6" className={classes.sure}>
+            Are you sure you would like to end the session?
+          </Typography>
+          <div className={classes.flexModal}>
+            <Button
+              onClick={() => setOpen(false)}
+              variant="contained"
+              className={classes.buttonEnd}
+              style={{ color: "black" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={endSession}
+              variant="contained"
+              className={classes.buttonEnd}
+              style={{ color: "red" }}
+            >
+              End Session
+            </Button>
+          </div>
+        </Dialog>
+      </div>
       </ThemeProvider>
+
       <div
         style={{
           backgroundColor: "#f5f3f8",
