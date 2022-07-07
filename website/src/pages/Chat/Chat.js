@@ -175,7 +175,7 @@ const useStyles = makeStyles((theme) => ({
   },
   SendBox: {
     height: "100px",
-    width: "53%",
+    width: "100%",
     border: "1px solid #DEDEDE",
     backgroundColor: "white",
     boxShadow: "0px 5px 13px rgba(0, 0, 0, 0.1)",
@@ -190,7 +190,7 @@ const useStyles = makeStyles((theme) => ({
       bottom: 0,
       position: "fixed",
     },
-    position: "absolute",
+    // position: "absolute",
   },
   Message: {
     width: "52px",
@@ -460,7 +460,7 @@ export default function MenteeCard() {
           <Container>
             <Box className={classes.Background}>
               <Grid container spacing={3} className={classes.padding}>
-                <Grid item lg={4} xs={12} className={classes.responsive} md={12}>
+                <Grid item lg={4} xs={12} className={classes.responsive} md={12} style={{maxHeight:'75vh',overflowY:'scroll',height:'auto'}}>
                   <Typography variant="h5" className={classes.Chat}>
                     Chat
                   </Typography>
@@ -620,7 +620,7 @@ export default function MenteeCard() {
                   md={12}
                   className="responsivee"
                   ref={refDisplay}
-                  style={{ height: "70vh",overflowY:'scroll'}}
+                  style={{ height: "75vh",overflowY:'scroll'}}
                 >
                   {messageLoading ? (
                     <CircularProgress

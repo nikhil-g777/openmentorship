@@ -83,16 +83,27 @@ const RegisterStep4 = (props) => {
     return isChecked;
   };
 
-  console.log(goals, "goals", props.values.goals);
+  console.log(goals, "goals", props.values);
   const goalArray = [
     { name: "careerAdvice", label: "Career advice" },
     { name: "resumeReview", label: "Resume review" },
     { name: "mockInterview", label: "Mock interview" },
     { name: "projectReview", label: "Project review" },
-    { name: "collaboration", label: "Collaboration on an idea" },
-    { name: "businessAdvice", label: "Business Advice" },
     { name: "skillDevelopment", label: "Skill Development" },
   ];
+  const mentorGoalsArray = [
+    { name: "careerAdvice", label: "Career advice" },
+    { name: "resumeReview", label: "Resume review" },
+    { name: "mockInterview", label: "Mock interview" },
+    { name: "projectReview", label: "Project review" },
+    { name: "collaboration", label: "Collaboration on an idea" },
+    { name: "inspiration", label: "Inspiration" },
+
+    { name: "businessAdvice", label: "Business Advice" },
+    { name: "careerChangeAdvice", label: "Career change advice" },
+    { name: "skillDevelopment", label: "Skill Development" },
+
+  ]
 
   const commArray = [
     { name: "phoneCall", label: "Phone call" },
@@ -105,30 +116,59 @@ const RegisterStep4 = (props) => {
         <Title>Mentorship</Title>
       </TitleWrapper>
       <SectionWrapper>
-        <p>What do you need from your Mentor? Select all that apply.</p>
+        {props.values.userType === "mentee" ? (
+          <p>What do you need from your Mentor? Select all that apply.</p>
+        ) : (
+          <p>
+            What are you available to offer to your mentee, select all that
+            apply.
+          </p>
+        )}
         <SnackbarContent
           message="Pro tip : Being focussed with your goals helps you get better matches."
           style={{ background: "#69b595", margin: "15px 0" }}
         />
-        <FormGroup column>
-          {goalArray.map((x, index) => {
-            // console.log("xxxxx",x)
-            // console.log("goals[x.name]",x)
-            return (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checkIfExist(x)}
-                    onChange={(e) => handleChange(e, index)}
-                    name={x.name}
-                    color="primary"
-                  />
-                }
-                label={x.label}
-              />
-            );
-          })}
-        </FormGroup>
+        {props.values.userType === "mentee" ? (
+          <FormGroup column>
+            {goalArray.map((x, index) => {
+              // console.log("xxxxx",x)
+              // console.log("goals[x.name]",x)
+              return (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checkIfExist(x)}
+                      onChange={(e) => handleChange(e, index)}
+                      name={x.name}
+                      color="primary"
+                    />
+                  }
+                  label={x.label}
+                />
+              );
+            })}
+          </FormGroup>
+        ) : (
+          <FormGroup column>
+            {mentorGoalsArray.map((x, index) => {
+              // console.log("xxxxx",x)
+              // console.log("goals[x.name]",x)
+              return (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checkIfExist(x)}
+                      onChange={(e) => handleChange(e, index)}
+                      name={x.name}
+                      color="primary"
+                    />
+                  }
+                  label={x.label}
+                />
+              );
+            })}
+          </FormGroup>
+        )}
       </SectionWrapper>
       <SectionWrapper>
         <p>How often would you expect to communicate in your mentorship?</p>
