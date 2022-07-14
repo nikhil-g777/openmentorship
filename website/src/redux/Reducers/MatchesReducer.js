@@ -33,6 +33,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: false,
         matches: action.payload.data.matches,
+
       };
 
     case GET_USER_MATCHES_ERROR:

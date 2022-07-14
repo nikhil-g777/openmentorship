@@ -13,6 +13,7 @@ import {
   Grid,
   Typography,
   Container,
+  Chip,
 } from "@material-ui/core";
 
 import boxImage from "../images/imagebox.png";
@@ -282,10 +283,10 @@ export default function MenteeCard(props) {
     // const scrollingElement = document.scrollingElement || document.body;
     // scrollingElement.scrollTop = scrollingElement.scrollHeight;
   };
-const handleNavigate= (id) => {
-console.log(id,' id here')
-history.push(`/chat?${id}`)
-}
+  const handleNavigate = (id) => {
+    console.log(id, " id here");
+    history.push(`/chat?${id}`);
+  };
   return (
     <ThemeProvider theme={theme}>
       <Container>
@@ -323,7 +324,28 @@ history.push(`/chat?${id}`)
                   {props.menteeType === "active" ? (
                     <Box className={classes.FlexImageBox}>
                       <img src={Linkedin} className={classes.Connections} />
-                      <Button className={classes.MessageButton} onClick={() => handleNavigate(x?.latestSession?.twilioConversationSid)}> Chat</Button>
+                      <Button
+                        className={classes.MessageButton}
+                        onClick={() =>
+                          handleNavigate(
+                            x?.latestSession?.twilioConversationSid
+                          )
+                        }
+                      >
+                        {" "}
+                        Chat
+                      </Button>
+                      {props.userType === "mentee" ? (
+                        <Button
+                          className={classes.Decline}
+                          onClick={() => {
+                            props.setOpen(true) 
+                            props.setMatchId(x?._id)
+                          }}
+                        >
+                          End Session
+                        </Button>
+                      ) : null}
                     </Box>
                   ) : props.menteeType === "pending" &&
                     props.mentorType !== "MentorPending" ? (
@@ -403,7 +425,11 @@ history.push(`/chat?${id}`)
                   </Typography>
                   <Typography variant="p" className={classes.InterestDetail}>
                     {x[props.userType]?.interests.map((interest, i) => (
-                      <span key={i}>{interest},&nbsp;</span>
+                      // <span key={i}>{interest},&nbsp;</span>
+                      <Chip
+                        label={interest}
+                        style={{ marginRight: 10, marginTop: 20 }}
+                      />
                     ))}
                   </Typography>
 
@@ -412,7 +438,10 @@ history.push(`/chat?${id}`)
                   </Typography>
                   <Typography variant="p" className={classes.InterestDetail}>
                     {x[props.userType]?.skills.map((skill, i) => (
-                      <span key={i}>{skill},&nbsp;</span>
+                      <Chip
+                        label={skill}
+                        style={{ marginRight: 10, marginTop: 20 }}
+                      />
                     ))}
                   </Typography>
                   <Typography variant="h5" className={classes.Interest}>
