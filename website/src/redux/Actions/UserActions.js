@@ -30,8 +30,7 @@ export const loginUser = (data) => async (dispatch) => {
     dispatch(getUserInfo());
     return dispatch({ type: USER_LOGIN_SUCCESS, payload: result });
   } catch (err) {
-    console.log("error loggingin: ", err);
-    return dispatch({ type: USER_LOGIN_ERROR });
+    return dispatch({ type: USER_LOGIN_ERROR, payload: err.response });
   }
 };
 

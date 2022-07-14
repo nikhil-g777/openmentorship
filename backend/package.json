@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devStart": "nodemon app.js",
+    "dev": "NODE_ENV=local nodemon app.js",
     "lint": "eslint --ignore-path .gitignore .",
     "format": "pretty-quick --staged"
   },
@@ -21,6 +21,7 @@
     }
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.6.2",
     "axios": "^0.19.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -37,6 +38,7 @@
     "moment": "^2.29.1",
     "mongoose": "^5.8.9",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.7.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "query-string": "^6.12.0",
@@ -50,7 +52,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.18",
     "prettier": "^2.1.1",
     "pretty-quick": "^3.1.0"
   }
