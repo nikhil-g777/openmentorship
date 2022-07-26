@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, Grid, Typography ,Chip} from "@material-ui/core";
+import { Box, Button, Grid, Typography, Chip } from "@material-ui/core";
 import "fontsource-roboto";
 
 //images
@@ -61,8 +61,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "25px",
     "@media (max-width:780px)": {
       fontSize: "16px",
-    lineHeight: "20px",
-
+      lineHeight: "20px",
     },
   },
   pro_typo4: {
@@ -74,8 +73,7 @@ const useStyles = makeStyles((theme) => ({
     "@media (max-width:780px)": {
       fontSize: "13px",
       marginTop: "5px",
-    lineHeight: "17px",
-
+      lineHeight: "17px",
     },
   },
   pro_typo_btn: {
@@ -85,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "8px",
     fontSize: "13px",
     textTransform: "capitalize",
+    marginRight:"4px"
   },
   social_div: {
     marginTop: "15px",
@@ -366,8 +365,8 @@ const ProfileCard = (props) => {
         <Typography className={classes.pro_typo4}>{data?.bio}</Typography>
         <Typography className={classes.pro_typo3}>Areas of interest</Typography>
         {data?.interests?.map((interest, i) => (
-            <Chip label={interest} style={{marginRight:10,marginTop:20}}/>
-          ))} 
+          <Chip label={interest} style={{ marginRight: 10, marginTop: 20 }} />
+        ))}
         {/* <Typography className={classes.pro_typo4}>
           {/* {data?.interests?.map((interest, i) => (
             <span key={i}>{interest},</span>
@@ -377,8 +376,8 @@ const ProfileCard = (props) => {
         </Typography> */}
         <Typography className={classes.pro_typo3}>Top skills</Typography>
         {data?.skills?.map((interest, i) => (
-            <Chip label={interest} style={{marginRight:10,marginTop:20}}/>
-          ))} 
+          <Chip label={interest} style={{ marginRight: 10, marginTop: 20 }} />
+        ))}
         {/* <Typography className={classes.pro_typo4}>
    
           {data?.skills?.toString()}
@@ -396,49 +395,65 @@ const ProfileCard = (props) => {
               </Grid>
             ))}
         </Grid>
-        {/* {slide?null: */}
-        {props.isProfilePage ? null :
-        <>
-        <Typography className={classes.pro_typo3}>Social Media</Typography>
-        <Box
-          component="div"
-          className={classes.social_div}
-          style={{ display: "flex" }}
-        >
-          {Object.keys(data || {}).length > 0 &&
-            Object.entries(data?.socialLinks || {}).map(([key, value]) => (
-              <a
-                href={value}
-                target="_blank"
-                rel="noopener noreferrer"
-                key={key}
-              >
-                {value && (
-                  <img
-                    src={
-                      `${key}` === "Twitter"
-                        ? twitterIcon
-                        : key === "Medium"
-                        ? mediumIcon
-                        : key === "Behance"
-                        ? behanceIcon
-                        : key === "Github"
-                        ? githubIcon
-                        : key === "Portfolio"
-                        ? portfolioIcon
-                        : key === "Other"
-                        ? otherIcon
-                        : ""
-                    }
-                    alt=""
-                    className={classes.logoIcons}
-                  />
-                )}
-              </a>
-            ))}
+        <Typography variant="h5" className={classes.pro_typo3}>
+          Communication preference
+        </Typography>
+        <Box style={{ marginTop: "10px" }}>
+          {data?.communicationPreferences.map((x) => (
+            <Button className={classes.pro_typo_btn}>{x}</Button>
+          ))}
         </Box>
-        </>
-        }
+        <Typography variant="h5" className={classes.pro_typo3}>
+          Preferred communication frequency
+        </Typography>
+        <Box style={{ marginTop: "10px" }}>
+          <Button className={classes.pro_typo_btn}>
+            {data?.communicationFrequency}
+          </Button>
+        </Box>
+        {/* {slide?null: */}
+        {props.isProfilePage ? null : (
+          <>
+            <Typography className={classes.pro_typo3}>Social Media</Typography>
+            <Box
+              component="div"
+              className={classes.social_div}
+              style={{ display: "flex" }}
+            >
+              {Object.keys(data || {}).length > 0 &&
+                Object.entries(data?.socialLinks || {}).map(([key, value]) => (
+                  <a
+                    href={value}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    key={key}
+                  >
+                    {value && (
+                      <img
+                        src={
+                          `${key}` === "Twitter"
+                            ? twitterIcon
+                            : key === "Medium"
+                            ? mediumIcon
+                            : key === "Behance"
+                            ? behanceIcon
+                            : key === "Github"
+                            ? githubIcon
+                            : key === "Portfolio"
+                            ? portfolioIcon
+                            : key === "Other"
+                            ? otherIcon
+                            : ""
+                        }
+                        alt=""
+                        className={classes.logoIcons}
+                      />
+                    )}
+                  </a>
+                ))}
+            </Box>
+          </>
+        )}
       </Grid>
     </>
   );

@@ -190,6 +190,21 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     marginBottom: 10,
   },
+  MeganMessage: {
+    backgroundColor: "#EFEFEF",
+    padding: "20px",
+    borderRadius: "4px",
+  },
+  meghanTitle: {
+    marginBottom: "10px",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  messageBack: {
+    backgroundColor: "white",
+    borderRadius: "4px",
+    padding: "20px",
+  },
   mentor: {
     fontWeight: "normal",
     fontSize: "16px",
@@ -339,8 +354,8 @@ export default function MenteeCard(props) {
                         <Button
                           className={classes.Decline}
                           onClick={() => {
-                            props.setOpen(true) 
-                            props.setMatchId(x?._id)
+                            props.setOpen(true);
+                            props.setMatchId(x?._id);
                           }}
                         >
                           End Session
@@ -458,6 +473,35 @@ export default function MenteeCard(props) {
                           )
                       )}
                   </Box>
+                  <Typography variant="h5" className={classes.Interest}>
+                    Communication preference
+                  </Typography>
+                  <Box className={classes.ButtonBox}>
+                    {x[props.userType]?.communicationPreferences.map((x) => (
+                      <Button className={classes.Mock}>{x}</Button>
+                    ))}
+                  </Box>
+                  <Typography variant="h5" className={classes.Interest}>
+                    Preferred communication frequency
+                  </Typography>
+                  <Box className={classes.ButtonBox}>
+                    <Button className={classes.Mock}>
+                      {x[props.userType]?.communicationFrequency}
+                    </Button>
+                  </Box>
+                </Grid>
+                <Grid item lg={12}>
+                  {props.menteeType === "pending" &&
+                  props.mentorType !== "MentorPending" ? (
+                    <Box className={classes.MeganMessage}>
+                      <Typography variant="h5" className={classes.meghanTitle}>
+                        Note from Meghan:
+                      </Typography>
+                      <Box className={classes.messageBack}>
+                      <Typography variant="h6" className={classes.mentor}>{x?.requestMessage}</Typography>
+                      </Box>
+                    </Box>
+                  ) : null}
                 </Grid>
                 {reconnect ? (
                   <Box className={classes.Reconnevt}>
