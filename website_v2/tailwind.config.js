@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontSize: {
-        heading: "35px",
-        sub_heading: "28px"
+        heading: "45px",
+        sub_heading: "30px"
       }
     },
   },
