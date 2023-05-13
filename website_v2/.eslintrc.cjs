@@ -20,6 +20,13 @@ module.exports = {
     "react/react-in-jsx-scope": 0,
     "react-refresh/only-export-components": "warn",
     "@typescript-eslint/no-var-requires": 0,
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": ["function-declaration", "arrow-function"],
+        "unnamedComponents": "function-declaration"
+      }
+    ]
   },
   ignorePatterns: ["tailwind.config.js"],
 };
