@@ -1,8 +1,10 @@
+import Layout from "./components/Layout";
+
 function App() {
   return (
-    <h1 className="text-4xl">
-      Hello Frontend
-    </h1>
+    <Layout>
+      <h1 className="text-center mt-20">Hi this is content...</h1>
+    </Layout>
   );
 }
 
