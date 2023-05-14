@@ -1,10 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import Landing from "./pages/landing";
+import Dashboard from "./pages/dashboard";
 
 function App() {
   return (
-    <Layout>
-      <h1 className="text-center mt-20">Hi this is content...</h1>
-    </Layout>
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   );
 }
 
