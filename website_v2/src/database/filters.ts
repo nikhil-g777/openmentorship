@@ -19,7 +19,7 @@ const areaOfInterest: Filters = [
 ];
 
 // Goals
-const goals = [
+const goals: Filters = [
   {
     label: "Career Advice",
     id: "filter_goals_career_advice",
@@ -48,7 +48,7 @@ const goals = [
 ];
 
 // Frequency
-const frequency = [
+const frequency: Filters = [
   {
     label: "Weekly",
     id: "filter_frequency_weekly",
@@ -67,7 +67,7 @@ const frequency = [
 ];
 
 // Preferences
-const preferences = [
+const preferences: Filters = [
   {
     label: "Phone Call",
     id: "filter_preferences_phone_call",
