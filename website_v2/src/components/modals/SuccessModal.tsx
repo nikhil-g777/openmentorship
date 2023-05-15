@@ -1,11 +1,11 @@
 type Props = {
   heading: string;
   message: string;
-  checked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  isModal: boolean;
+  setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const SuccessModal = ({ heading, message, checked, setChecked }: Props) => {
+const SuccessModal = ({ heading, message, isModal, setIsModal }: Props) => {
   return (
     <div>
       {/* The button to open modal */}
@@ -14,13 +14,17 @@ const SuccessModal = ({ heading, message, checked, setChecked }: Props) => {
       </label>
 
       {/* Put this part before </body> tag */}
-      <input type="checkbox" defaultChecked={checked} id="my-modal-6" className="modal-toggle" />
-      <div className="modal modal-bottom sm:modal-middle">
+      <input type="checkbox" id="my-modal-6" className="modal-toggle" />
+      <div
+        className={`modal modal-bottom sm:modal-middle ${
+          isModal ? "modal-open" : ""
+        }`}
+      >
         <div className="modal-box">
           <h3 className="font-bold text-lg">{heading}</h3>
-          <p className="py-4">{message}</p>
+          <p className="py-4 break-all">{message}</p>
           <div className="modal-action">
-            <button className="btn" onClick={() => setChecked(false)}>
+            <button className="btn" onClick={() => setIsModal(false)}>
               Okay!
             </button>
           </div>

@@ -5,14 +5,17 @@ import linkedin from "react-linkedin-login-oauth2/assets/linkedin.png";
 import SuccessModal from "../../components/modals/SuccessModal";
 
 const Linkedin = () => {
-  const [checked, setChecked] = useState<boolean>(false);
+  const [isModal, setIsModal] = useState<boolean>(false);
+  const [heading, setHeading] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
   const { linkedInLogin } = useLinkedIn({
     clientId: import.meta.env.VITE_LINKEDIN_CLIENT_ID,
     redirectUri: import.meta.env.VITE_LINKEDIN_REDIRECT_URI,
     onSuccess: (code) => {
-      setChecked(true);
-      console.log(code);
+      setIsModal(true);
+      setHeading("Your LinkedIn auth code:");
+      setMessage(code);
     },
     onError: (error) => {
       console.log(error);
@@ -29,10 +32,10 @@ const Linkedin = () => {
       />
       {/* Temporary Modal */}
       <SuccessModal
-        heading="Success"
-        message="We got your linkedin code..."
-        checked={checked}
-        setChecked={setChecked}
+        heading={heading}
+        message={message}
+        isModal={isModal}
+        setIsModal={setIsModal}
       />
     </>
   );
