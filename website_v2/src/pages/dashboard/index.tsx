@@ -1,11 +1,14 @@
-import FilterWrapper from "./FilterWrapper"
+import FilterWrapper from "./FilterWrapper";
 
 const Dashboard = () => {
   return (
     <div className="w-full">
+      <h1 className="w-full max-w-6xl mx-auto pt-16 text-xl text-center md:text-left sm:text-heading sm:leading-normal font-bold">
+        Find your mentor
+      </h1>
       <FilterWrapper />
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
