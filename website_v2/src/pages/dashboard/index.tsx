@@ -1,7 +1,10 @@
+import FilterWrapper from "./FilterWrapper"
 
 const Dashboard = () => {
   return (
-    <div>index</div>
+    <div className="w-full">
+      <FilterWrapper />
+    </div>
   )
 }
 

@@ -7,7 +7,7 @@ type Props = {}
 
 const Landing = (props: Props) => {
   return (
-    <div className="">
+    <div className="w-full">
         <Hero />
         <HowItWorks />
         <WhyOpenMentorship />
