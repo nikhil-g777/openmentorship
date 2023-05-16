@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 
 // Types
 type Props = {
+  heading?: string;
   children: React.ReactNode;
   childrenLength: number;
 };
 
-const Carousel = ({ children, childrenLength }: Props) => {
+const Carousel = ({ heading, children, childrenLength }: Props) => {
   const [current, setCurrent] = useState<number>(0);
   const [touchPosition, setTouchPosition] = useState<number | null>(null);
 
@@ -54,6 +55,7 @@ const Carousel = ({ children, childrenLength }: Props) => {
 
   return (
     <div className="w-full px-4 overflow-hidden relative">
+      {heading ? <h2 className="text-xl font-semibold sm:text-sub_heading px-4 pt-[10%] sm:pt-[5%]">{heading}</h2> : null}
       <div
         className="flex transition-transform ease-out duration-500"
         style={{ transform: `translateX(-${current * 100}%)` }}

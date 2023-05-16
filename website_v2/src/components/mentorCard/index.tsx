@@ -37,7 +37,7 @@ const Mentor = ({ data }: Props) => {
 
   return (
     // wrapper
-    <div className="w-full min-w-full py-[5%]">
+    <div className="w-full min-w-full pb-[5%]">
       {data ? (
         <div
           className="w-full h-full items-stretch flex flex-col sm:flex-row gap-5 lg:gap-10 mt-4 p-4 rounded-md border border-base-300"
