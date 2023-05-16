@@ -13,19 +13,6 @@ const Listing = ({mentors}: Props) => {
         {mentors && mentors.length
           ? mentors.map((mentor) => <Results data={mentor} key={mentor.id} collapsable={true} />)
           : null}
-        {/* {data ? (
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          data={data!.filter(
-            (d) =>
-              d.name.includes(searchQuery) ||
-              d.skills.includes(searchQuery) ||
-              d.provides.includes(searchQuery) ||
-              d.designation.includes(searchQuery)
-          )}
-        />
-      ) : null} */}
       </div>
   );
 };
