@@ -27,8 +27,9 @@ type Data = {
 
 type Props = {
   data: Data | null;
+  collapsable: boolean;
 };
-const Mentor = ({ data }: Props) => {
+const Mentor = ({ data, collapsable }: Props) => {
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const handleHidden = () => {
@@ -68,14 +69,16 @@ const Mentor = ({ data }: Props) => {
               {/* Open to providing */}
               <Provides provides={data.provides} />
             </div>
-            <img
-              src={arrow}
-              alt="view-more"
-              className={`sm:hidden w-5 h-5 mx-auto ${
-                isHidden ? "" : "rotate-180"
-              }`}
-              onClick={handleHidden}
-            />
+            {collapsable ? (
+              <img
+                src={arrow}
+                alt="view-more"
+                className={`sm:hidden w-5 h-5 mx-auto ${
+                  isHidden ? "" : "rotate-180"
+                }`}
+                onClick={handleHidden}
+              />
+            ) : null}
           </div>
         </div>
       ) : null}
