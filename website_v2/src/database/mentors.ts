@@ -1,4 +1,4 @@
-type Mentors = {
+export type Mentors = {
   id: number;
   name: string;
   linkedin: string;

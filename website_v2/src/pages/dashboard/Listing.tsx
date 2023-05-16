@@ -1,9 +1,11 @@
-import mentors from "../../database/mentors";
+import { Mentors } from "../../database/mentors";
 import Results from "../../components/mentorCard";
 
-type Props = {};
+type Props = {
+    mentors: Mentors
+};
 
-const Listing = (props: Props) => {
+const Listing = ({mentors}: Props) => {
   return (
       <div className="pt-[10%] px-4">
         <h3 className="font-lg sm:text-xl font-semibold px-4">All Results</h3>
