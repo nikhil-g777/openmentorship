@@ -1,3 +1,4 @@
+import CarouselWrapper from "./CarouselWrapper";
 import FilterWrapper from "./FilterWrapper";
 
 const Dashboard = () => {
@@ -7,6 +8,7 @@ const Dashboard = () => {
         Find your mentor
       </h1>
       <FilterWrapper />
+      <CarouselWrapper />
     </div>
   );
 };
