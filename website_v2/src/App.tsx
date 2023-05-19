@@ -3,7 +3,6 @@ import Layout from "./components/Layout";
 import Landing from "./pages/landing";
 import Dashboard from "./pages/dashboard";
 import { LinkedInCallback } from "react-linkedin-login-oauth2";
-import Results from "./components/mentorCard";
 
 function App() {
   return (
