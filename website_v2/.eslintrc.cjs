@@ -24,7 +24,7 @@ module.exports = {
       "error",
       {
         "namedComponents": ["function-declaration", "arrow-function"],
-        "unnamedComponents": "function-declaration"
+        "unnamedComponents": ["function-declaration"]
       }
     ]
   },
