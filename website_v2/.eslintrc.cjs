@@ -12,7 +12,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    project: "./website_v2/tsconfig.json",
+    project: "tsconfig.json",
+    tsconfigRootDir: __dirname
   },
   plugins: ["react", "@typescript-eslint", "react-refresh", "prettier"],
   rules: {
@@ -24,7 +25,7 @@ module.exports = {
       "error",
       {
         "namedComponents": ["function-declaration", "arrow-function"],
-        "unnamedComponents": ["function-declaration"]
+        "unnamedComponents": ["function-expression", "arrow-function"]
       }
     ]
   },
