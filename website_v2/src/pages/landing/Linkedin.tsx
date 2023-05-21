@@ -20,21 +20,24 @@ const Linkedin = () => {
       setIsModal(true);
       setHeading("Your LinkedIn auth code:");
       setMessage(code);
-      loginUser({authCode: code, isLocal: true});
+      loginUser({ authCode: code, isLocal: true });
     },
     onError: (error) => {
       console.log(error);
     },
   });
 
+  console.log(result);
+
   return (
     <>
-      <img
-        onClick={linkedInLogin}
-        src={linkedin}
-        alt="Sign in with Linked In"
-        style={{ maxWidth: "180px", cursor: "pointer" }}
-      />
+      <button type="button" onClick={linkedInLogin}>
+        <img
+          src={linkedin}
+          alt="Sign in with Linked In"
+          style={{ maxWidth: "180px", cursor: "pointer" }}
+        />
+      </button>
       {/* Temporary Modal */}
       <SuccessModal
         heading={heading}
