@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LinkedInCallback } from "react-linkedin-login-oauth2";
 import Layout from "./components/Layout";
 import Landing from "./pages/landing";
 import Dashboard from "./pages/dashboard";
-import { LinkedInCallback } from "react-linkedin-login-oauth2";
 
 function App() {
   return (
