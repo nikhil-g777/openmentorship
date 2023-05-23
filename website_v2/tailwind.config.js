@@ -7,12 +7,19 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
+      fontSize: {
+        heading: "45px",
+        sub_heading: "30px"
+      }
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: [      {
+      light: {
+        ...require("daisyui/src/colors/themes")["[data-theme=light]"],
+        primary: "#51B6A5",
+      },
+    }],
+  },
 }
