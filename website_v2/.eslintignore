@@ -1,1 +1,6 @@
 build/
+tailwind.config.js
+.next
+node_modules
+.gitignore
+tsconfig.json
