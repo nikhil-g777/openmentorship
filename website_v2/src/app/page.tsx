@@ -1,8 +1,8 @@
 import FAQ from "@/components/collapse/FAQ";
-import DreamCareer from "@/components/landing/DreamCareer";
-import Hero from "@/components/landing/Hero";
-import HowItWorks from "@/components/landing/HowItWorks";
-import WhyOpenMentorship from "@/components/landing/WhyOpenMentorship";
+import DreamCareer from "@/components/pages/landing/DreamCareer";
+import Hero from "@/components/pages/landing/Hero";
+import HowItWorks from "@/components/pages/landing/HowItWorks";
+import WhyOpenMentorship from "@/components/pages/landing/WhyOpenMentorship";
 
 const list = [
   {

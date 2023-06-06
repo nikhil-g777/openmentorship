@@ -83,7 +83,9 @@ const Navbar = (props: Props) => {
                   <Link href="/matches">Matches</Link>
                 </li>
                 <li>
-                  <Link href="/explore">Discover</Link>
+                  <Link href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences=">
+                    Discover
+                  </Link>
                 </li>
                 <li>
                   <Link href="/chat">Chat</Link>
