@@ -59,7 +59,7 @@ const Navbar = (props: Props) => {
             {status === "unauthenticated" ? (
               <>
                 <li>
-                  <Link href="/login" data-cy="navbar-profile-login-link">
+                  <Link href="/" data-cy="navbar-profile-login-link">
                     Login
                   </Link>
                 </li>
