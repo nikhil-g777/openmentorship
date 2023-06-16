@@ -34,4 +34,4 @@ const SuccessModal = ({heading, message, isModal, setIsModal}: Props) => {
   );
 };
 
-export default SuccessModal;
+export {SuccessModal};

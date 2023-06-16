@@ -28,4 +28,4 @@ const ErrorModal = ({heading, message}: Props) => {
   );
 };
 
-export default ErrorModal;
+export {ErrorModal};

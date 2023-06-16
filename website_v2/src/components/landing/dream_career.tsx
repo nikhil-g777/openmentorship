@@ -31,4 +31,4 @@ const DreamCareer = (props: Props) => {
   );
 };
 
-export default DreamCareer;
+export {DreamCareer};

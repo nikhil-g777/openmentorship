@@ -59,16 +59,6 @@ const Navbar = (props: Props) => {
             {status === "unauthenticated" ? (
               <>
                 <li>
-                  <Link href="/about" data-cy="navbar-profile-about-link">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/faq" data-cy="navbar-profile-faq-link">
-                    FAQ
-                  </Link>
-                </li>
-                <li>
                   <Link href="/login" data-cy="navbar-profile-login-link">
                     Login
                   </Link>
@@ -91,13 +81,6 @@ const Navbar = (props: Props) => {
                 <li onClick={() => signOut()}>
                   <button>Logout</button>
                 </li>
-                <hr />
-                <li>
-                  <Link href="/about">About</Link>
-                </li>
-                <li>
-                  <Link href="/faq">FAQ</Link>
-                </li>
               </>
             )}
           </ul>
@@ -107,4 +90,4 @@ const Navbar = (props: Props) => {
   );
 };
 
-export default Navbar;
+export {Navbar};

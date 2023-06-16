@@ -33,4 +33,4 @@ const Linkedin = () => {
   );
 };
 
-export default Linkedin;
+export {Linkedin};

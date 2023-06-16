@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 type List = {
   id: string;
   heading: string;
@@ -39,14 +37,14 @@ const FAQ = ({list}: Props) => {
           ))
         : null}
 
-      <Link
-        href="/faq"
+      {/* <Link
+        href="#"
         className="block text-lg sm:text-xl font-semibold text-primary text-center mt-4 sm:mt-8 link link-hover"
       >
         See more
-      </Link>
+      </Link> */}
     </div>
   );
 };
 
-export default FAQ;
+export {FAQ};

@@ -60,4 +60,4 @@ const WhyOpenMentorship = (props: Props) => {
   );
 };
 
-export default WhyOpenMentorship;
+export {WhyOpenMentorship};

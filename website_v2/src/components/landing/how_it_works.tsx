@@ -45,4 +45,4 @@ const HowItWorks = (props: Props) => {
   );
 };
 
-export default HowItWorks;
+export {HowItWorks};

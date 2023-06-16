@@ -1,7 +1,7 @@
 "use client";
 
 import {useSession} from "next-auth/react";
-import Linkedin from "./Linkedin";
+import {Linkedin} from "./linkedin_main";
 import Image from "next/image";
 
 type Props = {};
@@ -53,4 +53,4 @@ const Hero = (props: Props) => {
   );
 };
 
-export default Hero;
+export {Hero};
