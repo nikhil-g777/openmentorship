@@ -171,10 +171,10 @@ const updateMatch = (req, res) => {
           },
           { new: true },
         )
-          .exec()
           .populate('mentor')
           .populate('mentee')
           .populate('latestSession')
+          .exec()
           .then((updatedMatch) => {
             results.updatedMatch = updatedMatch;
             return Session.findByIdAndUpdate(updatedMatch.latestSession, {
