@@ -1,6 +1,7 @@
-build/
-tailwind.config.js
-.next
-node_modules
+!.prettierrc.js
 .gitignore
+.next
+build/
+node_modules
+tailwind.config.js
 tsconfig.json
