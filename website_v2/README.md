@@ -1,4 +1,3 @@
-
 # Frontend Setup with NextJS + TypeScript
 
 Working template for frontend with the tech stack of NextJS + Typescript, TailwindCSS and DaisyUI.

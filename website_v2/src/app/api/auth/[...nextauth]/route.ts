@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, {AuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 // Get User Details
@@ -15,7 +15,7 @@ const getUserInfo = async (authCode: string) => {
   return userInfo;
 };
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
@@ -28,7 +28,7 @@ export const authOptions = {
       credentials: {
         authCode: {type: "text"},
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid.
@@ -59,13 +59,13 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async jwt({user, token}: any) {
+    async jwt({user, token}) {
       if (user) {
         token.user = user;
       }
       return token;
     },
-    async session({session, token}: any) {
+    async session({session, token}) {
       session.user = token.user;
       session.profile = await getUserInfo(token.user.token);
       return session;

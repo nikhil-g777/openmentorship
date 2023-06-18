@@ -1,8 +1,6 @@
 import Image from "next/image";
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <div className="flex justify-center items-center w-full mt-auto bg-[#F5F3F8] py-10 px-4 font-bold">
       <footer className="w-full max-w-6xl flex flex-wrap flex-col sm:flex-row items-center justify-between gap-5">

@@ -1,6 +1,4 @@
-type Props = {};
-
-const WhyOpenMentorship = (props: Props) => {
+const WhyOpenMentorship = () => {
   return (
     <div className="w-full bg-[#F5F3F8] px-4">
       <div className="pt-16 md:pt-24 w-full max-w-6xl mx-auto flex flex-col md:flex-row sm:items-center gap-5 sm:gap-10 lg:gap-20">
