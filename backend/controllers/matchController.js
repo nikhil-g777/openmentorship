@@ -8,6 +8,13 @@ const Match = require('../models/match');
 const Session = require('../models/session');
 const User = require('../models/user');
 
+const x = 1;
+
+
+
+
+
+
 const constructExploreFilter = (query) => {
   const {
     areasOfInterest,
@@ -171,10 +178,10 @@ const updateMatch = (req, res) => {
           },
           { new: true },
         )
-          .exec()
           .populate('mentor')
           .populate('mentee')
           .populate('latestSession')
+          .exec()
           .then((updatedMatch) => {
             results.updatedMatch = updatedMatch;
             return Session.findByIdAndUpdate(updatedMatch.latestSession, {
