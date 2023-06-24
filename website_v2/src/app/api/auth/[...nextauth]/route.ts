@@ -15,7 +15,7 @@ const getUserInfo = async (authCode: string) => {
   return userInfo;
 };
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
