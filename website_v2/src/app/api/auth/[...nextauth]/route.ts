@@ -15,7 +15,7 @@ const getUserInfo = async (authCode: string) => {
   return userInfo;
 };
 
-export const authOptions = {
+const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
@@ -28,7 +28,7 @@ export const authOptions = {
       credentials: {
         authCode: {type: "text"},
       },
-      async authorize(credentials, req) {
+      async authorize(credentials, req) { // eslint-disable-line
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid.
@@ -59,13 +59,13 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async jwt({user, token}: any) {
+    async jwt({user, token}: any) { // eslint-disable-line
       if (user) {
         token.user = user;
       }
       return token;
     },
-    async session({session, token}: any) {
+    async session({session, token}: any) { // eslint-disable-line
       session.user = token.user;
       session.profile = await getUserInfo(token.user.token);
       return session;

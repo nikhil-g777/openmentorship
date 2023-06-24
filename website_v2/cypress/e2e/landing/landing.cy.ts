@@ -51,6 +51,8 @@ describe("Page load test", () => {
   });
 });
 
+export {};
+
 // describe("Login functionality test", () => {
 //   it("Login with linkedin", () => {
 //     cy.visit("http://localhost:3010/");
