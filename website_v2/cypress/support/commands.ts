@@ -25,4 +25,5 @@ declare global {
   }
 }
 
-export default {};
+const customCommands = {};
+export default customCommands;
