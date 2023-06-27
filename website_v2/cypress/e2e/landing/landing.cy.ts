@@ -77,3 +77,5 @@ describe("Page load test", () => {
 //     });
 //   });
 // });
+
+export {};
