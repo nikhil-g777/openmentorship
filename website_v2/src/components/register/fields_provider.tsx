@@ -1,90 +1,119 @@
 "use client";
 
-import Image from "next/image";
-import {useState} from "react";
+import {useRegisterStore} from "@/zustand/store";
+import {SetStateAction} from "react";
+import {InputProvider} from "./step_2_inputs_provider";
 
 type Props = {
-  heading: string;
-  buttonText: string;
-  inputOnePlaceholder: string;
-  inputTwoPlaceholder: string;
+  type: string;
+  inputError: {experience: string; education: string};
+  setInputError: React.Dispatch<
+    SetStateAction<{
+      experience: string;
+      education: string;
+    }>
+  >;
 };
 
-const FieldsProvider = ({
-  heading,
-  buttonText,
-  inputOnePlaceholder,
-  inputTwoPlaceholder,
-}: Props) => {
-  const [inputFields, setInputFields] = useState<{[key: string]: string}[]>([]);
+const FieldsProvider = ({type, inputError, setInputError}: Props) => {
+  const {experiences, education, setExperiences, setEducation} =
+    useRegisterStore();
 
+  // Add input fields
   const handleAddInput = () => {
-    if (inputFields.length >= 3) return;
-    setInputFields([...inputFields, {key: "", value: ""}]);
+    // Return if input fields are more than 3
+    if (type === "experiences" && experiences.length >= 3) return;
+    if (type === "education" && education.length >= 3) return;
+
+    // Reset error
+    setInputError({experience: "", education: ""});
+
+    // Check if both fields are filled
+    if (type === "experiences") {
+      if (experiences.length) {
+        const lastField = experiences[experiences.length - 1];
+        if (lastField.organization === "" || lastField.title === "") {
+          setInputError({experience: "Please fill all fields", education: ""});
+          return;
+        }
+      }
+    } else {
+      if (education.length) {
+        const lastField = education[education.length - 1];
+        if (lastField.school === "" || lastField.degree === "") {
+          setInputError({experience: "", education: "Please fill all fields"});
+          return;
+        }
+      }
+    }
+
+    // Experience or Education
+    if (type === "experiences") {
+      setExperiences([
+        ...experiences,
+        {_id: Date.now().toString(), organization: "", title: ""},
+      ]);
+    } else {
+      setEducation([
+        ...education,
+        {_id: Date.now().toString(), school: "", degree: ""},
+      ]);
+    }
   };
 
+  // Change input fields
+  const handleChangeInput = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    // Update input fields
+    if (type === "experiences") {
+      if (e.target.name === "organization") {
+        experiences[index].organization = e.target.value;
+      } else {
+        experiences[index].title = e.target.value;
+      }
+      setExperiences([...experiences]);
+    } else {
+      if (e.target.name === "school") {
+        education[index].school = e.target.value;
+      } else {
+        education[index].degree = e.target.value;
+      }
+      setEducation([...education]);
+    }
+  };
+
+  // Remove input fields
   const handleRemoveInput = (index: number) => {
-    setInputFields(inputFields.filter((field, i) => i !== index));
+    // Remove input field
+    if (type === "experiences") {
+      setExperiences(experiences.filter((field, i) => i !== index));
+    } else {
+      setEducation(education.filter((field, i) => i !== index));
+    }
   };
   return (
     <div className="w-full mt-8">
-      {/* Heading */}
-      <h2 className="text-base md:text-lg font-medium">{heading}</h2>
-      <div className="w-full">
-        {inputFields && inputFields.length
-          ? inputFields.map((field, index) => (
-              <div
-                key={field.key}
-                className="w-full flex flex-col md:flex-row gap-2 my-2 last:-mb-4 md:last:mb-4"
-              >
-                <input
-                  className="input input-bordered w-full"
-                  key={index}
-                  placeholder={inputOnePlaceholder}
-                  value={field.key}
-                  onChange={e => {
-                    setInputFields(prevState => {
-                      const newState = [...prevState];
-                      newState[index].key = e.target.value;
-                      return newState;
-                    });
-                  }}
-                />
-                <input
-                  className="input input-bordered w-full"
-                  key={index + 1}
-                  placeholder={inputTwoPlaceholder}
-                  value={field.value}
-                  onChange={e => {
-                    setInputFields(prevState => {
-                      const newState = [...prevState];
-                      newState[index].value = e.target.value;
-                      return newState;
-                    });
-                  }}
-                />
-                {inputFields.length && (
-                  <button
-                    onClick={() => handleRemoveInput(index)}
-                    className="btn btn-error mb-8 md:mb-0"
-                  >
-                    <Image
-                      src="/assets/icons/cancel.svg"
-                      width={24}
-                      height={24}
-                      alt="remove"
-                    />
-                  </button>
-                )}
-              </div>
-            ))
-          : null}
-      </div>
-      {inputFields.length < 3 ? (
-        <button onClick={handleAddInput} className="btn btn-primary mt-2 mb-8">
-          {buttonText}
-        </button>
-      ) : null}
+      {type === "experiences" ? (
+        <InputProvider
+          type={type}
+          inputFields={experiences}
+          handleChangeInput={handleChangeInput}
+          handleRemoveInput={handleRemoveInput}
+          inputError={inputError}
+          handleAddInput={handleAddInput}
+        />
+      ) : (
+        <InputProvider
+          type={type}
+          inputFields={education}
+          handleChangeInput={handleChangeInput}
+          handleRemoveInput={handleRemoveInput}
+          inputError={inputError}
+          handleAddInput={handleAddInput}
+        />
+      )}
     </div>
   );
 };

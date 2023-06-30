@@ -2,9 +2,55 @@
 
 import {useRegisterStore} from "@/zustand/store";
 import {FieldsProvider} from "./fields_provider";
+import {useState} from "react";
 
 const Step2 = () => {
-  const {currentScreen} = useRegisterStore();
+  const {currentScreen, setCurrentScreen, experiences, education} =
+    useRegisterStore();
+  const [inputError, setInputError] = useState<{
+    experience: string;
+    education: string;
+  }>({experience: "", education: ""});
+
+  // Handle continue
+  const handleContinue = () => {
+    // Reset error
+    setInputError({experience: "", education: ""});
+
+    // Validate
+    if (experiences.length === 0) {
+      setInputError({
+        experience: "Please add at least one experience",
+        education: "",
+      });
+      return;
+    }
+    if (education.length === 0) {
+      setInputError({
+        experience: "",
+        education: "Please add at least one education",
+      });
+      return;
+    }
+
+    // Check if all fields are filled
+    for (const experience of experiences) {
+      if (experience.organization === "" || experience.title === "") {
+        setInputError({experience: "Please fill all fields", education: ""});
+        return;
+      }
+    }
+    for (const single of education) {
+      if (single.school === "" || single.degree === "") {
+        setInputError({experience: "", education: "Please fill all fields"});
+        return;
+      }
+    }
+
+    // Move to next screen
+    setCurrentScreen("step3");
+  };
+
   return (
     <div className={`w-full ${currentScreen === "step2" ? "" : "hidden"}`}>
       <div className="w-full max-w-3xl mx-auto mt-8 px-4">
@@ -14,21 +60,22 @@ const Step2 = () => {
         </h1>
         {/* Work Experience */}
         <FieldsProvider
-          heading="Work Experience"
-          buttonText="Add Experience"
-          inputOnePlaceholder="Organization"
-          inputTwoPlaceholder="Title"
+          type="experiences"
+          inputError={inputError}
+          setInputError={setInputError}
         />
         {/* Education */}
         <FieldsProvider
-          heading="Education"
-          buttonText="Add Education"
-          inputOnePlaceholder="School"
-          inputTwoPlaceholder="Degree"
+          type="education"
+          inputError={inputError}
+          setInputError={setInputError}
         />
         {/* Continue */}
         <div className="w-full my-8 text-center">
-          <button className="w-48 btn btn-outline btn-accent rounded-full hover:text-white">
+          <button
+            className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
+            onClick={handleContinue}
+          >
             Continue
           </button>
         </div>
