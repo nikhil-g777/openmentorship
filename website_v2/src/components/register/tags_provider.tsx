@@ -1,15 +1,21 @@
 "use client";
 
-import Image from "next/image";
+import {useRegisterStore} from "@/zustand/store";
 import {useState} from "react";
+import {TagsWrapper} from "./step_3_tags_wrapper";
 
 type Props = {
+  type: string;
   heading: string;
+  error: {skills: string; interests: string};
+  setError: React.Dispatch<
+    React.SetStateAction<{skills: string; interests: string}>
+  >;
 };
 
-const TagsProvider = ({heading}: Props) => {
+const TagsProvider = ({type, heading, error, setError}: Props) => {
+  const {skills, interests, setSkills, setInterests} = useRegisterStore();
   const [inputValue, setInputValue] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,22 +24,43 @@ const TagsProvider = ({heading}: Props) => {
     if (inputValue.length === 0) return;
 
     // Return if input value already included
-    for (const tag of tags) {
-      if (tag.toLowerCase() === inputValue.toLowerCase()) {
-        setInputValue("");
-        return;
+    if (type === "skills") {
+      for (const skill of skills) {
+        if (skill.toLowerCase() === inputValue.toLowerCase()) {
+          setInputValue("");
+          return;
+        }
+      }
+    } else {
+      for (const interest of interests) {
+        if (interest.toLowerCase() === inputValue.toLowerCase()) {
+          setInputValue("");
+          return;
+        }
       }
     }
 
-    // Set tags
-    setTags(previous => [...previous, inputValue]);
-    setInputValue("");
+    // Add to tags
+    if (type === "skills") {
+      setSkills([...skills, inputValue]);
+      setInputValue("");
+      setError({skills: "", interests: ""});
+    } else {
+      setInterests([...interests, inputValue]);
+      setInputValue("");
+      setError({skills: "", interests: ""});
+    }
   };
 
   const handleDelete = (index: number) => {
     // Filter based on the index obtained
-    const filtered = tags.filter((tag, tagIndex) => tagIndex !== index);
-    setTags(filtered);
+    if (type === "skills") {
+      const filteredSkills = skills.filter((_, i) => i !== index);
+      setSkills(filteredSkills);
+    } else {
+      const filteredInterests = interests.filter((_, i) => i !== index);
+      setInterests(filteredInterests);
+    }
   };
   return (
     <div className="w-full my-8">
@@ -55,26 +82,23 @@ const TagsProvider = ({heading}: Props) => {
         </div>
       </form>
       {/* Tags */}
-      <div className="w-full flex flex-wrap gap-2 items-center mt-3">
-        {tags && tags.length
-          ? tags.map((tag, index) => (
-              <div
-                className="badge badge-primary border-base-300 gap-2 py-4 pr-1 text-sm sm:text-base"
-                key={tag}
-              >
-                {tag}
-                <Image
-                  src="/assets/icons/cancel.svg"
-                  width={14}
-                  height={14}
-                  alt={tag}
-                  className="cursor-pointer btn btn-xs btn-circle bg-white hover:bg-error border-none p-1"
-                  onClick={() => handleDelete(index)}
-                />
-              </div>
-            ))
-          : null}
-      </div>
+      {type === "skills" && skills.length > 0 ? (
+        <TagsWrapper tags={skills} handleDelete={handleDelete} />
+      ) : null}
+      {type === "interests" && interests.length > 0 ? (
+        <TagsWrapper tags={interests} handleDelete={handleDelete} />
+      ) : null}
+      {/* Error */}
+      {type === "skills" && error.skills.length ? (
+        <label className="label">
+          <span className="label-text-alt text-error">{error.skills}</span>
+        </label>
+      ) : null}
+      {type === "interests" && error.interests.length ? (
+        <label className="label">
+          <span className="label-text-alt text-error">{error.interests}</span>
+        </label>
+      ) : null}
     </div>
   );
 };

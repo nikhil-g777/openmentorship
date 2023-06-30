@@ -18,4 +18,11 @@ type CurrentType = {
   degree?: string;
 };
 
-export type {WorkExperience, Education, CurrentType};
+type CommunicationPreferences = {
+  phone?: string;
+  video?: string;
+  chat?: string;
+  message?: string;
+}[];
+
+export type {WorkExperience, Education, CurrentType, CommunicationPreferences};

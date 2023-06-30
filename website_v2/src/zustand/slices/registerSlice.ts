@@ -34,6 +34,16 @@ export type RegisterSlice = {
   setExperiences: (type: [] | WorkExperience[]) => void;
   education: [] | Education[];
   setEducation: (type: [] | Education[]) => void;
+  skills: string[];
+  setSkills: (type: string[]) => void;
+  interests: string[];
+  setInterests: (type: string[]) => void;
+  goals: {[key: string]: boolean};
+  setGoals: (type: {[key: string]: boolean}) => void;
+  communicationFrequency: string;
+  setCommunicationFrequency: (type: string) => void;
+  communicationPreferences: string[];
+  setCommunicationPreferences: (type: string[]) => void;
 };
 
 export const registerSlice: StateCreator<
@@ -109,5 +119,30 @@ export const registerSlice: StateCreator<
   setEducation: (education: [] | Education[]) =>
     set(() => ({
       education: education,
+    })),
+  skills: [],
+  setSkills: (skills: string[]) =>
+    set(() => ({
+      skills: skills,
+    })),
+  interests: [],
+  setInterests: (interests: string[]) =>
+    set(() => ({
+      interests: interests,
+    })),
+  goals: {},
+  setGoals: (goals: {[key: string]: boolean}) =>
+    set(() => ({
+      goals: goals,
+    })),
+  communicationFrequency: "",
+  setCommunicationFrequency: (communicationFrequency: string) =>
+    set(() => ({
+      communicationFrequency: communicationFrequency,
+    })),
+  communicationPreferences: [],
+  setCommunicationPreferences: (communicationPreferences: string[]) =>
+    set(() => ({
+      communicationPreferences: communicationPreferences,
     })),
 });
