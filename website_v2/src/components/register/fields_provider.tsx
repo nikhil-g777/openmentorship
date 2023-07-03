@@ -47,16 +47,55 @@ const FieldsProvider = ({type, inputError, setInputError}: Props) => {
       }
     }
 
+    // Check if organization and title are not same
+    if (type === "experiences") {
+      if (experiences.length) {
+        const lastField = experiences[experiences.length - 1];
+        if (
+          lastField.organization.toLowerCase() === lastField.title.toLowerCase()
+        ) {
+          setInputError({
+            experience: "Organization and title cannot be same",
+            education: "",
+          });
+          return;
+        }
+      }
+    } else {
+      if (education.length) {
+        const lastField = education[education.length - 1];
+        if (lastField.school.toLowerCase() === lastField.degree.toLowerCase()) {
+          setInputError({
+            experience: "",
+            education: "School and degree cannot be same",
+          });
+          return;
+        }
+      }
+    }
+
+    // Check if any duplicate title or degree
+    const exp = experiences.map(field => field.title.toLowerCase());
+    const edu = education.map(field => field.degree.toLowerCase());
+    if (exp.length !== new Set(exp).size) {
+      setInputError({experience: "Duplicate title found", education: ""});
+      return;
+    }
+    if (edu.length !== new Set(edu).size) {
+      setInputError({experience: "", education: "Duplicate degree found"});
+      return;
+    }
+
     // Experience or Education
     if (type === "experiences") {
       setExperiences([
         ...experiences,
-        {_id: Date.now().toString(), organization: "", title: ""},
+        {key: crypto.randomUUID(), organization: "", title: ""},
       ]);
     } else {
       setEducation([
         ...education,
-        {_id: Date.now().toString(), school: "", degree: ""},
+        {key: crypto.randomUUID(), school: "", degree: ""},
       ]);
     }
   };

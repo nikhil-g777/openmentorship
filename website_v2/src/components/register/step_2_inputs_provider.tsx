@@ -31,7 +31,7 @@ const InputProvider = ({
         {inputFields && inputFields.length
           ? inputFields.map((field: CurrentType, index: number) => (
               <div
-                key={field._id}
+                key={field.key}
                 className="w-full flex flex-col md:flex-row gap-2 my-2 last:-mb-4 md:last:mb-4"
               >
                 <input

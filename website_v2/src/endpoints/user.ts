@@ -1,3 +1,4 @@
+import {RegisterBody} from "@/types/regsiter";
 import {headerProvider} from "./root";
 
 // Get User Details
@@ -68,4 +69,27 @@ const registerUser = async (data: {
   }
 };
 
-export {getUserInfo, nextAuthLogin, registerUser};
+// Update User
+const updateUser = async (token: string, data: RegisterBody) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/update`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...data,
+        }),
+      }
+    );
+    return res.json();
+  } catch (error) {
+    return error;
+  }
+};
+
+export {getUserInfo, nextAuthLogin, registerUser, updateUser};

@@ -7,15 +7,19 @@ type Props = {
 const CommunicationPreferences = ({error}: Props) => {
   const {communicationPreferences, setCommunicationPreferences} =
     useRegisterStore();
+  const preferences = ["phone", "video", "chat", "message"];
 
   // Handle change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Add to communicationPreferences if checked
+    //  Fix source has 5 elements but targets allows only 4
+    if (communicationPreferences.length === 4 && e.target.checked) {
+      return;
+    }
+
+    // Add or remove preference
     if (e.target.checked) {
       setCommunicationPreferences([...communicationPreferences, e.target.name]);
-    }
-    // Remove from communicationPreferences if unchecked
-    else {
+    } else {
       setCommunicationPreferences(
         communicationPreferences.filter(
           preference => preference !== e.target.name
@@ -26,46 +30,21 @@ const CommunicationPreferences = ({error}: Props) => {
 
   return (
     <div className="form-control mt-2">
-      <label className="label cursor-pointer justify-start gap-2">
-        <input
-          type="checkbox"
-          className="checkbox checkbox-primary"
-          name="phone"
-          checked={communicationPreferences.includes("phone")}
-          onChange={handleChange}
-        />
-        <span className="label-text text-base">Phone Call</span>
-      </label>
-      <label className="label cursor-pointer justify-start gap-2">
-        <input
-          type="checkbox"
-          className="checkbox checkbox-primary"
-          name="video"
-          checked={communicationPreferences.includes("video")}
-          onChange={handleChange}
-        />
-        <span className="label-text text-base">Video Call</span>
-      </label>
-      <label className="label cursor-pointer justify-start gap-2">
-        <input
-          type="checkbox"
-          className="checkbox checkbox-primary"
-          name="chat"
-          checked={communicationPreferences.includes("chat")}
-          onChange={handleChange}
-        />
-        <span className="label-text text-base">Chat</span>
-      </label>
-      <label className="label cursor-pointer justify-start gap-2">
-        <input
-          type="checkbox"
-          className="checkbox checkbox-primary"
-          name="message"
-          checked={communicationPreferences.includes("message")}
-          onChange={handleChange}
-        />
-        <span className="label-text text-base">Messaging</span>
-      </label>
+      {preferences.map(preference => (
+        <label
+          key={preference}
+          className="label cursor-pointer justify-start gap-2"
+        >
+          <input
+            type="checkbox"
+            className="checkbox checkbox-primary"
+            name={preference}
+            checked={communicationPreferences.includes(preference)}
+            onChange={handleChange}
+          />
+          <span className="label-text text-base capitalize">{preference}</span>
+        </label>
+      ))}
       {/* Error */}
       {error.preferences.length ? (
         <label className="label">

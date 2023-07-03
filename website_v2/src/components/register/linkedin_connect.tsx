@@ -1,13 +1,14 @@
 "use client";
 
 import {registerUser} from "@/endpoints/user";
-import {useRegisterStore} from "@/zustand/store";
+import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import Image from "next/image";
 import {useLinkedIn} from "react-linkedin-login-oauth2";
 
 const LinkedInConnect = () => {
-  const {token, setToken, setFirstName, setLastName, setEmail} =
+  const {token, setUserId, setToken, setFirstName, setLastName, setEmail} =
     useRegisterStore();
+  const {setSuccessAlert, setErrorAlert} = useCommonStore();
   const {linkedInLogin} = useLinkedIn({
     clientId: process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID!,
     redirectUri: `${
@@ -16,10 +17,18 @@ const LinkedInConnect = () => {
     scope: "r_emailaddress r_liteprofile",
     onSuccess: async code => {
       const res = await registerUser({authCode: code, type: "linkedInSignup"});
-      setToken(res.token);
-      setFirstName(res.user.firstName);
-      setLastName(res.user.lastName);
-      setEmail(res.user.email);
+      if (res.success) {
+        setSuccessAlert("Successfully fetched LinkedIn data!");
+        setToken(res.token);
+        setUserId(res.user._id);
+        setFirstName(res.user.firstName);
+        setLastName(res.user.lastName);
+        setEmail(res.user.email);
+      }
+      if (!res.success) {
+        setErrorAlert("Failed to fetch LinkedIn data!");
+        return;
+      }
     },
     onError: error => {
       console.log(error);

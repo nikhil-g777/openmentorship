@@ -1,8 +1,15 @@
-import {Education, WorkExperience} from "@/types/regsiter";
+import {
+  CommunicationPreferences,
+  Education,
+  SocialLinks,
+  WorkExperience,
+} from "@/types/regsiter";
 import {StateCreator} from "zustand";
 
 export type RegisterSlice = {
   token: string;
+  userId: string;
+  setUserId: (type: string) => void;
   setToken: (type: string) => void;
   currentScreen: string;
   setCurrentScreen: (type: string) => void;
@@ -42,8 +49,13 @@ export type RegisterSlice = {
   setGoals: (type: {[key: string]: boolean}) => void;
   communicationFrequency: string;
   setCommunicationFrequency: (type: string) => void;
-  communicationPreferences: string[];
-  setCommunicationPreferences: (type: string[]) => void;
+  communicationPreferences: CommunicationPreferences;
+  setCommunicationPreferences: (type: CommunicationPreferences) => void;
+  socialLinks: SocialLinks;
+  setSocialLinks: (type: SocialLinks) => void;
+  socialSites: string[];
+  menteeGuidelines: {id: number; imageURL: string; text: string}[];
+  mentorGuidelines: {id: number; imageURL: string; text: string}[];
 };
 
 export const registerSlice: StateCreator<
@@ -53,6 +65,11 @@ export const registerSlice: StateCreator<
   RegisterSlice
 > = set => ({
   token: "",
+  userId: "",
+  setUserId: (userId: string) =>
+    set(() => ({
+      userId: userId,
+    })),
   setToken: (token: string) =>
     set(() => ({
       token: token,
@@ -141,8 +158,72 @@ export const registerSlice: StateCreator<
       communicationFrequency: communicationFrequency,
     })),
   communicationPreferences: [],
-  setCommunicationPreferences: (communicationPreferences: string[]) =>
+  setCommunicationPreferences: (
+    communicationPreferences: CommunicationPreferences
+  ) =>
     set(() => ({
       communicationPreferences: communicationPreferences,
     })),
+  socialLinks: {
+    twitter: "",
+    medium: "",
+    behance: "",
+    github: "",
+    portfolio: "",
+    other: "",
+  },
+  setSocialLinks: (socialLinks: SocialLinks) =>
+    set(() => ({
+      socialLinks: socialLinks,
+    })),
+  socialSites: ["twitter", "medium", "behance", "github", "portfolio", "other"],
+  menteeGuidelines: [
+    {
+      id: 1,
+      imageURL: "/assets/images/postRegistration/email.svg",
+      text: "You will recieve an email confirmation of your registration.",
+    },
+    {
+      id: 2,
+      imageURL: "/assets/images/postRegistration/people.svg",
+      text: "Explore and find mentors based on your interests and goals.",
+    },
+    {
+      id: 3,
+      imageURL: "/assets/images/postRegistration/request.svg",
+      text: "Send a request to connect with mentors you like. Be specific about what you are looking for.",
+    },
+    {
+      id: 4,
+      imageURL: "/assets/images/postRegistration/find.svg",
+      text: "Sit tight, the mentors will have one week to accept your request.",
+    },
+    {
+      id: 5,
+      imageURL: "/assets/images/postRegistration/connect.svg",
+      text: "Connect with your mentor. Make it count!",
+    },
+  ],
+  mentorGuidelines: [
+    {
+      id: 1,
+      imageURL: "/assets/images/postRegistration/email.svg",
+      text: "You will recieve an email confirmation of your registration.",
+    },
+    {
+      id: 2,
+      imageURL: "/assets/images/postRegistration/people.svg",
+      text: "Mentees will find you and send a connection request based on your profile and their goals (Ps: You can mentor upto 3 people at a time)",
+    },
+    {
+      id: 3,
+      imageURL: "/assets/images/postRegistration/find.svg",
+      text: "You will have 1 week from the time of the request to review and respond. (Ps: Don't leave them hanging)",
+    },
+    {
+      id: 4,
+      imageURL: "/assets/images/postRegistration/connect.svg",
+      text: "Connect with your mentee. Time to be a sherpa!",
+    },
+  ],
 });
