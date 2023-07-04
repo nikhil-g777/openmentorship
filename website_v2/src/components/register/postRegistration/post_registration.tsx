@@ -36,7 +36,7 @@ const PostRegistration = () => {
     if (res.success) {
       setSuccessAlert(
         "Your profile is currently under review. Please check back later for updates.",
-        5
+        6
       );
       resetState();
       router.replace("/");
