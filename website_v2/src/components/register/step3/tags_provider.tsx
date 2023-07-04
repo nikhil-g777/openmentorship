@@ -2,7 +2,12 @@
 
 import {useRegisterStore} from "@/zustand/store";
 import {useState} from "react";
-import {TagsWrapper} from "./step_3_tags_wrapper";
+import {TagsWrapper} from "./tags_wrapper";
+import {
+  addSkillsInterests,
+  checkSkillsInterestsDuplicate,
+} from "@/helpers/register";
+import {Form} from "./form";
 
 type Props = {
   type: string;
@@ -24,32 +29,26 @@ const TagsProvider = ({type, heading, error, setError}: Props) => {
     if (inputValue.length === 0) return;
 
     // Return if input value already included
-    if (type === "skills") {
-      for (const skill of skills) {
-        if (skill.toLowerCase() === inputValue.toLowerCase()) {
-          setInputValue("");
-          return;
-        }
-      }
-    } else {
-      for (const interest of interests) {
-        if (interest.toLowerCase() === inputValue.toLowerCase()) {
-          setInputValue("");
-          return;
-        }
-      }
-    }
+    const isDuplicate = checkSkillsInterestsDuplicate(
+      type,
+      skills,
+      interests,
+      inputValue,
+      setInputValue
+    );
+    if (isDuplicate) return;
 
     // Add to tags
-    if (type === "skills") {
-      setSkills([...skills, inputValue]);
-      setInputValue("");
-      setError({skills: "", interests: ""});
-    } else {
-      setInterests([...interests, inputValue]);
-      setInputValue("");
-      setError({skills: "", interests: ""});
-    }
+    addSkillsInterests(
+      type,
+      skills,
+      setSkills,
+      interests,
+      setInterests,
+      inputValue,
+      setInputValue,
+      setError
+    );
   };
 
   const handleDelete = (index: number) => {
@@ -65,22 +64,12 @@ const TagsProvider = ({type, heading, error, setError}: Props) => {
   return (
     <div className="w-full my-8">
       <label className="block text-base md:text-xl mb-2">{heading}</label>
-      <form className="form-control" onSubmit={handleSubmit}>
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Type here..."
-            className="input input-bordered w-full"
-            value={inputValue}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setInputValue(e.target.value)
-            }
-          />
-          <button type="submit" className="btn btn-square px-8 btn-primary">
-            Add
-          </button>
-        </div>
-      </form>
+      {/* Form */}
+      <Form
+        handleSubmit={handleSubmit}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+      />
       {/* Tags */}
       {type === "skills" && skills.length > 0 ? (
         <TagsWrapper tags={skills} handleDelete={handleDelete} />

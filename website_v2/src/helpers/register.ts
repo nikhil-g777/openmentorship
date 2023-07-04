@@ -242,6 +242,61 @@ const updateExperienceEducation = (
   }
 };
 
+// Screen3 validation
+// Check if input value is already included
+const checkSkillsInterestsDuplicate = (
+  type: string,
+  skills: string[],
+  interests: string[],
+  inputValue: string,
+  setInputValue: Dispatch<SetStateAction<string>>
+) => {
+  if (type === "skills") {
+    for (const skill of skills) {
+      if (skill.toLowerCase() === inputValue.toLowerCase()) {
+        setInputValue("");
+        return true;
+      }
+    }
+  } else {
+    for (const interest of interests) {
+      if (interest.toLowerCase() === inputValue.toLowerCase()) {
+        setInputValue("");
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
+// Add skills and interests tags
+const addSkillsInterests = (
+  type: string,
+  skills: string[],
+  setSkills: (type: string[]) => void,
+  interests: string[],
+  setInterests: (type: string[]) => void,
+  inputValue: string,
+  setInputValue: (value: SetStateAction<string>) => void,
+  setError: (
+    value: SetStateAction<{
+      skills: string;
+      interests: string;
+    }>
+  ) => void
+) => {
+  if (type === "skills") {
+    setSkills([...skills, inputValue]);
+    setInputValue("");
+    setError({skills: "", interests: ""});
+  } else {
+    setInterests([...interests, inputValue]);
+    setInputValue("");
+    setError({skills: "", interests: ""});
+  }
+};
+
 export {
   twitterPattern,
   mediumPattern,
@@ -257,4 +312,6 @@ export {
   checkExperiencesEducationBothFields,
   addExperienceEducation,
   updateExperienceEducation,
+  checkSkillsInterestsDuplicate,
+  addSkillsInterests,
 };
