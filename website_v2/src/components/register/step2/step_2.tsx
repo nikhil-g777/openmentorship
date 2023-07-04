@@ -3,6 +3,12 @@
 import {useRegisterStore} from "@/zustand/store";
 import {FieldsProvider} from "./fields_provider";
 import {useState} from "react";
+import {
+  checkDuplicateCurrentFields,
+  checkDuplicateTitleDegree,
+  checkExperiencesEducationBothFields,
+  checkExperiencesEducationLength,
+} from "@/helpers/register";
 
 const Step2 = () => {
   const {currentScreen, setCurrentScreen, experiences, education} =
@@ -17,35 +23,37 @@ const Step2 = () => {
     // Reset error
     setInputError({experience: "", education: ""});
 
-    // Validate
-    if (experiences.length === 0) {
-      setInputError({
-        experience: "Please add at least one experience",
-        education: "",
-      });
-      return;
-    }
-    if (education.length === 0) {
-      setInputError({
-        experience: "",
-        education: "Please add at least one education",
-      });
-      return;
-    }
+    // Check experience and education length
+    const noLength = checkExperiencesEducationLength(
+      experiences,
+      education,
+      setInputError
+    );
+    if (noLength) return;
+
+    // Check duplicate organization + title and duplicate school + degree
+    const duplicateCurrentFields = checkDuplicateCurrentFields(
+      experiences,
+      education,
+      setInputError
+    );
+    if (duplicateCurrentFields) return;
+
+    // Check if any duplicate title or degree
+    const duplicateTitleDegree = checkDuplicateTitleDegree(
+      experiences,
+      education,
+      setInputError
+    );
+    if (duplicateTitleDegree) return;
 
     // Check if all fields are filled
-    for (const experience of experiences) {
-      if (experience.organization === "" || experience.title === "") {
-        setInputError({experience: "Please fill all fields", education: ""});
-        return;
-      }
-    }
-    for (const single of education) {
-      if (single.school === "" || single.degree === "") {
-        setInputError({experience: "", education: "Please fill all fields"});
-        return;
-      }
-    }
+    const experiencesEducationFields = checkExperiencesEducationBothFields(
+      experiences,
+      education,
+      setInputError
+    );
+    if (experiencesEducationFields) return;
 
     // Move to next screen
     setCurrentScreen("step3");

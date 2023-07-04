@@ -1,6 +1,6 @@
 import {MainScreen} from "@/components/register/main/main_screen";
 import {Step1} from "@/components/register/step1/step_1";
-import {Step2} from "@/components/register/step_2";
+import {Step2} from "@/components/register/step2/step_2";
 import {Step3} from "@/components/register/step_3";
 import {Step4} from "@/components/register/step_4";
 import {Step5} from "@/components/register/step_5";

@@ -1,3 +1,6 @@
+import {Education, WorkExperience} from "@/types/regsiter";
+import {Dispatch, SetStateAction} from "react";
+
 // Social links regex patterns
 const twitterPattern =
   /^(https?:\/\/)?(www\.)?twitter\.com\/(?!.*(?:admin|twitter))[A-Za-z0-9_]{1,15}(?!.*(?:admin|twitter))$/i;
@@ -62,6 +65,7 @@ const mentorGuidelines = [
   },
 ];
 
+// Social sites
 const socialSites = [
   "twitter",
   "medium",
@@ -70,6 +74,173 @@ const socialSites = [
   "portfolio",
   "other",
 ];
+
+// Screen2 validation
+// Check experience and education length
+const checkExperiencesEducationLength = (
+  experiences: [] | WorkExperience[],
+  education: [] | Education[],
+  setInputError: Dispatch<
+    SetStateAction<{
+      experience: string;
+      education: string;
+    }>
+  >
+) => {
+  if (experiences.length === 0) {
+    setInputError({
+      experience: "Please add at least one experience",
+      education: "",
+    });
+    return true;
+  }
+  if (education.length === 0) {
+    setInputError({
+      experience: "",
+      education: "Please add at least one education",
+    });
+    return true;
+  }
+
+  return false;
+};
+
+// Check duplicate organization + title and duplicate school + degree
+const checkDuplicateCurrentFields = (
+  experiences: [] | WorkExperience[],
+  education: [] | Education[],
+  setInputError: Dispatch<
+    SetStateAction<{
+      experience: string;
+      education: string;
+    }>
+  >
+) => {
+  for (const experience of experiences) {
+    if (
+      experience.organization.toLowerCase() === experience.title.toLowerCase()
+    ) {
+      setInputError({
+        experience: "Organization and title cannot be same",
+        education: "",
+      });
+      return true;
+    }
+  }
+
+  for (const single of education) {
+    if (single.school.toLowerCase() === single.degree.toLowerCase()) {
+      setInputError({
+        experience: "",
+        education: "School and degree cannot be same",
+      });
+      return true;
+    }
+  }
+
+  return false;
+};
+
+// Check duplicate title and degree
+const checkDuplicateTitleDegree = (
+  experiences: [] | WorkExperience[],
+  education: [] | Education[],
+  setInputError: Dispatch<
+    SetStateAction<{
+      experience: string;
+      education: string;
+    }>
+  >
+) => {
+  const exp = experiences.map(field => field.title.toLowerCase());
+  const edu = education.map(field => field.degree.toLowerCase());
+  if (exp.length !== new Set(exp).size) {
+    setInputError({experience: "Duplicate title fields found", education: ""});
+    return true;
+  }
+  if (edu.length !== new Set(edu).size) {
+    setInputError({experience: "", education: "Duplicate degree fields found"});
+    return true;
+  }
+
+  return false;
+};
+
+// Check if experiences and education fields are filled
+const checkExperiencesEducationBothFields = (
+  experiences: [] | WorkExperience[],
+  education: [] | Education[],
+  setInputError: Dispatch<
+    SetStateAction<{
+      experience: string;
+      education: string;
+    }>
+  >
+) => {
+  for (const experience of experiences) {
+    if (experience.organization === "" || experience.title === "") {
+      setInputError({experience: "Please fill all fields", education: ""});
+      return true;
+    }
+  }
+  for (const single of education) {
+    if (single.school === "" || single.degree === "") {
+      setInputError({experience: "", education: "Please fill all fields"});
+      return true;
+    }
+  }
+
+  return false;
+};
+
+// Add experience and education
+const addExperienceEducation = (
+  type: string,
+  experiences: [] | WorkExperience[],
+  education: [] | Education[],
+  setExperiences: (type: [] | WorkExperience[]) => void,
+  setEducation: (type: [] | Education[]) => void
+) => {
+  if (type === "experiences") {
+    setExperiences([
+      ...experiences,
+      {key: crypto.randomUUID(), organization: "", title: ""},
+    ]);
+  } else {
+    setEducation([
+      ...education,
+      {key: crypto.randomUUID(), school: "", degree: ""},
+    ]);
+  }
+};
+
+// Update experience and education input fields
+const updateExperienceEducation = (
+  type: string,
+  index: number,
+  e: React.ChangeEvent<HTMLInputElement>,
+  experiences: [] | WorkExperience[],
+  education: [] | Education[],
+  setExperiences: (type: [] | WorkExperience[]) => void,
+  setEducation: (type: [] | Education[]) => void
+) => {
+  // Update input fields
+  if (type === "experiences") {
+    if (e.target.name === "organization") {
+      experiences[index].organization = e.target.value;
+    } else {
+      experiences[index].title = e.target.value;
+    }
+    setExperiences([...experiences]);
+  } else {
+    if (e.target.name === "school") {
+      education[index].school = e.target.value;
+    } else {
+      education[index].degree = e.target.value;
+    }
+    setEducation([...education]);
+  }
+};
 
 export {
   twitterPattern,
@@ -80,4 +251,10 @@ export {
   menteeGuidelines,
   mentorGuidelines,
   socialSites,
+  checkExperiencesEducationLength,
+  checkDuplicateCurrentFields,
+  checkDuplicateTitleDegree,
+  checkExperiencesEducationBothFields,
+  addExperienceEducation,
+  updateExperienceEducation,
 };
