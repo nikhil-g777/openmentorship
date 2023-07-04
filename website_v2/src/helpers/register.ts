@@ -1,4 +1,4 @@
-import {Education, WorkExperience} from "@/types/regsiter";
+import {Education, SocialLinks, WorkExperience} from "@/types/regsiter";
 import {Dispatch, SetStateAction} from "react";
 
 // Social links regex patterns
@@ -440,6 +440,68 @@ const checkCommunicationPreferencesIsEmpty = (
   return false;
 };
 
+// Step5 validation
+// Atleast one social link is required
+const checkAtleastOneSocialLinkProvided = (
+  socialLinks: SocialLinks,
+  error: SocialLinks,
+  setError: (value: SetStateAction<SocialLinks>) => void
+) => {
+  if (
+    !socialLinks.twitter.length &&
+    !socialLinks.medium.length &&
+    !socialLinks.behance.length &&
+    !socialLinks.github.length &&
+    !socialLinks.portfolio.length &&
+    !socialLinks.other.length
+  ) {
+    setError({
+      ...error,
+      other: "Atleast one link is required",
+    });
+    return true;
+  }
+
+  return false;
+};
+
+// Validate social links with regex
+const validateSocialLinks = (
+  socialLinks: SocialLinks,
+  error: SocialLinks,
+  setError: (value: SetStateAction<SocialLinks>) => void
+) => {
+  if (socialLinks.twitter.length && !twitterPattern.test(socialLinks.twitter)) {
+    setError({...error, twitter: "Invalid twitter url"});
+    return true;
+  }
+  if (socialLinks.medium.length && !mediumPattern.test(socialLinks.medium)) {
+    setError({...error, medium: "Invalid medium url"});
+    return true;
+  }
+  if (socialLinks.behance.length && !behancePattern.test(socialLinks.behance)) {
+    setError({...error, behance: "Invalid behance url"});
+    return true;
+  }
+  if (socialLinks.github.length && !githubPattern.test(socialLinks.github)) {
+    setError({...error, github: "Invalid github url"});
+    return true;
+  }
+  if (
+    socialLinks.portfolio.length &&
+    !otherPattern.test(socialLinks.portfolio)
+  ) {
+    setError({...error, portfolio: "Invalid portfolio url"});
+    return true;
+  }
+  if (socialLinks.other.length && !otherPattern.test(socialLinks.other)) {
+    setError({...error, other: "Invalid url"});
+    return true;
+  }
+
+  return false;
+};
+
 export {
   twitterPattern,
   mediumPattern,
@@ -463,4 +525,6 @@ export {
   checkGoalsIsEmpty,
   checkCommunicationFrequencyIsEmpty,
   checkCommunicationPreferencesIsEmpty,
+  checkAtleastOneSocialLinkProvided,
+  validateSocialLinks,
 };
