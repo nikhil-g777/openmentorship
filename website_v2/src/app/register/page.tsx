@@ -1,5 +1,5 @@
-import {MainScreen} from "@/components/register/main_screen";
-import {Step1} from "@/components/register/step_1";
+import {MainScreen} from "@/components/register/main/main_screen";
+import {Step1} from "@/components/register/step1/step_1";
 import {Step2} from "@/components/register/step_2";
 import {Step3} from "@/components/register/step_3";
 import {Step4} from "@/components/register/step_4";
