@@ -5,9 +5,11 @@ type Props = {
 };
 
 const CommunicationPreferences = ({error}: Props) => {
-  const {communicationPreferences, setCommunicationPreferences} =
-    useRegisterStore();
-  const preferences = ["phone", "video", "chat", "message"];
+  const {
+    communicationPreferences,
+    setCommunicationPreferences,
+    communicationPreferencesList,
+  } = useRegisterStore();
 
   // Handle change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,21 +32,25 @@ const CommunicationPreferences = ({error}: Props) => {
 
   return (
     <div className="form-control mt-2">
-      {preferences.map(preference => (
-        <label
-          key={preference}
-          className="label cursor-pointer justify-start gap-2"
-        >
-          <input
-            type="checkbox"
-            className="checkbox checkbox-primary"
-            name={preference}
-            checked={communicationPreferences.includes(preference)}
-            onChange={handleChange}
-          />
-          <span className="label-text text-base capitalize">{preference}</span>
-        </label>
-      ))}
+      {communicationPreferencesList && communicationPreferencesList.length
+        ? communicationPreferencesList.map(preference => (
+            <label
+              key={preference}
+              className="label cursor-pointer justify-start gap-2"
+            >
+              <input
+                type="checkbox"
+                className="checkbox checkbox-primary"
+                name={preference}
+                checked={communicationPreferences.includes(preference)}
+                onChange={handleChange}
+              />
+              <span className="label-text text-base capitalize">
+                {preference}
+              </span>
+            </label>
+          ))
+        : null}
       {/* Error */}
       {error.preferences.length ? (
         <label className="label">

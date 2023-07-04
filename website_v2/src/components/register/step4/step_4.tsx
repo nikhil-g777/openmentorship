@@ -1,8 +1,13 @@
 "use client";
 
 import {useRegisterStore} from "@/zustand/store";
-import {Preferences} from "./step_4_preferences";
+import {Preferences} from "./preferences";
 import {useState} from "react";
+import {
+  checkCommunicationFrequencyIsEmpty,
+  checkCommunicationPreferencesIsEmpty,
+  checkGoalsIsEmpty,
+} from "@/helpers/register";
 
 const Step4 = () => {
   const {
@@ -24,34 +29,20 @@ const Step4 = () => {
     setError({goals: "", frequency: "", preferences: ""});
 
     // Check if goals is empty
-    if (Object.keys(goals).length === 0) {
-      setError({
-        goals: "Please select at least one goal",
-        frequency: "",
-        preferences: "",
-      });
-      return;
-    }
+    const isGoalsEmpty = checkGoalsIsEmpty(goals, setError);
+    if (isGoalsEmpty) return;
 
     // Check if frequency is empty
-    if (communicationFrequency === "") {
-      setError({
-        frequency: "Please select a frequency",
-        preferences: "",
-        goals: "",
-      });
-      return;
-    }
+    const isCommunicationFrequencyEmpty = checkCommunicationFrequencyIsEmpty(
+      communicationFrequency,
+      setError
+    );
+    if (isCommunicationFrequencyEmpty) return;
 
     // Check if preferences is empty
-    if (communicationPreferences.length === 0) {
-      setError({
-        preferences: "Please select at least one preference",
-        goals: "",
-        frequency: "",
-      });
-      return;
-    }
+    const isCommunicationPreferencesEmpty =
+      checkCommunicationPreferencesIsEmpty(communicationPreferences, setError);
+    if (isCommunicationPreferencesEmpty) return;
 
     // Move to next screen
     setCurrentScreen("step5");

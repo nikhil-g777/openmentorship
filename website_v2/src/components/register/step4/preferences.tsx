@@ -1,7 +1,7 @@
 import {useRegisterStore} from "@/zustand/store";
-import {Goals} from "./step_4_goals";
-import {CommunicationFrequency} from "./step_4_communication_frequency";
-import {CommunicationPreferences} from "./step_4_communication_preferences";
+import {Goals} from "./goals";
+import {CommunicationFrequency} from "./frequency";
+import {CommunicationPreferences} from "./communication_preferences";
 
 type Props = {
   error: {goals: string; frequency: string; preferences: string};

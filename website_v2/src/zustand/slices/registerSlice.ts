@@ -1,4 +1,7 @@
 import {
+  communicationFrequencyList,
+  communicationPreferencesList,
+  goalsList,
   menteeGuidelines,
   mentorGuidelines,
   socialSites,
@@ -39,8 +42,11 @@ export type RegisterSlice = {
   interests: string[];
   // Screen4
   goals: {[key: string]: boolean};
+  goalsList: {id: number; name: string; title: string}[];
   communicationFrequency: string;
+  communicationFrequencyList: {id: number; value: string; title: string}[];
   communicationPreferences: CommunicationPreferences;
+  communicationPreferencesList: string[];
   // Screen5
   socialLinks: SocialLinks;
   socialSites: string[];
@@ -109,8 +115,11 @@ const initialState = {
   interests: [],
   // Screen4
   goals: {},
+  goalsList: goalsList,
   communicationFrequency: "",
+  communicationFrequencyList: communicationFrequencyList,
   communicationPreferences: [],
+  communicationPreferencesList: communicationPreferencesList,
   // Screen5
   socialLinks: {
     twitter: "",

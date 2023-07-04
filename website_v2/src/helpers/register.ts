@@ -65,6 +65,77 @@ const mentorGuidelines = [
   },
 ];
 
+// Goals list
+const goalsList = [
+  {
+    id: 1,
+    name: "careerAdvice",
+    title: "Career Advice",
+  },
+  {
+    id: 2,
+    name: "resumeReview",
+    title: "Resume Review",
+  },
+  {
+    id: 3,
+    name: "mockInterview",
+    title: "Mock Interview",
+  },
+  {
+    id: 4,
+    name: "projectReview",
+    title: "Project Review",
+  },
+  {
+    id: 5,
+    name: "collaboration",
+    title: "Collaboration on an idea",
+  },
+  {
+    id: 6,
+    name: "businessAdvice",
+    title: "Business Advice",
+  },
+  {
+    id: 7,
+    name: "careerChangeAdvice",
+    title: "Career Change Advice",
+  },
+  {
+    id: 8,
+    name: "skillDevelopment",
+    title: "Skill Development",
+  },
+];
+
+// Communication preferences list
+const communicationPreferencesList = ["phone", "video", "chat", "message"];
+
+// Communication frequency list
+const communicationFrequencyList = [
+  {
+    id: 1,
+    value: "weekly",
+    title: "Weekly",
+  },
+  {
+    id: 2,
+    value: "biweekly",
+    title: "Bi-Weekly",
+  },
+  {
+    id: 3,
+    value: "onceamonth",
+    title: "Once a Month",
+  },
+  {
+    id: 4,
+    value: "nopreference",
+    title: "No Preference",
+  },
+];
+
 // Social sites
 const socialSites = [
   "twitter",
@@ -297,6 +368,78 @@ const addSkillsInterests = (
   }
 };
 
+// Step4 validation
+// Check goals is empty
+const checkGoalsIsEmpty = (
+  goals: {
+    [key: string]: boolean;
+  },
+  setError: Dispatch<
+    SetStateAction<{
+      goals: string;
+      frequency: string;
+      preferences: string;
+    }>
+  >
+) => {
+  if (Object.keys(goals).length === 0) {
+    setError({
+      goals: "Please select at least one goal",
+      frequency: "",
+      preferences: "",
+    });
+    return true;
+  }
+
+  return false;
+};
+
+// Check communication frequency is empty
+const checkCommunicationFrequencyIsEmpty = (
+  communicationFrequency: string,
+  setError: Dispatch<
+    SetStateAction<{
+      goals: string;
+      frequency: string;
+      preferences: string;
+    }>
+  >
+) => {
+  if (communicationFrequency === "") {
+    setError({
+      frequency: "Please select a frequency",
+      preferences: "",
+      goals: "",
+    });
+    return true;
+  }
+
+  return false;
+};
+
+// Check communication preferences is empty
+const checkCommunicationPreferencesIsEmpty = (
+  communicationPreferences: string[],
+  setError: Dispatch<
+    SetStateAction<{
+      goals: string;
+      frequency: string;
+      preferences: string;
+    }>
+  >
+) => {
+  if (communicationPreferences.length === 0) {
+    setError({
+      preferences: "Please select at least one preference",
+      goals: "",
+      frequency: "",
+    });
+    return true;
+  }
+
+  return false;
+};
+
 export {
   twitterPattern,
   mediumPattern,
@@ -305,6 +448,9 @@ export {
   otherPattern,
   menteeGuidelines,
   mentorGuidelines,
+  goalsList,
+  communicationFrequencyList,
+  communicationPreferencesList,
   socialSites,
   checkExperiencesEducationLength,
   checkDuplicateCurrentFields,
@@ -314,4 +460,7 @@ export {
   updateExperienceEducation,
   checkSkillsInterestsDuplicate,
   addSkillsInterests,
+  checkGoalsIsEmpty,
+  checkCommunicationFrequencyIsEmpty,
+  checkCommunicationPreferencesIsEmpty,
 };
