@@ -22,7 +22,7 @@ const LinkedInConnect = () => {
       const res = await registerUser({authCode: code, type: "linkedInSignup"});
       // Handle register success response
       if (res.success) {
-        setSuccessAlert("Successfully fetched LinkedIn data!");
+        setSuccessAlert("Successfully fetched LinkedIn data!", 3);
         setToken(res.token);
         setUserId(res.user._id);
         setFirstName(res.user.firstName);
@@ -31,7 +31,7 @@ const LinkedInConnect = () => {
       }
       // Handle register error response
       if (!res.success) {
-        setErrorAlert("Failed to fetch LinkedIn data!");
+        setErrorAlert("Failed to fetch LinkedIn data!", 3);
         return;
       }
     },

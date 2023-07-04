@@ -34,13 +34,16 @@ const PostRegistration = () => {
     setLoading(false);
     // Success alert if response is successful
     if (res.success) {
-      setSuccessAlert("Redirected back to home page!");
+      setSuccessAlert(
+        "Your profile is currently under review. Please check back later for updates.",
+        5
+      );
       resetState();
       router.replace("/");
     }
     // Error alert if response is unsuccessful
     if (!res.success) {
-      setErrorAlert("Failed to update the data!");
+      setErrorAlert("Failed to update the data!", 3);
       return;
     }
   };
