@@ -14,6 +14,7 @@ const PostRegistration = () => {
     userType,
     menteeGuidelines,
     mentorGuidelines,
+    resetState,
   } = useRegisterStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
   const [loading, setLoading] = useState<boolean>(false);
@@ -34,11 +35,12 @@ const PostRegistration = () => {
     // Success alert if response is successful
     if (res.success) {
       setSuccessAlert("Redirected back to home page!");
+      resetState();
       router.replace("/");
     }
     // Error alert if response is unsuccessful
     if (!res.success) {
-      setErrorAlert("Failed to redirect back to home page!");
+      setErrorAlert("Failed to update the data!");
       return;
     }
   };
