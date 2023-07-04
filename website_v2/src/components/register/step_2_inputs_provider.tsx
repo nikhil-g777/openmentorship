@@ -24,7 +24,7 @@ const InputProvider = ({
   return (
     <>
       {/* Heading */}
-      <h2 className="text-base md:text-lg font-medium">
+      <h2 className="text-lg md:text-xl font-medium">
         {type === "experiences" ? "Work Experience" : "Education"}
       </h2>
       <div className="w-full">
@@ -59,10 +59,10 @@ const InputProvider = ({
                 {inputFields.length ? (
                   <button
                     onClick={() => handleRemoveInput(index)}
-                    className="btn btn-error mb-8 md:mb-0"
+                    className="place-self-end btn btn-error mb-8 md:mb-0"
                   >
                     <Image
-                      src="/assets/icons/cancel.svg"
+                      src="/assets/icons/trash.svg"
                       width={24}
                       height={24}
                       alt="remove"
