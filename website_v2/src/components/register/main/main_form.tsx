@@ -4,9 +4,10 @@ type Props = {
   headlineError: string;
   bioError: string;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  children?: React.ReactNode;
 };
 
-const MainForm = ({headlineError, bioError, handleSubmit}: Props) => {
+const MainForm = ({headlineError, bioError, handleSubmit, children}: Props) => {
   const {firstName, lastName, email, headline, setHeadline, bio, setBio} =
     useRegisterStore();
   return (
@@ -80,6 +81,8 @@ const MainForm = ({headlineError, bioError, handleSubmit}: Props) => {
           ) : null}
         </div>
       </div>
+      {/* Submit */}
+      {children}
     </form>
   );
 };

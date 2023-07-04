@@ -55,19 +55,21 @@ const MainScreen = () => {
             headlineError={headlineError}
             bioError={bioError}
             handleSubmit={handleSubmit}
-          />
-          {/* Login or Continue */}
-          <div className="w-full mt-8 mb-16 flex flex-col-reverse md:flex-row justify-center items-center gap-4 md:gap-8">
-            <Link href="/" className="link">
-              Already have an account?
-            </Link>
-            <button
-              className="w-48 btn btn-sm btn-primary rounded-full"
-              disabled={token.length === 0}
-            >
-              Continue
-            </button>
-          </div>
+          >
+            {/* Login or Continue */}
+            <div className="w-full mt-8 mb-16 flex flex-col-reverse md:flex-row justify-center items-center gap-4 md:gap-8">
+              <Link href="/" className="link">
+                Already have an account?
+              </Link>
+              <button
+                type="submit"
+                className="w-48 btn btn-sm btn-primary rounded-full"
+                disabled={token.length === 0}
+              >
+                Continue
+              </button>
+            </div>
+          </MainForm>
         </div>
       </div>
     </div>
