@@ -8,7 +8,7 @@ import {
 import {useState} from "react";
 import {SocialLinks} from "@/types/regsiter";
 import {updateUser} from "@/endpoints/user";
-import {LinksProvider} from "./step_5_links_provider";
+import {LinksProvider} from "./links_provider";
 
 const Step5 = () => {
   const {...states} = useRegisterStore();
@@ -91,12 +91,12 @@ const Step5 = () => {
     setLoading(false);
     // Success alert if response is successful
     if (res.success) {
-      setSuccessAlert("Registration completed successfully");
+      setSuccessAlert("Registration completed successfully", 3);
       states.setCurrentScreen("step6");
     }
     // Error alert if response is unsuccessful
     if (!res.success) {
-      setErrorAlert("Something went wrong, please try again later");
+      setErrorAlert("Something went wrong, please try again later", 3);
       return;
     }
   };

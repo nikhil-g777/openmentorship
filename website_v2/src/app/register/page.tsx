@@ -4,7 +4,7 @@ import {Step2} from "@/components/register/step2/step_2";
 import {Step3} from "@/components/register/step3/step_3";
 import {Step4} from "@/components/register/step4/step_4";
 import {Step5} from "@/components/register/step5/step_5";
-import {PostRegistration} from "@/components/register/post_registration";
+import {PostRegistration} from "@/components/register/postRegistration/post_registration";
 import {StepsDots} from "@/components/register/steps_dots";
 
 const Page = () => {

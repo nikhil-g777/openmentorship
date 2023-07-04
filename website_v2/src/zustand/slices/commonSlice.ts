@@ -2,9 +2,14 @@ import {StateCreator} from "zustand";
 
 export type CommonSlice = {
   successAlert: string;
-  setSuccessAlert: (successAlert: string) => void;
+  setSuccessAlert: (successAlert: string, time: number) => void;
   errorAlert: string;
-  setErrorAlert: (errorAlert: string) => void;
+  setErrorAlert: (errorAlert: string, time: number) => void;
+};
+
+const initialState = {
+  successAlert: "",
+  errorAlert: "",
 };
 
 export const commonSlice: StateCreator<
@@ -13,9 +18,9 @@ export const commonSlice: StateCreator<
   [],
   CommonSlice
 > = set => ({
-  successAlert: "",
-  //   Set the success alert and reset it after 3 seconds
-  setSuccessAlert: (successAlert: string) => {
+  ...initialState,
+  //   Set the success alert
+  setSuccessAlert: (successAlert: string, time) => {
     set(() => ({
       successAlert: successAlert,
     }));
@@ -23,11 +28,10 @@ export const commonSlice: StateCreator<
       set(() => ({
         successAlert: "",
       }));
-    }, 3000);
+    }, time * 1000);
   },
-  errorAlert: "",
-  //   Set the error alert and reset it after 3 seconds
-  setErrorAlert: (errorAlert: string) => {
+  //   Set the error alert
+  setErrorAlert: (errorAlert: string, time) => {
     set(() => ({
       errorAlert: errorAlert,
     }));
@@ -35,6 +39,6 @@ export const commonSlice: StateCreator<
       set(() => ({
         errorAlert: "",
       }));
-    }, 3000);
+    }, time * 1000);
   },
 });

@@ -2,9 +2,9 @@
 
 import {updateUser} from "@/endpoints/user";
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
-import Image from "next/image";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
+import {Guidelines} from "./guidelines";
 
 const PostRegistration = () => {
   const {
@@ -34,13 +34,16 @@ const PostRegistration = () => {
     setLoading(false);
     // Success alert if response is successful
     if (res.success) {
-      setSuccessAlert("Redirected back to home page!");
+      setSuccessAlert(
+        "Your profile is currently under review. Please check back later for updates.",
+        5
+      );
       resetState();
       router.replace("/");
     }
     // Error alert if response is unsuccessful
     if (!res.success) {
-      setErrorAlert("Failed to update the data!");
+      setErrorAlert("Failed to update the data!", 3);
       return;
     }
   };
@@ -49,47 +52,15 @@ const PostRegistration = () => {
     <div className={`w-full ${currentScreen === "step6" ? "" : "hidden"}`}>
       <div className="w-full max-w-3xl mx-auto mt-16 px-4 flex justify-center">
         <ul className="steps steps-vertical">
-          {userType === "mentee"
+          {userType === "mentee" && menteeGuidelines && menteeGuidelines.length
             ? menteeGuidelines.map(guideline => (
-                <li
-                  className="step step-primary !gap-2 sm:!gap-4 md:!gap-8"
-                  key={guideline.id}
-                >
-                  {/* Card */}
-                  <div className="w-full card lg:card-side bg-base-100 border border-base-300 min-h-[120px] h-fit lg:mb-4">
-                    <Image
-                      src={guideline.imageURL}
-                      alt="steps"
-                      className="mx-auto p-4"
-                      width={100}
-                      height={100}
-                    />
-                    <div className="card-body">
-                      <p>{guideline.text}</p>
-                    </div>
-                  </div>
-                </li>
+                <Guidelines key={guideline.id} guideline={guideline} />
               ))
-            : mentorGuidelines.map(guideline => (
-                <li
-                  className="step step-primary !gap-2 sm:!gap-4 md:!gap-8"
-                  key={guideline.id}
-                >
-                  {/* Card */}
-                  <div className="w-full card lg:card-side bg-base-100 border border-base-300 min-h-[120px] h-fit lg:mb-4">
-                    <Image
-                      src={guideline.imageURL}
-                      alt="steps"
-                      className="mx-auto p-4"
-                      width={100}
-                      height={100}
-                    />
-                    <div className="card-body">
-                      <p>{guideline.text}</p>
-                    </div>
-                  </div>
-                </li>
-              ))}
+            : mentorGuidelines && menteeGuidelines.length
+            ? mentorGuidelines.map(guideline => (
+                <Guidelines key={guideline.id} guideline={guideline} />
+              ))
+            : null}
         </ul>
       </div>
       {/* Continue */}
