@@ -16,11 +16,18 @@ Cypress.Commands.add(
   }
 );
 
+Cypress.Commands.add("setSession", (token: string) => {
+  cy.session("Set Session", () => {
+    cy.setCookie("next-auth.session-token", token);
+  });
+});
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       getCypress(attribute: string): Chainable<JQuery<HTMLElement>>;
+      setSession(token: string): void;
     }
   }
 }
