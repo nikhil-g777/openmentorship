@@ -17,3 +17,5 @@ describe("Test Login Functionality", () => {
     cy.wait("@session");
   });
 });
+
+export {};
