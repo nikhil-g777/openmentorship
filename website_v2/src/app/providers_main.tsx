@@ -2,8 +2,8 @@
 
 import React from "react";
 import {SessionProvider} from "next-auth/react";
-import {SuccessAlert} from "@/components/alerts/successAlert";
-import {ErrorAlert} from "@/components/alerts/errorAlert";
+import {SuccessAlert} from "@/components/alerts/success_alert";
+import {ErrorAlert} from "@/components/alerts/error_alert";
 
 type Props = {
   children: React.ReactNode;
