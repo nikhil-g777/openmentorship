@@ -6,11 +6,7 @@ const getUserInfo = async (authCode: string) => {
   try {
     const userRes = await fetch(`${process.env.BACKEND_BASE_URL}/users/info`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        accept: "application/json",
-        authorization: `Bearer ${authCode}`,
-      },
+      headers: headerProvider(authCode),
     });
     const userInfo = await userRes.json();
     return userInfo;
@@ -76,11 +72,7 @@ const updateUser = async (token: string, data: RegisterBody) => {
       `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/update`,
       {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-          accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: headerProvider(token),
         body: JSON.stringify({
           ...data,
         }),
