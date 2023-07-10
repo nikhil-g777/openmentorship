@@ -49,6 +49,10 @@ export type ProfileSettingsSlice = {
     portfolio: string;
     other: string;
   }) => void;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+  isEditable: boolean;
+  setIsEditable: (isEditable: boolean) => void;
 };
 
 const initialState = {
@@ -72,6 +76,8 @@ const initialState = {
     portfolio: "",
     other: "",
   },
+  loading: false,
+  isEditable: false,
 };
 
 export const profileSettingsSlice: StateCreator<
@@ -142,6 +148,16 @@ export const profileSettingsSlice: StateCreator<
   }) => {
     set(() => ({
       socialLinksErrors: socialLinksErrors,
+    }));
+  },
+  setLoading: (loading: boolean) => {
+    set(() => ({
+      loading: loading,
+    }));
+  },
+  setIsEditable: (isEditable: boolean) => {
+    set(() => ({
+      isEditable: isEditable,
     }));
   },
 });

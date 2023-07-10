@@ -33,7 +33,7 @@ const page = async () => {
         <Step3 />
         <Step4 />
         <Step5 />
-        <SaveDetails />
+        <SaveDetails isTopPosition={false} />
       </div>
     </div>
   );

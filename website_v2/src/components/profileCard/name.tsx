@@ -1,6 +1,8 @@
 "use client";
 
+import {useProfileSettingsStore} from "@/zustand/store";
 import Image from "next/image";
+import {SaveDetails} from "../profileSettings/save_details";
 
 type Props = {
   firstName: string;
@@ -8,6 +10,7 @@ type Props = {
   linkedinURI: string;
 };
 const Name = ({firstName, lastName, linkedinURI}: Props) => {
+  const {isProfilePage} = useProfileSettingsStore();
   return (
     <div className="flex items-center justify-center sm:justify-start gap-4">
       <h2 className="text-xl font-black">
@@ -26,6 +29,9 @@ const Name = ({firstName, lastName, linkedinURI}: Props) => {
           height={20}
         />
       </a>
+
+      {/* Edit/Save Button */}
+      {isProfilePage ? <SaveDetails isTopPosition={true} /> : null}
     </div>
   );
 };
