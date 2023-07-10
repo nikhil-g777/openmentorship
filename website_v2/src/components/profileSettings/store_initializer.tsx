@@ -6,11 +6,13 @@ import {useRef} from "react";
 
 type Props = {
   data: UserProfile;
+  token: string | undefined | null;
 };
 
-const StoreInitializer = ({data}: Props) => {
+const StoreInitializer = ({data, token}: Props) => {
   // console.log(data);
   const {
+    setToken,
     setFirstName,
     setLastName,
     setEmail,
@@ -31,6 +33,7 @@ const StoreInitializer = ({data}: Props) => {
 
   // Update states once
   if (!initialzied.current) {
+    setToken(token || "");
     setFirstName(data.user.firstName);
     setLastName(data.user.lastName);
     setEmail(data.user.email);

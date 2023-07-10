@@ -1,4 +1,5 @@
 import {HeadingBio} from "@/components/profileSettings/heading_bio";
+import {SaveDetails} from "@/components/profileSettings/save_details";
 import {StoreInitializer} from "@/components/profileSettings/store_initializer";
 import {Step1} from "@/components/register/step1/step_1";
 import {Step2} from "@/components/register/step2/step_2";
@@ -24,13 +25,16 @@ const page = async () => {
 
   return (
     <div className="w-full px-4">
-      <StoreInitializer data={data} />
-      <HeadingBio />
-      <Step1 />
-      <Step2 />
-      <Step3 />
-      <Step4 />
-      <Step5 />
+      <StoreInitializer data={data} token={token} />
+      <div className="w-full max-w-4xl mx-auto flex flex-col gap-12">
+        <HeadingBio />
+        <Step1 />
+        <Step2 />
+        <Step3 />
+        <Step4 />
+        <Step5 />
+        <SaveDetails />
+      </div>
     </div>
   );
 };
