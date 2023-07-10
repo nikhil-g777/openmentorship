@@ -1,3 +1,4 @@
+import {useProfileSettingsStore} from "@/zustand/store";
 import Image from "next/image";
 
 type TagsWrapper = {
@@ -6,6 +7,7 @@ type TagsWrapper = {
 };
 
 const TagsWrapper = ({tags, handleDelete}: TagsWrapper) => {
+  const {isEditable} = useProfileSettingsStore();
   return (
     <div className="w-full flex flex-wrap gap-2 items-center mt-3">
       {tags && tags.length
@@ -20,7 +22,9 @@ const TagsWrapper = ({tags, handleDelete}: TagsWrapper) => {
                 width={14}
                 height={14}
                 alt={tag}
-                className="cursor-pointer btn btn-xs btn-circle bg-white hover:bg-error border-none p-1"
+                className={`cursor-pointer btn btn-xs btn-circle bg-white hover:bg-error border-none p-1 ${
+                  !isEditable ? "pointer-events-none cursor-not-allowed" : ""
+                }`}
                 onClick={() => handleDelete(index)}
               />
             </div>

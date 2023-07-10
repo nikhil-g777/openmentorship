@@ -208,7 +208,7 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
             <button
               className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
               onClick={handleSubmit}
-              disabled={loading}
+              disabled={loading || !isEditable}
             >
               {loading ? "Saving..." : "Save Details"}
             </button>

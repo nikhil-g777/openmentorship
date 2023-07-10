@@ -1,3 +1,4 @@
+import {useProfileSettingsStore} from "@/zustand/store";
 import {SetStateAction} from "react";
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
 };
 
 const Form = ({handleSubmit, inputValue, setInputValue}: Props) => {
+  const {isEditable} = useProfileSettingsStore();
   return (
     <form className="form-control" onSubmit={handleSubmit}>
       <div className="input-group">
@@ -18,8 +20,13 @@ const Form = ({handleSubmit, inputValue, setInputValue}: Props) => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setInputValue(e.target.value)
           }
+          disabled={!isEditable}
         />
-        <button type="submit" className="btn btn-square px-8 btn-primary">
+        <button
+          type="submit"
+          className="btn btn-square px-8 btn-primary"
+          disabled={!isEditable}
+        >
           Add
         </button>
       </div>

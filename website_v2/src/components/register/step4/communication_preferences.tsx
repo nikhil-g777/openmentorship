@@ -1,4 +1,4 @@
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 
 type Props = {
   error: {goals: string; frequency: string; preferences: string};
@@ -10,6 +10,7 @@ const CommunicationPreferences = ({error}: Props) => {
     setCommunicationPreferences,
     communicationPreferencesList,
   } = useRegisterStore();
+  const {isEditable} = useProfileSettingsStore();
 
   // Handle change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +45,7 @@ const CommunicationPreferences = ({error}: Props) => {
                 name={preference}
                 checked={communicationPreferences.includes(preference)}
                 onChange={handleChange}
+                disabled={!isEditable}
               />
               <span className="label-text text-base capitalize">
                 {preference}

@@ -1,4 +1,4 @@
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 
 // type
 type Props = {
@@ -7,6 +7,7 @@ type Props = {
 
 const AreasOfInterest = ({error}: Props) => {
   const {areasOfInterest, setAreasOfInterest} = useRegisterStore();
+  const {isEditable} = useProfileSettingsStore();
 
   // Handle checkbox change
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +34,7 @@ const AreasOfInterest = ({error}: Props) => {
             className="checkbox checkbox-primary"
             checked={areasOfInterest.software}
             onChange={handleCheckboxChange}
+            disabled={!isEditable}
           />
           <span className="label-text text-base">Software</span>
         </label>
@@ -44,6 +46,7 @@ const AreasOfInterest = ({error}: Props) => {
             className="checkbox checkbox-primary"
             checked={areasOfInterest.design}
             onChange={handleCheckboxChange}
+            disabled={!isEditable}
           />
           <span className="label-text text-base">Design</span>
         </label>
@@ -55,6 +58,7 @@ const AreasOfInterest = ({error}: Props) => {
             className="checkbox checkbox-primary"
             checked={areasOfInterest.other}
             onChange={handleCheckboxChange}
+            disabled={!isEditable}
           />
           <span className="label-text text-base">Other</span>
         </label>

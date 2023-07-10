@@ -1,4 +1,4 @@
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 
 type Props = {
   error: {goals: string; frequency: string; preferences: string};
@@ -10,6 +10,7 @@ const CommunicationFrequency = ({error}: Props) => {
     setCommunicationFrequency,
     communicationFrequencyList,
   } = useRegisterStore();
+  const {isEditable} = useProfileSettingsStore();
   // Handle change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Set communication frequency
@@ -34,6 +35,7 @@ const CommunicationFrequency = ({error}: Props) => {
                   communicationFrequency.toLowerCase() ===
                   frequency.value.toLowerCase()
                 }
+                disabled={!isEditable}
               />
               <span className="label-text text-base">{frequency.title}</span>
             </label>

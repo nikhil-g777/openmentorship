@@ -22,7 +22,7 @@ const InputProvider = ({
   inputError,
   handleAddInput,
 }: Props) => {
-  const {isProfilePage} = useProfileSettingsStore();
+  const {isProfilePage, isEditable} = useProfileSettingsStore();
   return (
     <>
       {/* Heading */}
@@ -50,6 +50,7 @@ const InputProvider = ({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChangeInput(index, e)
                   }
+                  disabled={!isEditable}
                 />
                 <input
                   className="input input-bordered w-full"
@@ -59,11 +60,13 @@ const InputProvider = ({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChangeInput(index, e)
                   }
+                  disabled={!isEditable}
                 />
                 {inputFields.length ? (
                   <button
                     onClick={() => handleRemoveInput(index)}
                     className="place-self-end btn btn-error mb-8 md:mb-0"
+                    disabled={!isEditable}
                   >
                     <Image
                       src="/assets/icons/trash.svg"
@@ -94,7 +97,11 @@ const InputProvider = ({
       </div>
       {/* Add Button */}
       {inputFields.length < 3 ? (
-        <button onClick={handleAddInput} className="btn btn-primary mt-2 mb-8">
+        <button
+          onClick={handleAddInput}
+          className="btn btn-primary mt-2 mb-8"
+          disabled={!isEditable}
+        >
           {type === "experiences" ? "Add Experience" : "Add Education"}
         </button>
       ) : null}

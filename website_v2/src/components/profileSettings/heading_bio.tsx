@@ -5,7 +5,8 @@ import {Profile} from "../profileCard/profile";
 import Name from "../profileCard/name";
 
 const HeadingBio = () => {
-  const {profileImage, headlineError, bioError} = useProfileSettingsStore();
+  const {profileImage, headlineError, bioError, isEditable} =
+    useProfileSettingsStore();
   const {firstName, lastName, headline, setHeadline, bio, setBio} =
     useRegisterStore();
 
@@ -37,6 +38,7 @@ const HeadingBio = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setHeadline(e.target.value)
               }
+              disabled={!isEditable}
             />
             {/* Headline Error */}
             {headlineError.length ? (
@@ -61,6 +63,7 @@ const HeadingBio = () => {
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 setBio(e.target.value)
               }
+              disabled={!isEditable}
             ></textarea>
             {/* Bio Error */}
             {bioError.length ? (

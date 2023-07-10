@@ -1,7 +1,8 @@
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 
 const StudentProfessional = () => {
   const {careerStatus, setCareerStatus} = useRegisterStore();
+  const {isEditable} = useProfileSettingsStore();
 
   // Handle career status change
   const handleCareerStatusChange = (
@@ -18,6 +19,7 @@ const StudentProfessional = () => {
         className="select select-bordered w-full mt-2"
         value={careerStatus}
         onChange={handleCareerStatusChange}
+        disabled={!isEditable}
       >
         <option value="Student">Student</option>
         <option value="Professional">Professional</option>

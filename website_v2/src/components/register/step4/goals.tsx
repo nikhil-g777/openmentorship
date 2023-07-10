@@ -1,4 +1,4 @@
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 
 type Props = {
   error: {goals: string; frequency: string; preferences: string};
@@ -6,6 +6,7 @@ type Props = {
 
 const Goals = ({error}: Props) => {
   const {goals, setGoals, goalsList} = useRegisterStore();
+  const {isEditable} = useProfileSettingsStore();
 
   // Handle change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +38,7 @@ const Goals = ({error}: Props) => {
                 name={goal.name}
                 checked={goals[goal.name] || false}
                 onChange={handleChange}
+                disabled={!isEditable}
               />
               <span className="label-text text-base">{goal.title}</span>
             </label>
