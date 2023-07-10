@@ -359,12 +359,12 @@ const addSkillsInterests = (
   setInterests: (type: string[]) => void,
   inputValue: string,
   setInputValue: (value: SetStateAction<string>) => void,
-  setError: (
-    value: SetStateAction<{
-      skills: string;
-      interests: string;
-    }>
-  ) => void
+  setError: (skillsInterestsError: {
+    skills: string;
+    interests: string;
+  }) => void | React.Dispatch<
+    React.SetStateAction<{skills: string; interests: string}>
+  >
 ) => {
   if (type === "skills") {
     setSkills([...skills, inputValue]);

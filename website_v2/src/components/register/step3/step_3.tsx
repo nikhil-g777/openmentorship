@@ -1,12 +1,14 @@
 "use client";
 
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {TagsProvider} from "./tags_provider";
 import {useState} from "react";
 
 const Step3 = () => {
   const {currentScreen, setCurrentScreen, skills, interests} =
     useRegisterStore();
+  const {isProfilePage, skillsInterestsError, setSkillsInterestsError} =
+    useProfileSettingsStore();
   const [error, setError] = useState<{skills: string; interests: string}>({
     skills: "",
     interests: "",
@@ -32,35 +34,47 @@ const Step3 = () => {
   };
 
   return (
-    <div className={`w-full ${currentScreen === "step3" ? "" : "hidden"}`}>
+    <div
+      className={`w-full ${
+        currentScreen === "step3" || isProfilePage ? "" : "hidden"
+      }`}
+    >
       <div className="w-full max-w-3xl mx-auto mt-8 px-4">
         {/* Heading */}
-        <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
-          Let&apos;s get more specific
-        </h1>
+        {!isProfilePage ? (
+          <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
+            Let&apos;s get more specific
+          </h1>
+        ) : (
+          <h2 className="text-xl font-semibold mt-8 -mb-4">
+            Skills and Interests
+          </h2>
+        )}
         {/* Skills */}
         <TagsProvider
           type="skills"
           heading="What are some of your top skills?"
-          error={error}
-          setError={setError}
+          error={isProfilePage ? skillsInterestsError : error}
+          setError={isProfilePage ? setSkillsInterestsError : setError}
         />
         {/* Interests */}
         <TagsProvider
           type="interests"
           heading="What are your areas of interest?"
-          error={error}
-          setError={setError}
+          error={isProfilePage ? skillsInterestsError : error}
+          setError={isProfilePage ? setSkillsInterestsError : setError}
         />
         {/* Continue */}
-        <div className="w-full my-8 text-center">
-          <button
-            className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
-            onClick={handleContinue}
-          >
-            Continue
-          </button>
-        </div>
+        {!isProfilePage ? (
+          <div className="w-full my-8 text-center">
+            <button
+              className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
+              onClick={handleContinue}
+            >
+              Continue
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -18,6 +18,11 @@ export type ProfileSettingsSlice = {
     experience: string;
     education: string;
   }) => void;
+  skillsInterestsError: {skills: string; interests: string};
+  setSkillsInterestsError: (skillsInterestsError: {
+    skills: string;
+    interests: string;
+  }) => void;
 };
 
 const initialState = {
@@ -27,6 +32,7 @@ const initialState = {
   bioError: "",
   areasOfInterestError: "",
   experienceError: {experience: "", education: ""},
+  skillsInterestsError: {skills: "", interests: ""},
 };
 
 export const profileSettingsSlice: StateCreator<
@@ -68,6 +74,14 @@ export const profileSettingsSlice: StateCreator<
   }) => {
     set(() => ({
       experienceError: experienceError,
+    }));
+  },
+  setSkillsInterestsError: (skillsInterestsError: {
+    skills: string;
+    interests: string;
+  }) => {
+    set(() => ({
+      skillsInterestsError: skillsInterestsError,
     }));
   },
 });

@@ -13,7 +13,10 @@ type Props = {
   type: string;
   heading: string;
   error: {skills: string; interests: string};
-  setError: React.Dispatch<
+  setError: (skillsInterestsError: {
+    skills: string;
+    interests: string;
+  }) => void | React.Dispatch<
     React.SetStateAction<{skills: string; interests: string}>
   >;
 };
@@ -62,7 +65,7 @@ const TagsProvider = ({type, heading, error, setError}: Props) => {
     }
   };
   return (
-    <div className="w-full my-8">
+    <div className="w-full mt-8">
       <label className="block text-base md:text-xl mb-2">{heading}</label>
       {/* Form */}
       <Form
