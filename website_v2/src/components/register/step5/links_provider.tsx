@@ -9,7 +9,7 @@ type Props = {
 };
 
 const LinksProvider = ({error, handleChanges}: Props) => {
-  const {socialSites} = useRegisterStore();
+  const {socialSites, socialLinks} = useRegisterStore();
   return (
     <div className="w-full flex flex-col gap-4 mt-8">
       {socialSites && socialSites.length
@@ -32,6 +32,8 @@ const LinksProvider = ({error, handleChanges}: Props) => {
                   id={site}
                   placeholder="https://"
                   name={site}
+                  // value based on SocialLinks
+                  value={socialLinks[site as keyof SocialLinks]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleChanges(e)
                   }
