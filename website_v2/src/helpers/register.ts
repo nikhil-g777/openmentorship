@@ -386,7 +386,11 @@ const checkGoalsIsEmpty = (
   goals: {
     [key: string]: boolean;
   },
-  setError: Dispatch<
+  setError: (mentorshipErrors: {
+    goals: string;
+    frequency: string;
+    preferences: string;
+  }) => void | Dispatch<
     SetStateAction<{
       goals: string;
       frequency: string;
@@ -409,7 +413,11 @@ const checkGoalsIsEmpty = (
 // Check communication frequency is empty
 const checkCommunicationFrequencyIsEmpty = (
   communicationFrequency: string,
-  setError: Dispatch<
+  setError: (mentorshipErrors: {
+    goals: string;
+    frequency: string;
+    preferences: string;
+  }) => void | Dispatch<
     SetStateAction<{
       goals: string;
       frequency: string;
@@ -432,7 +440,11 @@ const checkCommunicationFrequencyIsEmpty = (
 // Check communication preferences is empty
 const checkCommunicationPreferencesIsEmpty = (
   communicationPreferences: string[],
-  setError: Dispatch<
+  setError: (mentorshipErrors: {
+    goals: string;
+    frequency: string;
+    preferences: string;
+  }) => void | Dispatch<
     SetStateAction<{
       goals: string;
       frequency: string;
@@ -457,7 +469,9 @@ const checkCommunicationPreferencesIsEmpty = (
 const checkAtleastOneSocialLinkProvided = (
   socialLinks: SocialLinks,
   error: SocialLinks,
-  setError: (value: SetStateAction<SocialLinks>) => void
+  setError:
+    | ((value: SetStateAction<SocialLinks>) => void)
+    | ((socialLinksErrors: SocialLinks) => void)
 ) => {
   if (
     !socialLinks.twitter.length &&
@@ -481,7 +495,9 @@ const checkAtleastOneSocialLinkProvided = (
 const validateSocialLinks = (
   socialLinks: SocialLinks,
   error: SocialLinks,
-  setError: (value: SetStateAction<SocialLinks>) => void
+  setError:
+    | ((value: SetStateAction<SocialLinks>) => void)
+    | ((socialLinksErrors: SocialLinks) => void)
 ) => {
   if (socialLinks.twitter.length && !twitterPattern.test(socialLinks.twitter)) {
     setError({...error, twitter: "Invalid twitter url"});
