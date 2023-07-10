@@ -151,7 +151,10 @@ const socialSites = [
 const checkExperiencesEducationLength = (
   experiences: [] | WorkExperience[],
   education: [] | Education[],
-  setInputError: Dispatch<
+  setInputError: (experienceError: {
+    experience: string;
+    education: string;
+  }) => void | Dispatch<
     SetStateAction<{
       experience: string;
       education: string;
