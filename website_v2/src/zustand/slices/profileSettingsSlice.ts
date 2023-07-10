@@ -1,6 +1,8 @@
 import {StateCreator} from "zustand";
 
 export type ProfileSettingsSlice = {
+  isProfilePage: boolean;
+  setisProfilePage: (isProfilePage: boolean) => void;
   profileImage: {
     [key: string]: string;
   };
@@ -9,12 +11,16 @@ export type ProfileSettingsSlice = {
   setHeadlineError: (headlineError: string) => void;
   bioError: string;
   setBioError: (bioError: string) => void;
+  areasOfInterestError: string;
+  setAreasOfInterestError: (areasOfInterestError: string) => void;
 };
 
 const initialState = {
+  isProfilePage: false,
   profileImage: {},
   headlineError: "",
   bioError: "",
+  areasOfInterestError: "",
 };
 
 export const profileSettingsSlice: StateCreator<
@@ -25,6 +31,11 @@ export const profileSettingsSlice: StateCreator<
 > = set => ({
   ...initialState,
   //   Actions
+  setisProfilePage: (isProfilePage: boolean) => {
+    set(() => ({
+      isProfilePage: isProfilePage,
+    }));
+  },
   setProfileImage: (profileImage: {[key: string]: string}) => {
     set(() => ({
       profileImage: profileImage,
@@ -38,6 +49,11 @@ export const profileSettingsSlice: StateCreator<
   setBioError: (bioError: string) => {
     set(() => ({
       bioError: bioError,
+    }));
+  },
+  setAreasOfInterestError: (areasOfInterestError: string) => {
+    set(() => ({
+      areasOfInterestError: areasOfInterestError,
     }));
   },
 });

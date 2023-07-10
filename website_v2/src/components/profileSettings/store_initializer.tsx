@@ -26,7 +26,7 @@ const StoreInitializer = ({data}: Props) => {
     setCommunicationFrequency,
     setCommunicationPreferences,
   } = useRegisterStore();
-  const {setProfileImage} = useProfileSettingsStore();
+  const {setProfileImage, setisProfilePage} = useProfileSettingsStore();
   const initialzied = useRef(false);
 
   // Update states once
@@ -35,6 +35,7 @@ const StoreInitializer = ({data}: Props) => {
     setLastName(data.user.lastName);
     setEmail(data.user.email);
     setProfileImage(data.user.profileImageUrls);
+    setisProfilePage(true);
     setHeadline(data.user.headline);
     setBio(data.user.bio);
     setInterests(data.user.interests);

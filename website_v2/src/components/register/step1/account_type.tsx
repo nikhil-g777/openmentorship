@@ -1,11 +1,13 @@
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 
 const AccountType = () => {
   const {userType, setUserType} = useRegisterStore();
+  const {isProfilePage} = useProfileSettingsStore();
+
   return (
-    <div className="w-full mt-8">
+    <div className={isProfilePage ? "w-full" : "w-full mt-8"}>
       <p className="text-base md:text-lg">
-        I am registering as a:{" "}
+        {isProfilePage ? "Account Type: " : "I am registering as a: "}
         <b>{userType === "mentee" ? "Mentee" : "Mentor"}</b>
       </p>
       <div className="btn-group mt-2">
