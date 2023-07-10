@@ -1,6 +1,7 @@
 import {HeadingBio} from "@/components/profileSettings/heading_bio";
 import {StoreInitializer} from "@/components/profileSettings/store_initializer";
 import {Step1} from "@/components/register/step1/step_1";
+import {Step2} from "@/components/register/step2/step_2";
 import {getUserInfo} from "@/endpoints/user";
 import {authOptions} from "@/helpers/auth_options";
 import {getServerSession} from "next-auth";
@@ -23,6 +24,7 @@ const page = async () => {
       <StoreInitializer data={data} />
       <HeadingBio />
       <Step1 />
+      <Step2 />
     </div>
   );
 };

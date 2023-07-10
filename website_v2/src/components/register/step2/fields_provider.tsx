@@ -1,6 +1,6 @@
 "use client";
 
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {SetStateAction} from "react";
 import {InputProvider} from "./inputs_provider";
 import {
@@ -14,7 +14,10 @@ import {
 type Props = {
   type: string;
   inputError: {experience: string; education: string};
-  setInputError: React.Dispatch<
+  setInputError: (experienceError: {
+    experience: string;
+    education: string;
+  }) => void | React.Dispatch<
     SetStateAction<{
       experience: string;
       education: string;
@@ -25,6 +28,7 @@ type Props = {
 const FieldsProvider = ({type, inputError, setInputError}: Props) => {
   const {experiences, education, setExperiences, setEducation} =
     useRegisterStore();
+  const {isProfilePage} = useProfileSettingsStore();
 
   // Add input fields
   const handleAddInput = () => {
@@ -95,7 +99,7 @@ const FieldsProvider = ({type, inputError, setInputError}: Props) => {
     }
   };
   return (
-    <div className="w-full mt-8">
+    <div className={isProfilePage ? "" : "w-full mt-8"}>
       {type === "experiences" ? (
         <InputProvider
           type={type}

@@ -11,6 +11,7 @@ type Education = {
 };
 
 type CurrentType = {
+  _id?: string;
   key?: string;
   organization?: string;
   school?: string;

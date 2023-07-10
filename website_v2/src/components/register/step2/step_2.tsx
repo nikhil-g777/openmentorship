@@ -1,6 +1,6 @@
 "use client";
 
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {FieldsProvider} from "./fields_provider";
 import {useState} from "react";
 import {
@@ -13,6 +13,8 @@ import {
 const Step2 = () => {
   const {currentScreen, setCurrentScreen, experiences, education} =
     useRegisterStore();
+  const {isProfilePage, experienceError, setExperienceError} =
+    useProfileSettingsStore();
   const [inputError, setInputError] = useState<{
     experience: string;
     education: string;
@@ -60,33 +62,43 @@ const Step2 = () => {
   };
 
   return (
-    <div className={`w-full ${currentScreen === "step2" ? "" : "hidden"}`}>
+    <div
+      className={`w-full ${
+        currentScreen === "step2" || isProfilePage ? "" : "hidden"
+      }`}
+    >
       <div className="w-full max-w-3xl mx-auto mt-8 px-4">
         {/* Heading */}
-        <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
-          About You
-        </h1>
+        {!isProfilePage ? (
+          <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
+            About You
+          </h1>
+        ) : (
+          <h2 className="text-xl font-semibold mt-8 mb-4">Experience</h2>
+        )}
         {/* Work Experience */}
         <FieldsProvider
           type="experiences"
-          inputError={inputError}
-          setInputError={setInputError}
+          inputError={isProfilePage ? experienceError : inputError}
+          setInputError={isProfilePage ? setExperienceError : setInputError}
         />
         {/* Education */}
         <FieldsProvider
           type="education"
-          inputError={inputError}
-          setInputError={setInputError}
+          inputError={isProfilePage ? experienceError : inputError}
+          setInputError={isProfilePage ? setExperienceError : setInputError}
         />
         {/* Continue */}
-        <div className="w-full my-8 text-center">
-          <button
-            className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
-            onClick={handleContinue}
-          >
-            Continue
-          </button>
-        </div>
+        {!isProfilePage ? (
+          <div className="w-full my-8 text-center">
+            <button
+              className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
+              onClick={handleContinue}
+            >
+              Continue
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

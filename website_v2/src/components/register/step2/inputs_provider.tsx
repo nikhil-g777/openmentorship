@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type {WorkExperience, Education, CurrentType} from "@/types/regsiter";
+import {useProfileSettingsStore} from "@/zustand/store";
 
 type Props = {
   type: string;
@@ -21,17 +22,20 @@ const InputProvider = ({
   inputError,
   handleAddInput,
 }: Props) => {
+  const {isProfilePage} = useProfileSettingsStore();
   return (
     <>
       {/* Heading */}
-      <h2 className="text-lg md:text-xl font-medium">
+      <h2
+        className={isProfilePage ? "text-lg" : "text-lg md:text-xl font-medium"}
+      >
         {type === "experiences" ? "Work Experience" : "Education"}
       </h2>
       <div className="w-full">
         {inputFields && inputFields.length
           ? inputFields.map((field: CurrentType, index: number) => (
               <div
-                key={field.key}
+                key={field.key || field._id}
                 className="w-full flex flex-col md:flex-row gap-2 my-2 last:-mb-4 md:last:mb-4"
               >
                 <input

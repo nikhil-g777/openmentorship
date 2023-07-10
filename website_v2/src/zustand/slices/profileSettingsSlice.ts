@@ -13,6 +13,11 @@ export type ProfileSettingsSlice = {
   setBioError: (bioError: string) => void;
   areasOfInterestError: string;
   setAreasOfInterestError: (areasOfInterestError: string) => void;
+  experienceError: {experience: string; education: string};
+  setExperienceError: (experienceError: {
+    experience: string;
+    education: string;
+  }) => void;
 };
 
 const initialState = {
@@ -21,6 +26,7 @@ const initialState = {
   headlineError: "",
   bioError: "",
   areasOfInterestError: "",
+  experienceError: {experience: "", education: ""},
 };
 
 export const profileSettingsSlice: StateCreator<
@@ -54,6 +60,14 @@ export const profileSettingsSlice: StateCreator<
   setAreasOfInterestError: (areasOfInterestError: string) => {
     set(() => ({
       areasOfInterestError: areasOfInterestError,
+    }));
+  },
+  setExperienceError: (experienceError: {
+    experience: string;
+    education: string;
+  }) => {
+    set(() => ({
+      experienceError: experienceError,
     }));
   },
 });
