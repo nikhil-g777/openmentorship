@@ -1,4 +1,4 @@
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {Goals} from "./goals";
 import {CommunicationFrequency} from "./frequency";
 import {CommunicationPreferences} from "./communication_preferences";
@@ -9,10 +9,11 @@ type Props = {
 
 const Preferences = ({error}: Props) => {
   const {userType} = useRegisterStore();
+  const {isProfilePage} = useProfileSettingsStore();
   return (
     <div className="w-full">
       {/* Preferences */}
-      <div className="w-full mt-8">
+      <div className={isProfilePage ? "" : "w-full mt-8"}>
         <p className="text-base md:text-lg">
           {userType === "mentee"
             ? "What do you need from your mentor? Select all that apply."

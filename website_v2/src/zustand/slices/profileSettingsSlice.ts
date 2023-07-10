@@ -23,6 +23,16 @@ export type ProfileSettingsSlice = {
     skills: string;
     interests: string;
   }) => void;
+  mentorshipErrors: {
+    goals: string;
+    frequency: string;
+    preferences: string;
+  };
+  setMentorshipErrors: (mentorshipErrors: {
+    goals: string;
+    frequency: string;
+    preferences: string;
+  }) => void;
 };
 
 const initialState = {
@@ -33,6 +43,11 @@ const initialState = {
   areasOfInterestError: "",
   experienceError: {experience: "", education: ""},
   skillsInterestsError: {skills: "", interests: ""},
+  mentorshipErrors: {
+    goals: "",
+    frequency: "",
+    preferences: "",
+  },
 };
 
 export const profileSettingsSlice: StateCreator<
@@ -82,6 +97,15 @@ export const profileSettingsSlice: StateCreator<
   }) => {
     set(() => ({
       skillsInterestsError: skillsInterestsError,
+    }));
+  },
+  setMentorshipErrors: (mentorshipErrors: {
+    goals: string;
+    frequency: string;
+    preferences: string;
+  }) => {
+    set(() => ({
+      mentorshipErrors: mentorshipErrors,
     }));
   },
 });
