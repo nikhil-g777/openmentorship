@@ -33,6 +33,22 @@ export type ProfileSettingsSlice = {
     frequency: string;
     preferences: string;
   }) => void;
+  socialLinksErrors: {
+    twitter: string;
+    medium: string;
+    behance: string;
+    github: string;
+    portfolio: string;
+    other: string;
+  };
+  setSocialLinksErrors: (socialLinksErrors: {
+    twitter: string;
+    medium: string;
+    behance: string;
+    github: string;
+    portfolio: string;
+    other: string;
+  }) => void;
 };
 
 const initialState = {
@@ -47,6 +63,14 @@ const initialState = {
     goals: "",
     frequency: "",
     preferences: "",
+  },
+  socialLinksErrors: {
+    twitter: "",
+    medium: "",
+    behance: "",
+    github: "",
+    portfolio: "",
+    other: "",
   },
 };
 
@@ -106,6 +130,18 @@ export const profileSettingsSlice: StateCreator<
   }) => {
     set(() => ({
       mentorshipErrors: mentorshipErrors,
+    }));
+  },
+  setSocialLinksErrors: (socialLinksErrors: {
+    twitter: string;
+    medium: string;
+    behance: string;
+    github: string;
+    portfolio: string;
+    other: string;
+  }) => {
+    set(() => ({
+      socialLinksErrors: socialLinksErrors,
     }));
   },
 });

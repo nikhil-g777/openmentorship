@@ -1,6 +1,10 @@
 "use client";
 
-import {useCommonStore, useRegisterStore} from "@/zustand/store";
+import {
+  useCommonStore,
+  useProfileSettingsStore,
+  useRegisterStore,
+} from "@/zustand/store";
 import {
   checkAtleastOneSocialLinkProvided,
   validateSocialLinks,
@@ -13,6 +17,7 @@ import {LinksProvider} from "./links_provider";
 const Step5 = () => {
   const {...states} = useRegisterStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
+  const {isProfilePage, socialLinksErrors} = useProfileSettingsStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<SocialLinks>({
     twitter: "",
@@ -103,27 +108,38 @@ const Step5 = () => {
 
   return (
     <div
-      className={`w-full ${states.currentScreen === "step5" ? "" : "hidden"}`}
+      className={`w-full ${
+        states.currentScreen === "step5" || isProfilePage ? "" : "hidden"
+      }`}
     >
       <div className="w-full max-w-3xl mx-auto mt-8 px-4">
         {/* Heading */}
-        <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
-          Add your Social Media links
-        </h1>
+        {!isProfilePage ? (
+          <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
+            Add your Social Media links
+          </h1>
+        ) : (
+          <h2 className="text-xl font-semibold mt-8 -mb-4">Social Media</h2>
+        )}
         {/* Links */}
-        <LinksProvider error={error} handleChanges={handleChanges} />
+        <LinksProvider
+          error={isProfilePage ? socialLinksErrors : error}
+          handleChanges={handleChanges}
+        />
         {/* Continue */}
-        <div className="w-full my-8 text-center">
-          <button
-            className={`w-48 btn btn-outline btn-accent rounded-full hover:text-white ${
-              loading ? "loading" : ""
-            }`}
-            onClick={handleContinue}
-            disabled={loading}
-          >
-            {loading ? "Updating..." : "Continue"}
-          </button>
-        </div>
+        {!isProfilePage ? (
+          <div className="w-full my-8 text-center">
+            <button
+              className={`w-48 btn btn-outline btn-accent rounded-full hover:text-white ${
+                loading ? "loading" : ""
+              }`}
+              onClick={handleContinue}
+              disabled={loading}
+            >
+              {loading ? "Updating..." : "Continue"}
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
