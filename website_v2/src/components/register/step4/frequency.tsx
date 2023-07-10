@@ -30,7 +30,10 @@ const CommunicationFrequency = ({error}: Props) => {
                 name="communicationInterval"
                 value={frequency.value}
                 onChange={handleChange}
-                checked={communicationFrequency === frequency.value}
+                checked={
+                  communicationFrequency.toLowerCase() ===
+                  frequency.value.toLowerCase()
+                }
               />
               <span className="label-text text-base">{frequency.title}</span>
             </label>
