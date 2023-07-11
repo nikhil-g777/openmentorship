@@ -13,7 +13,7 @@ const Name = ({firstName, lastName, linkedinURI}: Props) => {
   const {isProfilePage} = useProfileSettingsStore();
   return (
     <div className="flex items-center justify-center sm:justify-start gap-4">
-      <h2 className="text-xl font-black">
+      <h2 className="text-xl md:text-2xl font-bold">
         {firstName} {lastName}
       </h2>
       <a
@@ -25,8 +25,8 @@ const Name = ({firstName, lastName, linkedinURI}: Props) => {
         <Image
           src="/assets/icons/linkedin.svg"
           alt="linkedin"
-          width={20}
-          height={20}
+          width={24}
+          height={24}
         />
       </a>
 
