@@ -1,38 +1,30 @@
 import {StateCreator} from "zustand";
 
+// Types
 export type ProfileSettingsSlice = {
+  // States
+  // Main
   isProfilePage: boolean;
-  setisProfilePage: (isProfilePage: boolean) => void;
   profileImage: {
     [key: string]: string;
   };
-  setProfileImage: (profileImage: {[key: string]: string}) => void;
   headlineError: string;
-  setHeadlineError: (headlineError: string) => void;
   bioError: string;
-  setBioError: (bioError: string) => void;
+  loading: boolean;
+  isEditable: boolean;
+  // Step1
   areasOfInterestError: string;
-  setAreasOfInterestError: (areasOfInterestError: string) => void;
+  // Step2
   experienceError: {experience: string; education: string};
-  setExperienceError: (experienceError: {
-    experience: string;
-    education: string;
-  }) => void;
+  // Step3
   skillsInterestsError: {skills: string; interests: string};
-  setSkillsInterestsError: (skillsInterestsError: {
-    skills: string;
-    interests: string;
-  }) => void;
+  // Step4
   mentorshipErrors: {
     goals: string;
     frequency: string;
     preferences: string;
   };
-  setMentorshipErrors: (mentorshipErrors: {
-    goals: string;
-    frequency: string;
-    preferences: string;
-  }) => void;
+  // Step5
   socialLinksErrors: {
     twitter: string;
     medium: string;
@@ -41,6 +33,34 @@ export type ProfileSettingsSlice = {
     portfolio: string;
     other: string;
   };
+
+  // Actions
+  // Main
+  setisProfilePage: (isProfilePage: boolean) => void;
+  setProfileImage: (profileImage: {[key: string]: string}) => void;
+  setHeadlineError: (headlineError: string) => void;
+  setBioError: (bioError: string) => void;
+  setLoading: (loading: boolean) => void;
+  setIsEditable: (isEditable: boolean) => void;
+  // Step1
+  setAreasOfInterestError: (areasOfInterestError: string) => void;
+  // Step2
+  setExperienceError: (experienceError: {
+    experience: string;
+    education: string;
+  }) => void;
+  // Step3
+  setSkillsInterestsError: (skillsInterestsError: {
+    skills: string;
+    interests: string;
+  }) => void;
+  // Step4
+  setMentorshipErrors: (mentorshipErrors: {
+    goals: string;
+    frequency: string;
+    preferences: string;
+  }) => void;
+  // Step5
   setSocialLinksErrors: (socialLinksErrors: {
     twitter: string;
     medium: string;
@@ -49,25 +69,30 @@ export type ProfileSettingsSlice = {
     portfolio: string;
     other: string;
   }) => void;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
-  isEditable: boolean;
-  setIsEditable: (isEditable: boolean) => void;
 };
 
+// Initial state
 const initialState = {
+  // Main
   isProfilePage: false,
   profileImage: {},
   headlineError: "",
   bioError: "",
+  loading: false,
+  isEditable: false,
+  // Step1
   areasOfInterestError: "",
+  // Step2
   experienceError: {experience: "", education: ""},
+  // Step3
   skillsInterestsError: {skills: "", interests: ""},
+  // Step4
   mentorshipErrors: {
     goals: "",
     frequency: "",
     preferences: "",
   },
+  // Step5
   socialLinksErrors: {
     twitter: "",
     medium: "",
@@ -76,8 +101,6 @@ const initialState = {
     portfolio: "",
     other: "",
   },
-  loading: false,
-  isEditable: false,
 };
 
 export const profileSettingsSlice: StateCreator<
@@ -87,7 +110,8 @@ export const profileSettingsSlice: StateCreator<
   ProfileSettingsSlice
 > = set => ({
   ...initialState,
-  //   Actions
+  // Actions
+  // Main
   setisProfilePage: (isProfilePage: boolean) => {
     set(() => ({
       isProfilePage: isProfilePage,
@@ -108,11 +132,23 @@ export const profileSettingsSlice: StateCreator<
       bioError: bioError,
     }));
   },
+  setLoading: (loading: boolean) => {
+    set(() => ({
+      loading: loading,
+    }));
+  },
+  setIsEditable: (isEditable: boolean) => {
+    set(() => ({
+      isEditable: isEditable,
+    }));
+  },
+  // Step1
   setAreasOfInterestError: (areasOfInterestError: string) => {
     set(() => ({
       areasOfInterestError: areasOfInterestError,
     }));
   },
+  // Step2
   setExperienceError: (experienceError: {
     experience: string;
     education: string;
@@ -121,6 +157,7 @@ export const profileSettingsSlice: StateCreator<
       experienceError: experienceError,
     }));
   },
+  // Step3
   setSkillsInterestsError: (skillsInterestsError: {
     skills: string;
     interests: string;
@@ -129,6 +166,7 @@ export const profileSettingsSlice: StateCreator<
       skillsInterestsError: skillsInterestsError,
     }));
   },
+  // Step4
   setMentorshipErrors: (mentorshipErrors: {
     goals: string;
     frequency: string;
@@ -138,6 +176,7 @@ export const profileSettingsSlice: StateCreator<
       mentorshipErrors: mentorshipErrors,
     }));
   },
+  // Step5
   setSocialLinksErrors: (socialLinksErrors: {
     twitter: string;
     medium: string;
@@ -148,16 +187,6 @@ export const profileSettingsSlice: StateCreator<
   }) => {
     set(() => ({
       socialLinksErrors: socialLinksErrors,
-    }));
-  },
-  setLoading: (loading: boolean) => {
-    set(() => ({
-      loading: loading,
-    }));
-  },
-  setIsEditable: (isEditable: boolean) => {
-    set(() => ({
-      isEditable: isEditable,
     }));
   },
 });
