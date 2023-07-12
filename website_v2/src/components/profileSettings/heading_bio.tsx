@@ -2,7 +2,7 @@
 
 import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {Profile} from "../profileCard/profile";
-import Name from "../profileCard/name";
+import {Name} from "../profileCard/name";
 
 const HeadingBio = () => {
   const {profileImage, headlineError, bioError, isEditable} =
