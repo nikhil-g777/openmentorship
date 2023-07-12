@@ -35,4 +35,4 @@ const Name = ({firstName, lastName, linkedinURI}: Props) => {
     </div>
   );
 };
-export default Name;
+export {Name};
