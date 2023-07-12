@@ -1,9 +1,10 @@
 "use client";
 
-import Profile from "../profileCard";
+import {UserProfile} from "@/types/profile";
+import {ProfileCard as Profile} from "../profileCard";
 
 type Props = {
-  data: any;
+  data: UserProfile["user"][];
 };
 
 const Listing = ({data}: Props) => {
@@ -14,7 +15,7 @@ const Listing = ({data}: Props) => {
       ) : null}
       {/* Results */}
       {data && data.length
-        ? data.map((single: any) => (
+        ? data.map((single: UserProfile["user"]) => (
             <Profile data={single} key={single._id} collapsable={true} />
           ))
         : null}
@@ -22,4 +23,4 @@ const Listing = ({data}: Props) => {
   );
 };
 
-export default Listing;
+export {Listing};

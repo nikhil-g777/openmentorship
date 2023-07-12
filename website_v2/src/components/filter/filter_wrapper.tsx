@@ -1,4 +1,4 @@
-import Filter from "./Filter";
+import {Filter} from "./filter_main";
 import {areaOfInterest, frequency, goals, preferences} from "./filters";
 
 type Props = {
@@ -33,4 +33,4 @@ const FilterWrapper = ({title}: Props) => {
   );
 };
 
-export default FilterWrapper;
+export {FilterWrapper};

@@ -17,4 +17,4 @@ const Skills = ({skills}: Props) => {
     </>
   );
 };
-export default Skills;
+export {Skills};

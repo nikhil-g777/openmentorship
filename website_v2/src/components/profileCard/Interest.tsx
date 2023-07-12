@@ -17,4 +17,4 @@ const Interest = ({interests}: Props) => {
     </>
   );
 };
-export default Interest;
+export {Interest};

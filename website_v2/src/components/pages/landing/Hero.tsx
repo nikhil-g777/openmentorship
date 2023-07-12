@@ -4,9 +4,7 @@ import {useSession} from "next-auth/react";
 import Linkedin from "./Linkedin";
 import Image from "next/image";
 
-type Props = {};
-
-const Hero = (props: Props) => {
+const Hero = () => {
   const {status} = useSession();
 
   return (

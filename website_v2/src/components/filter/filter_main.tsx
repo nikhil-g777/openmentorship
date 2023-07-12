@@ -100,4 +100,4 @@ const Filter = ({heading, filters, type}: Props) => {
   );
 };
 
-export default Filter;
+export {Filter};

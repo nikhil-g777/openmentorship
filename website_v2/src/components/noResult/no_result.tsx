@@ -19,4 +19,4 @@ const NoResult = ({message}: Props) => {
   );
 };
 
-export default NoResult;
+export {NoResult};

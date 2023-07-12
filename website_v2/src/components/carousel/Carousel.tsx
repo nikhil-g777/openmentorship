@@ -89,4 +89,4 @@ const Carousel = ({heading, children, childrenLength}: Props) => {
   );
 };
 
-export default Carousel;
+export {Carousel};

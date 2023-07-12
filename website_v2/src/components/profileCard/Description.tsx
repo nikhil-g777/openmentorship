@@ -9,4 +9,4 @@ const Description = ({bio}: Props) => {
     </>
   );
 };
-export default Description;
+export {Description};

@@ -32,4 +32,4 @@ const Profile = ({data, buttonText}: Props) => {
     </div>
   );
 };
-export default Profile;
+export {Profile};

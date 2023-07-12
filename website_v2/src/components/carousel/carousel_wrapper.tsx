@@ -1,11 +1,11 @@
 "use client";
 
-import Carousel from "./Carousel";
-import Profile from "../profileCard";
-import {profileDetails} from "@/types/userProfile";
+import {Carousel} from "./carousel";
+import {ProfileCard as Profile} from "../profileCard";
+import {UserProfile} from "@/types/profile";
 
 type Props = {
-  data: profileDetails[];
+  data: UserProfile["user"][];
 };
 
 const CarouselWrapper = ({data}: Props) => {
@@ -15,7 +15,7 @@ const CarouselWrapper = ({data}: Props) => {
         childrenLength={data.length}
         heading="Recommended based on your profile"
       >
-        {data.map((profile: any) => (
+        {data.map((profile: UserProfile["user"]) => (
           <Profile data={profile} key={profile._id} collapsable={true} />
         ))}
       </Carousel>
@@ -23,4 +23,4 @@ const CarouselWrapper = ({data}: Props) => {
   );
 };
 
-export default CarouselWrapper;
+export {CarouselWrapper};

@@ -14,7 +14,7 @@ const Socials = ({data}: Props) => {
       <div className="flex flex-wrap gap-2 sm:gap-4 mb-4">
         {data && Object.keys(data).length
           ? Object.entries(data)
-              .filter(([key, value]) => value !== "")
+              .filter(([value]) => value !== "")
               .map(([key, value]) => (
                 <Link
                   href={value}
@@ -35,4 +35,4 @@ const Socials = ({data}: Props) => {
   );
 };
 
-export default Socials;
+export {Socials};

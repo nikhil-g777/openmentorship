@@ -3,40 +3,21 @@
 import {useState} from "react";
 import Image from "next/image";
 
-import Profile from "./Profile";
-import Name from "./Name";
-import Designation from "./Designation";
-import Description from "./Description";
-import Interest from "./Interest";
-import Skills from "./Skills";
-import Provides from "./Provides";
-import Socials from "./Socials";
-
-// types
-type Data = {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  linkedin: string;
-  headline: string;
-  bio: string;
-  interests: string[];
-  skills: string[];
-  goals: {};
-  socialLinks: {
-    [key: string]: string;
-  };
-  profileImageUrls: {
-    [key: string]: string;
-  };
-  email: string;
-};
+import {Profile} from "./profile";
+import {Name} from "./name";
+import {Designation} from "./designation";
+import {Description} from "./description";
+import {Interest} from "./interest";
+import {Skills} from "./skills";
+import {Provides} from "./provides";
+import {Socials} from "./socials";
+import {UserProfile} from "@/types/profile";
 
 type Props = {
-  data: Data | null;
+  data: UserProfile["user"] | null;
   collapsable: boolean;
 };
-const Mentor = ({data, collapsable}: Props) => {
+const ProfileCard = ({data, collapsable}: Props) => {
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const handleHidden = () => {
@@ -60,7 +41,7 @@ const Mentor = ({data, collapsable}: Props) => {
               <Name
                 firstName={data.firstName}
                 lastName={data.lastName}
-                linkedinURI={data.linkedin}
+                linkedinURI={data.linkedInId}
               />
               {/* Designation */}
               <Designation headline={data.headline} />
@@ -97,4 +78,4 @@ const Mentor = ({data, collapsable}: Props) => {
     </div>
   );
 };
-export default Mentor;
+export {ProfileCard};

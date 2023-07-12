@@ -1,12 +1,12 @@
 "use client";
 
-import {profileDetails} from "@/types/userProfile";
+import {UserProfile} from "@/types/profile";
 import Link from "next/link";
 import {useSearchParams, usePathname} from "next/navigation";
 
 type Props = {
   currentPage: number;
-  data: profileDetails[] | null;
+  data: UserProfile["user"][] | null;
   totalPages: number;
 };
 const Pagination = ({currentPage, data, totalPages}: Props) => {
@@ -51,4 +51,4 @@ const Pagination = ({currentPage, data, totalPages}: Props) => {
   );
 };
 
-export default Pagination;
+export {Pagination};

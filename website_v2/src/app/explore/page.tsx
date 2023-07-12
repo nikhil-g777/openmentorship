@@ -1,12 +1,12 @@
 import React from "react";
 import {getServerSession} from "next-auth";
 import {redirect} from "next/navigation";
-import {authOptions} from "../api/auth/[...nextauth]/route";
-import FilterWrapper from "@/components/filter/FilterWrapper";
-import CarouselWrapper from "@/components/carousel/CarouselWrapper";
-import Listing from "@/components/listing/Listing";
-import Pagination from "@/components/pagination/Pagination";
-import NoResult from "@/components/noResult/NoResult";
+import {authOptions} from "@/helpers/auth_options";
+import {FilterWrapper} from "@/components/filter/filter_wrapper";
+import {CarouselWrapper} from "@/components/carousel/carousel_wrapper";
+import {Listing} from "@/components/listing/listing_main";
+import {Pagination} from "@/components/pagination/pagination_main";
+import {NoResult} from "@/components/noResult/no_result";
 import {getExploreData, getExploreDataByContent} from "@/endpoints/explore";
 
 type Props = {
