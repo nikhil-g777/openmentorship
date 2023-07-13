@@ -39,8 +39,6 @@ const Filter = ({heading, filters, type}: Props) => {
     params
   ) as string[];
 
-  console.log(params.get("areasOfInterest"));
-
   const listing = [
     ...areasOfInterest,
     ...goals,
