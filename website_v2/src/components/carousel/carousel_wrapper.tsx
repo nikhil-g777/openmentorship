@@ -1,6 +1,6 @@
 "use client";
 
-import {Carousel} from "./carousel";
+import {Carousel} from "./carousel_main";
 import {ProfileCard as Profile} from "../profileCard";
 import {UserProfile} from "@/types/profile";
 
