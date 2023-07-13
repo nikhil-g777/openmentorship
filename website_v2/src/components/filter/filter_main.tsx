@@ -25,16 +25,21 @@ const Filter = ({heading, filters, type}: Props) => {
   const params = useSearchParams();
   const pathname = usePathname();
   const limit = params.get("limit");
-  const areasOfInterest = performParamsToArray("areasOfInterest", params);
-  const goals = performParamsToArray("goals", params);
+  const areasOfInterest = performParamsToArray(
+    "areasOfInterest",
+    params
+  ) as string[];
+  const goals = performParamsToArray("goals", params) as string[];
   const communicationFrequency = performParamsToArray(
     "communicationFrequency",
     params
-  );
+  ) as string[];
   const communicationPreferences = performParamsToArray(
     "communicationPreferences",
     params
-  );
+  ) as string[];
+
+  console.log(params.get("areasOfInterest"));
 
   const listing = [
     ...areasOfInterest,

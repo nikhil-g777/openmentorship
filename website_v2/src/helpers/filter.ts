@@ -53,8 +53,9 @@ const performParamsToArray = (
   filter: string,
   params: ReadonlyURLSearchParams
 ) => {
-  if (params.get(filter)) {
-    return params.get(filter)?.split(",");
+  const param = params.get(filter);
+  if (param && param.length > 0) {
+    return param?.split(",");
   } else {
     return [];
   }
