@@ -1,15 +1,18 @@
 "use client";
-
 import {UserProfile} from "@/types/profile";
 import Link from "next/link";
 import {useSearchParams, usePathname} from "next/navigation";
 
 type Props = {
-  currentPage: number;
-  data: UserProfile["user"][] | null;
-  totalPages: number;
+  data: {
+    success: boolean;
+    mentors: UserProfile["user"][];
+    totalPages: number;
+    currentPage: string;
+  };
 };
-const Pagination = ({currentPage, data, totalPages}: Props) => {
+
+const Pagination = ({data}: Props) => {
   const params = useSearchParams();
   const pathname = usePathname();
   const limit = params.get("limit");
@@ -17,10 +20,13 @@ const Pagination = ({currentPage, data, totalPages}: Props) => {
   const goals = params.get("goals");
   const communicationFrequency = params.get("communicationFrequency");
   const communicationPreferences = params.get("communicationPreferences");
+  const paginationData = data.mentors;
+  const totalPages = data.totalPages;
+  const currentPage = Number(data.currentPage);
 
   return (
     <>
-      {data && data.length ? (
+      {data && paginationData && paginationData.length ? (
         <div className="w-full btn-group mb-24 flex justify-center">
           <Link
             href={`${pathname}?page=${

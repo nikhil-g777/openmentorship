@@ -1,24 +1,33 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useCarouselStore, useProfileStore} from "@/zustand/store";
+import {useCallback, useEffect, useState} from "react";
 
 // Types
 type Props = {
   heading?: string;
   children: React.ReactNode;
-  childrenLength: number;
 };
 
-const Carousel = ({heading, children, childrenLength}: Props) => {
+const Carousel = ({heading, children}: Props) => {
+  const {carouselData} = useCarouselStore();
+  const {isProfileModal} = useProfileStore();
   const [current, setCurrent] = useState<number>(0);
   const [touchPosition, setTouchPosition] = useState<number | null>(null);
 
   // Handle Next
-  const next = () =>
-    setCurrent(current => (current === childrenLength - 1 ? 0 : current + 1));
+  const next = useCallback(
+    () =>
+      setCurrent(current =>
+        current === carouselData.length - 1 ? 0 : current + 1
+      ),
+    [carouselData.length]
+  );
   // Handle Previous
   const prev = () =>
-    setCurrent(current => (current === 0 ? childrenLength - 1 : current - 1));
+    setCurrent(current =>
+      current === 0 ? carouselData.length - 1 : current - 1
+    );
 
   // Touch Start Event Handler
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -51,9 +60,16 @@ const Carousel = ({heading, children, childrenLength}: Props) => {
 
   // Auto Slide
   useEffect(() => {
-    const slider = setInterval(next, 3000);
-    return () => clearInterval(slider);
-  });
+    let slider: NodeJS.Timeout | null = null;
+    if (!isProfileModal) {
+      slider = setInterval(next, 3000);
+    }
+    return () => {
+      if (slider) {
+        clearInterval(slider);
+      }
+    };
+  }, [isProfileModal, next]);
 
   return (
     <div className="w-full px-4 overflow-hidden relative">

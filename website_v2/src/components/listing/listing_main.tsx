@@ -2,21 +2,19 @@
 
 import {UserProfile} from "@/types/profile";
 import {ProfileCard as Profile} from "../profileCard";
+import {useListingStore} from "@/zustand/store";
 
-type Props = {
-  data: UserProfile["user"][];
-};
-
-const Listing = ({data}: Props) => {
+const Listing = () => {
+  const {listingData} = useListingStore();
   return (
     <div className="w-full pt-20 px-4 max-w-6xl mx-auto">
-      {data && data.length ? (
+      {listingData && listingData.length ? (
         <h3 className="font-lg sm:text-xl font-semibold px-4">All Results</h3>
       ) : null}
       {/* Results */}
-      {data && data.length
-        ? data.map((single: UserProfile["user"]) => (
-            <Profile data={single} key={single._id} collapsable={true} />
+      {listingData && listingData.length
+        ? listingData.map((profile: UserProfile["user"]) => (
+            <Profile key={profile._id} data={profile} />
           ))
         : null}
     </div>

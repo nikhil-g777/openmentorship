@@ -12,12 +12,13 @@ import {Skills} from "./skills";
 import {Provides} from "./provides";
 import {Socials} from "./socials";
 import {UserProfile} from "@/types/profile";
+import {useProfileStore} from "@/zustand/store";
 
 type Props = {
   data: UserProfile["user"] | null;
-  collapsable: boolean;
 };
-const ProfileCard = ({data, collapsable}: Props) => {
+const ProfileCard = ({data}: Props) => {
+  const {collapsable} = useProfileStore();
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const handleHidden = () => {
@@ -26,14 +27,11 @@ const ProfileCard = ({data, collapsable}: Props) => {
 
   return (
     // Wrapper
-    <div className="w-full min-w-full pb-5">
+    <div className="w-full min-w-full pb-5" key={data?._id}>
       {data ? (
-        <div
-          className="w-full h-full items-stretch flex flex-col sm:flex-row gap-5 lg:gap-10 mt-4 p-4 rounded-md border border-base-300"
-          key={data._id}
-        >
+        <div className="w-full h-full items-stretch flex flex-col sm:flex-row gap-5 lg:gap-10 mt-4 p-4 rounded-md border border-base-300">
           {/* Profile and action */}
-          <Profile buttonText="Send Request" data={data.profileImageUrls} />
+          <Profile data={data.profileImageUrls} rootData={data} />
           {/* Details */}
           <div className="w-full flex flex-col">
             {/* Mentor name & Linkedin */}

@@ -8,6 +8,8 @@ import {Listing} from "@/components/listing/listing_main";
 import {Pagination} from "@/components/pagination/pagination_main";
 import {NoResult} from "@/components/noResult/no_result";
 import {getExploreData, getExploreDataByContent} from "@/endpoints/explore";
+import {StoreInitializer} from "@/components/explore/store_initializer";
+import {ProfileCardModal} from "@/components/modals/profile_card_modal";
 
 type Props = {
   searchParams: {
@@ -45,27 +47,28 @@ const Page = async ({searchParams}: Props) => {
 
   return (
     <div className="w-full">
+      {/* Store initializer */}
+      <StoreInitializer data={data} content={contentData} />
       <FilterWrapper title="Find your Mentor" />
       {/* Only show Carousel if no filters applied */}
       {!areasOfInterest.length &&
       !goals.length &&
       !communicationFrequency.length &&
       !communicationPreferences.length ? (
-        <CarouselWrapper data={data.recommendations} />
+        <CarouselWrapper />
       ) : null}
 
       {/* Listing and Pagination */}
-      <Listing data={contentData.mentors} />
-      <Pagination
-        data={contentData.mentors}
-        currentPage={Number(contentData.currentPage)}
-        totalPages={contentData.totalPages}
-      />
+      <Listing />
+      <Pagination data={contentData} />
 
       {/* No Result */}
       {!contentData.mentors.length ? (
         <NoResult message="Sorry! No Result Found" />
       ) : null}
+
+      {/* Profile Card Modal */}
+      <ProfileCardModal />
     </div>
   );
 };

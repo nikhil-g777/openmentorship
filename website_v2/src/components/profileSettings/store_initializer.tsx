@@ -10,7 +10,6 @@ type Props = {
 };
 
 const StoreInitializer = ({data, token}: Props) => {
-  // console.log(data);
   const {
     setToken,
     setFirstName,
