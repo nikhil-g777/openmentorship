@@ -63,7 +63,7 @@ const Page = async ({searchParams}: Props) => {
       <Pagination data={contentData} />
 
       {/* No Result */}
-      {!contentData.mentors.length ? (
+      {contentData && contentData.mentors && !contentData.mentors.length ? (
         <NoResult message="Sorry! No Result Found" />
       ) : null}
 
