@@ -26,7 +26,7 @@ const StoreInitializer = ({data, content}: Props) => {
   const {setCarouselData} = useCarouselStore();
   const {setCollapsable, setCurrentPage, setCurrentTab, setUserType} =
     useProfileStore();
-  const {setListingData} = useListingStore();
+  const {setListingData, setHeading} = useListingStore();
   const {setErrorAlert} = useCommonStore();
 
   // Re-render on data change
@@ -47,6 +47,7 @@ const StoreInitializer = ({data, content}: Props) => {
     setCarouselData(data.recommendations);
     // Set listing data
     setListingData(content.mentors);
+    setHeading("All Results");
     // Set profile data
     setCollapsable(true);
     setCurrentPage("explore");
@@ -58,6 +59,7 @@ const StoreInitializer = ({data, content}: Props) => {
     setErrorAlert,
     setCarouselData,
     setListingData,
+    setHeading,
     setCollapsable,
     setCurrentPage,
     setCurrentTab,

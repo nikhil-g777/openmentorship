@@ -5,11 +5,14 @@ import {StateCreator} from "zustand";
 export type ListingSlice = {
   listingData: UserProfile["user"][] | [];
   setListingData: (data: UserProfile["user"][]) => void;
+  heading: string;
+  setHeading: (heading: string) => void;
 };
 
 // Initial state
 const initialState = {
   listingData: [],
+  heading: "",
 };
 
 export const listingSlice: StateCreator<
@@ -24,6 +27,11 @@ export const listingSlice: StateCreator<
   setListingData: (listingData: UserProfile["user"][]) => {
     set(() => ({
       listingData: listingData,
+    }));
+  },
+  setHeading: (heading: string) => {
+    set(() => ({
+      heading: heading,
     }));
   },
 });
