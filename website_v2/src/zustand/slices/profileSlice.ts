@@ -6,6 +6,7 @@ export type ProfileSlice = {
   // States
   data: UserProfile | null;
   token: string;
+  chatId: string;
   firstName: string;
   collapsable: boolean;
   currentPage: string;
@@ -15,9 +16,11 @@ export type ProfileSlice = {
   mentorId: string;
   isProfileModal: boolean;
   loading: boolean;
+  confirmationText: string;
   // Actions
   setData: (data: UserProfile) => void;
   setToken: (token: string) => void;
+  setChatId: (chatId: string) => void;
   setFirstName: (firstName: string) => void;
   setCollapsable: (collapsable: boolean) => void;
   setCurrentPage: (currentPage: string) => void;
@@ -27,12 +30,14 @@ export type ProfileSlice = {
   setMentorId: (mentorId: string) => void;
   setIsProfileModal: (isProfileModal: boolean) => void;
   setLoading: (loading: boolean) => void;
+  setConfirmationText: (confirmationText: string) => void;
 };
 
 // Initial state
 const initialState = {
   data: null,
   token: "",
+  chatId: "",
   firstName: "",
   collapsable: true,
   currentPage: "",
@@ -42,6 +47,7 @@ const initialState = {
   menteeId: "",
   mentorId: "",
   loading: false,
+  confirmationText: "",
 };
 
 export const profileSlice: StateCreator<
@@ -60,6 +66,11 @@ export const profileSlice: StateCreator<
   setToken: (token: string) => {
     set(() => ({
       token: token,
+    }));
+  },
+  setChatId: (chatId: string) => {
+    set(() => ({
+      chatId: chatId,
     }));
   },
   setFirstName: (firstName: string) => {
@@ -105,6 +116,11 @@ export const profileSlice: StateCreator<
   setLoading: (loading: boolean) => {
     set(() => ({
       loading: loading,
+    }));
+  },
+  setConfirmationText: (confirmationText: string) => {
+    set(() => ({
+      confirmationText: confirmationText,
     }));
   },
 });

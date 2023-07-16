@@ -6,6 +6,7 @@ import {useListingStore} from "@/zustand/store";
 
 const Listing = () => {
   const {listingData, heading} = useListingStore();
+
   return (
     <div className="w-full pt-20 px-4 max-w-6xl mx-auto">
       {listingData && listingData.length && heading && heading.length ? (

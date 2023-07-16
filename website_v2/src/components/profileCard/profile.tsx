@@ -1,8 +1,15 @@
 "use client";
 
-import {getButtonText, performProfileAction} from "@/helpers/profile";
+import {
+  getButtonColor,
+  getButtonText,
+  getSecondaryButtonColor,
+  getSecondaryButtonText,
+  performProfileAction,
+  performSecondaryButtonAction,
+} from "@/helpers/profile";
 import {UserProfile} from "@/types/profile";
-import {useProfileStore} from "@/zustand/store";
+import {useCommonStore, useProfileStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
@@ -15,43 +22,87 @@ type Props = {
   rootData?: UserProfile["user"];
 };
 const Profile = ({data, rootData}: Props) => {
-  const menteeId = useSession().data?.user.user._id;
-  const userToken = useSession().data?.user?.token;
+  const session = useSession();
+  const userToken = session.data?.user?.token;
   const router = useRouter();
   const {
     token,
     setToken,
+    setChatId,
     setFirstName,
     currentPage,
     currentTab,
     userType,
+    menteeId,
+    mentorId,
+    isProfileModal,
     setIsProfileModal,
     setMenteeId,
     setMentorId,
+    loading,
     setLoading,
+    confirmationText,
+    setConfirmationText,
   } = useProfileStore();
+  const {setSuccessAlert, setErrorAlert} = useCommonStore();
   const buttonText = getButtonText({currentPage, currentTab, userType});
+  const buttonColor = getButtonColor(buttonText);
+  const secondaryButtonText = getSecondaryButtonText({
+    currentPage,
+    currentTab,
+    userType,
+  });
+  const secondaryButtonColor = getSecondaryButtonColor(secondaryButtonText);
   const [fallbackSrc, setFallbackSrc] = useState<string | null>(null);
 
   // Handle profile action
-  const handleProfileAction = () => {
+  const handleProfileAction = async () => {
     // Set states
     if (rootData) {
       setFirstName(rootData.firstName);
       setMentorId(rootData._id);
+      if (userType === "mentee") {
+        setMenteeId(session.data?.user?.user?._id || "");
+        setMentorId(rootData._id);
+        setChatId(rootData?.matches?._id || "");
+      }
+      if (userType === "mentor") {
+        setMentorId(session.data?.user?.user?._id || "");
+        setMenteeId(rootData._id);
+        setChatId(rootData?.matches?._id || "");
+      }
     }
-    if (menteeId && menteeId.length) setMenteeId(menteeId);
     if (userToken && userToken.length) setToken(userToken);
 
     // Perform action
-    performProfileAction({
+    await performProfileAction({
       currentPage,
       currentTab,
+      chatId: currentPage !== "matches" ? "" : rootData?.matches._id,
+      isProfileModal,
       setIsProfileModal,
       router,
       buttonText,
       setLoading,
       token,
+      menteeId,
+      mentorId,
+    });
+  };
+
+  const handleSecondaryAction = async () => {
+    await performSecondaryButtonAction({
+      currentPage,
+      currentTab,
+      router,
+      chatId: currentPage !== "matches" ? "" : rootData?.matches._id,
+      secondaryButtonText,
+      setLoading,
+      token,
+      confirmationText,
+      setConfirmationText,
+      setSuccessAlert,
+      setErrorAlert,
     });
   };
 
@@ -71,10 +122,20 @@ const Profile = ({data, rootData}: Props) => {
       />
       {buttonText && buttonText.length ? (
         <button
-          className="w-full max-w-[200px] btn btn-accent rounded-full btn-sm mt-4 mx-auto text-sm capitalize"
+          className={`w-full max-w-[200px] btn btn-accent rounded-full btn-sm mt-4 mx-auto text-sm capitalize ${buttonColor}`}
           onClick={() => handleProfileAction()}
         >
           {buttonText}
+        </button>
+      ) : null}
+      {/* Secondary Action Button */}
+      {secondaryButtonText && secondaryButtonText.length ? (
+        <button
+          className={`w-full max-w-[200px] btn rounded-full btn-sm mt-2 mx-auto text-sm capitalize ${secondaryButtonColor}`}
+          onClick={handleSecondaryAction}
+          disabled={loading}
+        >
+          {secondaryButtonText}
         </button>
       ) : null}
     </div>

@@ -94,7 +94,7 @@ const getSecondaryButtonText = ({
   }
 
   // Return null if none of the above matches
-  return null;
+  return "";
 };
 
 // Profile action type
@@ -103,13 +103,17 @@ type PerformProfileAction = {
   currentTab: string;
   router: AppRouterInstance;
   chatId?: string;
-  buttonText: string;
+  buttonText?: string;
+  secondaryButtonText?: string;
   setLoading: (type: boolean) => void;
   token: string;
+  isProfileModal?: boolean;
   setIsProfileModal?: (type: boolean) => void;
   message?: string;
   menteeId?: string;
   mentorId?: string;
+  confirmationText?: string;
+  setConfirmationText?: (confirmationText: string) => void;
   setSuccessAlert?: (successAlert: string, time: number) => void;
   setErrorAlert?: (errorAlert: string, time: number) => void;
 };
@@ -121,6 +125,7 @@ const performProfileAction = async ({
   buttonText,
   setLoading,
   token,
+  isProfileModal,
   setIsProfileModal,
   message,
   menteeId,
@@ -162,6 +167,7 @@ const performProfileAction = async ({
 
   // Reconnect (Open Modal)
   if (
+    !isProfileModal &&
     setIsProfileModal &&
     currentPage === "matches" &&
     currentTab === "closed" &&
@@ -172,12 +178,15 @@ const performProfileAction = async ({
 
   // Reconnect
   if (
+    isProfileModal &&
     setIsProfileModal &&
     currentPage === "matches" &&
     currentTab === "closed" &&
-    buttonText === "Send" &&
+    buttonText === "Reconnect" &&
     chatId &&
-    token
+    chatId.length &&
+    token &&
+    token.length
   ) {
     setLoading(true);
     const res = await updateMatches(
@@ -198,6 +207,7 @@ const performProfileAction = async ({
 
   // Send Request (Open Modal)
   if (
+    !isProfileModal &&
     setIsProfileModal &&
     currentPage === "explore" &&
     buttonText === "Send Request"
@@ -207,12 +217,16 @@ const performProfileAction = async ({
 
   // Send Request
   if (
+    isProfileModal &&
     setIsProfileModal &&
     currentPage === "explore" &&
     buttonText === "Send Request" &&
     menteeId &&
+    menteeId.length &&
     mentorId &&
-    token
+    mentorId.length &&
+    token &&
+    token.length
   ) {
     setLoading(true);
     const res = await createMatch(
@@ -261,4 +275,122 @@ const performProfileAction = async ({
   }
 };
 
-export {getButtonText, getSecondaryButtonText, performProfileAction};
+const performSecondaryButtonAction = async ({
+  currentPage,
+  currentTab,
+  router,
+  chatId,
+  secondaryButtonText,
+  setLoading,
+  token,
+  isProfileModal,
+  confirmationText,
+  setConfirmationText,
+  setSuccessAlert,
+  setErrorAlert,
+}: PerformProfileAction) => {
+  // End Session (Modal)
+  if (
+    currentPage === "matches" &&
+    currentTab === "active" &&
+    secondaryButtonText === "End Session" &&
+    setConfirmationText &&
+    confirmationText &&
+    !confirmationText.length
+  ) {
+    setConfirmationText("Are you sure that you would like to end the session?");
+  }
+
+  // End Session
+  if (
+    currentPage === "matches" &&
+    currentTab === "active" &&
+    secondaryButtonText === "End Session" &&
+    isProfileModal
+  ) {
+    setLoading(true);
+    if (chatId && token) {
+      const res = await updateMatches(
+        chatId,
+        "closed",
+        "I want to end this session.",
+        token
+      );
+      setLoading(false);
+      if (!res.success && setErrorAlert) {
+        setErrorAlert(res.error, 6);
+      }
+      if (res.success && setSuccessAlert) {
+        setSuccessAlert("You have ended the session!", 6);
+        router.push("/matches?tab=closed");
+      }
+    }
+  }
+
+  // Decline Request
+  if (
+    currentPage === "matches" &&
+    currentTab === "pending" &&
+    secondaryButtonText === "Decline Request"
+  ) {
+    setLoading(true);
+    if (chatId && token) {
+      const res = await updateMatches(
+        chatId,
+        "closed",
+        "Sorry, Can't accept.",
+        token
+      );
+      setLoading(false);
+      if (!res.success && setErrorAlert) {
+        setErrorAlert(res.error, 6);
+      }
+      if (res.success && setSuccessAlert) {
+        setSuccessAlert("You have declined the request!", 6);
+        router.push("/matches?tab=active");
+      }
+    }
+  }
+
+  // Archived Chat
+  if (
+    currentPage === "matches" &&
+    currentTab === "closed" &&
+    secondaryButtonText === "Archived Chat"
+  ) {
+    router.push("/chat?id=" + chatId);
+  }
+};
+
+const getButtonColor = (buttonText: string) => {
+  if (
+    buttonText === "Send Request" ||
+    buttonText === "Chat" ||
+    buttonText === "Reconnect" ||
+    buttonText === "Approve Request"
+  ) {
+    return "btn-accent";
+  } else if (buttonText === "Withdraw Request") {
+    return "btn-outline btn-error";
+  } else return "btn-outline";
+};
+
+const getSecondaryButtonColor = (
+  secondaryButtonText: string | undefined | null
+) => {
+  if (
+    secondaryButtonText === "End Session" ||
+    secondaryButtonText === "Decline Request"
+  ) {
+    return "btn-outline btn-error";
+  } else return "btn-outline";
+};
+
+export {
+  getButtonText,
+  getSecondaryButtonText,
+  performProfileAction,
+  performSecondaryButtonAction,
+  getButtonColor,
+  getSecondaryButtonColor,
+};

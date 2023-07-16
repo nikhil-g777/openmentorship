@@ -9,6 +9,7 @@ const ProfileCardModal = () => {
   const router = useRouter();
   const {
     token,
+    chatId,
     firstName,
     currentPage,
     currentTab,
@@ -31,10 +32,12 @@ const ProfileCardModal = () => {
       currentPage,
       currentTab,
       router,
+      isProfileModal,
       setIsProfileModal,
       buttonText,
       setLoading,
       token,
+      chatId,
       menteeId,
       mentorId,
       message,
