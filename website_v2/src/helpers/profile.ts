@@ -327,6 +327,44 @@ const performSecondaryButtonAction = async ({
     }
   }
 
+  // End Session (chat page modal)
+  if (
+    currentPage === "chat" &&
+    confirmationText &&
+    !confirmationText.length &&
+    setConfirmationText
+  ) {
+    setConfirmationText("Are you sure that you would like to end the session?");
+  }
+
+  // End Session (chat page)
+  if (
+    currentPage === "chat" &&
+    confirmationText &&
+    confirmationText.length &&
+    setConfirmationText &&
+    chatId &&
+    chatId.length &&
+    token
+  ) {
+    setLoading(true);
+    const res = await updateMatches(
+      chatId,
+      "closed",
+      "I want to end this session.",
+      token
+    );
+    setLoading(false);
+    if (!res.success && setErrorAlert) {
+      setErrorAlert(res.error, 6);
+    }
+    if (res.success && setSuccessAlert) {
+      setConfirmationText("");
+      setSuccessAlert("You have ended the session!", 6);
+      router.push("/matches?tab=closed");
+    }
+  }
+
   // Decline Request
   if (
     currentPage === "matches" &&
