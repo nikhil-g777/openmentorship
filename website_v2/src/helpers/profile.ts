@@ -283,7 +283,6 @@ const performSecondaryButtonAction = async ({
   secondaryButtonText,
   setLoading,
   token,
-  isProfileModal,
   confirmationText,
   setConfirmationText,
   setSuccessAlert,
@@ -306,24 +305,29 @@ const performSecondaryButtonAction = async ({
     currentPage === "matches" &&
     currentTab === "active" &&
     secondaryButtonText === "End Session" &&
-    isProfileModal
+    confirmationText &&
+    confirmationText.length &&
+    setConfirmationText &&
+    chatId &&
+    chatId.length &&
+    token &&
+    token.length
   ) {
     setLoading(true);
-    if (chatId && token) {
-      const res = await updateMatches(
-        chatId,
-        "closed",
-        "I want to end this session.",
-        token
-      );
-      setLoading(false);
-      if (!res.success && setErrorAlert) {
-        setErrorAlert(res.error, 6);
-      }
-      if (res.success && setSuccessAlert) {
-        setSuccessAlert("You have ended the session!", 6);
-        router.push("/matches?tab=closed");
-      }
+    const res = await updateMatches(
+      chatId,
+      "closed",
+      "I want to end this session.",
+      token
+    );
+    setLoading(false);
+    if (!res.success && setErrorAlert) {
+      setErrorAlert(res.error, 6);
+    }
+    if (res.success && setSuccessAlert) {
+      setConfirmationText("");
+      setSuccessAlert("You have ended the session!", 6);
+      router.push("/matches?tab=closed");
     }
   }
 
