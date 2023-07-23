@@ -4,11 +4,22 @@ import {useChatStore, useListingStore, useProfileStore} from "@/zustand/store";
 import {useEffect} from "react";
 import {ChatUserAvatar} from "./chat_user_avatar";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import {useSession} from "next-auth/react";
+import {performSecondaryButtonAction} from "@/helpers/profile";
+import {useRouter} from "next/navigation";
 
 const ChatScreenHeader = () => {
   const token = useSession().data?.user.token || "";
-  const {setCurrentPage, setCurrentTab, setConfirmationText, setToken, setIsProfileModal} = useProfileStore();
+  const router = useRouter();
+  const {
+    currentPage,
+    setCurrentPage,
+    confirmationText,
+    setConfirmationText,
+    setLoading,
+    setToken,
+    setChatId,
+  } = useProfileStore();
   const {listingData} = useListingStore();
   const {
     chatId,
@@ -35,13 +46,17 @@ const ChatScreenHeader = () => {
   }, [listingData, chatId, setFirstName, setProfileImage]);
 
   // Handle end session
-  const handleEndSession = () => {
-    setConfirmationText("Are you sure that you would like to end the session?");
-
-    // Set states to perform end session action
-    setCurrentPage("matches");
-    setCurrentTab("active");
-    setToken(token);
+  const handleEndSession = async () => {
+    await performSecondaryButtonAction({
+      currentPage,
+      currentTab: "",
+      router,
+      setLoading,
+      confirmationText,
+      setConfirmationText,
+      token,
+      chatId,
+    });
   };
 
   return (

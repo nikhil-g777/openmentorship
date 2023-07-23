@@ -4,6 +4,7 @@ import {performCardData} from "@/helpers/matches";
 import {MatchesProfile} from "@/types/matches";
 import {useChatStore, useListingStore, useProfileStore} from "@/zustand/store";
 import {Client} from "@twilio/conversations";
+import { useSession } from "next-auth/react";
 import {useEffect} from "react";
 
 type Props = {
@@ -14,16 +15,20 @@ type Props = {
 };
 
 const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
+  const token = useSession().data?.user.token || "";
   const {listingData, setListingData, setHeading} = useListingStore();
-  const {setUserType} = useProfileStore();
+  const {setCurrentPage, setUserType, setChatId: setProfileChatId, setToken} = useProfileStore();
   const {setChatId, setConversations, setChatConnectionStatus, setTwilioToken, setIsTyping} = useChatStore();
   const cardData = performCardData(data, "matches", userType);
 
   useEffect(() => {
+    setCurrentPage("chat");
     setListingData(cardData);
     setUserType(userType);
     setHeading("Chats");
     setChatId(chatId);
+    setProfileChatId(chatId);
+    setToken(token);
     setTwilioToken(twilioToken);
     setConversations([]);
 

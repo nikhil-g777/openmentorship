@@ -334,8 +334,7 @@ const performSecondaryButtonAction = async ({
   // End Session (chat page modal)
   if (
     currentPage === "chat" &&
-    confirmationText &&
-    !confirmationText.length &&
+    confirmationText === "" &&
     setConfirmationText
   ) {
     setConfirmationText("Are you sure that you would like to end the session?");
@@ -349,7 +348,7 @@ const performSecondaryButtonAction = async ({
     setConfirmationText &&
     chatId &&
     chatId.length &&
-    token
+    token && token.length
   ) {
     setLoading(true);
     const res = await updateMatches(
@@ -365,7 +364,7 @@ const performSecondaryButtonAction = async ({
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
       setSuccessAlert("You have ended the session!", 6);
-      router.push("/matches?tab=closed");
+      router.push("/chat");
     }
   }
 
