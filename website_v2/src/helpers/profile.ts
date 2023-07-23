@@ -161,6 +161,7 @@ const performProfileAction = async ({
       }
       if (res.success && setSuccessAlert) {
         setSuccessAlert("Your request has been withdrawn!", 6);
+        router.push("/matches?tab=active");
       }
     }
   }
@@ -294,8 +295,7 @@ const performSecondaryButtonAction = async ({
     currentTab === "active" &&
     secondaryButtonText === "End Session" &&
     setConfirmationText &&
-    confirmationText &&
-    !confirmationText.length
+    confirmationText === ""
   ) {
     setConfirmationText("Are you sure that you would like to end the session?");
   }
