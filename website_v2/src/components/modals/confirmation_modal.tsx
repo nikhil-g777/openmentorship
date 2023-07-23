@@ -16,6 +16,7 @@ const ConfirmationModal = () => {
     loading,
     setLoading,
     token,
+    chatId,
     confirmationText,
     setConfirmationText,
   } = useProfileStore();
@@ -34,6 +35,7 @@ const ConfirmationModal = () => {
       secondaryButtonText,
       setLoading,
       token,
+      chatId,
       confirmationText,
       setConfirmationText,
       setSuccessAlert,
