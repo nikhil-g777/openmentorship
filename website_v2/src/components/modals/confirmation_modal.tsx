@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  getConfirmationButtonText,
   getSecondaryButtonText,
   performSecondaryButtonAction,
 } from "@/helpers/profile";
@@ -26,6 +27,10 @@ const ConfirmationModal = () => {
     currentTab,
     userType,
   });
+  const confirmationButtonText = getConfirmationButtonText(
+    confirmationText,
+    loading
+  );
 
   const handleEndSession = async () => {
     performSecondaryButtonAction({
@@ -72,7 +77,7 @@ const ConfirmationModal = () => {
               onClick={handleEndSession}
               disabled={loading}
             >
-              {loading ? "Ending Session..." : "End Session"}
+              {confirmationButtonText}
             </button>
           </div>
         </div>
