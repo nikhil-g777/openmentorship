@@ -14,8 +14,8 @@ export type ChatSlice = {
   setChatConnectionStatus: (chatConnectionStatus: string) => void;
   twilioToken: string;
   setTwilioToken: (twilioToken: string) => void;
-  isTyping: boolean;
-  setIsTyping: (isTyping: boolean) => void;
+  typingStatus: {participant: string; isTyping: boolean};
+  setTypingStatus: (typingStatus: {participant: string; isTyping: boolean}) => void;
 };
 
 // Initial state
@@ -26,7 +26,7 @@ const initialState = {
   conversations: [],
   chatConnectionStatus: "",
   twilioToken: "",
-  isTyping: false,
+  typingStatus: {participant: "", isTyping: false}
 };
 
 export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
@@ -40,5 +40,6 @@ export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
   setChatConnectionStatus: (chatConnectionStatus: string) =>
     set({chatConnectionStatus}),
   setTwilioToken: (twilioToken: string) => set({twilioToken}),
-  setIsTyping: (isTyping: boolean) => set({isTyping}),
+  setTypingStatus: (typingStatus: {participant: string; isTyping: boolean}) =>
+    set({typingStatus})
 });

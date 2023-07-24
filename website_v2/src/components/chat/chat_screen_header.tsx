@@ -11,15 +11,8 @@ import {useRouter} from "next/navigation";
 const ChatScreenHeader = () => {
   const token = useSession().data?.user.token || "";
   const router = useRouter();
-  const {
-    currentPage,
-    setCurrentPage,
-    confirmationText,
-    setConfirmationText,
-    setLoading,
-    setToken,
-    setChatId,
-  } = useProfileStore();
+  const {currentPage, confirmationText, setConfirmationText, setLoading} =
+    useProfileStore();
   const {listingData} = useListingStore();
   const {
     chatId,
@@ -27,7 +20,7 @@ const ChatScreenHeader = () => {
     setFirstName,
     profileImage,
     setProfileImage,
-    isTyping,
+    typingStatus,
   } = useChatStore();
 
   useEffect(() => {
@@ -67,7 +60,7 @@ const ChatScreenHeader = () => {
           <h3 className="w-full font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
             {firstName}
             {/* Show typing indicator */}
-            {isTyping ? (
+            {typingStatus.isTyping && typingStatus.participant === chatId ? (
               <span className="mx-2 text-xs opacity-50">typing…</span>
             ) : null}
           </h3>

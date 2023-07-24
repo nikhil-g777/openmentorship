@@ -4,7 +4,7 @@ import {performCardData} from "@/helpers/matches";
 import {MatchesProfile} from "@/types/matches";
 import {useChatStore, useListingStore, useProfileStore} from "@/zustand/store";
 import {Client} from "@twilio/conversations";
-import { useSession } from "next-auth/react";
+import {useSession} from "next-auth/react";
 import {useEffect} from "react";
 
 type Props = {
@@ -17,8 +17,19 @@ type Props = {
 const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
   const token = useSession().data?.user.token || "";
   const {listingData, setListingData, setHeading} = useListingStore();
-  const {setCurrentPage, setUserType, setChatId: setProfileChatId, setToken} = useProfileStore();
-  const {setChatId, setConversations, setChatConnectionStatus, setTwilioToken, setIsTyping} = useChatStore();
+  const {
+    setCurrentPage,
+    setUserType,
+    setChatId: setProfileChatId,
+    setToken,
+  } = useProfileStore();
+  const {
+    setChatId,
+    setConversations,
+    setChatConnectionStatus,
+    setTwilioToken,
+    setTypingStatus,
+  } = useChatStore();
   const cardData = performCardData(data, "matches", userType);
 
   useEffect(() => {
@@ -47,14 +58,15 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
         });
 
         // Set is typing
-        conversation.on("typingStarted", () => {
-          setIsTyping(true);
-        }
-        );
+        conversation.on("typingStarted", participant => {
+          setTypingStatus({
+            participant: participant.identity || "",
+            isTyping: true,
+          });
+        });
         conversation.on("typingEnded", () => {
-          setIsTyping(false);
-        }
-        );
+          setTypingStatus({participant: "", isTyping: false});
+        });
       });
     }
   }, [
@@ -67,7 +79,7 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
     setChatId,
     setConversations,
     setChatConnectionStatus,
-    setTwilioToken
+    setTwilioToken,
   ]);
 
   return null;
