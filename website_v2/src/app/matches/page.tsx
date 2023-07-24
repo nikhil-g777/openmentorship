@@ -9,6 +9,7 @@ import {NoResult} from "@/components/noResult/no_result";
 import {checkNoResult} from "@/helpers/matches";
 import {StoreInitializer} from "@/components/matches/store_initializer";
 import {ProfileCardModal} from "@/components/modals/profile_card_modal";
+import {ConfirmationModal} from "@/components/modals/confirmation_modal";
 
 type Props = {
   searchParams: {
@@ -64,6 +65,8 @@ const Page = async ({searchParams}: Props) => {
 
       {/* Profile Card Modal */}
       <ProfileCardModal />
+      {/* Confirmation Modal */}
+      <ConfirmationModal />
     </div>
   );
 };

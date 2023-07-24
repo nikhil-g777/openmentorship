@@ -85,6 +85,8 @@ const Profile = ({data, rootData}: Props) => {
       buttonText,
       setLoading,
       token,
+      confirmationText,
+      setConfirmationText,
       menteeId,
       mentorId,
     });
@@ -122,7 +124,7 @@ const Profile = ({data, rootData}: Props) => {
       />
       {buttonText && buttonText.length ? (
         <button
-          className={`w-full max-w-[200px] btn btn-accent rounded-full btn-sm mt-4 mx-auto text-sm capitalize ${buttonColor}`}
+          className={`w-full max-w-[200px] btn btn-accent rounded-full btn-sm mt-4 mx-auto text-sm capitalize truncate ${buttonColor}`}
           onClick={() => handleProfileAction()}
         >
           {buttonText}
@@ -131,7 +133,7 @@ const Profile = ({data, rootData}: Props) => {
       {/* Secondary Action Button */}
       {secondaryButtonText && secondaryButtonText.length ? (
         <button
-          className={`w-full max-w-[200px] btn rounded-full btn-sm mt-2 mx-auto text-sm capitalize ${secondaryButtonColor}`}
+          className={`w-full max-w-[200px] btn rounded-full btn-sm mt-2 mx-auto text-sm capitalize truncate ${secondaryButtonColor}`}
           onClick={handleSecondaryAction}
           disabled={loading}
         >

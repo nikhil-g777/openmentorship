@@ -76,6 +76,14 @@ const getSecondaryButtonText = ({
     return "Archived Chat";
   }
 
+  if (
+    currentPage === "matches" &&
+    currentTab === "active" &&
+    userType === "mentee"
+  ) {
+    return "End Session";
+  }
+
   // Mentor
   if (
     currentPage === "matches" &&
@@ -127,6 +135,8 @@ const performProfileAction = async ({
   token,
   isProfileModal,
   setIsProfileModal,
+  confirmationText,
+  setConfirmationText,
   message,
   menteeId,
   mentorId,
@@ -141,11 +151,26 @@ const performProfileAction = async ({
   ) {
     router.push("/chat?id=" + chatId);
   }
+
+  // Withdraw Request (Open Modal)
+  if (
+    currentPage === "matches" &&
+    currentTab === "pending" &&
+    buttonText === "Withdraw Request" &&
+    !confirmationText &&
+    setConfirmationText
+  ) {
+    setConfirmationText("Are you sure you want to withdraw your request?");
+  }
+
   // Withdraw Request
   if (
     currentPage === "matches" &&
     currentTab === "pending" &&
-    buttonText === "Withdraw Request"
+    buttonText === "Withdraw Request" &&
+    confirmationText &&
+    confirmationText.length &&
+    setConfirmationText
   ) {
     setLoading(true);
     if (chatId && token) {
@@ -156,10 +181,11 @@ const performProfileAction = async ({
         token
       );
       setLoading(false);
-      if (!res.success && setIsProfileModal) {
-        setIsProfileModal(res.error);
+      if (!res.success && setErrorAlert) {
+        setErrorAlert(res.error, 6);
       }
       if (res.success && setSuccessAlert) {
+        setConfirmationText("");
         setSuccessAlert("Your request has been withdrawn!", 6);
         router.push("/matches?tab=active");
       }
@@ -203,6 +229,7 @@ const performProfileAction = async ({
     if (res.success && setSuccessAlert) {
       setIsProfileModal(false);
       setSuccessAlert("Your request has been sent!", 6);
+      router.push("/matches?tab=active");
     }
   }
 
@@ -348,7 +375,8 @@ const performSecondaryButtonAction = async ({
     setConfirmationText &&
     chatId &&
     chatId.length &&
-    token && token.length
+    token &&
+    token.length
   ) {
     setLoading(true);
     const res = await updateMatches(
@@ -368,28 +396,47 @@ const performSecondaryButtonAction = async ({
     }
   }
 
+  // Decline Request (Modal)
+  if (
+    currentPage === "matches" &&
+    currentTab === "pending" &&
+    secondaryButtonText === "Decline Request" &&
+    setConfirmationText &&
+    confirmationText === ""
+  ) {
+    setConfirmationText(
+      "Are you sure that you would like to decline the request?"
+    );
+  }
+
   // Decline Request
   if (
     currentPage === "matches" &&
     currentTab === "pending" &&
-    secondaryButtonText === "Decline Request"
+    secondaryButtonText === "Decline Request" &&
+    confirmationText &&
+    confirmationText.length &&
+    setConfirmationText &&
+    chatId &&
+    chatId.length &&
+    token &&
+    token.length
   ) {
     setLoading(true);
-    if (chatId && token) {
-      const res = await updateMatches(
-        chatId,
-        "closed",
-        "Sorry, Can't accept.",
-        token
-      );
-      setLoading(false);
-      if (!res.success && setErrorAlert) {
-        setErrorAlert(res.error, 6);
-      }
-      if (res.success && setSuccessAlert) {
-        setSuccessAlert("You have declined the request!", 6);
-        router.push("/matches?tab=active");
-      }
+    const res = await updateMatches(
+      chatId,
+      "closed",
+      "Sorry, Can't accept.",
+      token
+    );
+    setLoading(false);
+    if (!res.success && setErrorAlert) {
+      setErrorAlert(res.error, 6);
+    }
+    if (res.success && setSuccessAlert) {
+      setConfirmationText("");
+      setSuccessAlert("You have declined the request!", 6);
+      router.push("/matches?tab=active");
     }
   }
 
@@ -427,6 +474,55 @@ const getSecondaryButtonColor = (
   } else return "btn-outline";
 };
 
+// Get Confirmation Button Text
+const getConfirmationButtonText = (
+  confirmationText: string,
+  loading: boolean
+) => {
+  if (
+    confirmationText ===
+      "Are you sure that you would like to end the session?" &&
+    !loading
+  ) {
+    return "End Session";
+  }
+  if (
+    confirmationText ===
+      "Are you sure that you would like to end the session?" &&
+    loading
+  ) {
+    return "Ending Session...";
+  }
+  if (
+    confirmationText ===
+      "Are you sure that you would like to decline the request?" &&
+    !loading
+  ) {
+    return "Decline Request";
+  }
+  if (
+    confirmationText ===
+      "Are you sure that you would like to decline the request?" &&
+    loading
+  ) {
+    return "Declining...";
+  }
+  if (
+    confirmationText === "Are you sure you want to withdraw your request?" &&
+    !loading
+  ) {
+    return "Withdraw Request";
+  }
+  if (
+    confirmationText === "Are you sure you want to withdraw your request?" &&
+    loading
+  ) {
+    return "Withdrawing...";
+  }
+
+  return "";
+};
+
 export {
   getButtonText,
   getSecondaryButtonText,
@@ -434,4 +530,5 @@ export {
   performSecondaryButtonAction,
   getButtonColor,
   getSecondaryButtonColor,
+  getConfirmationButtonText,
 };
