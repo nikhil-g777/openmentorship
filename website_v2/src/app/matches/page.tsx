@@ -33,17 +33,20 @@ const Page = async ({searchParams}: Props) => {
   const data = await getUserMatches(session.user.token);
 
   //   Filtered data & Heading text
-  let filteredData;
-  let headingText;
-  if (currentTab === "active" || currentTab === "" || !currentTab) {
-    filteredData = data.matches["active"];
-    headingText = "Your Active Connections";
-  } else if (currentTab === "pending") {
-    filteredData = data.matches["pending"];
-    headingText = "Your Pending Connections";
-  } else {
-    filteredData = data.matches["closed"];
-    headingText = "Your Past Connections";
+  let filteredData = [];
+  let headingText = "";
+
+  if (data.success && data.matches) {
+    if (currentTab === "active" || currentTab === "" || !currentTab) {
+      filteredData = data.matches["active"];
+      headingText = "Your Active Connections";
+    } else if (currentTab === "pending") {
+      filteredData = data.matches["pending"];
+      headingText = "Your Pending Connections";
+    } else {
+      filteredData = data.matches["closed"];
+      headingText = "Your Past Connections";
+    }
   }
 
   // No Result
