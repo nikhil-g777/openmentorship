@@ -474,12 +474,13 @@ const checkAtleastOneSocialLinkProvided = (
     | ((socialLinksErrors: SocialLinks) => void)
 ) => {
   if (
-    !socialLinks.twitter.length &&
-    !socialLinks.medium.length &&
-    !socialLinks.behance.length &&
-    !socialLinks.github.length &&
-    !socialLinks.portfolio.length &&
-    !socialLinks.other.length
+    socialLinks &&
+    socialLinks.twitter === "" &&
+    socialLinks.medium === "" &&
+    socialLinks.behance === "" &&
+    socialLinks.github === "" &&
+    socialLinks.portfolio === "" &&
+    socialLinks.other === ""
   ) {
     setError({
       ...error,
