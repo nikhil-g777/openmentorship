@@ -20,9 +20,13 @@ const ChatMessagesScreen = () => {
                 item.state.author === userId ? "chat-end" : "chat-start"
               }`}
             >
-              <div className={`chat-bubble ${
-                item.state.author === userId ? "chat-bubble-primary" : ""
-              }`}>{item.state.body}</div>
+              <div
+                className={`chat-bubble ${
+                  item.state.author === userId ? "chat-bubble-primary" : ""
+                }`}
+              >
+                {item.state.body}
+              </div>
             </div>
           ))}
         </div>

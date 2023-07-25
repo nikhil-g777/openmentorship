@@ -1,6 +1,6 @@
 "use client";
 
-import {useChatStore, useListingStore} from "@/zustand/store";
+import {useListingStore} from "@/zustand/store";
 import Link from "next/link";
 import {useSearchParams} from "next/navigation";
 import {ChatUserAvatar} from "./chat_user_avatar";

@@ -52,7 +52,7 @@ const ChatActions = () => {
         conversation.typing();
       });
     }
-  }
+  };
 
   return (
     <>

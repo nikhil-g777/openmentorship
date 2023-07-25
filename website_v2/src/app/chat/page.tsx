@@ -8,10 +8,13 @@ import {checkNoResult} from "@/helpers/matches";
 import {getServerSession} from "next-auth";
 
 type Props = {
-  [key: string]: any;
+  searchParams: {
+    id: string;
+  };
 };
 
 const Page = async ({searchParams}: Props) => {
+  console.log(searchParams);
   const chatId = searchParams["id"] || "";
   const session = await getServerSession(authOptions);
   const token = session?.user?.token;

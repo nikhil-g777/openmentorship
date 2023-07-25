@@ -30,11 +30,11 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
     setTwilioToken,
     setTypingStatus,
   } = useChatStore();
-  const cardData = performCardData(data, "matches", userType);
 
   useEffect(() => {
-    setCurrentPage("chat");
+    const cardData = performCardData(data, "matches", userType);
     setListingData(cardData);
+    setCurrentPage("chat");
     setUserType(userType);
     setHeading("Chats");
     setChatId(chatId);
@@ -42,8 +42,25 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
     setToken(token);
     setTwilioToken(twilioToken);
     setConversations([]);
+  }, [
+    data,
+    userType,
+    setListingData,
+    setUserType,
+    setHeading,
+    setChatId,
+    setTwilioToken,
+    setCurrentPage,
+    setProfileChatId,
+    setToken,
+    token,
+    chatId,
+    setConversations,
+    twilioToken,
+  ]);
 
-    // Init Chats
+  // Init chat
+  useEffect(() => {
     const contact = listingData.find(item => item.matches._id === chatId);
     if (contact) {
       const twilioId = contact.matches.latestSession.twilioConversationSid;
@@ -70,16 +87,12 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
       });
     }
   }, [
-    data,
-    userType,
     chatId,
-    setListingData,
-    setUserType,
-    setHeading,
-    setChatId,
-    setConversations,
+    listingData,
     setChatConnectionStatus,
-    setTwilioToken,
+    setConversations,
+    setTypingStatus,
+    twilioToken,
   ]);
 
   return null;

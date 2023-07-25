@@ -1,3 +1,4 @@
+import {Message} from "@twilio/conversations";
 import {StateCreator} from "zustand";
 
 // Types
@@ -8,14 +9,17 @@ export type ChatSlice = {
   setFirstName: (firstName: string) => void;
   profileImage: string;
   setProfileImage: (profileImage: string) => void;
-  conversations: any[];
-  setConversations: (conversations: any[]) => void;
+  conversations: Message[];
+  setConversations: (conversations: Message[]) => void;
   chatConnectionStatus: string;
   setChatConnectionStatus: (chatConnectionStatus: string) => void;
   twilioToken: string;
   setTwilioToken: (twilioToken: string) => void;
   typingStatus: {participant: string; isTyping: boolean};
-  setTypingStatus: (typingStatus: {participant: string; isTyping: boolean}) => void;
+  setTypingStatus: (typingStatus: {
+    participant: string;
+    isTyping: boolean;
+  }) => void;
 };
 
 // Initial state
@@ -26,7 +30,7 @@ const initialState = {
   conversations: [],
   chatConnectionStatus: "",
   twilioToken: "",
-  typingStatus: {participant: "", isTyping: false}
+  typingStatus: {participant: "", isTyping: false},
 };
 
 export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
@@ -36,10 +40,10 @@ export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
   setChatId: (chatId: string) => set({chatId}),
   setFirstName: (firstName: string) => set({firstName}),
   setProfileImage: (profileImage: string) => set({profileImage}),
-  setConversations: (conversations: any[]) => set({conversations}),
+  setConversations: (conversations: Message[]) => set({conversations}),
   setChatConnectionStatus: (chatConnectionStatus: string) =>
     set({chatConnectionStatus}),
   setTwilioToken: (twilioToken: string) => set({twilioToken}),
   setTypingStatus: (typingStatus: {participant: string; isTyping: boolean}) =>
-    set({typingStatus})
+    set({typingStatus}),
 });

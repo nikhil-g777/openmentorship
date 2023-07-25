@@ -1,6 +1,6 @@
 "use client";
 
-import { ConfirmationModal } from "../modals/confirmation_modal";
+import {ConfirmationModal} from "../modals/confirmation_modal";
 import {ChatActions} from "./chat_actions";
 import {ChatMessagesScreen} from "./chat_messages_screen";
 import {ChatScreenHeader} from "./chat_screen_header";
@@ -14,7 +14,7 @@ const ChatScreen = () => {
       {/* Blank Chat Screen */}
       <EmptyChatScreen />
       {/* Chat Messages Screen */}
-        <ChatMessagesScreen />
+      <ChatMessagesScreen />
       {/* Chat Actions */}
       <ChatActions />
       {/* Confirmation Modal */}
