@@ -77,18 +77,18 @@ const getSecondaryButtonText = ({
   }
 
   if (
-    (currentPage === "matches" && currentTab === "active") ||
-    currentTab === "" ||
-    (!currentTab && userType === "mentee")
+    currentPage === "matches" &&
+    (currentTab === "active" || currentTab === "" || !currentTab) &&
+    userType === "mentee"
   ) {
     return "End Session";
   }
 
   // Mentor
   if (
-    (currentPage === "matches" && currentTab === "active") ||
-    currentTab === "" ||
-    (!currentTab && userType === "mentor")
+    currentPage === "matches" &&
+    (currentTab === "active" || currentTab === "" || !currentTab) &&
+    userType === "mentor"
   ) {
     return "End Session";
   }
