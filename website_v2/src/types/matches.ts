@@ -9,7 +9,7 @@ type MatchesProfile = {
     match: string;
     requestMessage: string;
     startDate: string;
-    twilioConversationId: string;
+    twilioConversationSid: string;
     createdAt: string;
     updatedAt: string;
     __v: number;

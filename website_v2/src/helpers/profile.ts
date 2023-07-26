@@ -78,7 +78,7 @@ const getSecondaryButtonText = ({
 
   if (
     currentPage === "matches" &&
-    currentTab === "active" &&
+    (currentTab === "active" || currentTab === "" || !currentTab) &&
     userType === "mentee"
   ) {
     return "End Session";
@@ -87,7 +87,7 @@ const getSecondaryButtonText = ({
   // Mentor
   if (
     currentPage === "matches" &&
-    currentTab === "active" &&
+    (currentTab === "active" || currentTab === "" || !currentTab) &&
     userType === "mentor"
   ) {
     return "End Session";
