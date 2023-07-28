@@ -28,7 +28,7 @@ const Page = async ({searchParams}: Props) => {
   }
 
   return (
-    <div className="w-full h-[65vh]">
+    <div className="w-full h-[65vh] mb-20">
       <StoreInitializer
         data={data}
         userType={userType}

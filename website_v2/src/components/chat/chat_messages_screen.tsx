@@ -32,7 +32,7 @@ const ChatMessagesScreen = () => {
               }`}
             >
               <div
-                className={`chat-bubble ${
+                className={`chat-bubble text-sm md:text-base ${
                   item["state"]["author"] === userId
                     ? "chat-bubble-primary"
                     : ""

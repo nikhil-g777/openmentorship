@@ -70,10 +70,28 @@ const ChatScreenHeader = () => {
     });
   };
 
+  // Handle back
+  const handleBack = () => {
+    router.push("/chat");
+  };
+
   return (
     <div className="w-full mb-auto">
       {firstName && firstName.length ? (
         <div className="w-full flex items-center bg-base-200 px-4">
+          {/* Mobile back button */}
+          <button
+            className="md:hidden btn btn-circle btn-outline hover:btn-primary btn-sm mr-4"
+            onClick={handleBack}
+          >
+            <Image
+              src="/assets/icons/arrow.svg"
+              alt="back"
+              width={24}
+              height={24}
+              className="rotate-90 p-1"
+            />
+          </button>
           <ChatUserAvatar profileImage={profileImage} size={48} />
           <h3 className="w-full font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
             {firstName}

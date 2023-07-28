@@ -1,17 +1,19 @@
 "use client";
 
-import {useListingStore} from "@/zustand/store";
+import {useChatStore, useListingStore} from "@/zustand/store";
 import Link from "next/link";
-import {useSearchParams} from "next/navigation";
 import {ChatUserAvatar} from "./chat_user_avatar";
 
 const ChatContactList = () => {
-  const params = useSearchParams();
-  const chatId = params.get("id");
+  const {chatId} = useChatStore();
   const {listingData, heading} = useListingStore();
 
   return (
-    <div className="w-full max-w-xs border-r broder-base-300">
+    <div
+      className={`w-full md:max-w-xs border-r broder-base-300 overflow-y-auto ${
+        chatId === "" ? "" : "hidden md:block"
+      }`}
+    >
       {listingData && listingData.length && heading && heading.length ? (
         <h3 className="font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
           {heading}

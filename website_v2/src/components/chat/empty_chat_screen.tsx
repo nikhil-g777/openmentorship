@@ -7,7 +7,7 @@ const EmptyChatScreen = () => {
   return (
     <>
       {chatId && chatId.length ? null : (
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative hidden md:block">
           <Image
             src="/assets/images/chatScreen.svg"
             alt="chat_blank_screen"
