@@ -15,12 +15,14 @@ const ChatScreenHeader = () => {
     useProfileStore();
   const {listingData} = useListingStore();
   const {
+    currentConversation,
     chatId,
     firstName,
     setFirstName,
     profileImage,
     setProfileImage,
     typingStatus,
+    setTypingStatus,
   } = useChatStore();
 
   useEffect(() => {
@@ -37,6 +39,22 @@ const ChatScreenHeader = () => {
       setProfileImage("");
     }
   }, [listingData, chatId, setFirstName, setProfileImage]);
+
+  // Listen to typing status
+  useEffect(() => {
+    // Set typing started
+    currentConversation?.on("typingStarted", participant => {
+      setTypingStatus({
+        participant: participant.identity || "",
+        isTyping: true,
+      });
+    });
+
+    // Set typing ended
+    currentConversation?.on("typingEnded", () => {
+      setTypingStatus({participant: "", isTyping: false});
+    });
+  }, [currentConversation, setTypingStatus]);
 
   // Handle end session
   const handleEndSession = async () => {

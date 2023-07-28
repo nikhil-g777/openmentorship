@@ -14,22 +14,23 @@ type Props = {
 };
 
 const Page = async ({searchParams}: Props) => {
-  console.log(searchParams);
   const chatId = searchParams["id"] || "";
   const session = await getServerSession(authOptions);
   const token = session?.user?.token;
   const data = await getUserMatches(token || "");
   const chatToken = await getChatToken(token || "");
   const userType = session?.user.user.userType || "";
-  const activeChats = data.matches["active"];
 
   // No Result
-  const isResult = checkNoResult(userType || "", activeChats);
+  let isResult = null;
+  if (data && data.success && data.matches) {
+    isResult = checkNoResult(userType, data?.matches["active"]);
+  }
 
   return (
     <div className="w-full h-[65vh]">
       <StoreInitializer
-        data={activeChats}
+        data={data}
         userType={userType}
         chatId={chatId}
         twilioToken={chatToken?.twilioToken || ""}

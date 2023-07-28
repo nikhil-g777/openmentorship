@@ -2,13 +2,25 @@
 
 import {performCardData} from "@/helpers/matches";
 import {MatchesProfile} from "@/types/matches";
-import {useChatStore, useListingStore, useProfileStore} from "@/zustand/store";
+import {
+  useChatStore,
+  useCommonStore,
+  useListingStore,
+  useProfileStore,
+} from "@/zustand/store";
 import {Client} from "@twilio/conversations";
 import {useSession} from "next-auth/react";
 import {useEffect} from "react";
 
 type Props = {
-  data: MatchesProfile[];
+  data: {
+    success: boolean;
+    matches: {
+      pending: MatchesProfile[];
+      active: MatchesProfile[];
+      closed: MatchesProfile[];
+    };
+  };
   userType: string;
   chatId: string;
   twilioToken: string;
@@ -16,23 +28,34 @@ type Props = {
 
 const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
   const token = useSession().data?.user.token || "";
-  const {listingData, setListingData, setHeading} = useListingStore();
+  const {setListingData, setHeading} = useListingStore();
   const {
     setCurrentPage,
     setUserType,
     setChatId: setProfileChatId,
     setToken,
   } = useProfileStore();
-  const {
-    setChatId,
-    setConversations,
-    setChatConnectionStatus,
-    setTwilioToken,
-    setTypingStatus,
-  } = useChatStore();
+  const {setChatId, setChatConnectionStatus, setTwilioToken, setClient} =
+    useChatStore();
+  const {setErrorAlert, setSuccessAlert} = useCommonStore();
 
   useEffect(() => {
-    const cardData = performCardData(data, "matches", userType);
+    // Check if twilio token is available
+    if (twilioToken === "") {
+      setErrorAlert("Error getting twilio token, Try reloading the page", 6);
+      return;
+    }
+
+    // Check if data is successful
+    if (!data.success) {
+      setErrorAlert("Error getting chat data, Try reloading the page", 6);
+      return;
+    }
+    const cardData = performCardData(
+      data.matches["active"],
+      "matches",
+      userType
+    );
     setListingData(cardData);
     setCurrentPage("chat");
     setUserType(userType);
@@ -41,7 +64,6 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
     setProfileChatId(chatId);
     setToken(token);
     setTwilioToken(twilioToken);
-    setConversations([]);
   }, [
     data,
     userType,
@@ -55,44 +77,39 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
     setToken,
     token,
     chatId,
-    setConversations,
     twilioToken,
+    setErrorAlert,
   ]);
 
-  // Init chat
   useEffect(() => {
-    const contact = listingData.find(item => item.matches._id === chatId);
-    if (contact) {
-      const twilioId = contact.matches.latestSession.twilioConversationSid;
-      const chats = new Client(twilioToken);
-      chats.on("connectionStateChanged", state => {
-        setChatConnectionStatus(state);
-      });
-      chats.getConversationBySid(twilioId).then(conversation => {
-        // Fetch messages
-        conversation.getMessages().then(messages => {
-          setConversations(messages.items);
-        });
+    // Init chat
+    const client: Client = new Client(twilioToken);
 
-        // Set is typing
-        conversation.on("typingStarted", participant => {
-          setTypingStatus({
-            participant: participant.identity || "",
-            isTyping: true,
-          });
-        });
-        conversation.on("typingEnded", () => {
-          setTypingStatus({participant: "", isTyping: false});
-        });
-      });
-    }
+    // Set successfull chat connection
+    client.on("initialized", () => {
+      setSuccessAlert("Connected!", 6);
+      setClient(client);
+    });
+
+    // Set failed chat connection
+    client.on("initFailed", () => {
+      setErrorAlert(
+        "Error establishing chat connection, Try reloading the page",
+        6
+      );
+      setClient(null);
+    });
+
+    // Set chat connection status
+    client.on("connectionStateChanged", state => {
+      setChatConnectionStatus(state);
+    });
   }, [
-    chatId,
-    listingData,
-    setChatConnectionStatus,
-    setConversations,
-    setTypingStatus,
     twilioToken,
+    setSuccessAlert,
+    setErrorAlert,
+    setClient,
+    setChatConnectionStatus,
   ]);
 
   return null;

@@ -1,57 +1,61 @@
-import {useChatStore, useListingStore} from "@/zustand/store";
-import {Client} from "@twilio/conversations";
+import {useChatStore, useCommonStore} from "@/zustand/store";
 import Image from "next/image";
 import {useSearchParams} from "next/navigation";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const ChatActions = () => {
   const params = useSearchParams();
   const chatId = params.get("id");
-  const {listingData} = useListingStore();
   const {
-    twilioToken,
+    currentConversation,
+    conversations,
+    setConversations,
     chatConnectionStatus,
     setChatConnectionStatus,
-    setConversations,
   } = useChatStore();
+  const {setErrorAlert} = useCommonStore();
   const [message, setMessage] = useState<string>("");
+
+  // Listen to message added event
+  useEffect(() => {
+    currentConversation?.on("messageAdded", message => {
+      if (conversations) {
+        setConversations({
+          hasNextPage: conversations.hasNextPage,
+          hasPrevPage: conversations.hasPrevPage,
+          nextPage: conversations.nextPage,
+          prevPage: conversations.prevPage,
+          items: [...conversations.items, message],
+        });
+      }
+    });
+  }, [currentConversation, conversations, setConversations]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message.length) return;
-    if (message.length > 800)
-      alert("Message should be less than 800 characters long.");
-
-    const client = new Client(twilioToken);
-    const contact = listingData.find(item => item.matches._id === chatId);
-    if (contact) {
-      const twilioId = contact.matches.latestSession.twilioConversationSid;
-      client.getConversationBySid(twilioId).then(conversation => {
-        conversation.sendMessage(message).then(() => {
-          setMessage("");
-          conversation.getMessages().then(messages => {
-            setConversations(messages.items);
-          });
-        });
-      });
+    if (message.length > 800) {
+      setErrorAlert("Message should be less than 800 characters", 6);
+      return;
     }
 
-    // Set chat status
-    client.on("connectionStateChanged", state => {
-      setChatConnectionStatus(state);
-    });
+    // Send message
+    setChatConnectionStatus("connecting");
+    currentConversation
+      ?.sendMessage(message)
+      .then(() => {
+        setMessage("");
+        setChatConnectionStatus("connected");
+      })
+      .catch(() => {
+        setErrorAlert("Error sending message!", 6);
+        setChatConnectionStatus("connected");
+      });
   };
 
   // Handle keydown
   const handleKeydown = () => {
-    const client = new Client(twilioToken);
-    const contact = listingData.find(item => item.matches._id === chatId);
-    if (contact) {
-      const twilioId = contact.matches.latestSession.twilioConversationSid;
-      client.getConversationBySid(twilioId).then(conversation => {
-        conversation.typing();
-      });
-    }
+    currentConversation?.typing();
   };
 
   return (
