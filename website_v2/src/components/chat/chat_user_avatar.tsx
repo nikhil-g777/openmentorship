@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {useState} from "react";
 
@@ -8,6 +10,7 @@ type Props = {
 
 const ChatUserAvatar = ({profileImage, size}: Props) => {
   const [fallbackSrc, setFallbackSrc] = useState<string | null>(null);
+
   return (
     <Image
       src={
