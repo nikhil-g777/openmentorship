@@ -82,6 +82,12 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
   ]);
 
   useEffect(() => {
+    // Check if twilio token is available
+    if (twilioToken === "") {
+      setErrorAlert("Error getting twilio token, Try reloading the page", 6);
+      return;
+    }
+
     // Init chat
     const client: Client = new Client(twilioToken);
 
