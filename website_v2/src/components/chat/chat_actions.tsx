@@ -1,7 +1,7 @@
 import {useChatStore, useCommonStore} from "@/zustand/store";
 import Image from "next/image";
 import {useSearchParams} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 const ChatActions = () => {
   const params = useSearchParams();
@@ -15,21 +15,6 @@ const ChatActions = () => {
   } = useChatStore();
   const {setErrorAlert} = useCommonStore();
   const [message, setMessage] = useState<string>("");
-
-  // Listen to message added event
-  useEffect(() => {
-    currentConversation?.on("messageAdded", message => {
-      if (conversations) {
-        setConversations({
-          hasNextPage: conversations.hasNextPage,
-          hasPrevPage: conversations.hasPrevPage,
-          nextPage: conversations.nextPage,
-          prevPage: conversations.prevPage,
-          items: [...conversations.items, message],
-        });
-      }
-    });
-  }, [currentConversation, conversations, setConversations]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,6 +36,16 @@ const ChatActions = () => {
         setErrorAlert("Error sending message!", 6);
         setChatConnectionStatus("connected");
       });
+
+    // Handle message added
+    currentConversation?.on("messageAdded", message => {
+      if (conversations) {
+        setConversations({
+          ...conversations,
+          items: [...conversations.items, message],
+        });
+      }
+    });
   };
 
   // Handle keydown
