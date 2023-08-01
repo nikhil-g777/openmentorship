@@ -55,7 +55,7 @@ const ChatActions = () => {
 
   return (
     <>
-      {chatId && chatId.length ? (
+      {chatId && chatId.length && currentConversation ? (
         <div className="w-full flex items-center">
           <div className="w-full form-control m-4">
             <form className="input-group" onSubmit={handleSubmit}>
