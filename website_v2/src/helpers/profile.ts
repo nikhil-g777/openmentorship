@@ -299,7 +299,7 @@ const performProfileAction = async ({
     currentTab === "closed" &&
     buttonText === "Archived Chat"
   ) {
-    router.push("/chat?id=" + chatId);
+    router.push("/chat?id=" + chatId + "&type=archive");
   }
 };
 
@@ -408,7 +408,7 @@ const performSecondaryButtonAction = async ({
     currentTab === "closed" &&
     secondaryButtonText === "Archived Chat"
   ) {
-    router.push("/chat?id=" + chatId);
+    router.push("/chat?id=" + chatId + "&type=archive");
   }
 };
 
