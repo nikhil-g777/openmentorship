@@ -1,9 +1,10 @@
+"use client";
+
+import {useChatStore} from "@/zustand/store";
 import Image from "next/image";
-import {useSearchParams} from "next/navigation";
 
 const EmptyChatScreen = () => {
-  const params = useSearchParams();
-  const chatId = params.get("id");
+  const {chatId} = useChatStore();
   return (
     <>
       {chatId && chatId.length ? null : (

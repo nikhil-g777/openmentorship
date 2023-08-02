@@ -1,11 +1,10 @@
 "use client";
 
 import {useChatStore, useListingStore} from "@/zustand/store";
-import Link from "next/link";
-import {ChatUserAvatar} from "./chat_user_avatar";
+import {ChatContactListProvider} from "./chat_contact_list_provider";
 
 const ChatContactList = () => {
-  const {chatId} = useChatStore();
+  const {chatId, archiveListingData, archiveHeader} = useChatStore();
   const {listingData, heading} = useListingStore();
 
   return (
@@ -14,36 +13,16 @@ const ChatContactList = () => {
         chatId === "" ? "" : "hidden md:block"
       }`}
     >
-      {listingData && listingData.length && heading && heading.length ? (
-        <h3 className="font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
-          {heading}
-        </h3>
-      ) : null}
-      <ul className="w-full menu bg-base-100">
-        {listingData && listingData.length
-          ? listingData.map(contact => (
-              <li
-                key={contact.matches._id}
-                className="border-b border-base-300"
-              >
-                <Link
-                  href={"chat?id=" + contact.matches._id}
-                  className={
-                    chatId === contact.matches._id
-                      ? "flex flex-wrap gap-4 items-center active"
-                      : "flex flex-wrap gap-4 items-center"
-                  }
-                >
-                  <ChatUserAvatar
-                    profileImage={contact?.profileImageUrls?.default}
-                    size={36}
-                  />
-                  {contact.firstName}
-                </Link>
-              </li>
-            ))
-          : null}
-      </ul>
+      <ChatContactListProvider
+        type="active"
+        data={listingData}
+        heading={heading}
+      />
+      <ChatContactListProvider
+        type="archive"
+        data={archiveListingData}
+        heading={archiveHeader}
+      />
     </div>
   );
 };

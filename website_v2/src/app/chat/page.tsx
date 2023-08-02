@@ -22,9 +22,11 @@ const Page = async ({searchParams}: Props) => {
   const userType = session?.user.user.userType || "";
 
   // No Result
-  let isResult = null;
+  let isNoActiveResult = null;
+  let isNoArchiveResult = null;
   if (data && data.success && data.matches) {
-    isResult = checkNoResult(userType, data?.matches["active"]);
+    isNoActiveResult = checkNoResult(userType, data?.matches["active"]);
+    isNoArchiveResult = checkNoResult(userType, data?.matches["closed"]);
   }
 
   return (
@@ -37,10 +39,12 @@ const Page = async ({searchParams}: Props) => {
       />
 
       {/* Chat Wrapper */}
-      {isResult ? null : <ChatWrapper />}
+      {isNoActiveResult && isNoArchiveResult ? null : <ChatWrapper />}
 
       {/* No Result */}
-      {isResult ? <NoResult message="Sorry! No Chat Found" /> : null}
+      {isNoActiveResult && isNoActiveResult ? (
+        <NoResult message="Sorry! No Chat Found" />
+      ) : null}
     </div>
   );
 };

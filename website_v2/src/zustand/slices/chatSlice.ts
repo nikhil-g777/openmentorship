@@ -1,8 +1,15 @@
+import {UserProfile} from "@/types/profile";
 import {Client, Conversation, Message, Paginator} from "@twilio/conversations";
 import {StateCreator} from "zustand";
 
 // Types
 export type ChatSlice = {
+  archiveListingData: [] | UserProfile["user"][];
+  setArchiveListingData: (
+    archiveListingData: [] | UserProfile["user"][]
+  ) => void;
+  archiveHeader: string;
+  setArchiveHeader: (archiveHeader: string) => void;
   client: Client | null;
   setClient: (client: Client | null) => void;
   currentConversation: Conversation | null;
@@ -28,6 +35,8 @@ export type ChatSlice = {
 
 // Initial state
 const initialState = {
+  archiveListingData: [],
+  archiveHeader: "",
   client: null,
   currentConversation: null,
   chatId: "",
@@ -43,6 +52,9 @@ export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
   ...initialState,
   // Actions
   // Set data
+  setArchiveListingData: (archiveListingData: [] | UserProfile["user"][]) =>
+    set({archiveListingData}),
+  setArchiveHeader: (archiveHeader: string) => set({archiveHeader}),
   setClient: (client: Client | null) => set({client}),
   setCurrentConversation: (currentConversation: Conversation | null) =>
     set({currentConversation}),

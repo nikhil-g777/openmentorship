@@ -6,15 +6,18 @@ import {ChatUserAvatar} from "./chat_user_avatar";
 import Image from "next/image";
 import {useSession} from "next-auth/react";
 import {performSecondaryButtonAction} from "@/helpers/profile";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
+import {UserProfile} from "@/types/profile";
 
 const ChatScreenHeader = () => {
   const token = useSession().data?.user.token || "";
   const router = useRouter();
+  const chatType = useSearchParams().get("type");
   const {currentPage, confirmationText, setConfirmationText, setLoading} =
     useProfileStore();
   const {listingData} = useListingStore();
   const {
+    archiveListingData,
     currentConversation,
     chatId,
     firstName,
@@ -26,8 +29,10 @@ const ChatScreenHeader = () => {
   } = useChatStore();
 
   useEffect(() => {
-    if (listingData && listingData.length && chatId && chatId.length) {
-      const contact = listingData.find(
+    const currentData: UserProfile["user"][] =
+      chatType === "archive" ? archiveListingData : listingData;
+    if (currentData && currentData.length && chatId && chatId.length) {
+      const contact = currentData.find(
         contact => contact.matches._id === chatId
       );
       if (contact) {
@@ -38,7 +43,14 @@ const ChatScreenHeader = () => {
       setFirstName("");
       setProfileImage("");
     }
-  }, [listingData, chatId, setFirstName, setProfileImage]);
+  }, [
+    archiveListingData,
+    chatType,
+    listingData,
+    chatId,
+    setFirstName,
+    setProfileImage,
+  ]);
 
   // Listen to typing status
   useEffect(() => {
@@ -104,6 +116,7 @@ const ChatScreenHeader = () => {
           <button
             className="btn btn-circle btn-error hover:saturate-150 btn-xs"
             onClick={handleEndSession}
+            disabled={chatType === "archive"}
           >
             <Image
               src="/assets/icons/power.svg"

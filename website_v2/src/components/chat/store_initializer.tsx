@@ -35,8 +35,14 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
     setChatId: setProfileChatId,
     setToken,
   } = useProfileStore();
-  const {setChatId, setChatConnectionStatus, setTwilioToken, setClient} =
-    useChatStore();
+  const {
+    setArchiveListingData,
+    setArchiveHeader,
+    setChatId,
+    setChatConnectionStatus,
+    setTwilioToken,
+    setClient,
+  } = useChatStore();
   const {setErrorAlert, setSuccessAlert} = useCommonStore();
 
   useEffect(() => {
@@ -56,10 +62,17 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
       "matches",
       userType
     );
+    const archiveData = performCardData(
+      data.matches["closed"],
+      "matches",
+      userType
+    );
     setListingData(cardData);
+    setArchiveListingData(archiveData);
     setCurrentPage("chat");
     setUserType(userType);
     setHeading("Chats");
+    setArchiveHeader("Archived Chats");
     setChatId(chatId);
     setProfileChatId(chatId);
     setToken(token);
@@ -68,8 +81,10 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
     data,
     userType,
     setListingData,
+    setArchiveListingData,
     setUserType,
     setHeading,
+    setArchiveHeader,
     setChatId,
     setTwilioToken,
     setCurrentPage,

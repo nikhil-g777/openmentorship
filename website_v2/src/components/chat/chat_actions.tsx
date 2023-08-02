@@ -6,6 +6,7 @@ import {useState} from "react";
 const ChatActions = () => {
   const params = useSearchParams();
   const chatId = params.get("id");
+  const chatType = params.get("type");
   const {
     currentConversation,
     conversations,
@@ -72,6 +73,7 @@ const ChatActions = () => {
                   setMessage(e.target.value)
                 }
                 onKeyDown={handleKeydown}
+                disabled={chatType === "archive"}
               />
               <button
                 type="submit"
@@ -80,6 +82,7 @@ const ChatActions = () => {
                     ? "loading pointer-events-none"
                     : ""
                 }`}
+                disabled={chatType === "archive"}
               >
                 <Image
                   src="/assets/icons/send.svg"
