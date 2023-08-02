@@ -16,7 +16,6 @@ const ChatMessagesScreen = () => {
     }
   };
   const chatContainer = useRef<null | HTMLDivElement>(null);
-  const prevDate = useRef<string | null>(null);
 
   useEffect(() => {
     // Reset conversations
@@ -66,20 +65,18 @@ const ChatMessagesScreen = () => {
       conversations &&
       conversations?.items?.length ? (
         <div className="w-full p-4 flex flex-col last:mb-8" ref={chatContainer}>
-          {conversations.items.map(item => (
+          {conversations.items.map((item, index) => (
             <div key={item["state"]["sid"]} className="w-full">
               {/* Show Date */}
-              {prevDate.current !== getDate(item["state"]["timestamp"]) ? (
+              {index === 0 ||
+              getDate(item["state"]["timestamp"]) !==
+                getDate(
+                  conversations.items[index - 1]["state"]["timestamp"]
+                ) ? (
                 <div className="text-center text-sm my-4 opacity-50">
                   {getDate(item["state"]["timestamp"])}
                 </div>
               ) : null}
-              {/* Assign Current Date */}
-              {
-                <div className="hidden">
-                  {(prevDate.current = getDate(item["state"]["timestamp"]))}
-                </div>
-              }
               {/* Chat Bubble Container */}
               <div
                 className={`chat ${
