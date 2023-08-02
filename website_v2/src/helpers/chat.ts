@@ -8,4 +8,12 @@ const getTime = (date: Date) => {
   return `${formattedHours}:${formattedMinutes} ${ampm}`;
 };
 
-export {getTime};
+// Get Date in DD Month YYYY Format
+const getDate = (date: Date) => {
+  const day = date.getDate();
+  const month = date.toLocaleString("default", {month: "long"});
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+};
+
+export {getTime, getDate};

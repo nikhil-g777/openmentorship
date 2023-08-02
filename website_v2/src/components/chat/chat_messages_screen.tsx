@@ -1,6 +1,6 @@
 "use client";
 
-import {getTime} from "@/helpers/chat";
+import {getDate, getTime} from "@/helpers/chat";
 import {useChatStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import {MutableRefObject, useEffect, useRef} from "react";
@@ -16,6 +16,7 @@ const ChatMessagesScreen = () => {
     }
   };
   const chatContainer = useRef<null | HTMLDivElement>(null);
+  const prevDate = useRef<string | null>(null);
 
   useEffect(() => {
     // Reset conversations
@@ -66,25 +67,39 @@ const ChatMessagesScreen = () => {
       conversations?.items?.length ? (
         <div className="w-full p-4 flex flex-col last:mb-8" ref={chatContainer}>
           {conversations.items.map(item => (
-            <div
-              key={item["state"]["sid"]}
-              className={`chat ${
-                item["state"]["author"] === userId ? "chat-end" : "chat-start"
-              }`}
-            >
+            <div key={item["state"]["sid"]} className="w-full">
+              {/* Show Date */}
+              {prevDate.current !== getDate(item["state"]["timestamp"]) ? (
+                <div className="text-center text-sm my-4 opacity-50">
+                  {getDate(item["state"]["timestamp"])}
+                </div>
+              ) : null}
+              {/* Assign Current Date */}
+              {
+                <div className="hidden">
+                  {(prevDate.current = getDate(item["state"]["timestamp"]))}
+                </div>
+              }
+              {/* Chat Bubble Container */}
               <div
-                className={`chat-bubble text-sm md:text-base ${
-                  item["state"]["author"] === userId
-                    ? "chat-bubble-primary"
-                    : ""
+                className={`chat ${
+                  item["state"]["author"] === userId ? "chat-end" : "chat-start"
                 }`}
               >
-                {item["state"]["body"]}
-              </div>
-              <div className="chat-footer opacity-50">
-                <time className="text-xs">
-                  {getTime(item["state"]["timestamp"])}
-                </time>
+                <div
+                  className={`chat-bubble text-sm md:text-base ${
+                    item["state"]["author"] === userId
+                      ? "chat-bubble-primary"
+                      : ""
+                  }`}
+                >
+                  {item["state"]["body"]}
+                </div>
+                <div className="chat-footer opacity-50">
+                  <time className="text-xs">
+                    {getTime(item["state"]["timestamp"])}
+                  </time>
+                </div>
               </div>
             </div>
           ))}
