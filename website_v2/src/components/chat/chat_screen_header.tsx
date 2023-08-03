@@ -38,10 +38,10 @@ const ChatScreenHeader = () => {
       if (contact) {
         setFirstName(contact.firstName);
         setProfileImage(contact?.profileImageUrls?.default || "");
+      } else {
+        setFirstName("");
+        setProfileImage("");
       }
-    } else {
-      setFirstName("");
-      setProfileImage("");
     }
   }, [
     archiveListingData,
