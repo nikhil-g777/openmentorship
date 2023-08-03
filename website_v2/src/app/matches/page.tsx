@@ -53,7 +53,7 @@ const Page = async ({searchParams}: Props) => {
   const isResult = checkNoResult(session?.user?.user?.userType, filteredData);
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-20">
       <StoreInitializer
         heading={headingText}
         currentTab={currentTab}
