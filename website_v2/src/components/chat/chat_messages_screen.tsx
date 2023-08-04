@@ -70,7 +70,10 @@ const ChatMessagesScreen = () => {
       chatId.length &&
       conversations &&
       conversations?.items?.length ? (
-        <div className="w-full p-4 flex flex-col last:mb-8" ref={chatContainer}>
+        <div
+          className="w-full p-4 flex flex-col last:mb-16"
+          ref={chatContainer}
+        >
           {conversations.items.map((item, index) => (
             <div key={item["state"]["sid"]} className="w-full">
               {/* Show Date */}
