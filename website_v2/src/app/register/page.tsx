@@ -6,10 +6,12 @@ import {Step4} from "@/components/register/step4/step_4";
 import {Step5} from "@/components/register/step5/step_5";
 import {PostRegistration} from "@/components/register/postRegistration/post_registration";
 import {StepsDots} from "@/components/register/steps_dots";
+import {StoreInitializer} from "@/components/register/store_initializer";
 
 const Page = () => {
   return (
     <div className="w-full">
+      <StoreInitializer />
       <MainScreen />
       <Step1 />
       <Step2 />
