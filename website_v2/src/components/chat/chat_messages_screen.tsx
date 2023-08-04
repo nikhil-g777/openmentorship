@@ -31,11 +31,17 @@ const ChatMessagesScreen = () => {
   }, [setConversations, currentConversation]);
 
   useEffect(() => {
-    // Scroll to bottom
-    currentConversation?.on("messageAdded", () => {
+    // Scroll to bottom & add new message to conversations
+    currentConversation?.on("messageAdded", message => {
       scrollToBottom(scrollElement);
+      if (conversations) {
+        setConversations({
+          ...conversations,
+          items: [...conversations.items, message],
+        });
+      }
     });
-  }, [currentConversation]);
+  }, [currentConversation, setConversations, conversations]);
 
   useEffect(() => {
     // Trigger prevPage when first message is in view

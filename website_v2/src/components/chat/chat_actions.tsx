@@ -7,13 +7,8 @@ const ChatActions = () => {
   const params = useSearchParams();
   const chatId = params.get("id");
   const chatType = params.get("type");
-  const {
-    currentConversation,
-    conversations,
-    setConversations,
-    chatConnectionStatus,
-    setChatConnectionStatus,
-  } = useChatStore();
+  const {currentConversation, chatConnectionStatus, setChatConnectionStatus} =
+    useChatStore();
   const {setErrorAlert} = useCommonStore();
   const [message, setMessage] = useState<string>("");
 
@@ -37,16 +32,6 @@ const ChatActions = () => {
         setErrorAlert("Error sending message!", 6);
         setChatConnectionStatus("connected");
       });
-
-    // Handle message added
-    currentConversation?.on("messageAdded", message => {
-      if (conversations) {
-        setConversations({
-          ...conversations,
-          items: [...conversations.items, message],
-        });
-      }
-    });
   };
 
   // Handle keydown
