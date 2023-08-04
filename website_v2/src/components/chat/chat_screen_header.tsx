@@ -1,7 +1,7 @@
 "use client";
 
 import {useChatStore, useListingStore, useProfileStore} from "@/zustand/store";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {ChatUserAvatar} from "./chat_user_avatar";
 import Image from "next/image";
 import {useSession} from "next-auth/react";
@@ -27,6 +27,7 @@ const ChatScreenHeader = () => {
     typingStatus,
     setTypingStatus,
   } = useChatStore();
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
     const currentData: UserProfile["user"][] =
@@ -36,9 +37,11 @@ const ChatScreenHeader = () => {
         contact => contact.matches._id === chatId
       );
       if (contact) {
+        setUserId(contact._id);
         setFirstName(contact.firstName);
         setProfileImage(contact?.profileImageUrls?.default || "");
       } else {
+        setUserId("");
         setFirstName("");
         setProfileImage("");
       }
@@ -108,7 +111,7 @@ const ChatScreenHeader = () => {
           <h3 className="w-full font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
             {firstName}
             {/* Show typing indicator */}
-            {typingStatus.isTyping && typingStatus.participant === chatId ? (
+            {typingStatus.isTyping && typingStatus.participant === userId ? (
               <span className="mx-2 text-xs opacity-50">typing…</span>
             ) : null}
           </h3>
