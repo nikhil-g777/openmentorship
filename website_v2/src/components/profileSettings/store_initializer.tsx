@@ -17,6 +17,7 @@ const StoreInitializer = ({data, token}: Props) => {
     setEmail,
     setHeadline,
     setBio,
+    setUserType,
     setInterests,
     setSkills,
     setGoals,
@@ -40,6 +41,7 @@ const StoreInitializer = ({data, token}: Props) => {
     setisProfilePage(true);
     setHeadline(data.user.headline);
     setBio(data.user.bio);
+    setUserType(data.user.userType);
     setInterests(data.user.interests);
     setSkills(data.user.skills);
     setGoals(data.user.goals);
