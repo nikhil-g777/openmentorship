@@ -2,9 +2,8 @@
 
 import {
   getConfirmationButtonText,
-  getSecondaryButtonText,
-  performSecondaryButtonAction,
-} from "@/helpers/profile";
+  performConfirmationAction,
+} from "@/helpers/profile/confirmation";
 import {useCommonStore, useProfileStore} from "@/zustand/store";
 import {useRouter} from "next/navigation";
 
@@ -12,8 +11,6 @@ const ConfirmationModal = () => {
   const router = useRouter();
   const {
     currentPage,
-    currentTab,
-    userType,
     loading,
     setLoading,
     token,
@@ -22,26 +19,19 @@ const ConfirmationModal = () => {
     setConfirmationText,
   } = useProfileStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
-  const secondaryButtonText = getSecondaryButtonText({
-    currentPage,
-    currentTab,
-    userType,
-  });
   const confirmationButtonText = getConfirmationButtonText(
     confirmationText,
     loading
   );
 
   const handleEndSession = async () => {
-    performSecondaryButtonAction({
+    await performConfirmationAction({
       currentPage,
-      currentTab,
       router,
-      secondaryButtonText,
       setLoading,
       token,
       chatId,
-      confirmationText,
+      confirmationButtonText,
       setConfirmationText,
       setSuccessAlert,
       setErrorAlert,
@@ -73,7 +63,11 @@ const ConfirmationModal = () => {
               Cancel
             </button>
             <button
-              className="btn rounded-full btn-sm text-sm capitalize btn-outline btn-error"
+              className={`btn rounded-full btn-sm text-sm capitalize btn-outline ${
+                confirmationButtonText === "Approve Request"
+                  ? "btn-accent"
+                  : "btn-error"
+              }`}
               onClick={handleEndSession}
               disabled={loading}
             >
