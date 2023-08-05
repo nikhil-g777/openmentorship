@@ -1,3 +1,4 @@
+import {AppRouterInstance} from "next/dist/shared/lib/app-router-context";
 import {Education, WorkExperience} from "./regsiter";
 
 type User = {
@@ -63,4 +64,51 @@ type UserProfile = {
   user: User;
 };
 
-export type {UserProfile};
+// Button args type
+type buttonArgs = {
+  currentPage: string;
+  currentTab: string;
+  userType: string;
+};
+
+// Profile Confirmation Action Type
+type PerformConfirmationAction = {
+  currentPage: string;
+  confirmationButtonText: string;
+  setConfirmationText: (text: string) => void;
+  setLoading: (loading: boolean) => void;
+  chatId: string;
+  token: string;
+  setSuccessAlert: (text: string, time: number) => void;
+  setErrorAlert: (text: string, time: number) => void;
+  router: AppRouterInstance;
+};
+
+// Profile action type
+type PerformProfileAction = {
+  currentPage: string;
+  currentTab: string;
+  router: AppRouterInstance;
+  chatId?: string;
+  buttonText?: string;
+  secondaryButtonText?: string;
+  setLoading: (type: boolean) => void;
+  token: string;
+  isProfileModal?: boolean;
+  setIsProfileModal?: (type: boolean) => void;
+  message?: string;
+  setMessage?: (message: string) => void;
+  menteeId?: string;
+  mentorId?: string;
+  confirmationText?: string;
+  setConfirmationText?: (confirmationText: string) => void;
+  setSuccessAlert?: (successAlert: string, time: number) => void;
+  setErrorAlert?: (errorAlert: string, time: number) => void;
+};
+
+export type {
+  UserProfile,
+  buttonArgs,
+  PerformConfirmationAction,
+  PerformProfileAction,
+};

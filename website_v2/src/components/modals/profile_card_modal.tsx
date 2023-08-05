@@ -1,6 +1,7 @@
 "use client";
 
-import {getButtonText, performProfileAction} from "@/helpers/profile";
+import {getButtonText} from "@/helpers/profile/primary_button";
+import {performProfileModalAction} from "@/helpers/profile/profile_modal_action";
 import {useCommonStore, useProfileStore} from "@/zustand/store";
 import {useRouter} from "next/navigation";
 import React, {useState} from "react";
@@ -24,11 +25,25 @@ const ProfileCardModal = () => {
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
   const buttonText = getButtonText({currentPage, currentTab, userType});
   const [message, setMessage] = useState<string>("");
+  const [messageError, setMessageError] = useState<string>("");
 
   // Handle profile action
-  const handleProfileAction = () => {
+  const handleProfileAction = async () => {
+    // Reset error
+    setMessageError("");
+
+    // Validate message
+    if (message.length === 0) {
+      setMessageError("Please provide a message.");
+      return;
+    }
+    if (message.length > 150) {
+      setMessageError("Message should be less than 150 characters long.");
+      return;
+    }
+
     // Perform action
-    performProfileAction({
+    await performProfileModalAction({
       currentPage,
       currentTab,
       router,
@@ -41,6 +56,7 @@ const ProfileCardModal = () => {
       menteeId,
       mentorId,
       message,
+      setMessage,
       setSuccessAlert,
       setErrorAlert,
     });
@@ -69,12 +85,20 @@ const ProfileCardModal = () => {
           </p>
           <textarea
             placeholder="Your message..."
-            className="textarea textarea-bordered textarea-md w-full h-48 resize-none"
+            className={`textarea textarea-bordered textarea-md w-full h-48 resize-none ${
+              messageError ? "border-error" : ""
+            }`}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setMessage(e.target.value)
             }
             value={message}
           ></textarea>
+          {/* Message Error */}
+          {messageError.length ? (
+            <label className="label">
+              <span className="label-text-alt text-error">{messageError}</span>
+            </label>
+          ) : null}
           <div className="modal-action">
             <button
               className="btn rounded-full btn-sm text-sm capitalize btn-outline btn-error"
