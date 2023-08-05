@@ -5,10 +5,20 @@ import {Profile} from "../profileCard/profile";
 import {Name} from "../profileCard/name";
 
 const HeadingBio = () => {
-  const {profileImage, headlineError, bioError, isEditable} =
+  const {profileImage, headlineError, isEditable, setBioError, bioError} =
     useProfileSettingsStore();
   const {firstName, lastName, headline, setHeadline, bio, setBio} =
     useRegisterStore();
+
+  // Handle change
+  const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setBio(e.target.value);
+    if (e.target.value.length < 150 || e.target.value.length > 300) {
+      setBioError("Your bio should be between 150 and 300 characters long.");
+    } else {
+      setBioError("");
+    }
+  };
 
   return (
     <div className="w-full max-w-3xl mx-auto">
@@ -60,17 +70,18 @@ const HeadingBio = () => {
                 bioError.length ? "border-error" : ""
               }`}
               value={bio}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setBio(e.target.value)
-              }
+              onChange={handleBioChange}
               disabled={!isEditable}
             ></textarea>
-            {/* Bio Error */}
-            {bioError.length ? (
-              <label className="label" htmlFor="headline">
+            {/* Bio Error && Word Count */}
+            <label className="label" htmlFor="headline">
+              {bioError.length ? (
                 <span className="label-text-alt text-error">{bioError}</span>
-              </label>
-            ) : null}
+              ) : null}
+              <span className="label-text-alt text-right">
+                {bio.length}/300
+              </span>
+            </label>
           </div>
         </div>
       </div>
