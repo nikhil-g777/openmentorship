@@ -5,9 +5,9 @@ import {useEffect, useState} from "react";
 import {ChatUserAvatar} from "./chat_user_avatar";
 import Image from "next/image";
 import {useSession} from "next-auth/react";
-import {performSecondaryButtonAction} from "@/helpers/profile";
 import {useRouter, useSearchParams} from "next/navigation";
 import {UserProfile} from "@/types/profile";
+import {performSecondaryButtonAction} from "@/helpers/profile/secondary_button";
 
 const ChatScreenHeader = () => {
   const token = useSession().data?.user.token || "";
