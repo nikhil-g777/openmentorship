@@ -23,8 +23,8 @@ const MainScreen = () => {
     setBioError("");
 
     // Show errors
-    if (headline.length <= 3) {
-      setHeadlineError("Your headline should be more than 3 characters long.");
+    if (headline.length <= 3 || headline.length > 100) {
+      setHeadlineError("Your headline should be between 3 and 100 characters.");
       return;
     }
     if (bio.length < 150 || bio.length > 300) {
@@ -53,7 +53,9 @@ const MainScreen = () => {
           {/* Form */}
           <MainForm
             headlineError={headlineError}
+            setHeadlineError={setHeadlineError}
             bioError={bioError}
+            setBioError={setBioError}
             handleSubmit={handleSubmit}
           >
             {/* Login or Continue */}
