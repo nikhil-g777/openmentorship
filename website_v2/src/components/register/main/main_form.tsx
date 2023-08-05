@@ -1,15 +1,49 @@
 import {useRegisterStore} from "@/zustand/store";
+import {Dispatch, SetStateAction} from "react";
 
 type Props = {
   headlineError: string;
+  setHeadlineError: Dispatch<SetStateAction<string>>;
   bioError: string;
+  setBioError: Dispatch<SetStateAction<string>>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   children?: React.ReactNode;
 };
 
-const MainForm = ({headlineError, bioError, handleSubmit, children}: Props) => {
+const MainForm = ({
+  headlineError,
+  setHeadlineError,
+  bioError,
+  setBioError,
+  handleSubmit,
+  children,
+}: Props) => {
   const {firstName, lastName, email, headline, setHeadline, bio, setBio} =
     useRegisterStore();
+
+  // Handle Headline Change
+  const handleHeadlineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHeadline(e.target.value);
+
+    // Validation
+    if (e.target.value.length <= 3 || e.target.value.length > 100) {
+      setHeadlineError("Your headline should be between 3 and 100 characters.");
+    } else {
+      setHeadlineError("");
+    }
+  };
+
+  // Handle Bio Change
+  const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setBio(e.target.value);
+
+    // Validation
+    if (e.target.value.length < 150 || e.target.value.length > 300) {
+      setBioError("Your bio should be between 150 and 300 characters long.");
+    } else {
+      setBioError("");
+    }
+  };
   return (
     <form className="w-full mt-8" onSubmit={handleSubmit}>
       {/* First Name & Last Name */}
@@ -50,9 +84,7 @@ const MainForm = ({headlineError, bioError, handleSubmit, children}: Props) => {
               headlineError.length > 0 ? "border-error" : ""
             }`}
             value={headline}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setHeadline(e.target.value)
-            }
+            onChange={handleHeadlineChange}
           />
           {/* Headline Error */}
           {headlineError.length ? (
@@ -69,16 +101,15 @@ const MainForm = ({headlineError, bioError, handleSubmit, children}: Props) => {
               bioError.length ? "border-error" : ""
             }`}
             value={bio}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              setBio(e.target.value)
-            }
+            onChange={handleBioChange}
           ></textarea>
-          {/* Bio Error */}
-          {bioError.length ? (
-            <label className="label" htmlFor="headline">
+          {/* Bio Error & Word Count */}
+          <label className="label" htmlFor="headline">
+            {bioError.length ? (
               <span className="label-text-alt text-error">{bioError}</span>
-            </label>
-          ) : null}
+            ) : null}
+            <span className="label-text-alt text-right">{bio.length}/300</span>
+          </label>
         </div>
       </div>
       {/* Submit */}
