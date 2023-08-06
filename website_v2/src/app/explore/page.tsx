@@ -1,6 +1,5 @@
 import React from "react";
 import {getServerSession} from "next-auth";
-import {redirect} from "next/navigation";
 import {authOptions} from "@/helpers/auth_options";
 import {FilterWrapper} from "@/components/filter/filter_wrapper";
 import {CarouselWrapper} from "@/components/carousel/carousel_wrapper";
@@ -19,6 +18,7 @@ type Props = {
 const Page = async ({searchParams}: Props) => {
   // Session
   const session = await getServerSession(authOptions);
+  const token = session?.user?.token;
 
   // Params
   const page = Number(searchParams["page"]);
@@ -28,15 +28,10 @@ const Page = async ({searchParams}: Props) => {
   const communicationFrequency = searchParams["communicationFrequency"];
   const communicationPreferences = searchParams["communicationPreferences"];
 
-  // Redirect to landing page if user not found
-  if (!session?.user) {
-    redirect("/");
-  }
-
   // Get data
-  const data = await getExploreData(session.user.token);
+  const data = await getExploreData(token || "");
   const contentData = await getExploreDataByContent(
-    session.user.token,
+    token || "",
     page,
     limit,
     areasOfInterest,
@@ -48,7 +43,7 @@ const Page = async ({searchParams}: Props) => {
   return (
     <div className="w-full">
       {/* Store initializer */}
-      <StoreInitializer data={data} content={contentData} />
+      <StoreInitializer data={data} content={contentData} token={token} />
       <FilterWrapper title="Find your Mentor" />
       {/* Only show Carousel if no filters applied */}
       {!areasOfInterest.length &&
