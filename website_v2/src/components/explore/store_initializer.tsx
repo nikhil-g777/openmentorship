@@ -7,6 +7,7 @@ import {
   useListingStore,
   useProfileStore,
 } from "@/zustand/store";
+import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
@@ -20,9 +21,11 @@ type Props = {
     totalPages: number;
     currentPage: string;
   };
+  token: string | undefined | null;
 };
 
-const StoreInitializer = ({data, content}: Props) => {
+const StoreInitializer = ({data, content, token}: Props) => {
+  const router = useRouter();
   const {setCarouselData} = useCarouselStore();
   const {setCollapsable, setCurrentPage, setCurrentTab, setUserType} =
     useProfileStore();
@@ -31,15 +34,10 @@ const StoreInitializer = ({data, content}: Props) => {
 
   // Re-render on data change
   useEffect(() => {
-    // Return if request is not successful
-    if (!data.success) {
-      setErrorAlert("Error getting data! Try refreshing the page", 6);
-      return;
-    }
-
-    // Return if content is not successful
-    if (!content.success) {
-      setErrorAlert("Error getting data! Try refreshing the page", 6);
+    // Redirect if no data found
+    if (!data.success || !content.success || !token) {
+      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      router.replace("/");
       return;
     }
 
@@ -54,6 +52,8 @@ const StoreInitializer = ({data, content}: Props) => {
     setCurrentTab("");
     setUserType("mentee");
   }, [
+    router,
+    token,
     data,
     content,
     setErrorAlert,
