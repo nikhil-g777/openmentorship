@@ -1,7 +1,12 @@
 "use client";
 
 import {UserProfile} from "@/types/profile";
-import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
+import {
+  useCommonStore,
+  useProfileSettingsStore,
+  useRegisterStore,
+} from "@/zustand/store";
+import {useRouter} from "next/navigation";
 import {useRef} from "react";
 
 type Props = {
@@ -10,7 +15,7 @@ type Props = {
 };
 
 const StoreInitializer = ({data, token}: Props) => {
-  // console.log(data);
+  const router = useRouter();
   const {
     setToken,
     setFirstName,
@@ -30,11 +35,20 @@ const StoreInitializer = ({data, token}: Props) => {
     setCommunicationPreferences,
   } = useRegisterStore();
   const {setProfileImage, setisProfilePage} = useProfileSettingsStore();
+  const {setErrorAlert} = useCommonStore();
   const initialzied = useRef(false);
 
   // Update states once
   if (!initialzied.current) {
-    setToken(token || "");
+    // Check if there is an error
+    if (!token || !data.success) {
+      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      router.replace("/");
+      return null;
+    }
+
+    // Set states
+    setToken(token);
     setFirstName(data.user.firstName);
     setLastName(data.user.lastName);
     setEmail(data.user.email);
