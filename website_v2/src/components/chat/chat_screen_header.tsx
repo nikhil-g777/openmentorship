@@ -88,6 +88,7 @@ const ChatScreenHeader = () => {
       currentTab: "",
       router,
       setLoading,
+      secondaryButtonText: "End Session",
       confirmationText,
       setConfirmationText,
       token,

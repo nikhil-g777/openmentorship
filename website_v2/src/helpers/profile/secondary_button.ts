@@ -68,7 +68,7 @@ const performSecondaryButtonAction = async ({
 }: PerformProfileAction) => {
   // End Session (Modal)
   if (
-    currentPage === "matches" &&
+    (currentPage === "matches" || currentPage === "chat") &&
     (currentTab === "active" || currentTab === "" || !currentTab) &&
     secondaryButtonText === "End Session" &&
     setConfirmationText &&
