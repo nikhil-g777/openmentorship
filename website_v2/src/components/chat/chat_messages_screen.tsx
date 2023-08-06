@@ -2,6 +2,7 @@
 
 import {getDate, getTime} from "@/helpers/chat";
 import {useChatStore} from "@/zustand/store";
+import {Message} from "@twilio/conversations";
 import {useSession} from "next-auth/react";
 import {MutableRefObject, useEffect, useRef} from "react";
 
@@ -31,11 +32,25 @@ const ChatMessagesScreen = () => {
   }, [setConversations, currentConversation]);
 
   useEffect(() => {
-    // Scroll to bottom
-    currentConversation?.on("messageAdded", () => {
+    // Scroll to bottom & add new message to conversations
+    const messageAddedHandler = (message: Message) => {
       scrollToBottom(scrollElement);
-    });
-  }, [currentConversation]);
+      if (conversations) {
+        setConversations({
+          ...conversations,
+          items: [...conversations.items, message],
+        });
+      }
+    };
+
+    currentConversation?.on("messageAdded", messageAddedHandler);
+
+    // Cleanup function
+    return () => {
+      // Perform any cleanup if needed
+      currentConversation?.off("messageAdded", messageAddedHandler);
+    };
+  }, [currentConversation, setConversations, conversations]);
 
   useEffect(() => {
     // Trigger prevPage when first message is in view
@@ -64,7 +79,10 @@ const ChatMessagesScreen = () => {
       chatId.length &&
       conversations &&
       conversations?.items?.length ? (
-        <div className="w-full p-4 flex flex-col last:mb-8" ref={chatContainer}>
+        <div
+          className="w-full p-4 flex flex-col last:mb-16"
+          ref={chatContainer}
+        >
           {conversations.items.map((item, index) => (
             <div key={item["state"]["sid"]} className="w-full">
               {/* Show Date */}

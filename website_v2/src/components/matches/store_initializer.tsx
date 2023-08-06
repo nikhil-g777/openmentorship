@@ -7,9 +7,11 @@ import {
   useListingStore,
   useProfileStore,
 } from "@/zustand/store";
+import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
+  token: string | undefined | null;
   heading: string;
   currentTab: string;
   userType: string;
@@ -18,12 +20,14 @@ type Props = {
 };
 
 const StoreInitializer = ({
+  token,
   heading,
   currentTab,
   userType,
   data,
   filteredData,
 }: Props) => {
+  const router = useRouter();
   const {setCollapsable, setCurrentPage, setCurrentTab, setUserType} =
     useProfileStore();
   const {setListingData, setHeading} = useListingStore();
@@ -31,9 +35,10 @@ const StoreInitializer = ({
 
   // Re-render on data change
   useEffect(() => {
-    // Return if request is not successful
-    if (!data.success) {
-      setErrorAlert("Error getting data! Try refreshing the page", 6);
+    // Redirect to landing page data not found
+    if (!data.success || !token) {
+      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      router.replace("/");
       return;
     }
 
@@ -47,6 +52,8 @@ const StoreInitializer = ({
     setCurrentTab(currentTab);
     setUserType(userType);
   }, [
+    token,
+    router,
     data,
     filteredData,
     heading,

@@ -3,11 +3,13 @@
 import {
   getButtonColor,
   getButtonText,
+  performProfileAction,
+} from "@/helpers/profile/primary_button";
+import {
   getSecondaryButtonColor,
   getSecondaryButtonText,
-  performProfileAction,
   performSecondaryButtonAction,
-} from "@/helpers/profile";
+} from "@/helpers/profile/secondary_button";
 import {UserProfile} from "@/types/profile";
 import {useCommonStore, useProfileStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
@@ -45,7 +47,11 @@ const Profile = ({data, rootData}: Props) => {
     setConfirmationText,
   } = useProfileStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
-  const buttonText = getButtonText({currentPage, currentTab, userType});
+  const buttonText = getButtonText({
+    currentPage,
+    currentTab,
+    userType,
+  });
   const buttonColor = getButtonColor(buttonText);
   const secondaryButtonText = getSecondaryButtonText({
     currentPage,
@@ -93,6 +99,12 @@ const Profile = ({data, rootData}: Props) => {
   };
 
   const handleSecondaryAction = async () => {
+    // Set states
+    if (rootData) {
+      setToken(userToken || "");
+      setChatId(rootData?.matches?._id || "");
+    }
+
     await performSecondaryButtonAction({
       currentPage,
       currentTab,
@@ -124,7 +136,7 @@ const Profile = ({data, rootData}: Props) => {
       />
       {buttonText && buttonText.length ? (
         <button
-          className={`w-full max-w-[200px] btn btn-accent rounded-full btn-sm mt-4 mx-auto text-sm capitalize truncate ${buttonColor}`}
+          className={`w-full max-w-[200px] btn rounded-full btn-sm mt-4 mx-auto text-sm capitalize truncate ${buttonColor}`}
           onClick={() => handleProfileAction()}
         >
           {buttonText}

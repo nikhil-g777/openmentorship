@@ -1,13 +1,14 @@
 "use client";
 
 import {useChatStore, useListingStore, useProfileStore} from "@/zustand/store";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {ChatUserAvatar} from "./chat_user_avatar";
 import Image from "next/image";
 import {useSession} from "next-auth/react";
-import {performSecondaryButtonAction} from "@/helpers/profile";
 import {useRouter, useSearchParams} from "next/navigation";
 import {UserProfile} from "@/types/profile";
+import {performSecondaryButtonAction} from "@/helpers/profile/secondary_button";
+import {Participant} from "@twilio/conversations";
 
 const ChatScreenHeader = () => {
   const token = useSession().data?.user.token || "";
@@ -27,6 +28,7 @@ const ChatScreenHeader = () => {
     typingStatus,
     setTypingStatus,
   } = useChatStore();
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
     const currentData: UserProfile["user"][] =
@@ -36,9 +38,11 @@ const ChatScreenHeader = () => {
         contact => contact.matches._id === chatId
       );
       if (contact) {
+        setUserId(contact._id);
         setFirstName(contact.firstName);
         setProfileImage(contact?.profileImageUrls?.default || "");
       } else {
+        setUserId("");
         setFirstName("");
         setProfileImage("");
       }
@@ -54,18 +58,27 @@ const ChatScreenHeader = () => {
 
   // Listen to typing status
   useEffect(() => {
-    // Set typing started
-    currentConversation?.on("typingStarted", participant => {
+    const typingStartedHandler = (participant: Participant) => {
       setTypingStatus({
         participant: participant.identity || "",
         isTyping: true,
       });
-    });
+    };
 
-    // Set typing ended
-    currentConversation?.on("typingEnded", () => {
+    const typingEndedHandler = () => {
       setTypingStatus({participant: "", isTyping: false});
-    });
+    };
+
+    // Add event listeners
+    currentConversation?.on("typingStarted", typingStartedHandler);
+    currentConversation?.on("typingEnded", typingEndedHandler);
+
+    // Cleanup function
+    return () => {
+      // Remove event listeners when component unmounts
+      currentConversation?.off("typingStarted", typingStartedHandler);
+      currentConversation?.off("typingEnded", typingEndedHandler);
+    };
   }, [currentConversation, setTypingStatus]);
 
   // Handle end session
@@ -75,6 +88,7 @@ const ChatScreenHeader = () => {
       currentTab: "",
       router,
       setLoading,
+      secondaryButtonText: "End Session",
       confirmationText,
       setConfirmationText,
       token,
@@ -89,7 +103,7 @@ const ChatScreenHeader = () => {
 
   return (
     <div className="w-full mb-auto">
-      {firstName && firstName.length ? (
+      {currentConversation && firstName && firstName.length ? (
         <div className="w-full flex items-center bg-base-200 px-4">
           {/* Mobile back button */}
           <button
@@ -108,7 +122,7 @@ const ChatScreenHeader = () => {
           <h3 className="w-full font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
             {firstName}
             {/* Show typing indicator */}
-            {typingStatus.isTyping && typingStatus.participant === chatId ? (
+            {typingStatus.isTyping && typingStatus.participant === userId ? (
               <span className="mx-2 text-xs opacity-50">typing…</span>
             ) : null}
           </h3>

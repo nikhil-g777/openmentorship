@@ -9,10 +9,11 @@ import {
   useProfileStore,
 } from "@/zustand/store";
 import {Client} from "@twilio/conversations";
-import {useSession} from "next-auth/react";
+import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
+  token: string | undefined | null;
   data: {
     success: boolean;
     matches: {
@@ -26,8 +27,14 @@ type Props = {
   twilioToken: string;
 };
 
-const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
-  const token = useSession().data?.user.token || "";
+const StoreInitializer = ({
+  token,
+  data,
+  userType,
+  chatId,
+  twilioToken,
+}: Props) => {
+  const router = useRouter();
   const {setListingData, setHeading} = useListingStore();
   const {
     setCurrentPage,
@@ -46,17 +53,18 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
   const {setErrorAlert, setSuccessAlert} = useCommonStore();
 
   useEffect(() => {
+    // Check if data and token is available
+    if (!data.success || !token) {
+      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      router.replace("/");
+      return;
+    }
     // Check if twilio token is available
     if (twilioToken === "") {
       setErrorAlert("Error getting twilio token, Try reloading the page", 6);
       return;
     }
 
-    // Check if data is successful
-    if (!data.success) {
-      setErrorAlert("Error getting chat data, Try reloading the page", 6);
-      return;
-    }
     const cardData = performCardData(
       data.matches["active"],
       "matches",
@@ -78,6 +86,7 @@ const StoreInitializer = ({data, userType, chatId, twilioToken}: Props) => {
     setToken(token);
     setTwilioToken(twilioToken);
   }, [
+    router,
     data,
     userType,
     setListingData,
