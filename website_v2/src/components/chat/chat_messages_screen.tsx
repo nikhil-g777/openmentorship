@@ -2,6 +2,7 @@
 
 import {getDate, getTime} from "@/helpers/chat";
 import {useChatStore} from "@/zustand/store";
+import {Message} from "@twilio/conversations";
 import {useSession} from "next-auth/react";
 import {MutableRefObject, useEffect, useRef} from "react";
 
@@ -32,7 +33,7 @@ const ChatMessagesScreen = () => {
 
   useEffect(() => {
     // Scroll to bottom & add new message to conversations
-    currentConversation?.on("messageAdded", message => {
+    const messageAddedHandler = (message: Message) => {
       scrollToBottom(scrollElement);
       if (conversations) {
         setConversations({
@@ -40,7 +41,15 @@ const ChatMessagesScreen = () => {
           items: [...conversations.items, message],
         });
       }
-    });
+    };
+
+    currentConversation?.on("messageAdded", messageAddedHandler);
+
+    // Cleanup function
+    return () => {
+      // Perform any cleanup if needed
+      currentConversation?.off("messageAdded", messageAddedHandler);
+    };
   }, [currentConversation, setConversations, conversations]);
 
   useEffect(() => {

@@ -8,6 +8,7 @@ import {useSession} from "next-auth/react";
 import {useRouter, useSearchParams} from "next/navigation";
 import {UserProfile} from "@/types/profile";
 import {performSecondaryButtonAction} from "@/helpers/profile/secondary_button";
+import {Participant} from "@twilio/conversations";
 
 const ChatScreenHeader = () => {
   const token = useSession().data?.user.token || "";
@@ -57,18 +58,27 @@ const ChatScreenHeader = () => {
 
   // Listen to typing status
   useEffect(() => {
-    // Set typing started
-    currentConversation?.on("typingStarted", participant => {
+    const typingStartedHandler = (participant: Participant) => {
       setTypingStatus({
         participant: participant.identity || "",
         isTyping: true,
       });
-    });
+    };
 
-    // Set typing ended
-    currentConversation?.on("typingEnded", () => {
+    const typingEndedHandler = () => {
       setTypingStatus({participant: "", isTyping: false});
-    });
+    };
+
+    // Add event listeners
+    currentConversation?.on("typingStarted", typingStartedHandler);
+    currentConversation?.on("typingEnded", typingEndedHandler);
+
+    // Cleanup function
+    return () => {
+      // Remove event listeners when component unmounts
+      currentConversation?.off("typingStarted", typingStartedHandler);
+      currentConversation?.off("typingEnded", typingEndedHandler);
+    };
   }, [currentConversation, setTypingStatus]);
 
   // Handle end session
