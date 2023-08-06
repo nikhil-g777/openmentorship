@@ -103,7 +103,7 @@ const ChatScreenHeader = () => {
 
   return (
     <div className="w-full mb-auto">
-      {firstName && firstName.length ? (
+      {currentConversation && firstName && firstName.length ? (
         <div className="w-full flex items-center bg-base-200 px-4">
           {/* Mobile back button */}
           <button
