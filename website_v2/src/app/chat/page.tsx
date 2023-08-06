@@ -32,6 +32,7 @@ const Page = async ({searchParams}: Props) => {
   return (
     <div className="w-full h-[65vh] mb-20">
       <StoreInitializer
+        token={token}
         data={data}
         userType={userType}
         chatId={chatId}
