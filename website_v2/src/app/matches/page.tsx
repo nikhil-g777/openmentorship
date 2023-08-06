@@ -2,7 +2,6 @@ import {Tabs} from "@/components/tabs/tabs_main";
 import {getServerSession} from "next-auth";
 import React from "react";
 import {authOptions} from "@/helpers/auth_options";
-import {redirect} from "next/navigation";
 import {getUserMatches} from "@/endpoints/matches";
 import {Listing} from "@/components/listing/listing_main";
 import {NoResult} from "@/components/noResult/no_result";
@@ -21,11 +20,6 @@ const Page = async ({searchParams}: Props) => {
   // Session
   const session = await getServerSession(authOptions);
   const token = session?.user?.token;
-
-  // Redirect to landing page if user not found
-  if (!session?.user) {
-    redirect("/");
-  }
 
   // Current Tab
   const currentTab = searchParams["tab"];
@@ -51,14 +45,18 @@ const Page = async ({searchParams}: Props) => {
   }
 
   // No Result
-  const isResult = checkNoResult(session?.user?.user?.userType, filteredData);
+  const isResult = checkNoResult(
+    session?.user?.user?.userType || "",
+    filteredData
+  );
 
   return (
     <div className="w-full mb-20">
       <StoreInitializer
+        token={token}
         heading={headingText}
         currentTab={currentTab}
-        userType={session?.user?.user?.userType}
+        userType={session?.user?.user?.userType || ""}
         data={data}
         filteredData={filteredData}
       />

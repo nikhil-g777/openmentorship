@@ -11,6 +11,7 @@ import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
+  token: string | undefined | null;
   heading: string;
   currentTab: string;
   userType: string;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const StoreInitializer = ({
+  token,
   heading,
   currentTab,
   userType,
@@ -34,7 +36,7 @@ const StoreInitializer = ({
   // Re-render on data change
   useEffect(() => {
     // Redirect to landing page data not found
-    if (!data.success) {
+    if (!data.success || !token) {
       setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
       router.replace("/");
       return;
@@ -50,6 +52,7 @@ const StoreInitializer = ({
     setCurrentTab(currentTab);
     setUserType(userType);
   }, [
+    token,
     router,
     data,
     filteredData,
