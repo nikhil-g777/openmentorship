@@ -20,19 +20,20 @@ type Props = {
 const Page = async ({searchParams}: Props) => {
   // Session
   const session = await getServerSession(authOptions);
+  const token = session?.user?.token;
 
   // Redirect to landing page if user not found
   if (!session?.user) {
     redirect("/");
   }
 
-  //   Current Tab
+  // Current Tab
   const currentTab = searchParams["tab"];
 
-  //   Get User Matches
-  const data = await getUserMatches(session.user.token);
+  // Get User Matches
+  const data = await getUserMatches(token || "");
 
-  //   Filtered data & Heading text
+  // Filtered data & Heading text
   let filteredData = [];
   let headingText = "";
 
