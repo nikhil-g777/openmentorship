@@ -65,11 +65,6 @@ const StoreInitializer = ({
       return;
     }
 
-    // Check if data is successful
-    if (!data.success) {
-      setErrorAlert("Error getting chat data, Try reloading the page", 6);
-      return;
-    }
     const cardData = performCardData(
       data.matches["active"],
       "matches",
