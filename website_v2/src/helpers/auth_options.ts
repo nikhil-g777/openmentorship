@@ -1,6 +1,6 @@
+import {getUserInfo, nextAuthLogin} from "@/endpoints/user";
 import {NextAuthOptions} from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import {getUserInfo} from "./user";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -22,17 +22,7 @@ export const authOptions: NextAuthOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        const res = await fetch(`${process.env.BACKEND_BASE_URL}/users/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json;charset=UTF-8",
-            accept: "application/json",
-          },
-          body: JSON.stringify({
-            authCode: credentials?.authCode,
-            isLocal: Boolean(process.env.NEXT_APP_IS_LOCAL),
-          }),
-        });
+        const res = (await nextAuthLogin(credentials)) as Response;
         const user = await res.json();
 
         // If no error and we have user data, return it

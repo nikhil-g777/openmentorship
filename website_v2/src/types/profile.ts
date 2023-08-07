@@ -1,3 +1,5 @@
+import {Education, WorkExperience} from "./regsiter";
+
 type UserProfile = {
   success: boolean;
   user: {
@@ -15,12 +17,9 @@ type UserProfile = {
     lastName: string;
     linkedInId: string;
     email: string;
-    experiences: {[key: string]: string}[];
-    education: {[key: string]: string}[];
-    goals: {
-      careerAdvice: boolean;
-      skillDevelopment: boolean;
-    };
+    experiences: WorkExperience[];
+    education: Education[];
+    goals: {[key: string]: boolean};
     createdAt: string;
     updatedAt: string;
     __v: number;
@@ -34,6 +33,14 @@ type UserProfile = {
     userType: string;
     bio: string;
     headline: string;
+    socialLinks: {
+      twitter: string;
+      medium: string;
+      behance: string;
+      github: string;
+      portfolio: string;
+      other: string;
+    };
   };
 };
 
