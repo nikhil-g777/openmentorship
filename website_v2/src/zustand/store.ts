@@ -9,6 +9,7 @@ import {carouselSlice, CarouselSlice} from "./slices/carouselSlice";
 import {profileSlice, ProfileSlice} from "./slices/profileSlice";
 import {listingSlice, ListingSlice} from "./slices/listingSlice";
 import {chatSlice, ChatSlice} from "./slices/chatSlice";
+import {dashboardSlice, DashboardSlice} from "./slices/admin/dashboardSlice";
 
 // Common store
 const useCommonStore = create<CommonSlice>()((...a) => ({
@@ -45,6 +46,11 @@ const useChatStore = create<ChatSlice>()((...a) => ({
   ...chatSlice(...a),
 }));
 
+// Admin Dashboard store
+const useAdminDashboardStore = create<DashboardSlice>()((...a) => ({
+  ...dashboardSlice(...a),
+}));
+
 export {
   useCommonStore,
   useRegisterStore,
@@ -53,4 +59,5 @@ export {
   useProfileStore,
   useListingStore,
   useChatStore,
+  useAdminDashboardStore,
 };
