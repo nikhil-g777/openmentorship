@@ -1,8 +1,8 @@
 "use client";
-import {RouteActionLoader} from "@/loaders/route_action_loader";
 import {UserProfile} from "@/types/profile";
+import {useCommonStore} from "@/zustand/store";
 import {useSearchParams, usePathname, useRouter} from "next/navigation";
-import {useTransition} from "react";
+import {useEffect, useTransition} from "react";
 
 type Props = {
   data: {
@@ -25,6 +25,7 @@ const Pagination = ({data}: Props) => {
   const paginationData = data.mentors;
   const totalPages = data.totalPages;
   const currentPage = Number(data.currentPage);
+  const {setRouteActionLoading} = useCommonStore();
   const [isPending, startTransition] = useTransition();
 
   // Handle Previous Page
@@ -49,9 +50,13 @@ const Pagination = ({data}: Props) => {
     });
   };
 
+  // Update isPending state
+  useEffect(() => {
+    setRouteActionLoading(isPending);
+  }, [isPending, setRouteActionLoading]);
+
   return (
     <>
-      {isPending ? <RouteActionLoader /> : null}
       {data && paginationData && paginationData.length ? (
         <div className="w-full btn-group mb-24 flex justify-center">
           <div
