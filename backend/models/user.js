@@ -31,7 +31,8 @@ const User = new Schema(
       required: true,
       default: 'mentee',
     },
-    linkedInId: { type: String, required: true, unique: true },
+    linkedInId: { type: String, required: true, unique: true, index: true },
+    profileImageUrls: { type: Object, default: { default: '' } },
     areasOfInterest: { type: Object, default: {} },
     experiences: { type: [Experience], default: [] },
     education: { type: [Education], defaukt: [] },
@@ -39,18 +40,29 @@ const User = new Schema(
     interests: { type: [String], default: [] },
     goals: { type: Object, default: [] },
     communicationFrequency: { type: String },
+    communicationPreferences: { type: [String], default: [] },
     socialLinks: { type: Object, default: {} },
     active: { type: Boolean, default: false, required: true },
     registrationStatus: {
       type: String,
-      enum: ['incomplete', 'pendingApproval', 'complete'],
+      enum: [
+        'incomplete',
+        'pendingConfirmation',
+        'pendingApproval',
+        'complete',
+        'denied',
+        'disabled',
+      ],
       default: 'incomplete',
       required: true,
     },
+    approvedDate: { type: Date },
   },
   {
     timestamps: true,
   },
 );
+
+User.index({ '$**': 'text' });
 
 module.exports = mongoose.model('user', User);

@@ -1,0 +1,100 @@
+{
+    "user": {
+      "success": true,
+      "message": "Login Successful",
+      "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjRmMTBhOTFhOTY0YjdiZTdmYzc3MzciLCJpYXQiOjE2NDA1ODk5MDksImV4cCI6MTcyNjk4OTkwOX0.uJ2zxBOuZKWVViooSkwwrC5KOiR9iOaMOCztLY-ae04uNSAOSiLNbifUkfNk6Dmk461iaf_DHDm9YQtM3ESmkHWg7182u8Nx3suiEod-C85WDqHmU-A8ORe4s2xVVDULSzDtU5yWOyi9WX8BpnTYolkf_plYBC1DHopuL68TRMA_HfcHP4uH5K0duW5j4w8t-UudrQSGRihObmSBjtrK00umtMos2bIR9Dt5sAo4aD2qhYfUevPW-pZjuPMU1o-ODa7QUXmfPXl1_2n_EUJZDRQL3FxBtvczimERcA6i-eiZqfallQkFWEcJ85ZQTakw-TvtYqchLPK-zEFohQxEL0NF9RbMAMEvuwUTxLKZYjbSut77Cin4TmRou2ZgrkjXvG883JA3009cHJBiHte9uGaauVOY752RnREKy4xW7ayeQomQcYqJX_lSNwq2hG5ytIHS0AQgCI3yzaTmc4hTLrfwiHh_6kp54ooMaxv0hXxO1sAH4brlHURYFUpJqEqNCYAUk5S6Vrol36t4mI3TX6cMEGYF3RNa2CZAs5j85Ek0E7wcYJTuMnicRtMrjm9tzNY3w8tNv_sm3uTSB3zuQ7irWTibcM19hDVaLb0UPgGCGXOKXi-kgB9Foffvi6Gnv_t-fMyrPJccoDCfp71HpSC65hRSB3pS0VIBTkYJhjw",
+      "user": {
+        "_id": "5fe04faa90a4686e183b4180",
+        "userType": "mentor"
+      }
+    },
+    "expires": "2023-07-20T16:43:15.962Z",
+    "profile": {
+      "success": true,
+      "user": {
+        "role": "admin",
+        "profileImageUrls": {
+            "100x100": "https://media.licdn.com/dms/image/C4E03AQGdh2qtCllCmw/profile-displayphoto-shrink_100_100/0/1516558341289?e=1689206400&v=beta&t=eG7wvFAGj-K-bd6ZkKgwcHsMrWGA3obGrzqMOTuijFI",
+            "200x200": "https://media.licdn.com/dms/image/C4E03AQGdh2qtCllCmw/profile-displayphoto-shrink_200_200/0/1516558341289?e=1689206400&v=beta&t=QOVHiQ5zYljOx_5Bh3AofsiBxtMX209vHOvOqJHEges",
+            "default": "https://media.licdn.com/dms/image/C4E03AQGdh2qtCllCmw/profile-displayphoto-shrink_200_200/0/1516558341289?e=1689206400&v=beta&t=QOVHiQ5zYljOx_5Bh3AofsiBxtMX209vHOvOqJHEges",
+            "400x400": "https://media.licdn.com/dms/image/C4E03AQGdh2qtCllCmw/profile-displayphoto-shrink_400_400/0/1516558341289?e=1689206400&v=beta&t=p7g0hVk3lR-5zaaq3DRUJ2HcTsoOckvh7p4yBO6CDJE",
+            "800x800": "https://media.licdn.com/dms/image/C4E03AQGdh2qtCllCmw/profile-displayphoto-shrink_800_800/0/1516558341289?e=1689206400&v=beta&t=zILIfx9hSGw11yWiFgqadmp33K4R9omJ12_muugNhAU"
+        },
+        "skills": [
+            "Project Management",
+            "Public Speaking"
+        ],
+        "interests": [
+            "Web development",
+            "Design"
+        ],
+        "communicationPreferences": [
+            "phone",
+            "video",
+            "chat",
+            "message"
+        ],
+        "active": false,
+        "registrationStatus": "pendingConfirmation",
+        "_id": "5f4f10a91a964b7be7fc7737",
+        "firstName": "Nikhil",
+        "lastName": "Gumidelli",
+        "linkedInId": "E-bub2LGyW",
+        "WorkExperiences": [
+            {
+                "currentlyWorking": false,
+                "_id": "5fe04faa90a4686e183b4180",
+                "company": "",
+                "location": {
+                    "city": "",
+                    "state": "",
+                    "country": ""
+                },
+                "industry": "-",
+                "startDate": "2001-01-01T00:00:00.000Z",
+                "endDate": "2001-01-01T00:00:00.000Z"
+            }
+        ],
+        "goals": {
+            "careerAdvice": true,
+            "resumeReview": true
+        },
+        "createdAt": "2020-09-02T03:25:29.493Z",
+        "updatedAt": "2023-06-27T08:14:42.772Z",
+        "__v": 2,
+        "socialLinks": {
+            "twitter": "https://www.twitter.com",
+            "medium": "https://www.medium.com",
+            "behance": "https://www.behance.com",
+            "github": "https://www.github.com",
+            "portfolio": "https://www.portfolio.com",
+            "other": "https://www.other.com"
+        },
+        "userType": "mentor",
+        "communicationFrequency": "weekly",
+        "areasOfInterest": {
+            "software": true,
+            "design": false,
+            "other": false
+        },
+        "education": [
+            {
+                "_id": "619e03c4eb24db291029e952",
+                "school": "PSU",
+                "degree": "Masters"
+            }
+        ],
+        "email": "nikhil.g777@gmail.com",
+        "experiences": [
+            {
+                "_id": "619e03c4eb24db291029e951",
+                "organization": "XYZ",
+                "title": "Software Engineer"
+            }
+        ],
+        "careerStatus": "Student",
+        "bio": "fqewfew",
+        "headline": "efwq"
+    }
+    }
+  }

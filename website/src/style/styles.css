@@ -27,3 +27,9 @@
   font-weight: thin;
   font-style: normal;
 }
+
+.MuiPaginationItem-page.Mui-selected {
+  background-color: #51b6a5 !important;
+  color: white !important;
+  font-weight: 600 !important;
+}

@@ -1,13 +1,16 @@
 // Packages
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Divider from "@material-ui/core/Divider";
+// import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
 // Project Imports
-import { getSessions } from "../../api";
+// import { getSessions } from "../../api";
+import { getSessions } from "../../redux/Actions/SessionActions";
 import { Menu } from "../../components";
 import SessionCard from "./SessionCard";
+
+import { useDispatch, useSelector } from "react-redux";
 
 const Container = styled.div`
   text-align: center;
@@ -19,6 +22,7 @@ const SessionListContainer = styled.div`
 `;
 
 const Sessions = () => {
+  const dispatch = useDispatch();
   const [sessionList, setSessionList] = useState([]);
   const [sessionComponets, setSessionComponents] = useState([]);
 
@@ -26,25 +30,36 @@ const Sessions = () => {
     //handle session click events
   }
 
+  const sessions = useSelector((store) => store.sessionsreducer.sessions);
+  console.log("sesssionnssss: ", sessions);
+
   useEffect(() => {
-    // Fetch sessions
-    getSessions()
-      .then((res) => {
-        setSessionList(res.data.sessions);
-        setSessionComponents(
-          res.data.sessions.map((session) => {
-            return (
-              <SessionCard
-                session={session}
-                key={session._id}
-                onClick={handleClick}
-              />
-            );
-          })
-        );
-      })
-      .catch((err) => console.log(err));
+    async function fetchSessions() {
+      await dispatch(getSessions());
+    }
+
+    console.log("before fetch");
+    if (sessions?.length === 0) {
+      fetchSessions();
+    }
+    console.log("after fetch: ", sessions);
   }, []);
+
+  useEffect(() => {
+    if (sessions?.length > 0) {
+      setSessionComponents(
+        sessions.map((session) => {
+          return (
+            <SessionCard
+              session={session}
+              key={session._id}
+              onClick={handleClick}
+            />
+          );
+        })
+      );
+    }
+  }, [sessions]);
 
   function handleGoBack() {}
 

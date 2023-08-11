@@ -1,5 +1,7 @@
 {
     "emmet.includeLanguages": {
         "javascript": "javascriptreact"
-     }
+    },
+    "workbench.settings.editor": "ui",
+    "workbench.settings.openDefaultSettings": false
 }
