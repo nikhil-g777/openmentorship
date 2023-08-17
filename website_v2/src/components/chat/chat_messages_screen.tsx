@@ -4,7 +4,7 @@ import {getDate, getTime} from "@/helpers/chat";
 import {useChatStore} from "@/zustand/store";
 import {Message} from "@twilio/conversations";
 import {useSession} from "next-auth/react";
-import {MutableRefObject, useEffect, useRef} from "react";
+import {MutableRefObject, useEffect, useRef, useState} from "react";
 
 const ChatMessagesScreen = () => {
   const userId = useSession().data?.user.user._id;
@@ -17,6 +17,7 @@ const ChatMessagesScreen = () => {
     }
   };
   const chatContainer = useRef<null | HTMLDivElement>(null);
+  const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
     // Reset conversations
@@ -56,13 +57,22 @@ const ChatMessagesScreen = () => {
     // Trigger prevPage when first message is in view
     const observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && conversations?.hasPrevPage) {
-        conversations.prevPage().then(messages => {
-          // add messages to conversations at the beginning
-          setConversations({
-            ...messages,
-            items: [...messages.items, ...conversations.items],
-          });
-        });
+        // Unobserve the element & set loader to true
+        observer.unobserve(entries[0].target);
+        setLoader(true);
+        conversations
+          .prevPage()
+          .then(messages => {
+            // scroll to the first message of the previous page & set loader to false
+            entries[0].target.scrollIntoView();
+            setLoader(false);
+            // add messages to conversations at the beginning
+            setConversations({
+              ...messages,
+              items: [...messages.items, ...conversations.items],
+            });
+          })
+          .catch(() => setLoader(false));
       }
     });
     if (chatContainer.current && chatContainer.current.firstElementChild) {
@@ -75,6 +85,12 @@ const ChatMessagesScreen = () => {
 
   return (
     <div className="w-full overflow-auto" ref={scrollElement}>
+      {/* Loader */}
+      {loader ? (
+        <div className="w-full flex justify-center items-center my-4">
+          <button className="btn btn-square loading"></button>
+        </div>
+      ) : null}
       {chatId &&
       chatId.length &&
       conversations &&
