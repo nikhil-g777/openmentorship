@@ -5,11 +5,14 @@ export type CommonSlice = {
   setSuccessAlert: (successAlert: string, time: number) => void;
   errorAlert: string;
   setErrorAlert: (errorAlert: string, time: number) => void;
+  routeActionLoading: boolean;
+  setRouteActionLoading: (routeActionLoading: boolean) => void;
 };
 
 const initialState = {
   successAlert: "",
   errorAlert: "",
+  routeActionLoading: false,
 };
 
 export const commonSlice: StateCreator<
@@ -40,5 +43,10 @@ export const commonSlice: StateCreator<
         errorAlert: "",
       }));
     }, time * 1000);
+  },
+  setRouteActionLoading: (routeActionLoading: boolean) => {
+    set(() => ({
+      routeActionLoading: routeActionLoading,
+    }));
   },
 });
