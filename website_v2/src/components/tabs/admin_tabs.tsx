@@ -22,7 +22,7 @@ const AdminTabs = () => {
             Analytics
           </Link>
           <Link
-            href={pathname + "?tab=users"}
+            href={pathname + "?tab=users&userType=mentee&page=1"}
             className={`tab sm:tab-md lg:tab-lg ${
               currentTab === "users" ? "tab-active" : ""
             }`}
