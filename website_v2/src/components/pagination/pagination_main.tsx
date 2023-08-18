@@ -1,7 +1,8 @@
 "use client";
 import {UserProfile} from "@/types/profile";
-import Link from "next/link";
-import {useSearchParams, usePathname} from "next/navigation";
+import {useCommonStore} from "@/zustand/store";
+import {useSearchParams, usePathname, useRouter} from "next/navigation";
+import {useEffect, useTransition} from "react";
 
 type Props = {
   data: {
@@ -13,6 +14,7 @@ type Props = {
 };
 
 const Pagination = ({data}: Props) => {
+  const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
   const limit = params.get("limit");
@@ -23,34 +25,59 @@ const Pagination = ({data}: Props) => {
   const paginationData = data.mentors;
   const totalPages = data.totalPages;
   const currentPage = Number(data.currentPage);
+  const {setRouteActionLoading} = useCommonStore();
+  const [isPending, startTransition] = useTransition();
+
+  // Handle Previous Page
+  const handlePrevPage = () => {
+    const url = `${pathname}?page=${
+      currentPage - 1
+    }&limit=${limit}&areasOfInterest=${areasOfInterest}&goals=${goals}&communicationFrequency=${communicationFrequency}&communicationPreferences=${communicationPreferences}`;
+    startTransition(() => {
+      router.push(url);
+      router.refresh();
+    });
+  };
+
+  // Handle Next Page
+  const handleNextPage = () => {
+    const url = `${pathname}?page=${
+      currentPage + 1
+    }&limit=${limit}&areasOfInterest=${areasOfInterest}&goals=${goals}&communicationFrequency=${communicationFrequency}&communicationPreferences=${communicationPreferences}`;
+    startTransition(() => {
+      router.push(url);
+      router.refresh();
+    });
+  };
+
+  // Update isPending state
+  useEffect(() => {
+    setRouteActionLoading(isPending);
+  }, [isPending, setRouteActionLoading]);
 
   return (
     <>
       {data && paginationData && paginationData.length ? (
         <div className="w-full btn-group mb-24 flex justify-center">
-          <Link
-            href={`${pathname}?page=${
-              currentPage - 1
-            }&limit=${limit}&areasOfInterest=${areasOfInterest}&goals=${goals}&communicationFrequency=${communicationFrequency}&communicationPreferences=${communicationPreferences}`}
-            className={`btn btn-outline border-base-300 ${
+          <div
+            className={`btn btn-outline hover:btn-primary border-base-300 ${
               currentPage === 1 ? "btn-disabled" : ""
             }`}
+            onClick={handlePrevPage}
           >
             «
-          </Link>
+          </div>
           <button className="btn btn-outline border-base-300 pointer-events-none">
             Page {currentPage}
           </button>
-          <Link
-            href={`${pathname}?page=${
-              currentPage + 1
-            }&limit=${limit}&areasOfInterest=${areasOfInterest}&goals=${goals}&communicationFrequency=${communicationFrequency}&communicationPreferences=${communicationPreferences}`}
-            className={`btn btn-outline border-base-300 ${
+          <div
+            className={`btn btn-outline hover:btn-primary border-base-300 ${
               currentPage === totalPages ? "btn-disabled" : ""
             }`}
+            onClick={handleNextPage}
           >
             »
-          </Link>
+          </div>
         </div>
       ) : null}
     </>

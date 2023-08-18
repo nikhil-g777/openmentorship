@@ -1,6 +1,10 @@
 "use client";
 
-import {useCarouselStore, useProfileStore} from "@/zustand/store";
+import {
+  useCarouselStore,
+  useCommonStore,
+  useProfileStore,
+} from "@/zustand/store";
 import {useCallback, useEffect, useState} from "react";
 
 // Types
@@ -14,6 +18,7 @@ const Carousel = ({heading, children}: Props) => {
   const {isProfileModal} = useProfileStore();
   const [current, setCurrent] = useState<number>(0);
   const [touchPosition, setTouchPosition] = useState<number | null>(null);
+  const {routeActionLoading} = useCommonStore();
 
   // Handle Next
   const next = useCallback(
@@ -58,10 +63,10 @@ const Carousel = ({heading, children}: Props) => {
     setTouchPosition(null);
   };
 
-  // Auto Slide
+  // Auto slide
   useEffect(() => {
     let slider: NodeJS.Timeout | null = null;
-    if (!isProfileModal) {
+    if (!isProfileModal && !routeActionLoading) {
       slider = setInterval(next, 3000);
     }
     return () => {
@@ -69,7 +74,7 @@ const Carousel = ({heading, children}: Props) => {
         clearInterval(slider);
       }
     };
-  }, [isProfileModal, next]);
+  }, [isProfileModal, next, routeActionLoading]);
 
   return (
     <div className="w-full px-4 overflow-hidden relative">

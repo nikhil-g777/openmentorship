@@ -75,4 +75,15 @@ const performUrlFormat = (
   return {aoiUrl, goalsUrl, cfUrl, cpUrl};
 };
 
-export {performFilter, performParamsToArray, performUrlFormat};
+const arrayEquals = (arr1: string[], arr2: string[]) => {
+  if (arr1.length !== arr2.length) return false;
+
+  let i = arr1.length;
+  while (i--) {
+    if (!arr2.includes(arr1[i])) return false;
+  }
+
+  return true;
+};
+
+export {performFilter, performParamsToArray, performUrlFormat, arrayEquals};
