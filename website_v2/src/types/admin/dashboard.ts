@@ -14,7 +14,7 @@ type StatsData = {
 type UsersData = {
   currentPage: string;
   success: boolean;
-  totalUsers: number;
+  totalPages: number;
   users: UserProfile["user"][];
 };
 

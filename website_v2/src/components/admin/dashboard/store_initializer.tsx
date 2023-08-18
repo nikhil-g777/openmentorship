@@ -5,6 +5,7 @@ import {
   useAdminDashboardStore,
   useCommonStore,
   useListingStore,
+  useProfileStore,
 } from "@/zustand/store";
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
@@ -21,6 +22,7 @@ const StoreInitializer = ({statsData, userRole, userType, data}: Props) => {
   const {setErrorAlert} = useCommonStore();
   const {setStatsData, setUsersData} = useAdminDashboardStore();
   const {setHeading, setListingData} = useListingStore();
+  const {setCurrentPage} = useProfileStore();
 
   useEffect(() => {
     // Redirect if user is not admin
@@ -50,6 +52,7 @@ const StoreInitializer = ({statsData, userRole, userType, data}: Props) => {
     setUsersData(data);
     setHeading(userType.split("")[0].toUpperCase() + userType.slice(1) + "s");
     setListingData(data.users);
+    setCurrentPage("dashboard");
   }, [
     userRole,
     router,
@@ -61,6 +64,7 @@ const StoreInitializer = ({statsData, userRole, userType, data}: Props) => {
     setHeading,
     setListingData,
     userType,
+    setCurrentPage,
   ]);
   return null;
 };
