@@ -6,12 +6,12 @@ const UserType = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-  const {setRouteActionLoading} = useCommonStore();
+  const {routeActionLoading, setRouteActionLoading} = useCommonStore();
 
   // Handle change
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const userType = event.target.value;
-    const uri = `${pathname}/users?tab=users&userType=${userType}&page=1`;
+    const uri = `${pathname}?tab=users&userType=${userType}&page=1`;
     startTransition(() => {
       router.push(uri);
       router.refresh();
@@ -31,7 +31,7 @@ const UserType = () => {
         className="select select-primary rounded-full"
         defaultValue="mentee"
         onChange={handleChange}
-        disabled={isPending}
+        disabled={routeActionLoading}
       >
         <option value="mentee">Mentee</option>
         <option value="mentor">Mentor</option>

@@ -1,4 +1,8 @@
+import {useCommonStore} from "@/zustand/store";
+
 const Search = () => {
+  const {routeActionLoading} = useCommonStore();
+
   return (
     <div className="w-full sm:w-fit form-control">
       <div className="input-group">
@@ -6,8 +10,12 @@ const Search = () => {
           type="text"
           placeholder="User ID or Name"
           className="w-full input input-bordered"
+          disabled={routeActionLoading}
         />
-        <button className="btn btn-square btn-primary">
+        <button
+          className="btn btn-square btn-primary"
+          disabled={routeActionLoading}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"

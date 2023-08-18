@@ -1,3 +1,5 @@
+import {UserProfile} from "../profile";
+
 type StatsData = {
   success: boolean;
   menteeCount: number;
@@ -9,4 +11,11 @@ type StatsData = {
   };
 };
 
-export type {StatsData};
+type UsersData = {
+  currentPage: string;
+  success: boolean;
+  totalUsers: number;
+  users: UserProfile["user"][];
+};
+
+export type {StatsData, UsersData};

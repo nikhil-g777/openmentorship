@@ -16,4 +16,24 @@ const getStats = async (token: string) => {
   }
 };
 
-export {getStats};
+// Get Users List
+const getUsersList = async (
+  token: string,
+  userType: string,
+  pageNumber: number
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_BASE_URL}/admin/userList?page=${pageNumber}&limit=10&userType=${userType}`,
+      {
+        headers: headerProvider(token),
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {getStats, getUsersList};
