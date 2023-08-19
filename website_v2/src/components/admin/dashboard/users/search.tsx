@@ -1,20 +1,62 @@
+"use client";
+
 import {useCommonStore} from "@/zustand/store";
+import {usePathname, useRouter} from "next/navigation";
+import {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 
 const Search = () => {
-  const {routeActionLoading} = useCommonStore();
+  const router = useRouter();
+  const pathname = usePathname();
+  const {routeActionLoading, setRouteActionLoading} = useCommonStore();
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isPending, startTransition] = useTransition();
+
+  // Handle Search
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    // Prevent default
+    e.preventDefault();
+
+    // Check if search query is empty
+    if (searchQuery === "") return;
+
+    // Perform search
+    startTransition(() => {
+      const uri = `${pathname}?tab=users&searchQuery=${searchQuery}`;
+      router.push(uri);
+      router.refresh();
+    });
+
+    // Reset search query
+    setSearchQuery("");
+  };
+
+  useEffect(() => {
+    setRouteActionLoading(isPending);
+  }, [isPending, setRouteActionLoading]);
 
   return (
     <div className="w-full sm:w-fit form-control">
-      <div className="input-group">
+      <form className="input-group" onSubmit={handleSearch}>
         <input
           type="text"
           placeholder="User ID or Name"
           className="w-full input input-bordered"
           disabled={routeActionLoading}
+          value={searchQuery}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setSearchQuery(e.target.value)
+          }
         />
         <button
           className="btn btn-square btn-primary"
           disabled={routeActionLoading}
+          type="submit"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +73,7 @@ const Search = () => {
             />
           </svg>
         </button>
-      </div>
+      </form>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import {StatsData, UsersData} from "@/types/admin/dashboard";
+import {SearchData, StatsData, UsersData} from "@/types/admin/dashboard";
 import {
   useAdminDashboardStore,
   useCommonStore,
@@ -15,9 +15,18 @@ type Props = {
   userRole: string | undefined | null;
   userType: string;
   data: UsersData;
+  searchData: SearchData | null;
+  searchQuery: string | undefined | null;
 };
 
-const StoreInitializer = ({statsData, userRole, userType, data}: Props) => {
+const StoreInitializer = ({
+  statsData,
+  userRole,
+  userType,
+  data,
+  searchData,
+  searchQuery,
+}: Props) => {
   const router = useRouter();
   const {setErrorAlert} = useCommonStore();
   const {setStatsData, setUsersData} = useAdminDashboardStore();
@@ -53,6 +62,17 @@ const StoreInitializer = ({statsData, userRole, userType, data}: Props) => {
     setHeading(userType.split("")[0].toUpperCase() + userType.slice(1) + "s");
     setListingData(data.users);
     setCurrentPage("dashboard");
+
+    // Set search data
+    if (searchData) {
+      setListingData(searchData.users);
+      setUsersData(null);
+      if (searchData.users.length === 0) {
+        setHeading("");
+      } else {
+        setHeading("Search Results: " + searchQuery);
+      }
+    }
   }, [
     userRole,
     router,
@@ -65,6 +85,8 @@ const StoreInitializer = ({statsData, userRole, userType, data}: Props) => {
     setListingData,
     userType,
     setCurrentPage,
+    searchData,
+    searchQuery,
   ]);
   return null;
 };

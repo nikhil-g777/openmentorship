@@ -36,4 +36,20 @@ const getUsersList = async (
   }
 };
 
-export {getStats, getUsersList};
+// Search Users List
+const searchUsers = async (token: string, searchString: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_BASE_URL}/admin/userSearch?searchString=${searchString}`,
+      {
+        headers: headerProvider(token),
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {getStats, getUsersList, searchUsers};

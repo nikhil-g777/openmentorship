@@ -8,7 +8,7 @@ export type DashboardSlice = {
   usersData: UsersData | null;
   // Actions
   setStatsData: (statsData: StatsData) => void;
-  setUsersData: (usersData: UsersData) => void;
+  setUsersData: (usersData: UsersData | null) => void;
 };
 
 // Initial state
@@ -30,7 +30,7 @@ export const dashboardSlice: StateCreator<
       statsData,
     }));
   },
-  setUsersData: (usersData: UsersData) => {
+  setUsersData: (usersData: UsersData | null) => {
     set(() => ({
       usersData,
     }));

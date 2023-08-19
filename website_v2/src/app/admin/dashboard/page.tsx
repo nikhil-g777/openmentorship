@@ -2,7 +2,7 @@ import {Analytics} from "@/components/admin/dashboard/analytics/analytics_wrappe
 import {StoreInitializer} from "@/components/admin/dashboard/store_initializer";
 import {Users} from "@/components/admin/dashboard/users/users_wrapper";
 import {AdminTabs} from "@/components/tabs/admin_tabs";
-import {getStats, getUsersList} from "@/endpoints/admin";
+import {getStats, getUsersList, searchUsers} from "@/endpoints/admin";
 import {authOptions} from "@/helpers/auth_options";
 import {getServerSession} from "next-auth";
 
@@ -11,6 +11,7 @@ type Props = {
     tab: string;
     userType: string;
     page: string;
+    searchQuery: string;
   };
 };
 
@@ -31,8 +32,16 @@ const Page = async ({searchParams}: Props) => {
   // Page
   const page = searchParams?.page || 1;
 
+  // Search Query
+  const searchQuery = searchParams?.searchQuery;
+
   // Mentees and Mentors
   const data = await getUsersList(token || "", userType, Number(page));
+
+  let searchData = null;
+  if (searchQuery) {
+    searchData = await searchUsers(token || "", searchQuery);
+  }
 
   return (
     <div className="w-full">
@@ -42,6 +51,8 @@ const Page = async ({searchParams}: Props) => {
         userRole={userRole}
         userType={userType}
         data={data}
+        searchData={searchData}
+        searchQuery={searchQuery}
       />
       {/* Tabs */}
       <AdminTabs />

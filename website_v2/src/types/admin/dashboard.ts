@@ -18,4 +18,9 @@ type UsersData = {
   users: UserProfile["user"][];
 };
 
-export type {StatsData, UsersData};
+type SearchData = {
+  success: boolean;
+  users: UserProfile["user"][];
+};
+
+export type {StatsData, UsersData, SearchData};
