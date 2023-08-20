@@ -1,10 +1,12 @@
 import {useCommonStore} from "@/zustand/store";
-import {usePathname, useRouter} from "next/navigation";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useTransition} from "react";
 
 const UserType = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const params = useSearchParams();
+  const userType = params.get("userType");
   const [isPending, startTransition] = useTransition();
   const {routeActionLoading, setRouteActionLoading} = useCommonStore();
 
@@ -29,7 +31,7 @@ const UserType = () => {
       </label>
       <select
         className="select select-primary rounded-full"
-        defaultValue="mentee"
+        defaultValue={userType ? userType : "mentee"}
         onChange={handleChange}
         disabled={routeActionLoading}
       >

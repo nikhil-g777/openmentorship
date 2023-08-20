@@ -16,6 +16,8 @@ import {useSession} from "next-auth/react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
+import {AdminActionsWrapper} from "./admin/admin_action_wrapper";
+import {AdminUserDetails} from "./admin/admin_user_details";
 
 type Props = {
   data: {
@@ -151,6 +153,12 @@ const Profile = ({data, rootData}: Props) => {
         >
           {secondaryButtonText}
         </button>
+      ) : null}
+
+      {/* Admin Actions & Details */}
+      {currentPage === "dashboard" ? <AdminActionsWrapper /> : null}
+      {currentPage === "dashboard" && rootData ? (
+        <AdminUserDetails data={rootData} />
       ) : null}
     </div>
   );
