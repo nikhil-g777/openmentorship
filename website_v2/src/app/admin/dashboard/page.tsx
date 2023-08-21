@@ -12,6 +12,7 @@ type Props = {
     userType: string;
     page: string;
     searchQuery: string;
+    registrationStatus: string;
   };
 };
 
@@ -32,11 +33,19 @@ const Page = async ({searchParams}: Props) => {
   // Page
   const page = searchParams?.page || 1;
 
+  // Registration Status
+  const registrationStatus = searchParams?.registrationStatus || "";
+
   // Search Query
   const searchQuery = searchParams?.searchQuery;
 
   // Mentees and Mentors
-  const data = await getUsersList(token || "", userType, Number(page));
+  const data = await getUsersList(
+    token || "",
+    userType,
+    Number(page),
+    registrationStatus
+  );
 
   let searchData = null;
   if (searchQuery) {

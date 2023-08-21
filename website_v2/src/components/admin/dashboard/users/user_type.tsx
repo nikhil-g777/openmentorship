@@ -6,6 +6,7 @@ const UserType = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const registrationStatus = params.get("registrationStatus") || "";
   const userType = params.get("userType");
   const [isPending, startTransition] = useTransition();
   const {routeActionLoading, setRouteActionLoading} = useCommonStore();
@@ -13,7 +14,7 @@ const UserType = () => {
   // Handle change
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const userType = event.target.value;
-    const uri = `${pathname}?tab=users&userType=${userType}&page=1`;
+    const uri = `${pathname}?tab=users&userType=${userType}&page=1&registrationStatus=${registrationStatus}`;
     startTransition(() => {
       router.push(uri);
       router.refresh();

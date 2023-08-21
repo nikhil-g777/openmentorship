@@ -20,11 +20,12 @@ const getStats = async (token: string) => {
 const getUsersList = async (
   token: string,
   userType: string,
-  pageNumber: number
+  pageNumber: number,
+  registrationStatus: string
 ) => {
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}/admin/userList?page=${pageNumber}&limit=10&userType=${userType}`,
+      `${process.env.BACKEND_BASE_URL}/admin/userList?page=${pageNumber}&limit=10&userType=${userType}&registrationStatus=${registrationStatus}`,
       {
         headers: headerProvider(token),
       }
