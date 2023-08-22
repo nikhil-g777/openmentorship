@@ -26,7 +26,7 @@ const nextAuthLogin = async (
       headers: headerProvider(),
       body: JSON.stringify({
         authCode: credentials?.authCode,
-        isLocal: Boolean(process.env.NEXT_APP_IS_LOCAL),
+        isLocal: process.env.NEXT_APP_IS_LOCAL?.toLowerCase() === "true",
       }),
     });
     return res;
