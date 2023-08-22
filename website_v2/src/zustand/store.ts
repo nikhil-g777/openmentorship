@@ -44,6 +44,7 @@ const useProfileStore = create<ProfileSlice>()((...a) => ({
 // Chat store
 const useChatStore = create<ChatSlice>()((...a) => ({
   ...chatSlice(...a),
+}));
 
 // Filter store
 const useFilterStore = create<FilterSlice>()((...a) => ({
