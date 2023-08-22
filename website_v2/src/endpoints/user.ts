@@ -20,6 +20,8 @@ const getUserInfo = async (authCode: string) => {
 const nextAuthLogin = async (
   credentials: Record<"authCode", string> | undefined
 ) => {
+  console.log("!!!");
+  console.log(process.env.NEXT_APP_IS_LOCAL);
   try {
     const res = await fetch(`${process.env.BACKEND_BASE_URL}/users/login`, {
       method: "POST",
