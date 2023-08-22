@@ -53,4 +53,29 @@ const searchUsers = async (token: string, searchString: string) => {
   }
 };
 
-export {getStats, getUsersList, searchUsers};
+// Update Mentor Registration
+const updateMentorRegistration = async (
+  token: string,
+  userId: string,
+  registrationStatus: string
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/admin/updateMentorRegistration`,
+      {
+        headers: headerProvider(token),
+        method: "POST",
+        body: JSON.stringify({
+          mentorId: userId,
+          registrationStatus: registrationStatus,
+        }),
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {getStats, getUsersList, searchUsers, updateMentorRegistration};

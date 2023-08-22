@@ -37,10 +37,12 @@ const Status = () => {
         disabled={routeActionLoading}
       >
         <option value="">All</option>
-        <option value="complete">Approved</option>
-        <option value="incomplete">Pending</option>
-        <option value="denied">Rejected</option>
+        <option value="complete">Complete</option>
+        <option value="incomplete">Incomplete</option>
+        <option value="denied">Denied</option>
         <option value="disabled">Disabled</option>
+        <option value="pendingConfirmation">Pending Confirmation</option>
+        <option value="pendingApproval">Pending Approval</option>
       </select>
     </div>
   );

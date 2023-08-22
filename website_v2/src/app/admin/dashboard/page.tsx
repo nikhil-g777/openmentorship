@@ -1,6 +1,7 @@
 import {Analytics} from "@/components/admin/dashboard/analytics/analytics_wrapper";
 import {StoreInitializer} from "@/components/admin/dashboard/store_initializer";
 import {Users} from "@/components/admin/dashboard/users/users_wrapper";
+import {ConfirmationModal} from "@/components/modals/confirmation_modal";
 import {AdminTabs} from "@/components/tabs/admin_tabs";
 import {getStats, getUsersList, searchUsers} from "@/endpoints/admin";
 import {authOptions} from "@/helpers/auth_options";
@@ -69,6 +70,8 @@ const Page = async ({searchParams}: Props) => {
       {currentTab === "analytics" || currentTab === "" ? <Analytics /> : null}
       {/* Users */}
       {currentTab === "users" ? <Users /> : null}
+      {/* Confirmation Modal */}
+      <ConfirmationModal />
     </div>
   );
 };

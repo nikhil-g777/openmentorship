@@ -1,3 +1,4 @@
+import {updateMentorRegistration} from "@/endpoints/admin";
 import {updateMatches} from "@/endpoints/matches";
 import {PerformConfirmationAction} from "@/types/profile";
 
@@ -128,6 +129,73 @@ const performConfirmationAction = async ({
       router.refresh();
     }
   }
+
+  // Approve Account / Enable Account (Admin Dashboard)
+  if (
+    currentPage === "dashboard" &&
+    (confirmationButtonText === "Approve Account" ||
+      confirmationButtonText === "Enable Account") &&
+    chatId &&
+    chatId.length &&
+    token &&
+    token.length
+  ) {
+    setLoading(true);
+    const res = await updateMentorRegistration(token, chatId, "complete");
+    setLoading(false);
+    if (!res.success && setErrorAlert) {
+      setErrorAlert(res.error, 6);
+    }
+    if (res.success && setSuccessAlert) {
+      setConfirmationText("");
+      setSuccessAlert("You have approved the account!", 6);
+      router.refresh();
+    }
+  }
+
+  // Deny Account (Admin Dashboard)
+  if (
+    currentPage === "dashboard" &&
+    confirmationButtonText === "Deny Account" &&
+    chatId &&
+    chatId.length &&
+    token &&
+    token.length
+  ) {
+    setLoading(true);
+    const res = await updateMentorRegistration(token, chatId, "denied");
+    setLoading(false);
+    if (!res.success && setErrorAlert) {
+      setErrorAlert(res.error, 6);
+    }
+    if (res.success && setSuccessAlert) {
+      setConfirmationText("");
+      setSuccessAlert("You have denied the account!", 6);
+      router.refresh();
+    }
+  }
+
+  // Disable Account (Admin Dashboard)
+  if (
+    currentPage === "dashboard" &&
+    confirmationButtonText === "Disable Account" &&
+    chatId &&
+    chatId.length &&
+    token &&
+    token.length
+  ) {
+    setLoading(true);
+    const res = await updateMentorRegistration(token, chatId, "disabled");
+    setLoading(false);
+    if (!res.success && setErrorAlert) {
+      setErrorAlert(res.error, 6);
+    }
+    if (res.success && setSuccessAlert) {
+      setConfirmationText("");
+      setSuccessAlert("You have disabled the account!", 6);
+      router.refresh();
+    }
+  }
 };
 
 // Get Confirmation Button Text
@@ -186,6 +254,54 @@ const getConfirmationButtonText = (
     loading
   ) {
     return "Approving...";
+  }
+  if (
+    confirmationText === "Are you sure you want to approve this account?" &&
+    !loading
+  ) {
+    return "Approve Account";
+  }
+  if (
+    confirmationText === "Are you sure you want to approve this account?" &&
+    loading
+  ) {
+    return "Approving...";
+  }
+  if (
+    confirmationText === "Are you sure you want to deny this account?" &&
+    !loading
+  ) {
+    return "Deny Account";
+  }
+  if (
+    confirmationText === "Are you sure you want to deny this account?" &&
+    loading
+  ) {
+    return "Denying...";
+  }
+  if (
+    confirmationText === "Are you sure you want to disable this account?" &&
+    !loading
+  ) {
+    return "Disable Account";
+  }
+  if (
+    confirmationText === "Are you sure you want to disable this account?" &&
+    loading
+  ) {
+    return "Disabling...";
+  }
+  if (
+    confirmationText === "Are you sure you want to enable this account?" &&
+    !loading
+  ) {
+    return "Enable Account";
+  }
+  if (
+    confirmationText === "Are you sure you want to enable this account?" &&
+    loading
+  ) {
+    return "Enabling...";
   }
 
   return "";

@@ -69,6 +69,11 @@ const AdminUserDetails = ({data}: Props) => {
               <p className="font-semibold">Email:</p>
               <p>{userInfo?.email}</p>
             </div>
+            {/* Registration Status */}
+            <div className="w-full flex items-center gap-2 mt-2">
+              <p className="font-semibold">Registration Status:</p>
+              <p>{userInfo?.registrationStatus}</p>
+            </div>
           </div>
           <div className="modal-action">
             <label className="btn" onClick={handleClose}>

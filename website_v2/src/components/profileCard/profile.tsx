@@ -156,7 +156,9 @@ const Profile = ({data, rootData}: Props) => {
       ) : null}
 
       {/* Admin Actions & Details */}
-      {currentPage === "dashboard" ? <AdminActionsWrapper /> : null}
+      {currentPage === "dashboard" && rootData ? (
+        <AdminActionsWrapper data={rootData} />
+      ) : null}
       {currentPage === "dashboard" && rootData ? (
         <AdminUserDetails data={rootData} />
       ) : null}
