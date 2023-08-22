@@ -8,6 +8,7 @@ import {
 import {carouselSlice, CarouselSlice} from "./slices/carouselSlice";
 import {profileSlice, ProfileSlice} from "./slices/profileSlice";
 import {listingSlice, ListingSlice} from "./slices/listingSlice";
+import {chatSlice, ChatSlice} from "./slices/chatSlice";
 import {filterSlice, FilterSlice} from "./slices/filterSlice";
 
 // Common store
@@ -40,6 +41,10 @@ const useProfileStore = create<ProfileSlice>()((...a) => ({
   ...profileSlice(...a),
 }));
 
+// Chat store
+const useChatStore = create<ChatSlice>()((...a) => ({
+  ...chatSlice(...a),
+
 // Filter store
 const useFilterStore = create<FilterSlice>()((...a) => ({
   ...filterSlice(...a),
@@ -52,5 +57,6 @@ export {
   useCarouselStore,
   useProfileStore,
   useListingStore,
+  useChatStore,
   useFilterStore,
 };

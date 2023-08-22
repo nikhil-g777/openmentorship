@@ -15,7 +15,7 @@ const performConfirmationAction = async ({
 }: PerformConfirmationAction) => {
   // End Session
   if (
-    currentPage === "matches" &&
+    (currentPage === "matches" || currentPage === "chat") &&
     confirmationButtonText === "End Session" &&
     chatId &&
     chatId.length &&
@@ -36,8 +36,13 @@ const performConfirmationAction = async ({
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
       setSuccessAlert("You have ended the session!", 6);
-      router.push("/matches?tab=closed");
-      router.refresh();
+      if (currentPage === "chat") {
+        router.push("/chat");
+        router.refresh();
+      } else {
+        router.push("/matches?tab=closed");
+        router.refresh();
+      }
     }
   }
 
