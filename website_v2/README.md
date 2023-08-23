@@ -175,3 +175,7 @@ NEXT_APP_IS_LOCAL=AS_MENTIONED_IN_NOTION
 NEXTAUTH_URL=AS_MENTIONED_IN_NOTION
 NEXTAUTH_SECRET=AS_MENTIONED_IN_NOTION
 ```
+
+# Hosting
+
+Currently the web appplications are hosted by building the react app and serving it using nginx. Trying to move to vercel

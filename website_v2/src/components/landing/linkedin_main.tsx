@@ -9,9 +9,7 @@ import {signIn} from "next-auth/react";
 const Linkedin = () => {
   const {linkedInLogin} = useLinkedIn({
     clientId: process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID!,
-    redirectUri: `${
-      typeof window === "object" && window.location.origin
-    }/linkedin`,
+    redirectUri: process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI!,
     scope: "r_emailaddress r_liteprofile",
     onSuccess: code => {
       signIn("credentials", {authCode: code});
