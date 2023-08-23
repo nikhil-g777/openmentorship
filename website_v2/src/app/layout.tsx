@@ -1,4 +1,4 @@
-import {Navbar} from "@/components/layout/navbar_main";
+import {Navbar} from "@/components/layout/navbar/navbar_main";
 import "./globals.css";
 import {Inter} from "next/font/google";
 import {Footer} from "@/components/layout/footer_main";
