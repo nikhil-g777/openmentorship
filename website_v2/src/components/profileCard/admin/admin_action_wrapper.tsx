@@ -1,5 +1,6 @@
 "use client";
 
+import {performAdminActions} from "@/helpers/admin/admin_actions";
 import {UserProfile} from "@/types/profile";
 import {useProfileStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
@@ -21,25 +22,8 @@ const AdminActionsWrapper = ({data}: Props) => {
     setToken(token);
     setChatId(data._id);
 
-    // Disable Account
-    if (buttonText === "Disable Account") {
-      setConfirmationText("Are you sure you want to disable this account?");
-    }
-
-    // Enable Account
-    if (buttonText === "Enable Account") {
-      setConfirmationText("Are you sure you want to enable this account?");
-    }
-
-    // Approve Account
-    if (buttonText === "Approve Account") {
-      setConfirmationText("Are you sure you want to approve this account?");
-    }
-
-    // Deny Account
-    if (buttonText === "Deny Account") {
-      setConfirmationText("Are you sure you want to deny this account?");
-    }
+    // Perform admin actions
+    performAdminActions(buttonText, setConfirmationText);
   };
 
   return (
