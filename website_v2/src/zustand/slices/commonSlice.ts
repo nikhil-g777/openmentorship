@@ -1,3 +1,4 @@
+import {AuthenticationError} from "@/types/authentication";
 import {StateCreator} from "zustand";
 
 export type CommonSlice = {
@@ -5,6 +6,10 @@ export type CommonSlice = {
   setSuccessAlert: (successAlert: string, time: number) => void;
   errorAlert: string;
   setErrorAlert: (errorAlert: string, time: number) => void;
+  authenticationError: AuthenticationError | null;
+  setAuthenticationError: (
+    authenticationError: AuthenticationError | null
+  ) => void;
   routeActionLoading: boolean;
   setRouteActionLoading: (routeActionLoading: boolean) => void;
 };
@@ -12,6 +17,7 @@ export type CommonSlice = {
 const initialState = {
   successAlert: "",
   errorAlert: "",
+  authenticationError: null,
   routeActionLoading: false,
 };
 
@@ -43,6 +49,11 @@ export const commonSlice: StateCreator<
         errorAlert: "",
       }));
     }, time * 1000);
+  },
+  setAuthenticationError: (authenticationError: AuthenticationError | null) => {
+    set(() => ({
+      authenticationError: authenticationError,
+    }));
   },
   setRouteActionLoading: (routeActionLoading: boolean) => {
     set(() => ({
