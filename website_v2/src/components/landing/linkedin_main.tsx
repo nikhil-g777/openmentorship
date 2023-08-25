@@ -5,12 +5,16 @@ import {useLinkedIn} from "react-linkedin-login-oauth2";
 import linkedin from "react-linkedin-login-oauth2/assets/linkedin.png";
 import Image from "next/image";
 import {signIn} from "next-auth/react";
-import {useRouter} from "next/navigation";
 import {useCommonStore} from "@/zustand/store";
+import {handleLoginErrors} from "@/helpers/landing";
 
 const Linkedin = () => {
-  const router = useRouter();
-  const {setAuthenticationError} = useCommonStore();
+  const {
+    setAuthenticationError,
+    setSuccessAlert,
+    routeActionLoading,
+    setRouteActionLoading,
+  } = useCommonStore();
 
   const {linkedInLogin} = useLinkedIn({
     clientId: process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID!,
@@ -21,17 +25,17 @@ const Linkedin = () => {
         authCode: code,
         redirect: false,
       });
-      if (res && res.error === "CredentialsSignin") {
-        setAuthenticationError({
-          heading: "Pending Approval",
-          subHeading: "We're processing your profile",
-          message:
-            "In order to make sure our mentorship community holds up a standard, we process and verify mentor profiles.",
+      if (res && res.error) {
+        const error = res.error;
+        handleLoginErrors({
+          error,
+          setSuccessAlert,
+          setAuthenticationError,
+          setRouteActionLoading,
         });
       } else {
-        router.replace(
-          "/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
-        );
+        setSuccessAlert("Successfully logged in!", 3);
+        setRouteActionLoading(false);
       }
     },
     onError: error => {
@@ -40,7 +44,11 @@ const Linkedin = () => {
   });
 
   return (
-    <button type="button" onClick={linkedInLogin} className="btn btn-link p-0">
+    <button
+      type="button"
+      onClick={linkedInLogin}
+      className={`btn btn-link p-0 ${routeActionLoading ? "loading" : ""}`}
+    >
       <Image
         src={linkedin}
         alt="Sign in with Linked In"
