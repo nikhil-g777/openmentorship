@@ -33,22 +33,26 @@ export const commonSlice: StateCreator<
     set(() => ({
       successAlert: successAlert,
     }));
-    setTimeout(() => {
+    // Timeout with cleanup
+    const timer = setTimeout(() => {
       set(() => ({
         successAlert: "",
       }));
     }, time * 1000);
+    return () => clearTimeout(timer);
   },
   //   Set the error alert
   setErrorAlert: (errorAlert: string, time) => {
     set(() => ({
       errorAlert: errorAlert,
     }));
-    setTimeout(() => {
+    // Timeout with cleanup
+    const timer = setTimeout(() => {
       set(() => ({
         errorAlert: "",
       }));
     }, time * 1000);
+    return () => clearTimeout(timer);
   },
   setAuthenticationError: (authenticationError: AuthenticationError | null) => {
     set(() => ({
