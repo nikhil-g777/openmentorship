@@ -10,10 +10,10 @@ const StoreInitializer = () => {
   const userType = useSession().data?.user.user.userType;
   const {successAlert, setSuccessAlert} = useCommonStore();
 
-  // Redirect on successful login
+  // Redirect on successful sign in
   useEffect(() => {
     let timer: null | NodeJS.Timeout = null;
-    if (userType && successAlert === "Successfully logged in!") {
+    if (userType && successAlert === "Successfully signed in!") {
       // Fire after 3 seconds
       timer = setTimeout(() => {
         if (userType === "mentee") {

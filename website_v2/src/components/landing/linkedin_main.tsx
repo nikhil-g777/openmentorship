@@ -34,7 +34,7 @@ const Linkedin = () => {
           setRouteActionLoading,
         });
       } else {
-        setSuccessAlert("Successfully logged in!", 3);
+        setSuccessAlert("Successfully signed in!", 3);
         setRouteActionLoading(false);
       }
     },
