@@ -45,11 +45,12 @@ const Linkedin = () => {
 
   // handleLinkedinLogin
   const handleLinkedinLogin = () => {
-    linkedInLogin();
+    // Set loading state
+    setRouteActionLoading(true);
 
-    // Set loading state after 1 second
+    // Redirect to linkedin after 1 second
     setTimeout(() => {
-      setRouteActionLoading(true);
+      linkedInLogin();
     }, 1000);
   };
 
