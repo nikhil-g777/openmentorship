@@ -25,8 +25,33 @@ export const authOptions: NextAuthOptions = {
         const res = (await nextAuthLogin(credentials)) as Response;
         const user = await res.json();
 
+        // Throw errors if any
+        if (user.registrationStatus === "incomplete") {
+          throw new Error("registrationStatus: incomplete");
+        }
+
+        if (user.registrationStatus === "pendingConfirmation") {
+          throw new Error("registrationStatus: pendingConfirmation");
+        }
+
+        if (user.registrationStatus === "pendingApproval") {
+          throw new Error("registrationStatus: pendingApproval");
+        }
+
+        if (user.registrationStatus === "denied") {
+          throw new Error("registrationStatus: denied");
+        }
+
+        if (user.registrationStatus === "disabled") {
+          throw new Error("registrationStatus: disabled");
+        }
+
+        if (user.error === "Unable to login user") {
+          throw new Error("Unable to login user");
+        }
+
         // If no error and we have user data, return it
-        if (res.ok && user) {
+        if (res.ok && user.success) {
           return user;
         }
         // Return null if user data could not be retrieved
