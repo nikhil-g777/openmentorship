@@ -12,13 +12,13 @@ const Navbar = () => {
     // Wrapper
     <div className="w-full shadow">
       {/* Container */}
-      <footer className="navbar bg-base-100 max-w-6xl mx-auto sm:py-5">
+      <nav className="navbar bg-base-100 max-w-6xl mx-auto sm:py-5">
         {status === "authenticated" ? <NavbarLinks /> : null}
         {/* Logo */}
         <NavbarLogo />
         {/* User Profile */}
         {status === "authenticated" ? <NavbarDropdown /> : null}
-      </footer>
+      </nav>
     </div>
   );
 };
