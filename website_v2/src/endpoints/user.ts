@@ -88,7 +88,7 @@ const updateUser = async (token: string, data: RegisterBody) => {
 const confirmRegistration = async (confirmationToken: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/confirmRegistration?confirmationToken=${confirmationToken}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/confirmRegistration?confirmationToken=${confirmationToken}`,
       {
         method: "GET",
       }
