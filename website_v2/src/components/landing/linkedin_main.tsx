@@ -43,10 +43,20 @@ const Linkedin = () => {
     },
   });
 
+  // handleLinkedinLogin
+  const handleLinkedinLogin = () => {
+    linkedInLogin();
+
+    // Set loading state after 1 second
+    setTimeout(() => {
+      setRouteActionLoading(true);
+    }, 1000);
+  };
+
   return (
     <button
       type="button"
-      onClick={linkedInLogin}
+      onClick={handleLinkedinLogin}
       className={`btn btn-link p-0 ${routeActionLoading ? "loading" : ""}`}
     >
       <Image

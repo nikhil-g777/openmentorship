@@ -6,11 +6,13 @@ import {StoreInitializer} from "@/components/landing/store_initializer";
 import {WhyOpenMentorship} from "@/components/landing/why_open_mentorship";
 import {AuthenticationErrorModal} from "@/components/modals/authentication_error_modal";
 import {list} from "@/helpers/landing";
+import {AuthenticationLoader} from "@/loaders/authentication_loader";
 
 export default function Home() {
   return (
     <main className="w-full">
       <StoreInitializer />
+      <AuthenticationLoader />
       <Hero />
       <HowItWorks />
       <WhyOpenMentorship />

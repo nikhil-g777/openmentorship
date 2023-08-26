@@ -3,12 +3,19 @@
 import {useCommonStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const StoreInitializer = () => {
   const router = useRouter();
   const userType = useSession().data?.user.user.userType;
-  const {successAlert, setSuccessAlert} = useCommonStore();
+  const {
+    successAlert,
+    setSuccessAlert,
+    setErrorAlert,
+    routeActionLoading,
+    setRouteActionLoading,
+  } = useCommonStore();
+  const [counter, setCounter] = useState<number>(0);
 
   // Redirect on successful sign in
   useEffect(() => {
@@ -37,6 +44,39 @@ const StoreInitializer = () => {
       }
     };
   }, [userType, successAlert, setSuccessAlert, router]);
+
+  // Start timeout counter for 90 seconds on routeActionLoading
+  useEffect(() => {
+    let timer: null | NodeJS.Timeout = null;
+    if (routeActionLoading && counter < 90) {
+      timer = setTimeout(() => {
+        setCounter(counter + 1);
+      }, 1000);
+    }
+
+    // Error if counter reaches 90 seconds
+    if (counter === 90) {
+      setErrorAlert(
+        "Your sign-in session has timed out. Please refresh the page and try again.",
+        6
+      );
+      setRouteActionLoading(false);
+      setCounter(0);
+    }
+
+    // Clear timer on unmount
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [
+    routeActionLoading,
+    setRouteActionLoading,
+    setErrorAlert,
+    counter,
+    setCounter,
+  ]);
 
   return null;
 };
