@@ -26,7 +26,7 @@ const AuthenticationErrorModal = () => {
         }`}
       >
         <div className="modal-box">
-          <h3 className="text-2xl font-bold text-center pb-4">
+          <h3 className="text-2xl font-bold text-center py-4">
             {authenticationError?.heading}
           </h3>
           <Image
@@ -36,7 +36,7 @@ const AuthenticationErrorModal = () => {
             height={150}
             className="mx-auto"
           />
-          <h4 className="text-xl font-semibold text-center py-4">
+          <h4 className="text-xl font-semibold text-center pt-4">
             {authenticationError?.subHeading}
           </h4>
           <p className="text-center py-4">{authenticationError?.message}</p>
