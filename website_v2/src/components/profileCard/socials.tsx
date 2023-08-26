@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 type Props = {
   data: {
@@ -16,8 +15,9 @@ const Socials = ({data}: Props) => {
           ? Object.entries(data)
               .filter(([key, value]) => key !== "" && value !== "")
               .map(([key, value]) => (
-                <Link
+                <a
                   href={value}
+                  target="_blank"
                   key={key}
                   className="btn btn-sm btn-circle btn-outline hover:btn-ghost p-1 border-base-300"
                 >
@@ -27,7 +27,7 @@ const Socials = ({data}: Props) => {
                     width={20}
                     height={20}
                   />
-                </Link>
+                </a>
               ))
           : null}
       </div>
