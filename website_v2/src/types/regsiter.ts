@@ -64,6 +64,12 @@ type RegisterBody = {
   };
 };
 
+type UserConfirmation = {
+  success: boolean;
+  err: string;
+  msg: string;
+};
+
 export type {
   WorkExperience,
   Education,
@@ -71,4 +77,5 @@ export type {
   CommunicationPreferences,
   SocialLinks,
   RegisterBody,
+  UserConfirmation,
 };
