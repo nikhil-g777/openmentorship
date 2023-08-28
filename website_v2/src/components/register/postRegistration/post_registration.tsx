@@ -50,7 +50,11 @@ const PostRegistration = () => {
 
   return (
     <div className={`w-full ${currentScreen === "step6" ? "" : "hidden"}`}>
-      <div className="w-full max-w-3xl mx-auto mt-16 px-4 flex justify-center">
+      {/* Heading */}
+      <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal mt-8">
+        Registration complete, here are your next steps:
+      </h1>
+      <div className="w-full max-w-3xl mx-auto mt-8 px-4 flex justify-center">
         <ul className="steps steps-vertical">
           {userType === "mentee" && menteeGuidelines && menteeGuidelines.length
             ? menteeGuidelines.map(guideline => (
