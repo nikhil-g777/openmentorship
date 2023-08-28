@@ -84,4 +84,25 @@ const updateUser = async (token: string, data: RegisterBody) => {
   }
 };
 
-export {getUserInfo, nextAuthLogin, registerUser, updateUser};
+// Confirm Registration
+const confirmRegistration = async (confirmationToken: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/confirmRegistration?confirmationToken=${confirmationToken}`,
+      {
+        method: "GET",
+      }
+    );
+    return res.json();
+  } catch (error) {
+    return error;
+  }
+};
+
+export {
+  getUserInfo,
+  nextAuthLogin,
+  registerUser,
+  updateUser,
+  confirmRegistration,
+};

@@ -1,4 +1,10 @@
-import {Education, SocialLinks, WorkExperience} from "@/types/regsiter";
+import {
+  Education,
+  SocialLinks,
+  UserConfirmation,
+  WorkExperience,
+} from "@/types/regsiter";
+import {CommonSlice} from "@/zustand/slices/commonSlice";
 import {Dispatch, SetStateAction} from "react";
 
 // Social links regex patterns
@@ -531,6 +537,71 @@ const validateSocialLinks = (
   return false;
 };
 
+// Handle User Confirmation
+const handleUserConfirmation = (
+  data: UserConfirmation,
+  setUserConfirmation: (data: CommonSlice["userConfirmation"]) => void
+) => {
+  // Missing confirmation token
+  if (!data.success && data.err === "Missing confirmation token") {
+    setUserConfirmation({
+      heading: "Oops!",
+      subHeading: "Missing Confirmation Token",
+      message:
+        "Sorry, we cannot confirm your email address as the confirmation token is missing. Please check your inbox for an email from us containing the confirmation token. If it's not there, please contact our support team for assistance.",
+    });
+  }
+
+  // Invalid confirmation token
+  else if (!data.success && data.err === "Invalid Token") {
+    setUserConfirmation({
+      heading: "Oops!",
+      subHeading: "Invalid Confirmation Token",
+      message:
+        "Sorry, we cannot confirm your email address as the confirmation token is invalid. Please check your inbox for an email from us containing the confirmation token. If it's not there, please contact our support team for assistance.",
+    });
+  }
+
+  // Invalid user
+  else if (!data.success && data.err === "Invalid User") {
+    setUserConfirmation({
+      heading: "Oops!",
+      subHeading: "Invalid User",
+      message:
+        "Sorry, we cannot confirm your email address as the user is invalid. Please check your inbox for an email from us containing the confirmation token. If it's not there, please contact our support team for assistance.",
+    });
+  }
+
+  // Invalid user type
+  else if (!data.success && data.err === "Invalid user type") {
+    setUserConfirmation({
+      heading: "Oops!",
+      subHeading: "Invalid User Type",
+      message:
+        "Sorry, we cannot confirm your email address as the user type is invalid. Please check your inbox for an email from us containing the confirmation token. If it's not there, please contact our support team for assistance.",
+    });
+  }
+
+  // Registration successful
+  else if (data.success && data.msg === "Registration Confirmed") {
+    setUserConfirmation({
+      heading: "Congratulations!",
+      subHeading: "Registration Confirmed",
+      message:
+        "Congratulations! Your email address has been confirmed. You can now login to your account.",
+    });
+  }
+
+  // Confirmation failed
+  else {
+    setUserConfirmation({
+      heading: "Oops!",
+      subHeading: "Confirmation Failed",
+      message: "Sorry, we cannot confirm your email address at this time.",
+    });
+  }
+};
+
 export {
   twitterPattern,
   mediumPattern,
@@ -556,4 +627,5 @@ export {
   checkCommunicationPreferencesIsEmpty,
   checkAtleastOneSocialLinkProvided,
   validateSocialLinks,
+  handleUserConfirmation,
 };

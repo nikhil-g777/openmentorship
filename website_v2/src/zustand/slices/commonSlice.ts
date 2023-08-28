@@ -12,6 +12,14 @@ export type CommonSlice = {
   ) => void;
   routeActionLoading: boolean;
   setRouteActionLoading: (routeActionLoading: boolean) => void;
+  userConfirmation: {
+    heading: string;
+    subHeading: string;
+    message: string;
+  } | null;
+  setUserConfirmation: (
+    userConfirmation: CommonSlice["userConfirmation"] | null
+  ) => void;
 };
 
 const initialState = {
@@ -19,6 +27,7 @@ const initialState = {
   errorAlert: "",
   authenticationError: null,
   routeActionLoading: false,
+  userConfirmation: null,
 };
 
 export const commonSlice: StateCreator<
@@ -62,6 +71,13 @@ export const commonSlice: StateCreator<
   setRouteActionLoading: (routeActionLoading: boolean) => {
     set(() => ({
       routeActionLoading: routeActionLoading,
+    }));
+  },
+  setUserConfirmation: (
+    userConfirmation: CommonSlice["userConfirmation"] | null
+  ) => {
+    set(() => ({
+      userConfirmation: userConfirmation,
     }));
   },
 });
