@@ -1,3 +1,4 @@
+import {CONFIRMATION_PROMPTS} from "@/constants/admin/dashboard";
 import {updateMentorRegistration} from "@/endpoints/admin";
 import {updateMatches} from "@/endpoints/matches";
 import {PerformConfirmationAction} from "@/types/profile";
@@ -203,108 +204,26 @@ const getConfirmationButtonText = (
   confirmationText: string,
   loading: boolean
 ) => {
-  if (
-    confirmationText ===
-      "Are you sure that you would like to end the session?" &&
-    !loading
-  ) {
-    return "End Session";
+  switch (confirmationText) {
+    case CONFIRMATION_PROMPTS.END_SESSION:
+      return loading ? "Ending Session..." : "End Session";
+    case CONFIRMATION_PROMPTS.DECLINE_REQUEST:
+      return loading ? "Declining..." : "Decline Request";
+    case CONFIRMATION_PROMPTS.WITHDRAW_REQUEST:
+      return loading ? "Withdrawing..." : "Withdraw Request";
+    case CONFIRMATION_PROMPTS.APPROVE_REQUEST:
+      return loading ? "Approving..." : "Approve Request";
+    case CONFIRMATION_PROMPTS.APPROVE_ACCOUNT:
+      return loading ? "Approving..." : "Approve Account";
+    case CONFIRMATION_PROMPTS.DENY_ACCOUNT:
+      return loading ? "Denying..." : "Deny Account";
+    case CONFIRMATION_PROMPTS.DISABLE_ACCOUNT:
+      return loading ? "Disabling..." : "Disable Account";
+    case CONFIRMATION_PROMPTS.ENABLE_ACCOUNT:
+      return loading ? "Enabling..." : "Enable Account";
+    default:
+      return "";
   }
-  if (
-    confirmationText ===
-      "Are you sure that you would like to end the session?" &&
-    loading
-  ) {
-    return "Ending Session...";
-  }
-  if (
-    confirmationText ===
-      "Are you sure that you would like to decline the request?" &&
-    !loading
-  ) {
-    return "Decline Request";
-  }
-  if (
-    confirmationText ===
-      "Are you sure that you would like to decline the request?" &&
-    loading
-  ) {
-    return "Declining...";
-  }
-  if (
-    confirmationText === "Are you sure you want to withdraw your request?" &&
-    !loading
-  ) {
-    return "Withdraw Request";
-  }
-  if (
-    confirmationText === "Are you sure you want to withdraw your request?" &&
-    loading
-  ) {
-    return "Withdrawing...";
-  }
-  if (
-    confirmationText === "Are you sure you want to approve this request?" &&
-    !loading
-  ) {
-    return "Approve Request";
-  }
-  if (
-    confirmationText === "Are you sure you want to approve this request?" &&
-    loading
-  ) {
-    return "Approving...";
-  }
-  if (
-    confirmationText === "Are you sure you want to approve this account?" &&
-    !loading
-  ) {
-    return "Approve Account";
-  }
-  if (
-    confirmationText === "Are you sure you want to approve this account?" &&
-    loading
-  ) {
-    return "Approving...";
-  }
-  if (
-    confirmationText === "Are you sure you want to deny this account?" &&
-    !loading
-  ) {
-    return "Deny Account";
-  }
-  if (
-    confirmationText === "Are you sure you want to deny this account?" &&
-    loading
-  ) {
-    return "Denying...";
-  }
-  if (
-    confirmationText === "Are you sure you want to disable this account?" &&
-    !loading
-  ) {
-    return "Disable Account";
-  }
-  if (
-    confirmationText === "Are you sure you want to disable this account?" &&
-    loading
-  ) {
-    return "Disabling...";
-  }
-  if (
-    confirmationText === "Are you sure you want to enable this account?" &&
-    !loading
-  ) {
-    return "Enable Account";
-  }
-  if (
-    confirmationText === "Are you sure you want to enable this account?" &&
-    loading
-  ) {
-    return "Enabling...";
-  }
-
-  return "";
 };
 
 export {performConfirmationAction, getConfirmationButtonText};

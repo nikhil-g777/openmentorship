@@ -1,3 +1,4 @@
+import {USER_TYPE} from "@/constants/admin/dashboard";
 import {useCommonStore} from "@/zustand/store";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useTransition} from "react";
@@ -36,8 +37,8 @@ const UserType = () => {
         onChange={handleChange}
         disabled={routeActionLoading}
       >
-        <option value="mentee">Mentee</option>
-        <option value="mentor">Mentor</option>
+        <option value={USER_TYPE.MENTEE.value}>{USER_TYPE.MENTEE.label}</option>
+        <option value={USER_TYPE.MENTOR.value}>{USER_TYPE.MENTOR.label}</option>
       </select>
     </div>
   );

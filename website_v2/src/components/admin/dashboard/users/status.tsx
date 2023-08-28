@@ -1,3 +1,4 @@
+import {STATUS} from "@/constants/admin/dashboard";
 import {useCommonStore} from "@/zustand/store";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useTransition} from "react";
@@ -36,13 +37,19 @@ const Status = () => {
         onChange={handleChange}
         disabled={routeActionLoading}
       >
-        <option value="">All</option>
-        <option value="complete">Complete</option>
-        <option value="incomplete">Incomplete</option>
-        <option value="denied">Denied</option>
-        <option value="disabled">Disabled</option>
-        <option value="pendingConfirmation">Pending Confirmation</option>
-        <option value="pendingApproval">Pending Approval</option>
+        <option value={STATUS.ALL.value}>{STATUS.ALL.label}</option>
+        <option value={STATUS.COMPLETE.value}>{STATUS.COMPLETE.label}</option>
+        <option value={STATUS.INCOMPLETE.value}>
+          {STATUS.INCOMPLETE.label}
+        </option>
+        <option value={STATUS.DENIED.value}>{STATUS.DENIED.label}</option>
+        <option value={STATUS.DISABLED.value}>{STATUS.DISABLED.label}</option>
+        <option value={STATUS.PENDING_CONFIRMATION.value}>
+          {STATUS.PENDING_CONFIRMATION.label}
+        </option>
+        <option value={STATUS.PENDING_APPROVAL.value}>
+          {STATUS.PENDING_APPROVAL.label}
+        </option>
       </select>
     </div>
   );
