@@ -31,6 +31,10 @@ const TagsProvider = ({type, heading, error, setError}: Props) => {
     // Return if input value is empty
     if (inputValue.length === 0) return;
 
+    // Return if skills or interests length is 8
+    if (type === "skills" && skills.length === 8) return;
+    if (type === "interests" && interests.length === 8) return;
+
     // Return if input value already included
     const isDuplicate = checkSkillsInterestsDuplicate(
       type,
@@ -69,6 +73,7 @@ const TagsProvider = ({type, heading, error, setError}: Props) => {
       <label className="block text-base md:text-xl mb-2">{heading}</label>
       {/* Form */}
       <Form
+        type={type}
         handleSubmit={handleSubmit}
         inputValue={inputValue}
         setInputValue={setInputValue}
