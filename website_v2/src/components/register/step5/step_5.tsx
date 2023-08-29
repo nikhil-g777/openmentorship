@@ -5,10 +5,7 @@ import {
   useProfileSettingsStore,
   useRegisterStore,
 } from "@/zustand/store";
-import {
-  checkAtleastOneSocialLinkProvided,
-  validateSocialLinks,
-} from "@/helpers/register";
+import {validateSocialLinks} from "@/helpers/register";
 import {useState} from "react";
 import {SocialLinks} from "@/types/regsiter";
 import {updateUser} from "@/endpoints/user";
@@ -49,12 +46,12 @@ const Step5 = () => {
     });
 
     // Atleast one link should be provided
-    const noLinkProvided = checkAtleastOneSocialLinkProvided(
-      states.socialLinks,
-      error,
-      setError
-    );
-    if (noLinkProvided) return;
+    // const noLinkProvided = checkAtleastOneSocialLinkProvided(
+    //   states.socialLinks,
+    //   error,
+    //   setError
+    // );
+    // if (noLinkProvided) return;
 
     // Check for errors
     const notValidLink = validateSocialLinks(
@@ -116,7 +113,7 @@ const Step5 = () => {
         {/* Heading */}
         {!isProfilePage ? (
           <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
-            Add your Social Media links
+            Add social links and showcase your work
           </h1>
         ) : (
           <h2 className="text-xl font-semibold mt-8 -mb-4">Social Media</h2>
