@@ -10,7 +10,7 @@ declare module "next-auth" {
     user: User;
     profile: {
       success: boolean;
-      user: UserProfile;
+      user: UserProfile["user"];
     };
   }
 

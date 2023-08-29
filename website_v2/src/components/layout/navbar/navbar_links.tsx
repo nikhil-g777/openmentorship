@@ -6,7 +6,7 @@ const NavbarLinks = () => {
 
   return (
     <div className="hidden sm:block">
-      {pathname === "/admin" ? (
+      {pathname.startsWith("/admin") ? (
         <>
           <Link
             href="/admin/dashboard"

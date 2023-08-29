@@ -64,7 +64,9 @@ const ConfirmationModal = () => {
             </button>
             <button
               className={`btn rounded-full btn-sm text-sm capitalize btn-outline ${
-                confirmationButtonText === "Approve Request"
+                confirmationButtonText === "Approve Request" ||
+                confirmationButtonText === "Approve Account" ||
+                confirmationButtonText === "Enable Account"
                   ? "btn-accent"
                   : "btn-error"
               }`}
