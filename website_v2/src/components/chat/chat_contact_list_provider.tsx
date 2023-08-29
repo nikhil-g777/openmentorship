@@ -23,19 +23,19 @@ const ChatContactListProvider = ({type, data, heading}: Props) => {
       ) : null}
       <ul className="w-full menu bg-base-100">
         {data && data.length
-          ? data.map(contact => (
+          ? data.map((contact, index) => (
               <li
-                key={contact.matches._id}
+                key={contact?.matches?._id || index}
                 className="border-b border-base-300"
               >
                 <Link
                   href={
                     type === "active"
-                      ? "chat?id=" + contact.matches._id
-                      : "chat?id=" + contact.matches._id + "&type=archive"
+                      ? "chat?id=" + contact?.matches?._id
+                      : "chat?id=" + contact?.matches?._id + "&type=archive"
                   }
                   className={
-                    chatId === contact.matches._id
+                    chatId === contact?.matches?._id
                       ? "flex flex-wrap gap-4 items-center active"
                       : "flex flex-wrap gap-4 items-center"
                   }
