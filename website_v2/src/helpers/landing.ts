@@ -101,6 +101,15 @@ const handleLoginErrors = async ({
         "Sorry, you cannot sign in at the moment because we are unable to login your account. Please try again later.",
     });
   }
+  // Response JSON error
+  else if (error === "res.json is not a function") {
+    setAuthenticationError({
+      heading: "Unable to Login",
+      subHeading: "Please try again later.",
+      message:
+        "Sorry, you cannot sign in at the moment because we are unable to login your account. Please try again later.",
+    });
+  }
 };
 
 export {list, handleLoginErrors};
