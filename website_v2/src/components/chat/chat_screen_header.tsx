@@ -103,44 +103,46 @@ const ChatScreenHeader = () => {
 
   return (
     <div className="w-full mb-auto">
-      {currentConversation && firstName && firstName.length ? (
-        <div className="w-full flex items-center bg-base-200 px-4">
-          {/* Mobile back button */}
-          <button
-            className="md:hidden btn btn-circle btn-outline hover:btn-primary btn-sm mr-4"
-            onClick={handleBack}
-          >
-            <Image
-              src="/assets/icons/arrow.svg"
-              alt="back"
-              width={24}
-              height={24}
-              className="rotate-90 p-1"
-            />
-          </button>
-          <ChatUserAvatar profileImage={profileImage} size={48} />
-          <h3 className="w-full font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
-            {firstName}
-            {/* Show typing indicator */}
-            {typingStatus.isTyping && typingStatus.participant === userId ? (
-              <span className="mx-2 text-xs opacity-50">typing…</span>
-            ) : null}
-          </h3>
-          {/* End chat */}
-          <button
-            className="btn btn-circle btn-error hover:saturate-150 btn-xs"
-            onClick={handleEndSession}
-            disabled={chatType === "archive"}
-          >
-            <Image
-              src="/assets/icons/power.svg"
-              alt="end chat"
-              width={24}
-              height={24}
-            />
-          </button>
-        </div>
-      ) : null}
+      <div className="w-full flex items-center bg-base-200 px-4">
+        {/* Mobile back button */}
+        <button
+          className="md:hidden btn btn-circle btn-outline hover:btn-primary btn-sm my-4 mr-4"
+          onClick={handleBack}
+        >
+          <Image
+            src="/assets/icons/arrow.svg"
+            alt="back"
+            width={24}
+            height={24}
+            className="rotate-90 p-1"
+          />
+        </button>
+        {currentConversation && firstName && firstName.length ? (
+          <>
+            <ChatUserAvatar profileImage={profileImage} size={48} />
+            <h3 className="w-full font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
+              {firstName}
+              {/* Show typing indicator */}
+              {typingStatus.isTyping && typingStatus.participant === userId ? (
+                <span className="mx-2 text-xs opacity-50">typing…</span>
+              ) : null}
+            </h3>
+            {/* End chat */}
+            <button
+              className="btn btn-circle btn-error hover:saturate-150 btn-xs"
+              onClick={handleEndSession}
+              disabled={chatType === "archive"}
+            >
+              <Image
+                src="/assets/icons/power.svg"
+                alt="end chat"
+                width={24}
+                height={24}
+              />
+            </button>
+          </>
+        ) : null}
+      </div>
     </div>
   );
 };
