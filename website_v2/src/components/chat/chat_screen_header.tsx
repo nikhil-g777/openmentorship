@@ -35,7 +35,7 @@ const ChatScreenHeader = () => {
       chatType === "archive" ? archiveListingData : listingData;
     if (currentData && currentData.length && chatId && chatId.length) {
       const contact = currentData.find(
-        contact => contact.matches._id === chatId
+        contact => contact?.matches?._id === chatId
       );
       if (contact) {
         setUserId(contact._id);
