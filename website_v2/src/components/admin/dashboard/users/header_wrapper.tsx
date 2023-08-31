@@ -1,6 +1,6 @@
 "use client";
 
-import {Search} from "./search";
+import {Search} from "../../common/search";
 import {Status} from "./status";
 import {UserType} from "./user_type";
 

@@ -25,9 +25,14 @@ const Search = () => {
     // Check if search query is empty
     if (searchQuery === "") return;
 
+    // URI
+    const uri =
+      pathname === "/admin/dashboard"
+        ? `${pathname}?tab=users&searchQuery=${searchQuery}`
+        : `${pathname}?tab=active&searchQuery=${searchQuery}`;
+
     // Perform search
     startTransition(() => {
-      const uri = `${pathname}?tab=users&searchQuery=${searchQuery}`;
       router.push(uri);
       router.refresh();
     });
