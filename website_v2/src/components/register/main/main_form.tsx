@@ -3,6 +3,8 @@ import {Dispatch, SetStateAction} from "react";
 import {LinkedInProfileURL} from "./linkedInProfileURL/linkedin_profile_url";
 
 type Props = {
+  linkedInURLError: string;
+  setLinkedInURLError: Dispatch<SetStateAction<string>>;
   headlineError: string;
   setHeadlineError: Dispatch<SetStateAction<string>>;
   bioError: string;
@@ -12,6 +14,8 @@ type Props = {
 };
 
 const MainForm = ({
+  linkedInURLError,
+  setLinkedInURLError,
   headlineError,
   setHeadlineError,
   bioError,
@@ -77,7 +81,10 @@ const MainForm = ({
           value={email}
         />
         {/* LinkedIn Profile URL */}
-        <LinkedInProfileURL />
+        <LinkedInProfileURL
+          linkedInURLError={linkedInURLError}
+          setLinkedInURLError={setLinkedInURLError}
+        />
         <div className="w-full">
           <input
             id="headline"

@@ -6,12 +6,20 @@ import {useRegisterStore} from "@/zustand/store";
 import {useState} from "react";
 import {ImageWrapper} from "./image_wrapper";
 import {MainForm} from "./main_form";
+import {linkedInPattern} from "@/helpers/register";
 
 const MainScreen = () => {
+  const [linkedInURLError, setLinkedInURLError] = useState<string>("");
   const [headlineError, setHeadlineError] = useState<string>("");
   const [bioError, setBioError] = useState<string>("");
-  const {token, currentScreen, setCurrentScreen, headline, bio} =
-    useRegisterStore();
+  const {
+    token,
+    currentScreen,
+    setCurrentScreen,
+    linkedInProfileURL,
+    headline,
+    bio,
+  } = useRegisterStore();
 
   // Handle submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,6 +31,10 @@ const MainScreen = () => {
     setBioError("");
 
     // Show errors
+    if (!linkedInPattern.test(linkedInProfileURL)) {
+      setLinkedInURLError("Please enter a valid LinkedIn profile URL.");
+      return;
+    }
     if (headline.length <= 3 || headline.length > 100) {
       setHeadlineError("Your headline should be between 3 and 100 characters.");
       return;
@@ -52,6 +64,8 @@ const MainScreen = () => {
           <LinkedInConnect />
           {/* Form */}
           <MainForm
+            linkedInURLError={linkedInURLError}
+            setLinkedInURLError={setLinkedInURLError}
             headlineError={headlineError}
             setHeadlineError={setHeadlineError}
             bioError={bioError}
