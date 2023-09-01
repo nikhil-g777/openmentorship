@@ -39,8 +39,8 @@ const StoreInitializer = ({data, searchData}: Props) => {
     // Set states
     const filteredData =
       tab === "active" || tab === ""
-        ? data.sessions.filter(data => data.status === "active")
-        : data.sessions.filter(data => data.status === "closed");
+        ? data.sessions.filter(data => data.status === "active" && data.match)
+        : data.sessions.filter(data => data.status === "closed" && data.match);
     setSessionData(filteredData);
     setSearchData(null);
     setCurrentPage("sessions");
@@ -50,8 +50,12 @@ const StoreInitializer = ({data, searchData}: Props) => {
     if (searchData) {
       const filteredData =
         tab === "active" || tab === ""
-          ? searchData.sessions.filter(data => data.status === "active")
-          : searchData.sessions.filter(data => data.status === "closed");
+          ? searchData.sessions.filter(
+              data => data.status === "active" && data.match
+            )
+          : searchData.sessions.filter(
+              data => data.status === "closed" && data.match
+            );
       setSearchData(filteredData);
       setSessionData(null);
     }
