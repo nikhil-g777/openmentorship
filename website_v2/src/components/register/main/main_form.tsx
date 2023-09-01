@@ -93,6 +93,7 @@ const MainForm = ({
             className={`input input-bordered w-full ${
               headlineError.length > 0 ? "border-error" : ""
             }`}
+            disabled={firstName === "" || lastName === ""}
             value={headline}
             onChange={handleHeadlineChange}
           />
@@ -110,6 +111,7 @@ const MainForm = ({
             className={`textarea textarea-bordered textarea-lg px-4 text-base w-full max-h-48 min-h-16 ${
               bioError.length ? "border-error" : ""
             }`}
+            disabled={firstName === "" || lastName === ""}
             value={bio}
             onChange={handleBioChange}
           ></textarea>
