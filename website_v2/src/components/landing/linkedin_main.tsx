@@ -45,6 +45,16 @@ const Linkedin = () => {
 
   // handleLinkedinLogin
   const handleLinkedinLogin = () => {
+    if (
+      process.env.NEXT_PUBLIC_CYPRESS_TEST &&
+      process.env.NEXT_PUBLIC_CYPRESS_TEST.toLowerCase() === "true"
+    ) {
+      signIn("credentials", {
+        authCode: "test",
+      });
+      return;
+    }
+
     // Set loading state
     setRouteActionLoading(true);
 

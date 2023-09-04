@@ -1,3 +1,4 @@
+import {cypressUserResponse} from "@/helpers/cypress/user_obj";
 import {getUserInfo, nextAuthLogin} from "@/endpoints/user";
 import {NextAuthOptions} from "next-auth";
 import Credentials from "next-auth/providers/credentials";
@@ -16,6 +17,13 @@ export const authOptions: NextAuthOptions = {
         authCode: {type: "text"},
       },
       async authorize(credentials) {
+        // Return cypress test user if available
+        if (
+          process.env.NEXT_PUBLIC_CYPRESS_TEST &&
+          process.env.NEXT_PUBLIC_CYPRESS_TEST.toLowerCase() === "true"
+        ) {
+          return cypressUserResponse;
+        }
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid.

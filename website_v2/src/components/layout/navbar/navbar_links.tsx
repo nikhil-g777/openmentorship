@@ -26,10 +26,15 @@ const NavbarLinks = () => {
           <Link
             href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
             className="btn btn-ghost normal-case text-base"
+            data-cy="explore-link"
           >
             Discover
           </Link>
-          <Link href="/matches" className="btn btn-ghost normal-case text-base">
+          <Link
+            href="/matches"
+            className="btn btn-ghost normal-case text-base"
+            data-cy="matches-link"
+          >
             Matches
           </Link>
           <Link href="/chat" className="btn btn-ghost normal-case text-base">
