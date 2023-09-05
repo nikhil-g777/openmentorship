@@ -187,9 +187,16 @@ const sessionList = async (req, res) => {
 */
 const sessionSearch = async (req, res) => {
   try {
-    const { page = 1, limit = 20 } = req.query;
+    const { page = 1, limit = 20, searchString } = req.query;
 
-    const sessions = await Session.find({})
+    // find based on _id or firstName or lastName
+    const sessions = await Session.find({
+      $or: [
+        { _id: searchString },
+        { firstName: searchString },
+        { lastName: searchString },
+      ],
+    })
       .populate({
         path: 'match',
         populate: { path: 'mentee mentor' },
