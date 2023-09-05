@@ -93,6 +93,8 @@ const userSearch = async (req, res) => {
     return res.json({
       success: true,
       users,
+      totalPages: Math.ceil(users.length / limit),
+      currentPage: page,
     });
   } catch (err) {
     console.error(err.message);
