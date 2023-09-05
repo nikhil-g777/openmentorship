@@ -56,13 +56,13 @@ const userList = async (req, res) => {
       .skip((page - 1) * limit);
 
     // get total documents in the Posts collection
-    const count = await User.countDocuments({ userType });
+    // const count = await User.countDocuments({ userType });
 
     // return response with posts, total pages, and current page
     return res.json({
       success: true,
       users,
-      totalPages: Math.ceil(count / limit),
+      totalPages: Math.ceil(users.length / limit),
       currentPage: page,
     });
   } catch (err) {
