@@ -160,7 +160,7 @@ const sessionList = async (req, res) => {
       ...(status && { status }),
     };
 
-    const sessions = await Session.find(sessionFilter)
+    const sessions = await Session.find(sessionFilter, { requestMessage: 0})
       .populate({
         path: 'match',
         populate: { path: 'mentee mentor' },
@@ -200,7 +200,7 @@ const sessionSearch = async (req, res) => {
         { firstName: searchString },
         { lastName: searchString },
       ],
-    })
+    }, { requestMessage: 0})
       .populate({
         path: 'match',
         populate: { path: 'mentee mentor' },
