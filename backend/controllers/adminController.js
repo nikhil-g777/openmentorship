@@ -55,14 +55,14 @@ const userList = async (req, res) => {
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
-    // get total documents in the Posts collection
-    // const count = await User.countDocuments({ userType });
+    // get count of all users with the filter, this is used for pagination.
+    const count = await User.countDocuments({ userFilter });
 
     // return response with posts, total pages, and current page
     return res.json({
       success: true,
       users,
-      totalPages: Math.ceil(users.length / limit),
+      totalPages: Math.ceil(count / limit),
       currentPage: page,
     });
   } catch (err) {
@@ -85,15 +85,18 @@ const userSearch = async (req, res) => {
     const { page = 1, limit = 20 } = req.query;
     const { searchString } = req.query;
 
-    const users = await User.find({ $text: { $search: searchString } })
+    const users = await User.find({$or: [{"_id": searchString}, {$text: { $search: searchString } }]})
       .limit(limit * 1)
       .skip((page - 1) * limit);
+
+    // get count of all users with the search string, this is used for pagination.
+    const count = await User.countDocuments({ searchString });
 
     // return response with posts, total pages, and current page
     return res.json({
       success: true,
       users,
-      totalPages: Math.ceil(users.length / limit),
+      totalPages: Math.ceil(count / limit),
       currentPage: page,
     });
   } catch (err) {
@@ -160,7 +163,7 @@ const sessionList = async (req, res) => {
       ...(status && { status }),
     };
 
-    const sessions = await Session.find(sessionFilter, { requestMessage: 0})
+    const sessions = await Session.find(sessionFilter)
       .populate({
         path: 'match',
         populate: { path: 'mentee mentor' },
@@ -168,10 +171,12 @@ const sessionList = async (req, res) => {
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
+    const count = await Session.countDocuments(sessionFilter)
+
     return res.json({
       success: true,
       sessions,
-      totalPages: Math.ceil(sessions.length / limit),
+      totalPages: Math.ceil(count / limit),
       currentPage: page,
     });
   } catch (err) {
@@ -194,13 +199,7 @@ const sessionSearch = async (req, res) => {
     const { page = 1, limit = 20, searchString } = req.query;
 
     // find based on _id or firstName or lastName
-    const sessions = await Session.find({
-      $or: [
-        { _id: searchString },
-        { firstName: searchString },
-        { lastName: searchString },
-      ],
-    }, { requestMessage: 0})
+    const sessions = await Session.find({$or: [{"_id": searchString}, {$text: {$search: searchString}}]})
       .populate({
         path: 'match',
         populate: { path: 'mentee mentor' },
@@ -208,10 +207,12 @@ const sessionSearch = async (req, res) => {
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
+    const count = await Session.countDocuments({$text: {$search: searchString}})
+
     return res.json({
       success: true,
       sessions,
-      totalPages: Math.ceil(sessions.length / limit),
+      totalPages: Math.ceil(count / limit),
       currentPage: page,
     });
   } catch (err) {
