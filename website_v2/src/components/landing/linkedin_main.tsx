@@ -46,11 +46,14 @@ const Linkedin = () => {
   // handleLinkedinLogin
   const handleLinkedinLogin = () => {
     if (
+      process.env.NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE &&
+      process.env.NEXT_PUBLIC_CYPRESS_MENTEE_ID &&
+      process.env.NEXT_PUBLIC_CYPRESS_MENTOR_ID &&
       process.env.NEXT_PUBLIC_CYPRESS_TEST &&
       process.env.NEXT_PUBLIC_CYPRESS_TEST.toLowerCase() === "true"
     ) {
       signIn("credentials", {
-        authCode: "test",
+        authCode: process.env.NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE,
       });
       return;
     }

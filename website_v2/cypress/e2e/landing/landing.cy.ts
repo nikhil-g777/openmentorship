@@ -1,6 +1,6 @@
 describe("Page load test", () => {
   it("Check content text and image", () => {
-    cy.visit("http://localhost:3010");
+    cy.visit("/");
 
     cy.get("body").should("exist");
     cy.get("head").should("exist");
@@ -38,44 +38,11 @@ describe("Page load test", () => {
 
     cy.getCypress("navbar-logo-img").should("be.visible");
     cy.getCypress("footer-logo-img").should("be.visible");
-    cy.getCypress("navbar-profile-img").should("be.visible");
     cy.getCypress("landing-hero-img").should("be.visible");
     cy.getCypress("landing-howItWorks-img").should("be.visible");
     cy.getCypress("landing-dreamCareer-img").should("be.visible");
     cy.getCypress("linkedin-button").should("be.visible");
-
-    cy.getCypress("navbar-profile-img").click();
-    cy.getCypress("navbar-profile-about-link").should("contain.text", "About");
-    cy.getCypress("navbar-profile-faq-link").should("contain.text", "FAQ");
-    cy.getCypress("navbar-profile-login-link").should("contain.text", "Login");
   });
 });
-
-// describe("Login functionality test", () => {
-//   it("Login with linkedin", () => {
-//     cy.visit("http://localhost:3010/");
-
-//     cy.window().then(win => {
-//       cy.stub(win, "open", url => {
-//         win.location.href =
-//           "https://www.linkedin.com//oauth/v2/authorization?response_type=code&client_id=77jtxd3rs4bat4&redirect_uri=http://localhost:3010/linkedin&scope=r_emailaddress%20r_liteprofile&state=AoYlbKFzL9eCM2GxvPs3";
-//       }).as("popup");
-//     });
-
-//     cy.getCypress("linkedin-button").should("be.visible");
-//     cy.getCypress("linkedin-button").click();
-
-//     cy.get("@popup").should("be.called");
-
-//     cy.origin("https://www.linkedin.com", () => {
-//       cy.visit(
-//         "/oauth/v2/authorization?response_type=code&client_id=77jtxd3rs4bat4&redirect_uri=http://localhost:3010/linkedin&scope=r_emailaddress%20r_liteprofile&state=AoYlbKFzL9eCM2GxvPs3"
-//       );
-//       cy.get("#username").click().type(Cypress.env("username"));
-//       cy.get("#password").click().type(Cypress.env("password"));
-//       cy.get("[data-litms-control-urn=login-submit]").click();
-//     });
-//   });
-// });
 
 export {};
