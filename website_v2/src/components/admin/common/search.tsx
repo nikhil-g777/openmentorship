@@ -29,7 +29,7 @@ const Search = () => {
     const uri =
       pathname === "/admin/dashboard"
         ? `${pathname}?tab=users&searchQuery=${searchQuery}`
-        : `${pathname}?tab=active&searchQuery=${searchQuery}`;
+        : `${pathname}?tab=active&page=1&searchQuery=${searchQuery}`;
 
     // Perform search
     startTransition(() => {

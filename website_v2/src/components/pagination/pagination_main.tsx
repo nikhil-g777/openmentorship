@@ -4,9 +4,15 @@ import {
   handleDashboardPrev,
   handleExploreNext,
   handleExplorePrev,
+  handleSessionsNext,
+  handleSessionsPrev,
 } from "@/helpers/pagination";
 import {UserProfile} from "@/types/profile";
-import {useCommonStore, useProfileStore} from "@/zustand/store";
+import {
+  useAdminSessionStore,
+  useCommonStore,
+  useProfileStore,
+} from "@/zustand/store";
 import {useSearchParams, usePathname, useRouter} from "next/navigation";
 import {useEffect, useTransition} from "react";
 
@@ -24,18 +30,21 @@ const Pagination = ({data}: Props) => {
   const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
+  const {searchData, sessionData} = useAdminSessionStore();
   const limit = params.get("limit") || "10";
   const areasOfInterest = params.get("areasOfInterest") || "";
   const goals = params.get("goals") || "";
   const communicationFrequency = params.get("communicationFrequency") || "";
   const communicationPreferences = params.get("communicationPreferences") || "";
   const userType = params.get("userType") || "mentee";
-  const paginationData = data.mentors || data.users;
+  const searchString = params.get("searchQuery") || "";
+  const paginationData =
+    data.mentors || data.users || searchData || sessionData;
   const totalPages = data.totalPages;
   const currentPage = Number(data.currentPage);
   const {setRouteActionLoading} = useCommonStore();
   const [isPending, startTransition] = useTransition();
-  const {currentPage: routePage} = useProfileStore();
+  const {currentPage: routePage, currentTab} = useProfileStore();
 
   // Handle Previous Page
   const handlePrevPage = () => {
@@ -60,6 +69,18 @@ const Pagination = ({data}: Props) => {
         pathname,
         currentPage,
         userType,
+        router,
+        startTransition,
+      });
+    }
+
+    // Sessions Page
+    if (routePage === "sessions") {
+      handleSessionsPrev({
+        pathname,
+        currentPage,
+        currentTab,
+        searchString,
         router,
         startTransition,
       });
@@ -89,6 +110,18 @@ const Pagination = ({data}: Props) => {
         pathname,
         currentPage,
         userType,
+        router,
+        startTransition,
+      });
+    }
+
+    // Sessions Page
+    if (routePage === "sessions") {
+      handleSessionsNext({
+        pathname,
+        currentPage,
+        currentTab,
+        searchString,
         router,
         startTransition,
       });

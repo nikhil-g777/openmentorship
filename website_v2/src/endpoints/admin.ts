@@ -79,10 +79,10 @@ const updateMentorRegistration = async (
 };
 
 // Session List
-const getSessionList = async (token: string) => {
+const getSessionList = async (token: string, page: string) => {
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}/admin/sessionList`,
+      `${process.env.BACKEND_BASE_URL}/admin/sessionList?limit=10&page=${page}`,
       {
         headers: headerProvider(token),
       }
@@ -95,10 +95,14 @@ const getSessionList = async (token: string) => {
 };
 
 // Session Search
-const searchSession = async (token: string, searchString: string) => {
+const searchSession = async (
+  token: string,
+  page: string,
+  searchString: string
+) => {
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}/admin/sessionSearch?searchString=${searchString}`,
+      `${process.env.BACKEND_BASE_URL}/admin/sessionSearch?limit=10&page=${page}&searchString=${searchString}`,
       {
         headers: headerProvider(token),
       }
