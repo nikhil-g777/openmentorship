@@ -1,4 +1,6 @@
 // Package Imports
+const mongoose = require('mongoose');
+const utils = require('../lib/utils');
 
 // Local Imports
 const Match = require('../models/match');
@@ -84,8 +86,9 @@ const userSearch = async (req, res) => {
   try {
     const { page = 1, limit = 20 } = req.query;
     const { searchString } = req.query;
+    const searchFilter = utils.constructSearchFilter(searchString)
 
-    const users = await User.find({$or: [{"_id": searchString}, {$text: { $search: searchString } }]})
+    const users = await User.find(searchFilter)
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
@@ -159,13 +162,17 @@ const sessionList = async (req, res) => {
     const { page = 1, limit = 20 } = req.query;
     const { status } = req.query;
 
+    console.log(typeof(page))
+    console.log(typeof(limit))
+
     const sessionFilter = {
       ...(status && { status }),
     };
 
-    const sessions = await Session.find(sessionFilter)
+    const sessions = await Session.find(sessionFilter).select('-requestMessage')
       .populate({
         path: 'match',
+        select: '-requestMessage',
         populate: { path: 'mentee mentor' },
       })
       .limit(limit * 1)
@@ -198,10 +205,13 @@ const sessionSearch = async (req, res) => {
   try {
     const { page = 1, limit = 20, searchString } = req.query;
 
+    const searchFilter = utils.constructSearchFilter(searchString)
     // find based on _id or firstName or lastName
-    const sessions = await Session.find({$or: [{"_id": searchString}, {$text: {$search: searchString}}]})
+    const sessions = await Session.find(searchFilter)
+      .select('-requestMessage')
       .populate({
         path: 'match',
+        select: '-requestMessage',
         populate: { path: 'mentee mentor' },
       })
       .limit(limit * 1)
