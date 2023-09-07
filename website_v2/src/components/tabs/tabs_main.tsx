@@ -1,44 +1,61 @@
 "use client";
 
-import Link from "next/link";
-import {usePathname, useSearchParams} from "next/navigation";
-import React from "react";
+import {useCommonStore} from "@/zustand/store";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import React, {useEffect, useTransition} from "react";
 
 const Tabs = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
   const currentTab = params.get("tab");
+  const {setRouteActionLoading} = useCommonStore();
+  const [isPending, startTransition] = useTransition();
+
+  // Handle Click
+  const handleClick = (tab: string) => {
+    startTransition(() => {
+      const path = pathname + "?tab=" + tab;
+      router.push(path);
+      router.refresh();
+    });
+  };
+
+  // Update Route Action Loading
+  useEffect(() => {
+    setRouteActionLoading(isPending);
+  }, [setRouteActionLoading, isPending]);
 
   return (
     <div className="w-full">
       <div className="w-full max-w-6xl mx-auto flex justify-center mt-4">
         <div className="tabs tabs-boxed">
-          <Link
-            href={pathname + "?tab=active"}
+          <button
             className={`tab sm:tab-md lg:tab-lg ${
               currentTab === "active" || currentTab === "" || !currentTab
                 ? "tab-active"
                 : ""
             }`}
+            onClick={() => handleClick("active")}
           >
             Active
-          </Link>
-          <Link
-            href={pathname + "?tab=pending"}
+          </button>
+          <button
             className={`tab sm:tab-md lg:tab-lg ${
               currentTab === "pending" ? "tab-active" : ""
             }`}
+            onClick={() => handleClick("pending")}
           >
             Pending
-          </Link>
-          <Link
-            href={pathname + "?tab=closed"}
+          </button>
+          <button
             className={`tab sm:tab-md lg:tab-lg ${
               currentTab === "closed" ? "tab-active" : ""
             }`}
+            onClick={() => handleClick("closed")}
           >
             Closed
-          </Link>
+          </button>
         </div>
       </div>
     </div>
