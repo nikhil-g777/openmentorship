@@ -162,9 +162,6 @@ const sessionList = async (req, res) => {
     const { page = 1, limit = 20 } = req.query;
     const { status } = req.query;
 
-    console.log(typeof(page))
-    console.log(typeof(limit))
-
     const sessionFilter = {
       ...(status && { status }),
     };
