@@ -58,7 +58,7 @@ const userList = async (req, res) => {
       .skip((page - 1) * limit);
 
     // get count of all users with the filter, this is used for pagination.
-    const count = await User.countDocuments({ userFilter });
+    const count = await User.countDocuments(userFilter);
 
     // return response with posts, total pages, and current page
     return res.json({
@@ -93,7 +93,7 @@ const userSearch = async (req, res) => {
       .skip((page - 1) * limit);
 
     // get count of all users with the search string, this is used for pagination.
-    const count = await User.countDocuments({ searchString });
+    const count = await User.countDocuments(searchFilter);
 
     // return response with posts, total pages, and current page
     return res.json({
@@ -214,7 +214,7 @@ const sessionSearch = async (req, res) => {
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
-    const count = await Session.countDocuments({$text: {$search: searchString}})
+    const count = await Session.countDocuments(searchFilter)
 
     return res.json({
       success: true,
