@@ -325,7 +325,15 @@ const tempAuth = (req, res) => {
           sameSite: 'none',
           secure: true,
         })
-        .json({ success: true, _id });
+        .json({
+          success: true,
+          message: 'Login Successful',
+          token: accessToken,
+          user: {
+            _id,
+            userType: user.userType,
+          },
+        })
     });
   } else {
     return res.status(401).json({

@@ -22,6 +22,7 @@ router.get(
 
 router.get(
   '/userList',
+  util.convertPaginationQueryParamsToInt(),
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.admin]),
   adminController.userList,
@@ -29,6 +30,7 @@ router.get(
 
 router.get(
   '/userSearch',
+  util.convertPaginationQueryParamsToInt(),
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.admin]),
   adminController.userSearch,
@@ -43,6 +45,7 @@ router.get(
 
 router.get(
   '/sessionList',
+  util.convertPaginationQueryParamsToInt(),
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.admin]),
   adminController.sessionList,
@@ -50,6 +53,7 @@ router.get(
 
 router.get(
   '/sessionSearch',
+  util.convertPaginationQueryParamsToInt(),
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.admin]),
   adminController.sessionSearch,
