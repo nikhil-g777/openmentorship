@@ -17,7 +17,7 @@ const behancePattern =
 const githubPattern =
   /^(https?:\/\/)?(www\.)?github\.com\/([A-Za-z0-9_]+)\/?$/i;
 const otherPattern =
-  /^(https?:\/\/)?(www\.)?([A-Za-z0-9_]+)\.([A-Za-z0-9_]+)\/?$/i;
+  /^(https?:\/\/)?(www\.)?([A-Za-z0-9_]+)\.([A-Za-z0-9_]+)\/?(.*)$/i;
 
 // Post regsitration mentee & mentor guidelines
 const menteeGuidelines = [
