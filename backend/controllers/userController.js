@@ -59,7 +59,7 @@ const fetchUserToken = async (user) => {
 
 const sendRegistrationMail = async (user) => {
   const confirmationToken = util.encodeRegistrationToken(user._id);
-  const confirmationLink = `https://${process.env.BASE_URL}:${process.env.APP_PORT}/users/confirmRegistration?confirmationToken=${confirmationToken}`;
+  const confirmationLink = `https://${process.env.FRONTEND_BASE_URL}/confirmRegistration?confirmationToken=${confirmationToken}`;
   const response = await sendMail(
     user.email,
     'Openmentorship Email Confirmation',
