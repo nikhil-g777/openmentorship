@@ -35,7 +35,7 @@ type RegisterBody = {
   _id?: string;
   register?: boolean;
   user?: {
-    linkedinProfileUrl: string;
+    linkedinProfileUrl?: string;
     active?: boolean;
     headline?: string;
     bio?: string;

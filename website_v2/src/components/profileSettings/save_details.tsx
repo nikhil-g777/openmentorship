@@ -22,6 +22,7 @@ import Image from "next/image";
 const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
   const {
     token,
+    linkedInProfileURL,
     headline,
     bio,
     areasOfInterest,
@@ -170,6 +171,7 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
     const res = await updateUser(token, {
       type: "updateUser",
       user: {
+        linkedinProfileUrl: linkedInProfileURL,
         headline,
         bio,
         areasOfInterest,
