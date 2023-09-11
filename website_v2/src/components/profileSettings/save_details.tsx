@@ -171,7 +171,7 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
     const res = await updateUser(token, {
       type: "updateUser",
       user: {
-        linkedinProfileUrl: linkedInProfileURL,
+        linkedInProfileUrl: linkedInProfileURL,
         headline,
         bio,
         areasOfInterest,
