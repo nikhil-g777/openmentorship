@@ -11,6 +11,7 @@ import {listingSlice, ListingSlice} from "./slices/listingSlice";
 import {chatSlice, ChatSlice} from "./slices/chatSlice";
 import {dashboardSlice, DashboardSlice} from "./slices/admin/dashboardSlice";
 import {filterSlice, FilterSlice} from "./slices/filterSlice";
+import {sessionSlice, SessionSlice} from "./slices/admin/sessionsSlice";
 
 // Common store
 const useCommonStore = create<CommonSlice>()((...a) => ({
@@ -52,6 +53,11 @@ const useAdminDashboardStore = create<DashboardSlice>()((...a) => ({
   ...dashboardSlice(...a),
 }));
 
+// Admin Session store
+const useAdminSessionStore = create<SessionSlice>()((...a) => ({
+  ...sessionSlice(...a),
+}));
+
 // Filter store
 const useFilterStore = create<FilterSlice>()((...a) => ({
   ...filterSlice(...a),
@@ -66,5 +72,6 @@ export {
   useListingStore,
   useChatStore,
   useAdminDashboardStore,
+  useAdminSessionStore,
   useFilterStore,
 };

@@ -23,4 +23,14 @@ type DashboardTypes = {
   startTransition: TransitionStartFunction;
 };
 
-export type {ExploreTypes, DashboardTypes};
+// Sessions Types
+type SessionsTypes = {
+  pathname: string;
+  currentPage: number;
+  currentTab: string;
+  searchString: string;
+  router: AppRouterInstance;
+  startTransition: TransitionStartFunction;
+};
+
+export type {ExploreTypes, DashboardTypes, SessionsTypes};
