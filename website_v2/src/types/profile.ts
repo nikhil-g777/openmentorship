@@ -15,6 +15,7 @@ type User = {
   firstName: string;
   lastName: string;
   linkedInId: string;
+  linkedInProfileUrl: string;
   email: string;
   experiences: WorkExperience[];
   education: Education[];

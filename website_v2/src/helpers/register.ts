@@ -8,6 +8,8 @@ import {CommonSlice} from "@/zustand/slices/commonSlice";
 import {Dispatch, SetStateAction} from "react";
 
 // Social links regex patterns
+const linkedInPattern =
+  /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)\/([-a-zA-Z0-9]+)\/*/i;
 const twitterPattern =
   /^(https?:\/\/)?(www\.)?twitter\.com\/(?!.*(?:admin|twitter))[A-Za-z0-9_]{1,15}(?!.*(?:admin|twitter))$/i;
 const mediumPattern =
@@ -603,6 +605,7 @@ const handleUserConfirmation = (
 };
 
 export {
+  linkedInPattern,
   twitterPattern,
   mediumPattern,
   behancePattern,

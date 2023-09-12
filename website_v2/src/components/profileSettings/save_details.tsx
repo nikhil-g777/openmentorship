@@ -2,7 +2,6 @@
 
 import {updateUser} from "@/endpoints/user";
 import {
-  checkAtleastOneSocialLinkProvided,
   checkCommunicationFrequencyIsEmpty,
   checkCommunicationPreferencesIsEmpty,
   checkDuplicateCurrentFields,
@@ -10,6 +9,7 @@ import {
   checkExperiencesEducationBothFields,
   checkExperiencesEducationLength,
   checkGoalsIsEmpty,
+  linkedInPattern,
   validateSocialLinks,
 } from "@/helpers/register";
 import {
@@ -22,6 +22,7 @@ import Image from "next/image";
 const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
   const {
     token,
+    linkedInProfileUrl,
     headline,
     bio,
     areasOfInterest,
@@ -36,6 +37,7 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
   } = useRegisterStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
   const {
+    setLinkedInUrlError,
     setHeadlineError,
     setBioError,
     setAreasOfInterestError,
@@ -53,6 +55,7 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
   // Handle submit
   const handleSubmit = async () => {
     // Reset errors
+    setLinkedInUrlError("");
     setHeadlineError("");
     setBioError("");
     setAreasOfInterestError("");
@@ -67,6 +70,14 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
       portfolio: "",
       other: "",
     });
+
+    // Validation
+    if (linkedInPattern.test(linkedInProfileUrl)) {
+      setLinkedInUrlError("");
+    } else {
+      setLinkedInUrlError("Please enter a valid LinkedIn profile URL.");
+      return;
+    }
 
     // Catch Headline & Bio Errors
     if (headline.length <= 3) {
@@ -151,12 +162,12 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
     if (isCommunicationPreferencesEmpty) return;
 
     // Check Social Links Errors
-    const noLinkProvided = checkAtleastOneSocialLinkProvided(
-      socialLinks,
-      socialLinksErrors,
-      setSocialLinksErrors
-    );
-    if (noLinkProvided) return;
+    // const noLinkProvided = checkAtleastOneSocialLinkProvided(
+    //   socialLinks,
+    //   socialLinksErrors,
+    //   setSocialLinksErrors
+    // );
+    // if (noLinkProvided) return;
 
     const notValidLink = validateSocialLinks(
       socialLinks,
@@ -170,6 +181,7 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
     const res = await updateUser(token, {
       type: "updateUser",
       user: {
+        linkedInProfileUrl,
         headline,
         bio,
         areasOfInterest,

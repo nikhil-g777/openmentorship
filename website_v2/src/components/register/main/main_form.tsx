@@ -1,5 +1,6 @@
 import {useRegisterStore} from "@/zustand/store";
 import {Dispatch, SetStateAction} from "react";
+import {LinkedInProfileURL} from "./linkedInProfileURL/linkedin_profile_url";
 
 type Props = {
   headlineError: string;
@@ -45,9 +46,9 @@ const MainForm = ({
     }
   };
   return (
-    <form className="w-full mt-8" onSubmit={handleSubmit}>
+    <form className="w-full mt-4" onSubmit={handleSubmit}>
       {/* First Name & Last Name */}
-      <div className="w-full flex flex-col md:flex-row gap-2">
+      <div className="w-full flex flex-col md:flex-row gap-4 md:gap-2">
         <input
           type="text"
           placeholder="* First Name"
@@ -65,7 +66,7 @@ const MainForm = ({
           value={lastName}
         />
       </div>
-      {/* Email, Headline & Bio */}
+      {/* Email, LinkedInProfileURL, Headline & Bio */}
       <div className="w-full flex flex-col gap-4 mt-4">
         <input
           type="text"
@@ -75,6 +76,8 @@ const MainForm = ({
           required
           value={email}
         />
+        {/* LinkedIn Profile URL */}
+        <LinkedInProfileURL />
         <div className="w-full">
           <input
             id="headline"
@@ -83,6 +86,7 @@ const MainForm = ({
             className={`input input-bordered w-full ${
               headlineError.length > 0 ? "border-error" : ""
             }`}
+            disabled={firstName === "" || lastName === ""}
             value={headline}
             onChange={handleHeadlineChange}
           />
@@ -100,6 +104,7 @@ const MainForm = ({
             className={`textarea textarea-bordered textarea-lg px-4 text-base w-full max-h-48 min-h-16 ${
               bioError.length ? "border-error" : ""
             }`}
+            disabled={firstName === "" || lastName === ""}
             value={bio}
             onChange={handleBioChange}
           ></textarea>

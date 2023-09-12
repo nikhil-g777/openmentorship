@@ -21,6 +21,7 @@ const StoreInitializer = ({data, token}: Props) => {
     setFirstName,
     setLastName,
     setEmail,
+    setLinkedInProfileUrl,
     setHeadline,
     setBio,
     setUserType,
@@ -52,6 +53,7 @@ const StoreInitializer = ({data, token}: Props) => {
     setFirstName(data.user.firstName);
     setLastName(data.user.lastName);
     setEmail(data.user.email);
+    setLinkedInProfileUrl(data.user.linkedInProfileUrl);
     setProfileImage(data.user.profileImageUrls);
     setisProfilePage(true);
     setHeadline(data.user.headline);

@@ -8,6 +8,7 @@ export type ProfileSettingsSlice = {
   profileImage: {
     [key: string]: string;
   };
+  linkedInUrlError: string;
   headlineError: string;
   bioError: string;
   loading: boolean;
@@ -38,6 +39,7 @@ export type ProfileSettingsSlice = {
   // Main
   setisProfilePage: (isProfilePage: boolean) => void;
   setProfileImage: (profileImage: {[key: string]: string}) => void;
+  setLinkedInUrlError: (linkedInURLError: string) => void;
   setHeadlineError: (headlineError: string) => void;
   setBioError: (bioError: string) => void;
   setLoading: (loading: boolean) => void;
@@ -76,6 +78,7 @@ const initialState = {
   // Main
   isProfilePage: false,
   profileImage: {},
+  linkedInUrlError: "",
   headlineError: "",
   bioError: "",
   loading: false,
@@ -120,6 +123,11 @@ export const profileSettingsSlice: StateCreator<
   setProfileImage: (profileImage: {[key: string]: string}) => {
     set(() => ({
       profileImage: profileImage,
+    }));
+  },
+  setLinkedInUrlError: (linkedInUrlError: string) => {
+    set(() => ({
+      linkedInUrlError: linkedInUrlError,
     }));
   },
   setHeadlineError: (headlineError: string) => {
