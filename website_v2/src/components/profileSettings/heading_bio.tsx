@@ -31,7 +31,7 @@ const HeadingBio = () => {
         <div className="w-full flex flex-col gap-4">
           {/* Name */}
           <div className="w-full">
-            <Name firstName={firstName} lastName={lastName} linkedinURI="" />
+            <Name firstName={firstName} lastName={lastName} />
           </div>
           {/* Headline and Bio */}
           <div className="w-full form-control">
