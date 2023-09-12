@@ -45,7 +45,7 @@ const ProfileCard = ({data}: Props) => {
                   <Name
                     firstName={data.firstName}
                     lastName={data.lastName}
-                    linkedinURI={data.linkedInId}
+                    linkedinURI={data.linkedInProfileUrl}
                   />
                   {/* Designation */}
                   <Designation headline={data.headline} />
