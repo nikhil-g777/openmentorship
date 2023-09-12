@@ -2,24 +2,24 @@
 
 import {LinkedInConnect} from "./linkedin_connect";
 import Link from "next/link";
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {useState} from "react";
 import {ImageWrapper} from "./image_wrapper";
 import {MainForm} from "./main_form";
 import {linkedInPattern} from "@/helpers/register";
 
 const MainScreen = () => {
-  const [linkedInURLError, setLinkedInURLError] = useState<string>("");
   const [headlineError, setHeadlineError] = useState<string>("");
   const [bioError, setBioError] = useState<string>("");
   const {
     token,
     currentScreen,
     setCurrentScreen,
-    linkedInProfileURL,
+    linkedInProfileUrl,
     headline,
     bio,
   } = useRegisterStore();
+  const {setLinkedInUrlError} = useProfileSettingsStore();
 
   // Handle submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,8 +31,8 @@ const MainScreen = () => {
     setBioError("");
 
     // Show errors
-    if (!linkedInPattern.test(linkedInProfileURL)) {
-      setLinkedInURLError("Please enter a valid LinkedIn profile URL.");
+    if (!linkedInPattern.test(linkedInProfileUrl)) {
+      setLinkedInUrlError("Please enter a valid LinkedIn profile URL.");
       return;
     }
     if (headline.length <= 3 || headline.length > 100) {
@@ -64,8 +64,6 @@ const MainScreen = () => {
           <LinkedInConnect />
           {/* Form */}
           <MainForm
-            linkedInURLError={linkedInURLError}
-            setLinkedInURLError={setLinkedInURLError}
             headlineError={headlineError}
             setHeadlineError={setHeadlineError}
             bioError={bioError}

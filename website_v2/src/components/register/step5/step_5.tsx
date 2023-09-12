@@ -68,7 +68,7 @@ const Step5 = () => {
       _id: states.userId,
       register: true,
       user: {
-        linkedinProfileUrl: states.linkedInProfileURL,
+        linkedInProfileUrl: states.linkedInProfileUrl,
         headline: states.headline,
         bio: states.bio,
         userType: states.userType,

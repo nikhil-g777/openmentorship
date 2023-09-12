@@ -1,28 +1,26 @@
-import {useRegisterStore} from "@/zustand/store";
+"use client";
+
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {LinkedInProfileSteps} from "./linkedin_profile_steps";
-import {Dispatch, SetStateAction} from "react";
 import {linkedInPattern} from "@/helpers/register";
 
-type Props = {
-  linkedInURLError: string;
-  setLinkedInURLError: Dispatch<SetStateAction<string>>;
-};
-
-const LinkedInProfileURL = ({linkedInURLError, setLinkedInURLError}: Props) => {
-  const {firstName, lastName, linkedInProfileURL, setLinkedInProfileURL} =
+const LinkedInProfileURL = () => {
+  const {linkedInUrlError, setLinkedInUrlError, isEditable} =
+    useProfileSettingsStore();
+  const {firstName, lastName, linkedInProfileUrl, setLinkedInProfileUrl} =
     useRegisterStore();
 
   // Handle LinkedIn Profile URL Change
   const handleLinkedinProfileURLChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setLinkedInProfileURL(e.target.value);
+    setLinkedInProfileUrl(e.target.value);
 
     // Validation
     if (linkedInPattern.test(e.target.value)) {
-      setLinkedInURLError("");
+      setLinkedInUrlError("");
     } else {
-      setLinkedInURLError("Please enter a valid LinkedIn profile URL.");
+      setLinkedInUrlError("Please enter a valid LinkedIn profile URL.");
     }
   };
 
@@ -33,18 +31,18 @@ const LinkedInProfileURL = ({linkedInURLError, setLinkedInURLError}: Props) => {
           type="text"
           placeholder="* LinkedIn Profile URL"
           className={`input input-bordered w-full ${
-            linkedInURLError.length > 0 ? "border-error" : ""
+            linkedInUrlError.length > 0 ? "border-error" : ""
           }`}
-          disabled={firstName === "" || lastName === ""}
+          disabled={firstName === "" || lastName === "" || !isEditable}
           required
-          value={linkedInProfileURL}
+          value={linkedInProfileUrl}
           onChange={handleLinkedinProfileURLChange}
         />
         {/* LinkedIn Error */}
-        {linkedInURLError.length ? (
+        {linkedInUrlError.length ? (
           <label className="label" htmlFor="headline">
             <span className="label-text-alt text-error">
-              {linkedInURLError}
+              {linkedInUrlError}
             </span>
           </label>
         ) : null}
