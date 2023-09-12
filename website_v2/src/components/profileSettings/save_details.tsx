@@ -2,7 +2,6 @@
 
 import {updateUser} from "@/endpoints/user";
 import {
-  checkAtleastOneSocialLinkProvided,
   checkCommunicationFrequencyIsEmpty,
   checkCommunicationPreferencesIsEmpty,
   checkDuplicateCurrentFields,
@@ -163,12 +162,12 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
     if (isCommunicationPreferencesEmpty) return;
 
     // Check Social Links Errors
-    const noLinkProvided = checkAtleastOneSocialLinkProvided(
-      socialLinks,
-      socialLinksErrors,
-      setSocialLinksErrors
-    );
-    if (noLinkProvided) return;
+    // const noLinkProvided = checkAtleastOneSocialLinkProvided(
+    //   socialLinks,
+    //   socialLinksErrors,
+    //   setSocialLinksErrors
+    // );
+    // if (noLinkProvided) return;
 
     const notValidLink = validateSocialLinks(
       socialLinks,
