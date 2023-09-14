@@ -16,7 +16,7 @@ const ChatWrapper = () => {
     const currentData =
       chatType === "archive" ? archiveListingData : listingData;
     const currentContact = currentData.find(
-      item => item.matches._id === chatId
+      item => item?.matches?._id === chatId
     );
     const twilioId =
       currentContact?.matches?.latestSession?.twilioConversationSid;
