@@ -38,13 +38,13 @@ const constructExploreFilter = (query) => {
 
   if (communicationFrequency && communicationFrequency.length > 0) {
     const frequencies = communicationFrequency.split(',');
-    filter.communicationFrequency = { $all: frequencies };
+    filter.communicationFrequency = { $in: frequencies };
   }
 
   if (communicationPreferences && communicationPreferences.length > 0) {
     const preferences = communicationPreferences.split(',');
     console.log(preferences);
-    filter.communicationPreferences = { $all: preferences };
+    filter.communicationPreferences = { $in: preferences };
   }
 
   return filter;
