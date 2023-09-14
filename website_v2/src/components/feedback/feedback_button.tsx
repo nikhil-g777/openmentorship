@@ -1,19 +1,19 @@
 "use client";
 
+import {getFeedbackUrl} from "@/helpers/feedback";
 import {useSession} from "next-auth/react";
 
 const FeedbackButton = () => {
   const session = useSession();
   const userId = session?.data?.profile?.user?._id;
   const email = session?.data?.profile?.user?.email;
-  const formURL = `https://docs.google.com/forms/d/e/1FAIpQLScelLxv-qdR7ZwkhjkluCootZkuk1HcRblcC92qM_Ab6Z_Pgg/viewform?usp=pp_url&entry.1801284720=${userId}&entry.688180669=${email}`;
+  const formURL = userId && email ? getFeedbackUrl(userId, email) : null;
 
   // Return null if the session is unauthenticated or loading
   if (
     session.status === "unauthenticated" ||
     session.status === "loading" ||
-    !userId ||
-    !email
+    !formURL
   )
     return null;
 
