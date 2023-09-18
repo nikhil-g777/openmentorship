@@ -34,7 +34,11 @@ const Page = async ({searchParams}: Props) => {
   return (
     <div className="w-full">
       {/* Store Initializer */}
-      <StoreInitializer data={sessionData} searchData={searchData} />
+      <StoreInitializer
+        token={token}
+        data={sessionData}
+        searchData={searchData}
+      />
       {/* Sessions Tab */}
       <SessionsTab />
       {/* Sessions */}
