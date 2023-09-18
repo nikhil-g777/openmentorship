@@ -6,7 +6,7 @@ import {
   useProfileSettingsStore,
   useRegisterStore,
 } from "@/zustand/store";
-import {useRouter} from "next/navigation";
+import {notFound, useRouter} from "next/navigation";
 import {useRef} from "react";
 
 type Props = {
@@ -41,11 +41,16 @@ const StoreInitializer = ({data, token}: Props) => {
 
   // Update states once
   if (!initialzied.current) {
-    // Check if there is an error
-    if (!token || !data.success) {
+    // Redirect if no token
+    if (!token) {
       setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
       router.replace("/");
       return null;
+    }
+
+    // Not found if request failed
+    if (!data.success) {
+      notFound();
     }
 
     // Set states
