@@ -63,7 +63,9 @@ const Page = async ({searchParams}: Props) => {
       <Tabs />
       <Listing />
       {/* No Result */}
-      {isResult ? <NoResult message="Sorry! No Result Found" /> : null}
+      {data.success && isResult ? (
+        <NoResult message="Sorry! No Result Found" />
+      ) : null}
 
       {/* Profile Card Modal */}
       <ProfileCardModal />

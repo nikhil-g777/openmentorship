@@ -21,12 +21,13 @@ const Page = async ({searchParams}: Props) => {
   const token = session?.user?.token;
 
   // Params
-  const page = Number(searchParams["page"]);
-  const limit = Number(searchParams["limit"]);
-  const areasOfInterest = searchParams["areasOfInterest"];
-  const goals = searchParams["goals"];
-  const communicationFrequency = searchParams["communicationFrequency"];
-  const communicationPreferences = searchParams["communicationPreferences"];
+  const page = Number(searchParams["page"]) || 1;
+  const limit = Number(searchParams["limit"]) || 10;
+  const areasOfInterest = searchParams["areasOfInterest"] || "";
+  const goals = searchParams["goals"] || "";
+  const communicationFrequency = searchParams["communicationFrequency"] || "";
+  const communicationPreferences =
+    searchParams["communicationPreferences"] || "";
 
   // Get data
   const data = await getExploreData(token || "");
@@ -58,7 +59,9 @@ const Page = async ({searchParams}: Props) => {
       <Pagination data={contentData} />
 
       {/* No Result */}
-      {contentData && contentData.mentors && !contentData.mentors.length ? (
+      {contentData.success &&
+      contentData.mentors &&
+      !contentData.mentors.length ? (
         <NoResult message="Sorry! No Result Found" />
       ) : null}
 

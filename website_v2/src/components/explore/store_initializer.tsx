@@ -7,7 +7,7 @@ import {
   useListingStore,
   useProfileStore,
 } from "@/zustand/store";
-import {useRouter} from "next/navigation";
+import {notFound, useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
@@ -35,10 +35,15 @@ const StoreInitializer = ({data, content, token}: Props) => {
   // Re-render on data change
   useEffect(() => {
     // Redirect if no data found
-    if (!data.success || !content.success || !token) {
+    if (!token) {
       setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
       router.replace("/");
       return;
+    }
+
+    // 404 page if request failed
+    if (!data.success || !content.success) {
+      notFound();
     }
 
     // Set carousel data
