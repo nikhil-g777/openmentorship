@@ -36,7 +36,7 @@ const Page = async ({searchParams}: Props) => {
         data={data}
         userType={userType}
         chatId={chatId}
-        twilioToken={chatToken?.twilioToken || ""}
+        twilioToken={chatToken}
       />
 
       {/* Chat Wrapper */}
