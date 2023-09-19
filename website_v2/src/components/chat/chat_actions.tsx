@@ -45,6 +45,20 @@ const ChatActions = () => {
         <div className="w-full flex items-center">
           <div className="w-full form-control m-4">
             <form className="input-group" onSubmit={handleSubmit}>
+              {/* File Input */}
+              <label
+                htmlFor="file-input"
+                className="btn btn-square btn-ghost border-neutral border-opacity-20 border-r-0"
+              >
+                <input type="file" id="file-input" className="hidden" />
+                <Image
+                  src="/assets/icons/attachment.svg"
+                  alt="attachment"
+                  width={24}
+                  height={24}
+                />
+              </label>
+              {/* Message Input */}
               <input
                 type="text"
                 placeholder="Type a message..."
@@ -60,6 +74,7 @@ const ChatActions = () => {
                 onKeyDown={handleKeydown}
                 disabled={chatType === "archive"}
               />
+              {/* Send Button */}
               <button
                 type="submit"
                 className={`btn btn-square btn-primary ${
