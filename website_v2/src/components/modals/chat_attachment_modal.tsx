@@ -1,6 +1,6 @@
 "use client";
 
-import {useChatStore} from "@/zustand/store";
+import {useChatStore, useCommonStore} from "@/zustand/store";
 import Image from "next/image";
 import {useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
@@ -8,11 +8,14 @@ import {useEffect, useState} from "react";
 const ChatAttachmentModal = () => {
   const {
     chatConnectionStatus,
+    setChatConnectionStatus,
+    currentConversation,
     chatAttachmentModal,
     setChatAttachmentModal,
     chatAttachment,
     setChatAttachment,
   } = useChatStore();
+  const {setErrorAlert} = useCommonStore();
   const params = useSearchParams();
   const chatType = params.get("type");
   const [contentType, setContentType] = useState<string>("");
@@ -22,6 +25,31 @@ const ChatAttachmentModal = () => {
   const handleClose = () => {
     setChatAttachmentModal(false);
     setChatAttachment(null);
+  };
+
+  // Handle send
+  const handleSend = () => {
+    // Return if no attachment found
+    if (!chatAttachment) {
+      setErrorAlert("No attachment found!", 6);
+      return;
+    }
+
+    // Send attachment
+    setChatConnectionStatus("connecting");
+    const formData = new FormData();
+    formData.append("file", chatAttachment);
+    currentConversation
+      ?.sendMessage(formData)
+      .then(() => {
+        setChatConnectionStatus("connected");
+        setChatAttachmentModal(false);
+        setChatAttachment(null);
+      })
+      .catch(() => {
+        setErrorAlert("Error sending attachment!", 6);
+        setChatConnectionStatus("connected");
+      });
   };
 
   // Update content type
@@ -84,10 +112,13 @@ const ChatAttachmentModal = () => {
           </button>
           {/* Send Button */}
           <button
-            className="btn rounded-full btn-sm text-sm capitalize btn-outline hover:btn-primary"
+            className={`btn rounded-full btn-sm text-sm capitalize btn-outline hover:btn-primary ${
+              chatConnectionStatus === "connecting" ? "loading" : ""
+            }`}
             disabled={
               chatConnectionStatus === "connecting" || chatType === "archive"
             }
+            onClick={handleSend}
           >
             {chatConnectionStatus === "connecting" ? "Sending..." : "Send"}
           </button>
