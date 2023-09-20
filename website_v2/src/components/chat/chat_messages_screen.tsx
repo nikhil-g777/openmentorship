@@ -5,6 +5,7 @@ import {useChatStore} from "@/zustand/store";
 import {Message} from "@twilio/conversations";
 import {useSession} from "next-auth/react";
 import {MutableRefObject, useEffect, useRef, useState} from "react";
+import {ChatAttachment} from "./chat_attachment";
 
 const ChatMessagesScreen = () => {
   const userId = useSession().data?.user.user._id;
@@ -115,7 +116,7 @@ const ChatMessagesScreen = () => {
               <div
                 className={`chat ${
                   item["state"]["author"] === userId ? "chat-end" : "chat-start"
-                }`}
+                } ${item["state"]["type"] === "media" ? "hidden" : ""}`}
               >
                 <div
                   className={`chat-bubble text-sm md:text-base ${
@@ -132,6 +133,8 @@ const ChatMessagesScreen = () => {
                   </time>
                 </div>
               </div>
+              {/* Chat Attachment */}
+              <ChatAttachment message={item} />
             </div>
           ))}
         </div>
