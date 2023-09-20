@@ -31,6 +31,10 @@ export type ChatSlice = {
     participant: string;
     isTyping: boolean;
   }) => void;
+  chatAttachmentModal: boolean;
+  setChatAttachmentModal: (chatAttachmentModal: boolean) => void;
+  chatAttachment: File | null | undefined;
+  setChatAttachment: (chatAttachment: File | null | undefined) => void;
 };
 
 // Initial state
@@ -46,6 +50,8 @@ const initialState = {
   chatConnectionStatus: "",
   twilioToken: "",
   typingStatus: {participant: "", isTyping: false},
+  chatAttachmentModal: false,
+  chatAttachment: null,
 };
 
 export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
@@ -68,4 +74,8 @@ export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
   setTwilioToken: (twilioToken: string) => set({twilioToken}),
   setTypingStatus: (typingStatus: {participant: string; isTyping: boolean}) =>
     set({typingStatus}),
+  setChatAttachmentModal: (chatAttachmentModal: boolean) =>
+    set({chatAttachmentModal}),
+  setChatAttachment: (chatAttachment: File | null | undefined) =>
+    set({chatAttachment}),
 });

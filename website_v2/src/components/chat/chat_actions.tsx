@@ -1,14 +1,19 @@
 import {useChatStore, useCommonStore} from "@/zustand/store";
 import Image from "next/image";
 import {useSearchParams} from "next/navigation";
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 
 const ChatActions = () => {
   const params = useSearchParams();
   const chatId = params.get("id");
   const chatType = params.get("type");
-  const {currentConversation, chatConnectionStatus, setChatConnectionStatus} =
-    useChatStore();
+  const {
+    currentConversation,
+    chatConnectionStatus,
+    setChatConnectionStatus,
+    setChatAttachmentModal,
+    setChatAttachment,
+  } = useChatStore();
   const {setErrorAlert} = useCommonStore();
   const [message, setMessage] = useState<string>("");
 
@@ -39,6 +44,21 @@ const ChatActions = () => {
     currentConversation?.typing();
   };
 
+  // Handle file input
+  const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setChatAttachment(null);
+
+    // Set Error if file size is greater than 10MB
+    if (file && file?.size > 10 * 1024 * 1024) {
+      setErrorAlert("File size should be less than 10MB", 6);
+      return;
+    }
+
+    setChatAttachmentModal(true);
+    setChatAttachment(file);
+  };
+
   return (
     <>
       {chatId && chatId.length && currentConversation ? (
@@ -50,7 +70,14 @@ const ChatActions = () => {
                 htmlFor="file-input"
                 className="btn btn-square btn-ghost border-neutral border-opacity-20 border-r-0"
               >
-                <input type="file" id="file-input" className="hidden" />
+                <input
+                  type="file"
+                  id="file-input"
+                  className="hidden"
+                  onChange={handleFileInput}
+                  value={""}
+                  disabled={chatType === "archive"}
+                />
                 <Image
                   src="/assets/icons/attachment.svg"
                   alt="attachment"
