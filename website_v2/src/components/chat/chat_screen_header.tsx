@@ -27,6 +27,7 @@ const ChatScreenHeader = () => {
     setProfileImage,
     typingStatus,
     setTypingStatus,
+    setChatMediaContentModal,
   } = useChatStore();
   const [userId, setUserId] = useState<string>("");
 
@@ -131,6 +132,7 @@ const ChatScreenHeader = () => {
             <button
               className="btn btn-circle btn-ghost btn-sm p-1 mr-4"
               disabled={chatType === "archive"}
+              onClick={() => setChatMediaContentModal(true)}
             >
               <Image
                 src="/assets/icons/attachment.svg"

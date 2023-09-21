@@ -35,6 +35,8 @@ export type ChatSlice = {
   setChatAttachmentModal: (chatAttachmentModal: boolean) => void;
   chatAttachment: File | null | undefined;
   setChatAttachment: (chatAttachment: File | null | undefined) => void;
+  chatMediaContentModal: boolean;
+  setChatMediaContentModal: (chatMediaContentModal: boolean) => void;
 };
 
 // Initial state
@@ -52,6 +54,7 @@ const initialState = {
   typingStatus: {participant: "", isTyping: false},
   chatAttachmentModal: false,
   chatAttachment: null,
+  chatMediaContentModal: false,
 };
 
 export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
@@ -78,4 +81,6 @@ export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
     set({chatAttachmentModal}),
   setChatAttachment: (chatAttachment: File | null | undefined) =>
     set({chatAttachment}),
+  setChatMediaContentModal: (chatMediaContentModal: boolean) =>
+    set({chatMediaContentModal}),
 });
