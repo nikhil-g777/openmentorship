@@ -21,9 +21,28 @@ const ChatMediaContentModal = () => {
   const {setErrorAlert} = useCommonStore();
   const [mediaContent, setMediaContent] = useState<MediaContent>([]);
 
+  // Handle Error
+  const handleError = (sid: string) => {
+    // Find with sid and edit its url and filename
+    const index = mediaContent.findIndex(content => content.sid === sid);
+    if (index !== -1) {
+      const content = mediaContent[index];
+      content.url = "/assets/icons/sad.svg";
+      content.filename = "Resource failed!";
+      setMediaContent(prevState => {
+        const newState = [...prevState];
+        newState[index] = content;
+        return newState;
+      });
+    }
+
+    // Show Error Alert
+    setErrorAlert("Media resource failed to load! Try reloading the page.", 6);
+  };
+
   // Set Media Content
   useEffect(() => {
-    // Reset media content
+    // Reset media content && fallback src
     setMediaContent([]);
 
     // Get & Set media content
@@ -101,13 +120,20 @@ const ChatMediaContentModal = () => {
                       width={100}
                       height={100}
                       className="object-cover"
+                      onError={() => handleError(content.sid)}
                     />
                   </a>
                 ) : null}
                 {/* Video */}
                 {content.contentType.startsWith("video") ? (
                   <a href={content.url} target="_blank">
-                    <video src={content.url} width={100} height={100} controls>
+                    <video
+                      src={content.url}
+                      width={100}
+                      height={100}
+                      controls
+                      onError={() => handleError(content.sid)}
+                    >
                       Your browser does not support the video tag.
                     </video>
                   </a>
