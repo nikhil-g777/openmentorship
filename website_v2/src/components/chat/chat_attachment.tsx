@@ -1,6 +1,7 @@
 "use client";
 
 import {getTime} from "@/helpers/chat";
+import {useCommonStore} from "@/zustand/store";
 import {Message} from "@twilio/conversations";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
@@ -12,9 +13,17 @@ type Props = {
 
 const ChatAttachment = ({message}: Props) => {
   const userId = useSession().data?.user.user._id;
+  const {setErrorAlert} = useCommonStore();
   const [sourceSrc, setSourceSrc] = useState<string>("");
   const [contentName, setContentName] = useState<string>("");
   const [contentType, setContentType] = useState<string>("");
+
+  // Handle error
+  const handleError = () => {
+    setSourceSrc("/assets/icons/sad.svg");
+    setContentName("Resource failed!");
+    setErrorAlert("Media resource failed to load! Try reloading the page.", 6);
+  };
 
   // Update sourceSrc & contentType
   useEffect(() => {
@@ -69,13 +78,20 @@ const ChatAttachment = ({message}: Props) => {
               width={100}
               height={100}
               className="object-cover"
+              onError={handleError}
             />
           </a>
         ) : null}
         {/* Video */}
         {contentType.startsWith("video") ? (
           <a href={sourceSrc} target="_blank">
-            <video src={sourceSrc} width={100} height={100} controls>
+            <video
+              src={sourceSrc}
+              width={100}
+              height={100}
+              controls
+              onError={handleError}
+            >
               Your browser does not support the video tag.
             </video>
           </a>
