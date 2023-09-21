@@ -1,10 +1,10 @@
 "use client";
 
 import {useChatStore, useCommonStore} from "@/zustand/store";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {NoResult} from "../noResult/no_result";
 import Image from "next/image";
-import {Message} from "@twilio/conversations";
+import {Message, Paginator} from "@twilio/conversations";
 
 type MediaContent = {
   category: string;
@@ -20,6 +20,10 @@ const ChatMediaContentModal = () => {
     useChatStore();
   const {setErrorAlert} = useCommonStore();
   const [mediaContent, setMediaContent] = useState<MediaContent>([]);
+  const [tempConversations, setTempConversations] =
+    useState<Paginator<Message> | null>(null);
+  const [loader, setLoader] = useState<boolean>(false);
+  const mediaContentContainer = useRef<null | HTMLDivElement>(null);
 
   // Handle Error
   const handleError = (sid: string) => {
@@ -47,6 +51,7 @@ const ChatMediaContentModal = () => {
 
     // Get & Set media content
     currentConversation?.getMessages().then(messages => {
+      setTempConversations(messages);
       messages.items.forEach(message => {
         if (message.type === "media") {
           const content = message["state"]["media"]["state"];
@@ -98,6 +103,57 @@ const ChatMediaContentModal = () => {
     };
   }, [currentConversation, setErrorAlert]);
 
+  useEffect(() => {
+    // Trigger prevPage when first message is in view
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && tempConversations?.hasPrevPage) {
+        // Unobserve the element & set loader to true
+        observer.unobserve(entries[0].target);
+        setLoader(true);
+        tempConversations
+          .prevPage()
+          .then(messages => {
+            // scroll to the first message of the previous page & set loader to false
+            entries[0].target.scrollIntoView();
+            setLoader(false);
+            // add messages to conversations at the bottom
+            setTempConversations({
+              ...messages,
+              items: [...tempConversations.items, ...messages.items],
+            });
+            messages.items.forEach(message => {
+              if (message.type === "media") {
+                const content = message["state"]["media"]["state"];
+                message
+                  .getTemporaryContentUrlsForAttachedMedia()
+                  .then(item => {
+                    const url = item.values().next().value;
+                    content.url = url;
+                    setMediaContent(prevState => [...prevState, content]);
+                  })
+                  .catch(() => {
+                    setErrorAlert(
+                      "Media resource failed to load! Try reloading the page.",
+                      6
+                    );
+                  });
+              }
+            });
+          })
+          .catch(() => setLoader(false));
+      }
+    });
+    if (
+      mediaContentContainer.current &&
+      mediaContentContainer.current.lastElementChild
+    ) {
+      observer.observe(mediaContentContainer.current.lastElementChild);
+    }
+
+    // cleanup function
+    return () => observer.disconnect();
+  }, [tempConversations, setMediaContent, setErrorAlert, setLoader]);
+
   return (
     <div
       className={`modal modal-bottom sm:modal-middle ${
@@ -106,7 +162,10 @@ const ChatMediaContentModal = () => {
     >
       <div className="modal-box">
         {/* Content Gallery */}
-        <div className="flex flex-wrap gap-2 overflow-y-auto max-h-96">
+        <div
+          className="flex flex-wrap gap-2 overflow-y-auto max-h-96"
+          ref={mediaContentContainer}
+        >
           {mediaContent && mediaContent.length ? (
             mediaContent.map(content => (
               <div className="w-fit" key={content.sid}>
@@ -161,6 +220,12 @@ const ChatMediaContentModal = () => {
           ) : (
             <NoResult message="Sorry! No Media Found" />
           )}
+          {/* Loader */}
+          {loader ? (
+            <div className="w-full flex justify-center items-center my-4">
+              <button className="btn btn-square loading"></button>
+            </div>
+          ) : null}
         </div>
         {/* Close Button */}
         <div className="modal-action">
