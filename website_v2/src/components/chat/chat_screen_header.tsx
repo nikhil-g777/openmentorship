@@ -120,13 +120,25 @@ const ChatScreenHeader = () => {
         {currentConversation && firstName && firstName.length ? (
           <>
             <ChatUserAvatar profileImage={profileImage} size={48} />
-            <h3 className="w-full font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200">
+            <h3 className="w-full font-lg sm:text-xl font-semibold px-4 py-4 bg-base-200 truncate">
               {firstName}
               {/* Show typing indicator */}
               {typingStatus.isTyping && typingStatus.participant === userId ? (
                 <span className="mx-2 text-xs opacity-50">typing…</span>
               ) : null}
             </h3>
+            {/* Media Content */}
+            <button
+              className="btn btn-circle btn-ghost btn-sm p-1 mr-4"
+              disabled={chatType === "archive"}
+            >
+              <Image
+                src="/assets/icons/attachment.svg"
+                alt="attachment"
+                width={24}
+                height={24}
+              />
+            </button>
             {/* End chat */}
             <button
               className="btn btn-circle btn-error hover:saturate-150 btn-xs"
