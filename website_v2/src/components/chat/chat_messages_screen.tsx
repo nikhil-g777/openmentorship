@@ -5,7 +5,7 @@ import {useChatStore} from "@/zustand/store";
 import {Message} from "@twilio/conversations";
 import {useSession} from "next-auth/react";
 import {MutableRefObject, useEffect, useRef, useState} from "react";
-import {ChatAttachment} from "./chat_attachment";
+import {ChatAttachment} from "./attachment/chat_attachment";
 
 const ChatMessagesScreen = () => {
   const userId = useSession().data?.user.user._id;
