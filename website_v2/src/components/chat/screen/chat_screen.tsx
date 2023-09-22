@@ -4,7 +4,7 @@ import {useChatStore} from "@/zustand/store";
 import {ConfirmationModal} from "../../modals/confirmation_modal";
 import {ChatActions} from "../actions/chat_actions";
 import {ChatMessagesScreen} from "../chat_messages_screen";
-import {ChatScreenHeader} from "../chat_screen_header";
+import {ChatScreenHeader} from "../header/chat_screen_header";
 import {EmptyChatScreen} from "./empty_chat_screen";
 
 const ChatScreen = () => {
