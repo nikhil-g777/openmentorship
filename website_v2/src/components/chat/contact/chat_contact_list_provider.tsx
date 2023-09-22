@@ -3,7 +3,7 @@
 import {UserProfile} from "@/types/profile";
 import Link from "next/link";
 import React from "react";
-import {ChatUserAvatar} from "./chat_user_avatar";
+import {ChatUserAvatar} from "../chat_user_avatar";
 import {useChatStore} from "@/zustand/store";
 
 type Props = {
