@@ -1,3 +1,5 @@
+import {HandleFileInput, HandleSendMessage} from "@/types/chat";
+
 // Get Time in AM/PM format
 const getTime = (date: Date) => {
   const hours = date.getHours();
@@ -16,4 +18,55 @@ const getDate = (date: Date) => {
   return `${day} ${month} ${year}`;
 };
 
-export {getTime, getDate};
+// Chat actions
+// Handle Send Message
+const handleSendMessage = ({
+  e,
+  message,
+  setMessage,
+  setErrorAlert,
+  setChatConnectionStatus,
+  currentConversation,
+}: HandleSendMessage) => {
+  e.preventDefault();
+  if (!message.length) return;
+  if (message.length > 800) {
+    setErrorAlert("Message should be less than 800 characters", 6);
+    return;
+  }
+
+  // Send message
+  setChatConnectionStatus("connecting");
+  currentConversation
+    ?.sendMessage(message)
+    .then(() => {
+      setMessage("");
+      setChatConnectionStatus("connected");
+    })
+    .catch(() => {
+      setErrorAlert("Error sending message!", 6);
+      setChatConnectionStatus("connected");
+    });
+};
+
+// Handle File Input
+const handleFileInput = ({
+  e,
+  setChatAttachment,
+  setErrorAlert,
+  setChatAttachmentModal,
+}: HandleFileInput) => {
+  const file = e.target.files?.[0];
+  setChatAttachment(null);
+
+  // Set Error if file size is greater than 10MB
+  if (file && file?.size > 10 * 1024 * 1024) {
+    setErrorAlert("File size should be less than 10MB", 6);
+    return;
+  }
+
+  setChatAttachmentModal(true);
+  setChatAttachment(file);
+};
+
+export {getTime, getDate, handleSendMessage, handleFileInput};
