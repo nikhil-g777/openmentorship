@@ -107,6 +107,7 @@ const ChatAttachmentModal = () => {
           <button
             className="btn rounded-full btn-sm text-sm capitalize btn-outline"
             onClick={handleClose}
+            disabled={chatConnectionStatus === "connecting"}
           >
             Cancel
           </button>
