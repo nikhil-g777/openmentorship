@@ -1,4 +1,11 @@
-import {HandleFileInput, HandleSendMessage} from "@/types/chat";
+import {
+  HandleFileInput,
+  HandleSendMessage,
+  MediaContentError,
+  MediaContentObserver,
+  MessageAdded,
+  SetMediaContent,
+} from "@/types/chat";
 
 // Get Time in AM/PM format
 const getTime = (date: Date) => {
@@ -69,4 +76,137 @@ const handleFileInput = ({
   setChatAttachment(file);
 };
 
-export {getTime, getDate, handleSendMessage, handleFileInput};
+// Handle Media Content Error
+const handleMediaContentError = ({
+  sid,
+  mediaContent,
+  setMediaContent,
+  setErrorAlert,
+}: MediaContentError) => {
+  // Find with sid and edit its url and filename
+  const index = mediaContent.findIndex(content => content.sid === sid);
+  if (index !== -1) {
+    const content = mediaContent[index];
+    content.url = "/assets/icons/sad.svg";
+    content.filename = "Resource failed!";
+    setMediaContent(prevState => {
+      const newState = [...prevState];
+      newState[index] = content;
+      return newState;
+    });
+  }
+
+  // Show Error Alert
+  setErrorAlert("Media resource failed to load! Try reloading the page.", 6);
+};
+
+// Handle Message Added
+const messageAddedHandler = ({
+  message,
+  setMediaContent,
+  setErrorAlert,
+}: MessageAdded) => {
+  if (message.type === "media") {
+    const content = message["state"]["media"]["state"];
+    message
+      .getTemporaryContentUrlsForAttachedMedia()
+      .then(item => {
+        const url = item.values().next().value;
+        content.url = url;
+        setMediaContent(prevState => [...prevState, content]);
+      })
+      .catch(() => {
+        setErrorAlert(
+          "Media resource failed to load! Try reloading the page.",
+          6
+        );
+      });
+  }
+};
+
+// Set Media Content
+const getSetMediaContent = ({
+  setTempConversations,
+  currentConversation,
+  setMediaContent,
+  setErrorAlert,
+}: SetMediaContent) => {
+  currentConversation?.getMessages().then(messages => {
+    setTempConversations(messages);
+    messages.items.forEach(message => {
+      if (message.type === "media") {
+        const content = message["state"]["media"]["state"];
+        message
+          .getTemporaryContentUrlsForAttachedMedia()
+          .then(item => {
+            const url = item.values().next().value;
+            content.url = url;
+            setMediaContent(prevState => [...prevState, content]);
+          })
+          .catch(() => {
+            setErrorAlert(
+              "Media resource failed to load! Try reloading the page.",
+              6
+            );
+          });
+      }
+    });
+  });
+};
+
+// Media Content Observer
+const mediaContentObserver = ({
+  observer,
+  entries,
+  setLoader,
+  tempConversations,
+  setTempConversations,
+  setMediaContent,
+  setErrorAlert,
+}: MediaContentObserver) => {
+  // Unobserve the element & set loader to true
+  observer.unobserve(entries[0].target);
+  setLoader(true);
+  tempConversations
+    .prevPage()
+    .then(messages => {
+      // scroll to the first message of the previous page & set loader to false
+      entries[0].target.scrollIntoView();
+      setLoader(false);
+      // add messages to conversations at the bottom
+      setTempConversations({
+        ...messages,
+        items: [...tempConversations.items, ...messages.items],
+      });
+      messages.items.forEach(message => {
+        if (message.type === "media") {
+          const content = message["state"]["media"]["state"];
+          message
+            .getTemporaryContentUrlsForAttachedMedia()
+            .then(item => {
+              const url = item.values().next().value;
+              content.url = url;
+              setMediaContent(prevState => [...prevState, content]);
+            })
+            .catch(() => {
+              setErrorAlert(
+                "Media resource failed to load! Try reloading the page.",
+                6
+              );
+            });
+        }
+      });
+    })
+    .catch(() => setLoader(false));
+};
+
+export {
+  getTime,
+  getDate,
+  handleSendMessage,
+  handleFileInput,
+  handleMediaContentError,
+  messageAddedHandler,
+  getSetMediaContent,
+  mediaContentObserver,
+};

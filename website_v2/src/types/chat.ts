@@ -1,5 +1,5 @@
-import {Conversation} from "@twilio/conversations";
-import {ChangeEvent} from "react";
+import {Conversation, Message, Paginator} from "@twilio/conversations";
+import {ChangeEvent, Dispatch, SetStateAction} from "react";
 
 // Handle Send Message
 type HandleSendMessage = {
@@ -19,4 +19,60 @@ type HandleFileInput = {
   setChatAttachmentModal: (chatAttachmentModal: boolean) => void;
 };
 
-export type {HandleSendMessage, HandleFileInput};
+// Media Content
+type MediaContent = {
+  category: string;
+  contentType: string;
+  filename: string;
+  sid: string;
+  size: number;
+  url: string;
+}[];
+
+// Media Content Error
+type MediaContentError = {
+  sid: string;
+  mediaContent: MediaContent;
+  setMediaContent: (value: SetStateAction<MediaContent>) => void;
+  setErrorAlert: (errorAlert: string, time: number) => void;
+};
+
+// Message Added
+type MessageAdded = {
+  message: Message;
+  setMediaContent: Dispatch<SetStateAction<MediaContent>>;
+  setErrorAlert: (errorAlert: string, time: number) => void;
+};
+
+// Media Content
+type SetMediaContent = {
+  setTempConversations: (
+    value: SetStateAction<Paginator<Message> | null>
+  ) => void;
+  currentConversation: Conversation | null;
+  setMediaContent: (value: SetStateAction<MediaContent>) => void;
+  setErrorAlert: (errorAlert: string, time: number) => void;
+};
+
+// Media Content Observer
+type MediaContentObserver = {
+  observer: IntersectionObserver;
+  entries: IntersectionObserverEntry[];
+  setLoader: (value: SetStateAction<boolean>) => void;
+  tempConversations: Paginator<Message>;
+  setTempConversations: (
+    value: SetStateAction<Paginator<Message> | null>
+  ) => void;
+  setMediaContent: (value: SetStateAction<MediaContent>) => void;
+  setErrorAlert: (errorAlert: string, time: number) => void;
+};
+
+export type {
+  HandleSendMessage,
+  HandleFileInput,
+  MediaContent,
+  MediaContentError,
+  MessageAdded,
+  SetMediaContent,
+  MediaContentObserver,
+};
