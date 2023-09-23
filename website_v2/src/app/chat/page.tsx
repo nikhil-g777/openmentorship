@@ -1,6 +1,6 @@
 import {ChatWrapper} from "@/components/chat/chat_wrapper";
 import {StoreInitializer} from "@/components/chat/store_initializer";
-import {ChatAttachmentModal} from "@/components/modals/chat_attachment_modal";
+import {ChatAttachmentModal} from "@/components/modals/attachment/chat_attachment_modal";
 import {ChatMediaContentModal} from "@/components/modals/chat_media_content_modal";
 import {NoResult} from "@/components/noResult/no_result";
 import {getChatToken} from "@/endpoints/chat";
