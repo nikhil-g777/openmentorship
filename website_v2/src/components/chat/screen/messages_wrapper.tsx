@@ -1,13 +1,15 @@
 import {getDate, getTime} from "@/helpers/chat";
 import {useChatStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
-import {useRef} from "react";
 import {ChatAttachment} from "../attachment/chat_attachment";
 
-const MessagesWrapper = () => {
+type Props = {
+  chatContainer: React.RefObject<HTMLDivElement>;
+};
+
+const MessagesWrapper = ({chatContainer}: Props) => {
   const userId = useSession().data?.user.user._id;
   const {chatId, conversations} = useChatStore();
-  const chatContainer = useRef<null | HTMLDivElement>(null);
   return (
     <>
       {chatId &&

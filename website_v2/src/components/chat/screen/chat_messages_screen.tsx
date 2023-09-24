@@ -88,7 +88,7 @@ const ChatMessagesScreen = () => {
           <button className="btn btn-square loading"></button>
         </div>
       ) : null}
-      <MessagesWrapper />
+      <MessagesWrapper chatContainer={chatContainer} />
     </div>
   );
 };
