@@ -2,32 +2,62 @@
 
 import {useChatStore} from "@/zustand/store";
 import {Message} from "@twilio/conversations";
-import {MutableRefObject, useEffect, useRef, useState} from "react";
+import {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {MessagesWrapper} from "./messages_wrapper";
 
 const ChatMessagesScreen = () => {
-  const {currentConversation, conversations, setConversations} = useChatStore();
+  const {
+    currentConversation,
+    conversations,
+    setConversations,
+    messagesAttachmentCompleted,
+    setMessagesAttachmentCompleted,
+  } = useChatStore();
   const scrollElement = useRef<null | HTMLDivElement>(null);
-  const scrollToBottom = (element: MutableRefObject<null | HTMLDivElement>) => {
-    if (element.current) {
-      element.current.scrollTop = element.current?.scrollHeight;
-    }
-  };
+  const scrollToBottom = useCallback(
+    (element: MutableRefObject<null | HTMLDivElement>) => {
+      if (element.current) {
+        element.current.scrollTop = element.current?.scrollHeight;
+      }
+    },
+    []
+  );
   const chatContainer = useRef<null | HTMLDivElement>(null);
   const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
-    // Reset conversations
+    // Reset conversations & messagesAttachmentCompleted
     setConversations(null);
-    currentConversation
-      ?.getMessages()
-      .then(messages => {
-        setConversations(messages);
-      })
-      .then(() => {
-        scrollToBottom(scrollElement);
-      });
-  }, [setConversations, currentConversation]);
+    setMessagesAttachmentCompleted([]);
+
+    currentConversation?.getMessages().then(messages => {
+      setConversations(messages);
+    });
+  }, [setConversations, currentConversation, setMessagesAttachmentCompleted]);
+
+  // Scroll to bottom when conversations are loaded
+  useEffect(() => {
+    const attachments = conversations?.items?.filter(
+      item => item.type === "media"
+    );
+    if (attachments?.length === 0) scrollToBottom(scrollElement);
+
+    // Scroll to bottom when all attachments are loaded
+    if (attachments?.length === messagesAttachmentCompleted.length) {
+      scrollToBottom(scrollElement);
+    }
+  }, [
+    conversations,
+    messagesAttachmentCompleted,
+    scrollToBottom,
+    scrollElement,
+  ]);
 
   useEffect(() => {
     // Scroll to bottom & add new message to conversations
@@ -48,7 +78,7 @@ const ChatMessagesScreen = () => {
       // Perform any cleanup if needed
       currentConversation?.off("messageAdded", messageAddedHandler);
     };
-  }, [currentConversation, setConversations, conversations]);
+  }, [currentConversation, setConversations, scrollToBottom, conversations]);
 
   useEffect(() => {
     // Trigger prevPage when first message is in view

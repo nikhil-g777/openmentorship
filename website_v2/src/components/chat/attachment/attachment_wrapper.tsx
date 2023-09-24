@@ -1,4 +1,7 @@
+"use client";
+
 import {getTime} from "@/helpers/chat";
+import {useChatStore} from "@/zustand/store";
 import {Message} from "@twilio/conversations";
 import Image from "next/image";
 
@@ -10,6 +13,8 @@ type Props = {
 };
 
 const AttachmentWrapper = ({contentType, src, contentName, message}: Props) => {
+  const {messagesAttachmentCompleted, setMessagesAttachmentCompleted} =
+    useChatStore();
   return (
     <>
       {/* Image */}
@@ -17,10 +22,17 @@ const AttachmentWrapper = ({contentType, src, contentName, message}: Props) => {
         <a href={src} target="_blank">
           <Image
             src="/assets/icons/image.svg"
+            loading="eager"
             alt={contentName}
             width={64}
             height={64}
             className="object-cover mx-auto"
+            onLoadingComplete={() =>
+              setMessagesAttachmentCompleted([
+                ...messagesAttachmentCompleted,
+                true,
+              ])
+            }
           />
         </a>
       ) : null}
@@ -29,10 +41,17 @@ const AttachmentWrapper = ({contentType, src, contentName, message}: Props) => {
         <a href={src} target="_blank">
           <Image
             src="/assets/icons/video.svg"
+            loading="eager"
             alt={contentName}
             width={64}
             height={64}
             className="object-cover mx-auto"
+            onLoadingComplete={() =>
+              setMessagesAttachmentCompleted([
+                ...messagesAttachmentCompleted,
+                true,
+              ])
+            }
           />
         </a>
       ) : null}
@@ -41,10 +60,17 @@ const AttachmentWrapper = ({contentType, src, contentName, message}: Props) => {
         <a href={src} target="_blank">
           <Image
             src="/assets/icons/document.svg"
+            loading="eager"
             alt={contentName}
             width={64}
             height={64}
             className="object-cover mx-auto"
+            onLoadingComplete={() =>
+              setMessagesAttachmentCompleted([
+                ...messagesAttachmentCompleted,
+                true,
+              ])
+            }
           />
         </a>
       ) : null}
