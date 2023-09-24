@@ -22,42 +22,46 @@ const AttachmentWrapper = ({
       {/* Image */}
       {contentType.startsWith("image") ? (
         <a href={src} target="_blank">
-          <Image
-            unoptimized
-            src={src}
-            alt={contentName}
-            width={100}
-            height={100}
-            className="object-cover"
-            onError={handleError}
-          />
+          <div style={{width: "150px", height: "150px", position: "relative"}}>
+            <Image
+              unoptimized
+              src={src}
+              alt={contentName}
+              fill
+              className="object-cover"
+              onError={handleError}
+            />
+          </div>
         </a>
       ) : null}
       {/* Video */}
       {contentType.startsWith("video") ? (
         <a href={src} target="_blank">
-          <video
-            src={src}
-            width={100}
-            height={100}
-            controls
-            onError={handleError}
-          >
-            Your browser does not support the video tag.
-          </video>
+          <div style={{width: "150px", height: "150px", position: "relative"}}>
+            <video
+              src={src}
+              width={100}
+              height={100}
+              controls
+              onError={handleError}
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </a>
       ) : null}
       {/* Documents */}
       {!contentType.startsWith("image") && !contentType.startsWith("video") ? (
         <a href={src} target="_blank">
-          <Image
-            unoptimized
-            src="/assets/icons/document.svg"
-            alt={contentName}
-            width={100}
-            height={100}
-            className="bg-white object-cover rounded-md"
-          />
+          <div style={{width: "150px", height: "150px", position: "relative"}}>
+            <Image
+              unoptimized
+              src="/assets/icons/document.svg"
+              alt={contentName}
+              fill
+              className="bg-white object-cover rounded-md"
+            />
+          </div>
         </a>
       ) : null}
       {/* File Name */}

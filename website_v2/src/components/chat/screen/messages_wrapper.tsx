@@ -31,28 +31,32 @@ const MessagesWrapper = () => {
                 </div>
               ) : null}
               {/* Chat Bubble Container */}
-              <div
-                className={`chat ${
-                  item["state"]["author"] === userId ? "chat-end" : "chat-start"
-                } ${item["state"]["type"] === "media" ? "hidden" : ""}`}
-              >
+              {item["state"]["type"] === "media" ? (
+                <ChatAttachment message={item} />
+              ) : (
                 <div
-                  className={`chat-bubble text-sm md:text-base ${
+                  className={`chat ${
                     item["state"]["author"] === userId
-                      ? "chat-bubble-primary"
-                      : ""
+                      ? "chat-end"
+                      : "chat-start"
                   }`}
                 >
-                  {item["state"]["body"]}
+                  <div
+                    className={`chat-bubble text-sm md:text-base ${
+                      item["state"]["author"] === userId
+                        ? "chat-bubble-primary"
+                        : ""
+                    }`}
+                  >
+                    {item["state"]["body"]}
+                  </div>
+                  <div className="chat-footer opacity-50">
+                    <time className="text-xs">
+                      {getTime(item["state"]["timestamp"])}
+                    </time>
+                  </div>
                 </div>
-                <div className="chat-footer opacity-50">
-                  <time className="text-xs">
-                    {getTime(item["state"]["timestamp"])}
-                  </time>
-                </div>
-              </div>
-              {/* Chat Attachment */}
-              <ChatAttachment message={item} />
+              )}
             </div>
           ))}
         </div>
