@@ -22,54 +22,52 @@ const MediaContentWrapper = ({
     <div className="modal-box">
       {/* Content Gallery */}
       <div
-        className="flex flex-wrap gap-2 overflow-y-auto max-h-96"
+        className="flex flex-wrap justify-stretch gap-4 overflow-y-auto max-h-96"
         ref={mediaContentContainer}
       >
         {mediaContent && mediaContent.length ? (
           mediaContent.map(content => (
             <div className="w-fit" key={content.sid}>
-              {/* Image */}
-              {content.contentType.startsWith("image") ? (
-                <a href={content.url} target="_blank">
-                  <Image
-                    unoptimized
-                    src={content.url}
-                    alt={content.filename}
-                    width={100}
-                    height={100}
-                    className="object-cover"
-                    onError={() => handleError(content.sid)}
-                  />
-                </a>
-              ) : null}
-              {/* Video */}
-              {content.contentType.startsWith("video") ? (
-                <a href={content.url} target="_blank">
-                  <video
-                    src={content.url}
-                    width={100}
-                    height={100}
-                    controls
-                    onError={() => handleError(content.sid)}
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                </a>
-              ) : null}
-              {/* Documents */}
-              {!content.contentType.startsWith("image") &&
-              !content.contentType.startsWith("video") ? (
-                <a href={content.url} target="_blank">
-                  <Image
-                    unoptimized
-                    src="/assets/icons/document.svg"
-                    alt={content.url}
-                    width={100}
-                    height={100}
-                    className="bg-white object-cover rounded-md"
-                  />
-                </a>
-              ) : null}
+              <div className="bg-primary p-1 rounded-md">
+                {/* Image */}
+                {content.contentType.startsWith("image") ? (
+                  <a href={content.url} target="_blank">
+                    <Image
+                      src="/assets/icons/image.svg"
+                      alt={content.filename}
+                      width={64}
+                      height={64}
+                      className="object-cover mx-auto"
+                      onError={() => handleError(content.sid)}
+                    />
+                  </a>
+                ) : null}
+                {/* Video */}
+                {content.contentType.startsWith("video") ? (
+                  <a href={content.url} target="_blank">
+                    <Image
+                      src="/assets/icons/video.svg"
+                      alt={content.filename}
+                      width={64}
+                      height={64}
+                      className="object-cover mx-auto"
+                    />
+                  </a>
+                ) : null}
+                {/* Documents */}
+                {!content.contentType.startsWith("image") &&
+                !content.contentType.startsWith("video") ? (
+                  <a href={content.url} target="_blank">
+                    <Image
+                      src="/assets/icons/document.svg"
+                      alt={content.filename}
+                      width={64}
+                      height={64}
+                      className="object-cover mx-auto"
+                    />
+                  </a>
+                ) : null}
+              </div>
               {/* File Name */}
               <h3 className="text-sm py-2 truncate text-center">
                 {content.filename}
