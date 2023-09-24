@@ -20,20 +20,4 @@ router.get(
   sessionController.sessionList,
 );
 
-// Create a Session
-router.post(
-  '/create',
-  passport.authenticate('jwt', { session: false }),
-  util.checkRole([role.admin]),
-  sessionController.create,
-);
-
-// Get Matches in a session
-router.get(
-  '/matches/:sessionId',
-  passport.authenticate('jwt', { session: false }),
-  util.checkRole([role.admin]),
-  sessionController.getMatchesInSession,
-);
-
 module.exports = router;

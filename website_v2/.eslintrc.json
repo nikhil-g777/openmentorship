@@ -1,0 +1,6 @@
+{
+  "extends": ["./node_modules/gts/", "next/core-web-vitals", "prettier"],
+  "rules": {
+    "quotes": ["error", "double"]
+  }
+}

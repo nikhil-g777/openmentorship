@@ -1,0 +1,17 @@
+.web-navbar {
+    display: block;
+}
+.mobile-navbar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .web-navbar {
+        display: none;
+    
+    }
+    .mobile-navbar {
+        display: block;
+    }
+
+  }

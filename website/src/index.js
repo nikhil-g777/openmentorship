@@ -1,7 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './app';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./app";
 
-require('dotenv-flow').config();
+import "../src/style/styles.css";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+require("dotenv-flow").config();
+
+ReactDOM.render(<App />, document.getElementById("root"));

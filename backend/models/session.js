@@ -10,18 +10,26 @@ const Session = new Schema(
     },
     endDate: {
       type: Date,
-      required: true,
     },
     status: {
       type: String,
       required: true,
-      enum: ['pending', 'active', 'closed', 'waitlist'],
-      default: 'pending',
+      enum: ['active', 'closed'],
+      default: 'active',
+    },
+    twilioConversationSid: { type: String },
+    requestMessage: { type: String, required: true },
+    match: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Match',
     },
   },
   {
     timestamps: true,
   },
 );
+
+Session.index({ '$**': 'text' });
 
 module.exports = mongoose.model('Session', Session);

@@ -1,174 +1,183 @@
-import React, { useState } from 'react'
-import { Container, DotStepper, FormItem, Title, TitleWrapper } from "../../components"
-import { BootstrapInput } from "../../app/GlobalTheme"
+import React, { useEffect, useState } from "react";
+import { Container, DotStepper, Title, TitleWrapper } from "../../components";
+import {
+  Button,
+  makeStyles,
+  withStyles,
+  Box,
+  Typography,
+} from "@material-ui/core";
+import ExperienceCard from "./components/ExperienceCard";
 
-import { FormControl, FormControlLabel, Checkbox, Input, InputBase, InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
-import styled from 'styled-components'
+import styled from "styled-components";
 
-const FlexWrapper = styled.div`
-  display:flex;
-  justify-content: space-between;
-`
+const maxExperience = 3;
 
-const FlexItem = styled.div`
-  width:33%;
-`
+const AddExpContainer = styled.div`
+  margin-bottom: 4.5rem;
+`;
 
-const RegisterStep2 = props => {
-  const [ checkbox, setCheckbox ] = useState(props.values.currentRole)
+const AddContainer = styled.div`
+  margin-bottom: 1rem;
+`;
 
-  const handleCheckboxChange = (event) => {
-    setCheckbox(event.target.checked)
-    props.handleCheckbox(event)
-  }
+const generateId = () => Math.floor(Math.random() * 10000);
 
-  let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-  let years = [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000]
-  
-  return ( 
+const AddButton = withStyles({
+  label: {
+    "text-decoration": "underline",
+  },
+})(Button);
+
+const RegisterStep2 = (props) => {
+  const { handleUpdate, values, handleNextStep2, errorState } = props;
+  const [experiences, setExperiences] = useState([]);
+  const [education, setEducation] = useState([]);
+
+  useEffect(() => {
+    handleUpdate("experiences", experiences);
+  }, [experiences]);
+
+  useEffect(() => {
+    handleUpdate("education", education);
+  }, [education]);
+
+  const handleClearExperience = (event) => {
+    let id = event.currentTarget.id;
+    let updatedExperiences = experiences.filter((exp) => {
+      return exp.id != id;
+    });
+    setExperiences(updatedExperiences);
+  };
+
+  const handleChangeExperience = (event) => {
+    let textFieldId = event.currentTarget.id;
+    let id = textFieldId.split("_")[1];
+    let { name, value } = event.currentTarget;
+    let updatedExperiences = [];
+    experiences.forEach((exp) => {
+      if (exp.id == id) {
+        exp[name] = value;
+      }
+      updatedExperiences.push(exp);
+    });
+    setExperiences(updatedExperiences);
+  };
+
+  const handleAddExperience = () => {
+    if (experiences.length < maxExperience) {
+      setExperiences((prevExperiences) => [
+        ...prevExperiences,
+        {
+          id: generateId(),
+          organization: "",
+          title: "",
+        },
+      ]);
+    }
+  };
+
+  const handleClearEducation = (event) => {
+    let id = event.currentTarget.id;
+    let updatedEducation = education.filter((edu) => {
+      return edu.id != id;
+    });
+    setEducation(updatedEducation);
+  };
+
+  const handleChangeEducation = (event) => {
+    let textFieldId = event.currentTarget.id;
+    let id = textFieldId.split("_")[1];
+    let { name, value } = event.currentTarget;
+    let updatedEducation = [];
+    education.forEach((exp) => {
+      if (exp.id == id) {
+        exp[name] = value;
+      }
+      updatedEducation.push(exp);
+    });
+    setEducation(updatedEducation);
+  };
+
+  const handleAddEducation = () => {
+    if (education.length < maxExperience) {
+      setEducation((prevEducation) => [
+        ...prevEducation,
+        {
+          id: generateId(),
+          school: "",
+          degree: "",
+        },
+      ]);
+    }
+  };
+console.log(experiences,"eccc")
+  return (
     <Container>
       <TitleWrapper>
         <Title>Work Experience</Title>
       </TitleWrapper>
-      <FormItem>
-        <h6 style={{fontWeight:'600', marginTop:"2em"}}>Work Experience</h6>
-        <InputLabel>Job Title</InputLabel>
-        <TextField 
-          variant="outlined" 
-          fullWidth={true}
-          type="text"
-          className="jobTitle"
-          name="jobTitle"
-          value={props.values.jobTitle}
-          placeholder="Ex: Marketing Manager"
-          onChange={props.handleInput}
-        />
-        <InputLabel>Company</InputLabel>
-        <TextField  
-          variant="outlined" 
-          fullWidth={true}
-          type="text"
-          className="company"
-          name="company"
-          value={props.values.company}
-          placeholder="Ex: Google"
-          onChange={props.handleInput}
-        />
-        <FlexWrapper>
-          <div style={{width:"40%"}}>
-            <InputLabel>City</InputLabel>
-            <TextField  
-              variant="outlined" 
-              fullWidth={true}
-              type="text"
-              name="city"
-              defaultValue={props.values.city}
-              onChange={props.handleInput}
-            />
-          </div>
-          <div style={{width:"20%"}}>
-            <InputLabel>State</InputLabel>
-            <TextField  
-              variant="outlined" 
-              fullWidth={true}
-              type="text"
-              name="jobState"
-              defaultValue={props.values.jobState}
-              onChange={props.handleInput}
-            />
-          </div>
-          <div style={{width:"30%"}}>
-            <InputLabel>Country</InputLabel>
-            <TextField  
-              variant="outlined" 
-              fullWidth={true}
-              type="text"
-              name="country"
-              defaultValue={props.values.country}
-              onChange={props.handleInput}
-            />
-          </div>
-        </FlexWrapper>
-        <InputLabel>Industry</InputLabel>
-        <Select
-          value={props.values.industry}
-          name="industry"
-          onChange={props.handleInput}
-          input={<BootstrapInput />}
-        >
-          <MenuItem value="Software Development">Software Development</MenuItem>
-          <MenuItem value="Marketing">Marketing</MenuItem>
-          <MenuItem value="Customer Service">Customer Service</MenuItem>
-          <MenuItem value="Design">Design</MenuItem>
-          <MenuItem value="Otherqq">Other</MenuItem>
-        </Select>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={checkbox}
-              onChange={handleCheckboxChange}
-              name="currentRole"
-              color="primary"
-            />
-          }
-          label="I am currently in this role."
-        />
-      <InputLabel>Start Date</InputLabel>
-        <div style={{display: 'flex'}}>
-          <Select
-            value={props.values.startMonth}
-            name="startMonth"
-            onChange={props.handleInput}
-            input={<BootstrapInput />}
-          >
-          {months.map((month) => (
-            <MenuItem value={month}>{month}</MenuItem>
-          ))}
-          </Select>
-          <div style={{width: "50px"}}></div>
-          <Select
-            value={props.values.startYear}
-            name="startYear"
-            onChange={props.handleInput}
-            input={<BootstrapInput />}
-          >
-          {years.map((year) => (
-            <MenuItem value={year}>{year}</MenuItem>
-          ))}
-          </Select>
-        </div>
-        <InputLabel style={{ marginTop:"1em"}}>End Date</InputLabel>
-        <div style={{display: 'flex'}}>
-          <Select
-            value={props.values.endMonth}
-            name="endMonth"
-            onChange={props.handleInput}
-            input={<BootstrapInput />}
-          >
-          {months.map((month) => (
-            <MenuItem value={month}>{month}</MenuItem>
-          ))}
-          </Select>
-          <div style={{width: "50px"}}></div>
-          <Select
-            value={props.values.endYear}
-            name="endYear"
-            onChange={props.handleInput}
-            input={<BootstrapInput />}
-          >
-          {years.map((year) => (
-            <MenuItem value={year}>{year}</MenuItem>
-          ))}
-          </Select>
-        </div>
-      </FormItem>
+      {experiences.map((exp) => {
+        return (
+          <ExperienceCard
+            key={exp.id}
+            id={exp.id}
+            title1="organization"
+            value1={exp.organization}
+            title2="title"
+            value2={exp.title}
+            handleChange={handleChangeExperience}
+            handleClear={handleClearExperience}
+            errorState={errorState}
+          ></ExperienceCard>
+        );
+      })}
+      {experiences.length < maxExperience && (
+        <AddExpContainer>
+          <AddButton onClick={handleAddExperience}>Add Experience</AddButton>
+        </AddExpContainer>
+      )}
+
+      <TitleWrapper>
+        <Title>Education</Title>
+      </TitleWrapper>
+
+      {education.map((edu) => {
+        return (
+          <ExperienceCard
+            key={edu.id}
+            id={edu.id}
+            title1="school"
+            value1={edu.school}
+            title2="degree"
+            value2={edu.degree}
+            handleChange={handleChangeEducation}
+            handleClear={handleClearEducation}
+            errorState={errorState}
+          ></ExperienceCard>
+        );
+      })}
+
+      {education.length < maxExperience && (
+        <AddContainer>
+          <AddButton onClick={handleAddEducation}>Add Education</AddButton>
+        </AddContainer>
+      )}
+
+      {errorState && (
+        <Box style={{ backgroundColor: "#F2DEE0", minHeight: 40, padding: 10 }}>
+          <Typography style={{ color: "#A16F70" }}>
+            Please fill the required fields
+          </Typography>
+        </Box>
+      )}
       <DotStepper
         activeStep={1}
-        handleNext={props.handleNext}
+        handleNext={handleNextStep2}
         positionBottom={true}
       />
     </Container>
-  )
-}
+  );
+};
 
-export default RegisterStep2
+export default RegisterStep2;
