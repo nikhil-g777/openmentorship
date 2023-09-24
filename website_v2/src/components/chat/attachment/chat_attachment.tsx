@@ -1,6 +1,5 @@
 "use client";
 
-import {useCommonStore} from "@/zustand/store";
 import {Message} from "@twilio/conversations";
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
@@ -12,17 +11,9 @@ type Props = {
 
 const ChatAttachment = ({message}: Props) => {
   const userId = useSession().data?.user.user._id;
-  const {setErrorAlert} = useCommonStore();
   const [src, setSrc] = useState<string>("");
   const [contentName, setContentName] = useState<string>("");
   const [contentType, setContentType] = useState<string>("");
-
-  // Handle error
-  const handleError = () => {
-    setSrc("/assets/icons/sad.svg");
-    setContentName("Resource failed!");
-    setErrorAlert("Media resource failed to load! Try reloading the page.", 6);
-  };
 
   // Update sourceSrc & contentType
   useEffect(() => {
@@ -71,7 +62,6 @@ const ChatAttachment = ({message}: Props) => {
           contentType={contentType}
           src={src}
           contentName={contentName}
-          handleError={handleError}
           message={message}
         />
       </div>
