@@ -6,7 +6,6 @@ import {MutableRefObject} from "react";
 type Props = {
   mediaContentContainer: MutableRefObject<HTMLDivElement | null>;
   mediaContent: MediaContent;
-  handleError: (sid: string) => void;
   loader: boolean;
   setChatMediaContentModal: (chatMediaContentModal: boolean) => void;
 };
@@ -14,7 +13,6 @@ type Props = {
 const MediaContentWrapper = ({
   mediaContentContainer,
   mediaContent,
-  handleError,
   loader,
   setChatMediaContentModal,
 }: Props) => {
@@ -38,7 +36,6 @@ const MediaContentWrapper = ({
                       width={64}
                       height={64}
                       className="object-cover mx-auto"
-                      onError={() => handleError(content.sid)}
                     />
                   </a>
                 ) : null}

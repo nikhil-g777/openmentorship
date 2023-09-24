@@ -7,7 +7,6 @@ import {MediaContentWrapper} from "./media_content_wrapper";
 import {MediaContent} from "@/types/chat";
 import {
   getSetMediaContent,
-  handleMediaContentError,
   mediaContentObserver,
   messageAddedHandler,
 } from "@/helpers/chat";
@@ -24,16 +23,6 @@ const ChatMediaContentModal = () => {
 
   // Memoize getSetMediaContent function
   const getSetMediaContentMemoized = useCallback(getSetMediaContent, []);
-
-  const handleError = (sid: string) => {
-    // Find with sid and edit its url and filename
-    handleMediaContentError({
-      sid,
-      mediaContent,
-      setMediaContent,
-      setErrorAlert,
-    });
-  };
 
   // Set Media Content
   useEffect(() => {
@@ -104,7 +93,6 @@ const ChatMediaContentModal = () => {
       <MediaContentWrapper
         mediaContentContainer={mediaContentContainer}
         mediaContent={mediaContent}
-        handleError={handleError}
         loader={loader}
         setChatMediaContentModal={setChatMediaContentModal}
       />

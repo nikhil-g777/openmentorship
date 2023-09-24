@@ -1,7 +1,6 @@
 import {
   HandleFileInput,
   HandleSendMessage,
-  MediaContentError,
   MediaContentObserver,
   MessageAdded,
   SetMediaContent,
@@ -74,30 +73,6 @@ const handleFileInput = ({
 
   setChatAttachmentModal(true);
   setChatAttachment(file);
-};
-
-// Handle Media Content Error
-const handleMediaContentError = ({
-  sid,
-  mediaContent,
-  setMediaContent,
-  setErrorAlert,
-}: MediaContentError) => {
-  // Find with sid and edit its url and filename
-  const index = mediaContent.findIndex(content => content.sid === sid);
-  if (index !== -1) {
-    const content = mediaContent[index];
-    content.url = "/assets/icons/sad.svg";
-    content.filename = "Resource failed!";
-    setMediaContent(prevState => {
-      const newState = [...prevState];
-      newState[index] = content;
-      return newState;
-    });
-  }
-
-  // Show Error Alert
-  setErrorAlert("Media resource failed to load! Try reloading the page.", 6);
 };
 
 // Handle Message Added
@@ -205,7 +180,6 @@ export {
   getDate,
   handleSendMessage,
   handleFileInput,
-  handleMediaContentError,
   messageAddedHandler,
   getSetMediaContent,
   mediaContentObserver,

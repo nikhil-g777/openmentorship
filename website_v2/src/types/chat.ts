@@ -29,14 +29,6 @@ type MediaContent = {
   url: string;
 }[];
 
-// Media Content Error
-type MediaContentError = {
-  sid: string;
-  mediaContent: MediaContent;
-  setMediaContent: (value: SetStateAction<MediaContent>) => void;
-  setErrorAlert: (errorAlert: string, time: number) => void;
-};
-
 // Message Added
 type MessageAdded = {
   message: Message;
@@ -71,7 +63,6 @@ export type {
   HandleSendMessage,
   HandleFileInput,
   MediaContent,
-  MediaContentError,
   MessageAdded,
   SetMediaContent,
   MediaContentObserver,
