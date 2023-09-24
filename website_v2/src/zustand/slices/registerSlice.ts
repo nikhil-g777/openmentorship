@@ -24,6 +24,7 @@ export type RegisterSlice = {
   firstName: string;
   lastName: string;
   email: string;
+  linkedInProfileUrl: string;
   headline: string;
   bio: string;
   // Screen1
@@ -62,6 +63,7 @@ export type RegisterSlice = {
   setFirstName: (type: string) => void;
   setLastName: (type: string) => void;
   setEmail: (type: string) => void;
+  setLinkedInProfileUrl: (type: string) => void;
   setHeadline: (type: string) => void;
   setBio: (type: string) => void;
   // Screen1
@@ -97,6 +99,7 @@ const initialState = {
   firstName: "",
   lastName: "",
   email: "",
+  linkedInProfileUrl: "",
   headline: "",
   bio: "",
   // Screen1
@@ -167,6 +170,10 @@ export const registerSlice: StateCreator<
   setEmail: (email: string) =>
     set(() => ({
       email: email,
+    })),
+  setLinkedInProfileUrl: (linkedInProfileUrl: string) =>
+    set(() => ({
+      linkedInProfileUrl: linkedInProfileUrl,
     })),
   setHeadline: (headline: string) =>
     set(() => ({

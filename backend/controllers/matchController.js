@@ -36,14 +36,15 @@ const constructExploreFilter = (query) => {
     });
   }
 
-  if (communicationFrequency) {
-    filter.communicationFrequency = communicationFrequency;
+  if (communicationFrequency && communicationFrequency.length > 0) {
+    const frequencies = communicationFrequency.split(',');
+    filter.communicationFrequency = { $in: frequencies };
   }
 
-  if (communicationPreferences) {
+  if (communicationPreferences && communicationPreferences.length > 0) {
     const preferences = communicationPreferences.split(',');
     console.log(preferences);
-    filter.communicationPreferences = { $all: preferences };
+    filter.communicationPreferences = { $in: preferences };
   }
 
   return filter;

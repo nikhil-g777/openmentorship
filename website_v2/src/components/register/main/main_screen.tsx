@@ -2,16 +2,24 @@
 
 import {LinkedInConnect} from "./linkedin_connect";
 import Link from "next/link";
-import {useRegisterStore} from "@/zustand/store";
+import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {useState} from "react";
 import {ImageWrapper} from "./image_wrapper";
 import {MainForm} from "./main_form";
+import {linkedInPattern} from "@/helpers/register";
 
 const MainScreen = () => {
   const [headlineError, setHeadlineError] = useState<string>("");
   const [bioError, setBioError] = useState<string>("");
-  const {token, currentScreen, setCurrentScreen, headline, bio} =
-    useRegisterStore();
+  const {
+    token,
+    currentScreen,
+    setCurrentScreen,
+    linkedInProfileUrl,
+    headline,
+    bio,
+  } = useRegisterStore();
+  const {setLinkedInUrlError} = useProfileSettingsStore();
 
   // Handle submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,6 +31,10 @@ const MainScreen = () => {
     setBioError("");
 
     // Show errors
+    if (!linkedInPattern.test(linkedInProfileUrl)) {
+      setLinkedInUrlError("Please enter a valid LinkedIn profile URL.");
+      return;
+    }
     if (headline.length <= 3 || headline.length > 100) {
       setHeadlineError("Your headline should be between 3 and 100 characters.");
       return;
