@@ -7,10 +7,11 @@ import {
   useListingStore,
   useProfileStore,
 } from "@/zustand/store";
-import {useRouter} from "next/navigation";
+import {notFound, useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
+  token: string | null | undefined;
   statsData: StatsData;
   userRole: string | undefined | null;
   userType: string;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const StoreInitializer = ({
+  token,
   statsData,
   userRole,
   userType,
@@ -34,6 +36,13 @@ const StoreInitializer = ({
   const {setCurrentPage} = useProfileStore();
 
   useEffect(() => {
+    // Redirect if token is not available
+    if (!token) {
+      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      router.replace("/");
+      return;
+    }
+
     // Redirect if user is not admin
     if (userRole !== "admin") {
       setErrorAlert(
@@ -43,17 +52,15 @@ const StoreInitializer = ({
       router.replace("/");
       return;
     }
-    // Redirect if data is not available
-    if (!statsData.success) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
+
+    // Not found is request failed
+    if (!statsData.success || !data.success) {
+      notFound();
     }
 
-    if (!data.success) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
+    // Not found if search request failed
+    if (searchData && !searchData.success) {
+      notFound();
     }
 
     // Set states
@@ -74,6 +81,7 @@ const StoreInitializer = ({
       }
     }
   }, [
+    token,
     userRole,
     router,
     setErrorAlert,

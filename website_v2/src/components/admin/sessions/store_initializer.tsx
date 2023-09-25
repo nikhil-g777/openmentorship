@@ -6,15 +6,16 @@ import {
   useCommonStore,
   useProfileStore,
 } from "@/zustand/store";
-import {useRouter, useSearchParams} from "next/navigation";
+import {notFound, useRouter, useSearchParams} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
+  token: string;
   data: SessionData;
   searchData: SessionData;
 };
 
-const StoreInitializer = ({data, searchData}: Props) => {
+const StoreInitializer = ({token, data, searchData}: Props) => {
   const router = useRouter();
   const params = useSearchParams();
   const tab = params.get("tab") || "";
@@ -23,17 +24,21 @@ const StoreInitializer = ({data, searchData}: Props) => {
   const {setSessionData, setSearchData} = useAdminSessionStore();
 
   useEffect(() => {
-    // Redirect if data is not available
-    if (!data.success) {
+    // Redirect if token is not available
+    if (token === "") {
       setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
       router.replace("/");
       return;
     }
 
+    // Not found if request failed
+    if (!data.success) {
+      notFound();
+    }
+
+    // Not found if search request failed
     if (searchData && !searchData.success) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
+      notFound();
     }
 
     // Set states
@@ -60,6 +65,7 @@ const StoreInitializer = ({data, searchData}: Props) => {
       setSessionData(null);
     }
   }, [
+    token,
     data,
     searchData,
     setErrorAlert,
