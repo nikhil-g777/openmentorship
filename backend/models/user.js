@@ -22,7 +22,7 @@ const User = new Schema(
     userType: {
       type: String,
       enum: ['mentee', 'mentor', 'admin'],
-      defaukt: 'mentee',
+      default: 'mentee',
     },
     careerStatus: { type: 'String' },
     role: {
@@ -39,7 +39,7 @@ const User = new Schema(
     education: { type: [Education], defaukt: [] },
     skills: { type: [String], default: [] },
     interests: { type: [String], default: [] },
-    goals: { type: Object, default: [] },
+    goals: { type: Object, default: {} },
     communicationFrequency: { type: String },
     communicationPreferences: { type: [String], default: [] },
     socialLinks: { type: Object, default: {} },

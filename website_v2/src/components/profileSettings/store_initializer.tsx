@@ -6,8 +6,8 @@ import {
   useProfileSettingsStore,
   useRegisterStore,
 } from "@/zustand/store";
-import {useRouter} from "next/navigation";
 import {useEffect} from "react";
+import {notFound, useRouter} from "next/navigation";
 
 type Props = {
   data: UserProfile;
@@ -40,11 +40,16 @@ const StoreInitializer = ({data, token}: Props) => {
 
   // Update states
   useEffect(() => {
-    // Check if there is an error
-    if (!token || !data.success) {
+    // Redirect if no token
+    if (!token) {
       setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
       router.replace("/");
       return;
+    }
+
+    // Not found if request failed
+    if (!data.success) {
+      notFound();
     }
 
     // Set states
