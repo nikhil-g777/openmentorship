@@ -263,8 +263,8 @@ const checkDuplicateExperienceEducation = (
 
     if (uniqueEducation.has(combination)) {
       setInputError({
-        experience: "Duplicate education fields found",
-        education: "",
+        experience: "",
+        education: "Duplicate education fields found",
       });
       return true;
     }
