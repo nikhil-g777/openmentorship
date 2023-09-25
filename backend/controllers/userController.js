@@ -60,6 +60,17 @@ const fetchUserToken = async (user) => {
 const sendRegistrationMail = async (user) => {
   const confirmationToken = util.encodeRegistrationToken(user._id);
   const confirmationLink = `https://${process.env.FRONTEND_BASE_URL}/confirmUserRegistration?confirmationToken=${confirmationToken}`;
+
+  var sendgridTemplate = ""
+  if(user.userType == constants.userTypes.mentee){
+    sendgridTemplate = config.sendgrid.templates.mentee_signup;
+  } else if(user.userType == constants.userTypes.mentor) {
+    sendgridTemplate = config.sendgrid.templates.mentor_signup;
+  } else {
+    // TODO: Add some email alerting for errors like this.
+    console.err("Invalid user type for sending registration mail");
+  }
+
   const response = await sendMail(
     user.email,
     'Openmentorship Email Confirmation',
@@ -67,7 +78,7 @@ const sendRegistrationMail = async (user) => {
       name: `${user.firstName} ${user.lastName}`,
       confirmationLink,
     },
-    config.sendgrid.templates.registration,
+    sendgridTemplate,
   );
   return response;
 };
