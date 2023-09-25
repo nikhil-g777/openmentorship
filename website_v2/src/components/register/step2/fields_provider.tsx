@@ -6,7 +6,7 @@ import {InputProvider} from "./inputs_provider";
 import {
   addExperienceEducation,
   checkDuplicateCurrentFields,
-  checkDuplicateTitleDegree,
+  checkDuplicateExperienceEducation,
   checkExperiencesEducationBothFields,
   updateExperienceEducation,
 } from "@/helpers/register";
@@ -56,12 +56,12 @@ const FieldsProvider = ({type, inputError, setInputError}: Props) => {
     if (duplicateCurrentFields) return;
 
     // Check if any duplicate title or degree
-    const duplicateTitleDegree = checkDuplicateTitleDegree(
+    const duplicateExperienceEducation = checkDuplicateExperienceEducation(
       experiences,
       education,
       setInputError
     );
-    if (duplicateTitleDegree) return;
+    if (duplicateExperienceEducation) return;
 
     // Add experience or education
     addExperienceEducation(
