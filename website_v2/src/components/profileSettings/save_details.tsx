@@ -5,7 +5,7 @@ import {
   checkCommunicationFrequencyIsEmpty,
   checkCommunicationPreferencesIsEmpty,
   checkDuplicateCurrentFields,
-  checkDuplicateTitleDegree,
+  checkDuplicateExperienceEducation,
   checkExperiencesEducationBothFields,
   checkExperiencesEducationLength,
   checkGoalsIsEmpty,
@@ -114,12 +114,12 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
     );
     if (duplicateCurrentFields) return;
 
-    const duplicateTitleDegree = checkDuplicateTitleDegree(
+    const duplicateExperienceEducation = checkDuplicateExperienceEducation(
       experiences,
       education,
       setExperienceError
     );
-    if (duplicateTitleDegree) return;
+    if (duplicateExperienceEducation) return;
 
     const experiencesEducationFields = checkExperiencesEducationBothFields(
       experiences,

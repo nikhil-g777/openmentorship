@@ -5,7 +5,7 @@ import {FieldsProvider} from "./fields_provider";
 import {useState} from "react";
 import {
   checkDuplicateCurrentFields,
-  checkDuplicateTitleDegree,
+  checkDuplicateExperienceEducation,
   checkExperiencesEducationBothFields,
   checkExperiencesEducationLength,
 } from "@/helpers/register";
@@ -41,13 +41,13 @@ const Step2 = () => {
     );
     if (duplicateCurrentFields) return;
 
-    // Check if any duplicate title or degree
-    const duplicateTitleDegree = checkDuplicateTitleDegree(
+    // Check if any duplicate experience or education
+    const duplicateExperienceEducation = checkDuplicateExperienceEducation(
       experiences,
       education,
       setInputError
     );
-    if (duplicateTitleDegree) return;
+    if (duplicateExperienceEducation) return;
 
     // Check if all fields are filled
     const experiencesEducationFields = checkExperiencesEducationBothFields(
