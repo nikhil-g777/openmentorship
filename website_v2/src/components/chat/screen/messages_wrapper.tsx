@@ -1,7 +1,6 @@
 import {getDate, getTime} from "@/helpers/chat";
 import {useChatStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
-import {ChatAttachment} from "../attachment/chat_attachment";
 
 type Props = {
   chatContainer: React.RefObject<HTMLDivElement>;
@@ -33,32 +32,26 @@ const MessagesWrapper = ({chatContainer}: Props) => {
                 </div>
               ) : null}
               {/* Chat Bubble Container */}
-              {item["state"]["type"] === "media" ? (
-                <ChatAttachment message={item} />
-              ) : (
+              <div
+                className={`chat ${
+                  item["state"]["author"] === userId ? "chat-end" : "chat-start"
+                }`}
+              >
                 <div
-                  className={`chat ${
+                  className={`chat-bubble text-sm md:text-base ${
                     item["state"]["author"] === userId
-                      ? "chat-end"
-                      : "chat-start"
+                      ? "chat-bubble-primary"
+                      : ""
                   }`}
                 >
-                  <div
-                    className={`chat-bubble text-sm md:text-base ${
-                      item["state"]["author"] === userId
-                        ? "chat-bubble-primary"
-                        : ""
-                    }`}
-                  >
-                    {item["state"]["body"]}
-                  </div>
-                  <div className="chat-footer opacity-50">
-                    <time className="text-xs">
-                      {getTime(item["state"]["timestamp"])}
-                    </time>
-                  </div>
+                  {item["state"]["body"]}
                 </div>
-              )}
+                <div className="chat-footer opacity-50">
+                  <time className="text-xs">
+                    {getTime(item["state"]["timestamp"])}
+                  </time>
+                </div>
+              </div>
             </div>
           ))}
         </div>

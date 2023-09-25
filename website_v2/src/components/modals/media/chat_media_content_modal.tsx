@@ -1,15 +1,11 @@
 "use client";
 
 import {useChatStore, useCommonStore} from "@/zustand/store";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {Message, Paginator} from "@twilio/conversations";
 import {MediaContentWrapper} from "./media_content_wrapper";
 import {MediaContent} from "@/types/chat";
-import {
-  getSetMediaContent,
-  mediaContentObserver,
-  messageAddedHandler,
-} from "@/helpers/chat";
+import {messageAddedHandler} from "@/helpers/chat";
 
 const ChatMediaContentModal = () => {
   const {chatMediaContentModal, setChatMediaContentModal, currentConversation} =
@@ -18,31 +14,50 @@ const ChatMediaContentModal = () => {
   const [mediaContent, setMediaContent] = useState<MediaContent>([]);
   const [tempConversations, setTempConversations] =
     useState<Paginator<Message> | null>(null);
-  const [loader, setLoader] = useState<boolean>(false);
-  const mediaContentContainer = useRef<null | HTMLDivElement>(null);
-
-  // Memoize getSetMediaContent function
-  const getSetMediaContentMemoized = useCallback(getSetMediaContent, []);
 
   // Set Media Content
   useEffect(() => {
-    // Reset media content && fallback src
+    // Reset temp conversations
+    setTempConversations(null);
+
+    currentConversation?.getMessages().then(messages => {
+      if (!tempConversations) setTempConversations(messages);
+    });
+  }, [currentConversation, tempConversations, setTempConversations]);
+
+  // Add all messages to media content
+  useEffect(() => {
+    // Reset media content
     setMediaContent([]);
 
-    // Get & Set media content
-    getSetMediaContentMemoized({
-      setTempConversations,
-      currentConversation,
-      setMediaContent,
-      setErrorAlert,
-    });
-  }, [
-    getSetMediaContentMemoized,
-    currentConversation,
-    setErrorAlert,
-    setTempConversations,
-    setMediaContent,
-  ]);
+    if (tempConversations && tempConversations.hasPrevPage) {
+      tempConversations?.prevPage().then(messages => {
+        setTempConversations({
+          ...messages,
+          items: [...messages.items, ...tempConversations.items],
+        });
+        tempConversations.items.forEach(message => {
+          if (message.type === "media") {
+            const content = message["state"]["media"]["state"];
+            message
+              .getTemporaryContentUrlsForAttachedMedia()
+              .then(item => {
+                const url = item.values().next().value;
+                content.url = url;
+                // Set media content
+                setMediaContent(prevState => [...prevState, content]);
+              })
+              .catch(() => {
+                setErrorAlert(
+                  "Media resource failed to load! Try reloading the page.",
+                  6
+                );
+              });
+          }
+        });
+      });
+    }
+  }, [tempConversations, setTempConversations, setErrorAlert, setMediaContent]);
 
   useEffect(() => {
     currentConversation?.on("messageAdded", message =>
@@ -58,32 +73,6 @@ const ChatMediaContentModal = () => {
     };
   }, [currentConversation, setErrorAlert]);
 
-  useEffect(() => {
-    // Trigger prevPage when first message is in view
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && tempConversations?.hasPrevPage) {
-        mediaContentObserver({
-          observer,
-          entries,
-          setLoader,
-          tempConversations,
-          setTempConversations,
-          setMediaContent,
-          setErrorAlert,
-        });
-      }
-    });
-    if (
-      mediaContentContainer.current &&
-      mediaContentContainer.current.lastElementChild
-    ) {
-      observer.observe(mediaContentContainer.current.lastElementChild);
-    }
-
-    // cleanup function
-    return () => observer.disconnect();
-  }, [tempConversations, setMediaContent, setErrorAlert, setLoader]);
-
   return (
     <div
       className={`modal modal-bottom sm:modal-middle ${
@@ -91,9 +80,7 @@ const ChatMediaContentModal = () => {
       }`}
     >
       <MediaContentWrapper
-        mediaContentContainer={mediaContentContainer}
         mediaContent={mediaContent}
-        loader={loader}
         setChatMediaContentModal={setChatMediaContentModal}
       />
     </div>

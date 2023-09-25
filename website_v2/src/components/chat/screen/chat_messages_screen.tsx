@@ -12,13 +12,7 @@ import {
 import {MessagesWrapper} from "./messages_wrapper";
 
 const ChatMessagesScreen = () => {
-  const {
-    currentConversation,
-    conversations,
-    setConversations,
-    messagesAttachmentCompleted,
-    setMessagesAttachmentCompleted,
-  } = useChatStore();
+  const {currentConversation, conversations, setConversations} = useChatStore();
   const scrollElement = useRef<null | HTMLDivElement>(null);
   const scrollToBottom = useCallback(
     (element: MutableRefObject<null | HTMLDivElement>) => {
@@ -32,36 +26,28 @@ const ChatMessagesScreen = () => {
   const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
-    // Reset conversations & messagesAttachmentCompleted
+    // Reset conversations
     setConversations(null);
-    setMessagesAttachmentCompleted([]);
 
     currentConversation?.getMessages().then(messages => {
-      setConversations(messages);
+      const textMessages = messages.items.filter(item => item.type !== "media");
+      setConversations({...messages, items: textMessages});
     });
-  }, [setConversations, currentConversation, setMessagesAttachmentCompleted]);
+  }, [setConversations, currentConversation]);
 
   // Scroll to bottom when conversations are loaded
   useEffect(() => {
-    const attachments = conversations?.items?.filter(
-      item => item.type === "media"
-    );
-    if (attachments?.length === 0) scrollToBottom(scrollElement);
-
-    // Scroll to bottom when all attachments are loaded
-    if (attachments?.length === messagesAttachmentCompleted.length) {
-      scrollToBottom(scrollElement);
-    }
-  }, [
-    conversations,
-    messagesAttachmentCompleted,
-    scrollToBottom,
-    scrollElement,
-  ]);
+    // Scroll to bottom
+    if (conversations) scrollToBottom(scrollElement);
+  }, [conversations, scrollToBottom, scrollElement]);
 
   useEffect(() => {
     // Scroll to bottom & add new message to conversations
     const messageAddedHandler = (message: Message) => {
+      // Return if message is media
+      if (message.type === "media") return;
+
+      // Scroll to bottom & add new message to conversations
       scrollToBottom(scrollElement);
       if (conversations) {
         setConversations({
@@ -94,9 +80,12 @@ const ChatMessagesScreen = () => {
             entries[0].target.scrollIntoView();
             setLoader(false);
             // add messages to conversations at the beginning
+            const textMessages = messages.items.filter(
+              item => item.type !== "media"
+            );
             setConversations({
               ...messages,
-              items: [...messages.items, ...conversations.items],
+              items: [...textMessages, ...conversations.items],
             });
           })
           .catch(() => setLoader(false));

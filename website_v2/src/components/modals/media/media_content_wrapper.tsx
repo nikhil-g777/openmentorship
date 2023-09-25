@@ -1,28 +1,20 @@
 import {NoResult} from "@/components/noResult/no_result";
 import {MediaContent} from "@/types/chat";
 import Image from "next/image";
-import {MutableRefObject} from "react";
 
 type Props = {
-  mediaContentContainer: MutableRefObject<HTMLDivElement | null>;
   mediaContent: MediaContent;
-  loader: boolean;
   setChatMediaContentModal: (chatMediaContentModal: boolean) => void;
 };
 
 const MediaContentWrapper = ({
-  mediaContentContainer,
   mediaContent,
-  loader,
   setChatMediaContentModal,
 }: Props) => {
   return (
     <div className="modal-box">
       {/* Content Gallery */}
-      <div
-        className="flex flex-wrap justify-stretch gap-4 overflow-y-auto max-h-96"
-        ref={mediaContentContainer}
-      >
+      <div className="flex flex-wrap justify-stretch gap-4 overflow-y-auto max-h-96">
         {mediaContent && mediaContent.length ? (
           mediaContent.map(content => (
             <div className="w-fit" key={content.sid}>
@@ -74,12 +66,6 @@ const MediaContentWrapper = ({
         ) : (
           <NoResult message="Sorry! No Media Found" />
         )}
-        {/* Loader */}
-        {loader ? (
-          <div className="w-full flex justify-center items-center my-4">
-            <button className="btn btn-square loading"></button>
-          </div>
-        ) : null}
       </div>
       {/* Close Button */}
       <div className="modal-action">
