@@ -72,9 +72,10 @@ const handleFileInput = ({
 // Handle Message Added
 const messageAddedHandler = ({
   message,
-  setMediaContent,
+  mediaContent,
   setErrorAlert,
 }: MessageAdded) => {
+  if (message.type !== "media") return;
   if (message.type === "media") {
     const content = message["state"]["media"]["state"];
     message
@@ -82,7 +83,7 @@ const messageAddedHandler = ({
       .then(item => {
         const url = item.values().next().value;
         content.url = url;
-        setMediaContent(prevState => [...prevState, content]);
+        mediaContent.push(content);
       })
       .catch(() => {
         setErrorAlert(

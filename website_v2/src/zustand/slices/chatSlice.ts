@@ -1,3 +1,4 @@
+import {MediaContent} from "@/types/chat";
 import {UserProfile} from "@/types/profile";
 import {Client, Conversation, Message, Paginator} from "@twilio/conversations";
 import {StateCreator} from "zustand";
@@ -41,6 +42,12 @@ export type ChatSlice = {
   setMessagesAttachmentCompleted: (
     messagesAttachmentCompleted: boolean[]
   ) => void;
+  mediaConversations: Paginator<Message> | null;
+  setMediaConversations: (
+    mediaConversations: Paginator<Message> | null
+  ) => void;
+  mediaContent: MediaContent;
+  setMediaContent: (mediaContent: MediaContent) => void;
 };
 
 // Initial state
@@ -60,6 +67,8 @@ const initialState = {
   chatAttachment: null,
   chatMediaContentModal: false,
   messagesAttachmentCompleted: [],
+  mediaConversations: null,
+  mediaContent: [],
 };
 
 export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
@@ -90,4 +99,7 @@ export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
     set({chatMediaContentModal}),
   setMessagesAttachmentCompleted: (messagesAttachmentCompleted: boolean[]) =>
     set({messagesAttachmentCompleted}),
+  setMediaConversations: (mediaConversations: Paginator<Message> | null) =>
+    set({mediaConversations}),
+  setMediaContent: (mediaContent: MediaContent) => set({mediaContent}),
 });

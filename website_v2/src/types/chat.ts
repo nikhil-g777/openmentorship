@@ -1,5 +1,5 @@
 import {Conversation, Message} from "@twilio/conversations";
-import {ChangeEvent, Dispatch, SetStateAction} from "react";
+import {ChangeEvent} from "react";
 
 // Handle Send Message
 type HandleSendMessage = {
@@ -32,7 +32,7 @@ type MediaContent = {
 // Message Added
 type MessageAdded = {
   message: Message;
-  setMediaContent: Dispatch<SetStateAction<MediaContent>>;
+  mediaContent: MediaContent;
   setErrorAlert: (errorAlert: string, time: number) => void;
 };
 
