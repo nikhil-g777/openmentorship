@@ -8,7 +8,6 @@ import {messageAddedHandler} from "@/helpers/chat";
 const ChatMediaContentModal = () => {
   const {
     chatMediaContentModal,
-    setChatMediaContentModal,
     currentConversation,
     mediaContent,
     setMediaContent,
@@ -88,13 +87,10 @@ const ChatMediaContentModal = () => {
   return (
     <div
       className={`modal modal-bottom sm:modal-middle ${
-        chatMediaContentModal ? "modal-open" : ""
+        chatMediaContentModal ? "modal-open" : "h-0 w-0"
       }`}
     >
-      <MediaContentWrapper
-        mediaContent={mediaContent}
-        setChatMediaContentModal={setChatMediaContentModal}
-      />
+      <MediaContentWrapper />
     </div>
   );
 };
