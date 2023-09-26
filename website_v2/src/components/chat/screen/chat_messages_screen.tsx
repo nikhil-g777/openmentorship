@@ -12,7 +12,12 @@ import {
 import {MessagesWrapper} from "./messages_wrapper";
 
 const ChatMessagesScreen = () => {
-  const {currentConversation, conversations, setConversations} = useChatStore();
+  const {
+    currentConversation,
+    conversations,
+    setConversations,
+    setChatIndicator,
+  } = useChatStore();
   const scrollElement = useRef<null | HTMLDivElement>(null);
   const scrollToBottom = useCallback(
     (element: MutableRefObject<null | HTMLDivElement>) => {
@@ -26,8 +31,9 @@ const ChatMessagesScreen = () => {
   const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
-    // Reset conversations
+    // Reset conversations & chat indicator
     setConversations(null);
+    setChatIndicator(true);
 
     currentConversation
       ?.getMessages()
@@ -37,11 +43,13 @@ const ChatMessagesScreen = () => {
       .then(() => {
         scrollToBottom(scrollElement);
       });
-  }, [setConversations, currentConversation, scrollToBottom]);
+  }, [setConversations, currentConversation, scrollToBottom, setChatIndicator]);
 
   useEffect(() => {
     // Scroll to bottom & add new message to conversations
     const messageAddedHandler = (message: Message) => {
+      // Set chat indicator
+      if (message.type === "media") setChatIndicator(true);
       // Scroll to bottom & add new message to conversations
       scrollToBottom(scrollElement);
       if (conversations) {
@@ -59,7 +67,13 @@ const ChatMessagesScreen = () => {
       // Perform any cleanup if needed
       currentConversation?.off("messageAdded", messageAddedHandler);
     };
-  }, [currentConversation, setConversations, conversations, scrollToBottom]);
+  }, [
+    currentConversation,
+    setConversations,
+    conversations,
+    scrollToBottom,
+    setChatIndicator,
+  ]);
 
   useEffect(() => {
     // Trigger prevPage when first message is in view

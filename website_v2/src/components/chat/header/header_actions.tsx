@@ -1,10 +1,8 @@
-import {performSecondaryButtonAction} from "@/helpers/profile/secondary_button";
-import {useChatStore, useProfileStore} from "@/zustand/store";
 import {Conversation} from "@twilio/conversations";
-import {useSession} from "next-auth/react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import React from "react";
+import {ChatMenuWrapper} from "./chat_menu_wrapper";
 
 type Props = {
   currentConversation: Conversation | null;
@@ -24,30 +22,9 @@ const HeaderActions = ({
   firstName,
   typingStatus,
   userId,
-  chatType,
-  setChatMediaContentModal,
   children,
 }: Props) => {
-  const token = useSession().data?.user.token || "";
   const router = useRouter();
-  const {currentPage, confirmationText, setConfirmationText, setLoading} =
-    useProfileStore();
-  const {chatId} = useChatStore();
-
-  // Handle end session
-  const handleEndSession = async () => {
-    await performSecondaryButtonAction({
-      currentPage,
-      currentTab: "",
-      router,
-      setLoading,
-      secondaryButtonText: "End Session",
-      confirmationText,
-      setConfirmationText,
-      token,
-      chatId,
-    });
-  };
 
   // Handle back
   const handleBack = () => {
@@ -79,32 +56,8 @@ const HeaderActions = ({
               <span className="mx-2 text-xs opacity-50">typing…</span>
             ) : null}
           </h3>
-          {/* Media Content */}
-          <button
-            className="btn btn-circle btn-ghost btn-sm p-1 mr-4"
-            disabled={chatType === "archive"}
-            onClick={() => setChatMediaContentModal(true)}
-          >
-            <Image
-              src="/assets/icons/attachment.svg"
-              alt="attachment"
-              width={24}
-              height={24}
-            />
-          </button>
-          {/* End chat */}
-          <button
-            className="btn btn-circle btn-error hover:saturate-150 btn-xs"
-            onClick={handleEndSession}
-            disabled={chatType === "archive"}
-          >
-            <Image
-              src="/assets/icons/power.svg"
-              alt="end chat"
-              width={24}
-              height={24}
-            />
-          </button>
+          {/* Chat Menu */}
+          <ChatMenuWrapper />
         </>
       ) : null}
     </>

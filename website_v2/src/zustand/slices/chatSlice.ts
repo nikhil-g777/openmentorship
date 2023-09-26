@@ -48,6 +48,8 @@ export type ChatSlice = {
   ) => void;
   mediaContent: MediaContent;
   setMediaContent: (mediaContent: MediaContent) => void;
+  chatIndicator: boolean;
+  setChatIndicator: (chatIndicator: boolean) => void;
 };
 
 // Initial state
@@ -69,6 +71,7 @@ const initialState = {
   messagesAttachmentCompleted: [],
   mediaConversations: null,
   mediaContent: [],
+  chatIndicator: true,
 };
 
 export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
@@ -102,4 +105,5 @@ export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
   setMediaConversations: (mediaConversations: Paginator<Message> | null) =>
     set({mediaConversations}),
   setMediaContent: (mediaContent: MediaContent) => set({mediaContent}),
+  setChatIndicator: (chatIndicator: boolean) => set({chatIndicator}),
 });

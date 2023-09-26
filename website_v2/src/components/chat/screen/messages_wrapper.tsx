@@ -9,7 +9,15 @@ type Props = {
 
 const MessagesWrapper = ({chatContainer}: Props) => {
   const userId = useSession().data?.user.user._id;
-  const {chatId, conversations, setChatMediaContentModal} = useChatStore();
+  const {chatId, conversations, setChatMediaContentModal, setChatIndicator} =
+    useChatStore();
+
+  // Handle Media
+  const handleMedia = () => {
+    setChatMediaContentModal(true);
+    setChatIndicator(false);
+  };
+
   return (
     <>
       {chatId &&
@@ -58,7 +66,7 @@ const MessagesWrapper = ({chatContainer}: Props) => {
                         ? "chat-bubble-primary"
                         : ""
                     }`}
-                    onClick={() => setChatMediaContentModal(true)}
+                    onClick={handleMedia}
                   >
                     <div className="flex items-center gap-2">
                       <ChatInlineMedia
