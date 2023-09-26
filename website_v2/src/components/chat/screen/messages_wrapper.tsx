@@ -1,6 +1,7 @@
 import {getDate, getTime} from "@/helpers/chat";
 import {useChatStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
+import {ChatInlineMedia} from "./chat_inline_media";
 
 type Props = {
   chatContainer: React.RefObject<HTMLDivElement>;
@@ -8,7 +9,7 @@ type Props = {
 
 const MessagesWrapper = ({chatContainer}: Props) => {
   const userId = useSession().data?.user.user._id;
-  const {chatId, conversations} = useChatStore();
+  const {chatId, conversations, setChatMediaContentModal} = useChatStore();
   return (
     <>
       {chatId &&
@@ -37,15 +38,39 @@ const MessagesWrapper = ({chatContainer}: Props) => {
                   item["state"]["author"] === userId ? "chat-end" : "chat-start"
                 }`}
               >
-                <div
-                  className={`chat-bubble text-sm md:text-base ${
-                    item["state"]["author"] === userId
-                      ? "chat-bubble-primary"
-                      : ""
-                  }`}
-                >
-                  {item["state"]["body"]}
-                </div>
+                {/* Text */}
+                {item["state"]["type"] === "text" ? (
+                  <div
+                    className={`chat-bubble text-sm md:text-base ${
+                      item["state"]["author"] === userId
+                        ? "chat-bubble-primary"
+                        : ""
+                    }`}
+                  >
+                    {item["state"]["body"]}
+                  </div>
+                ) : null}
+                {/* Media */}
+                {item["state"]["type"] === "media" ? (
+                  <div
+                    className={`chat-bubble text-sm md:text-base link ${
+                      item["state"]["author"] === userId
+                        ? "chat-bubble-primary"
+                        : ""
+                    }`}
+                    onClick={() => setChatMediaContentModal(true)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <ChatInlineMedia
+                        contentType={
+                          item["state"]["media"]["state"]["contentType"]
+                        }
+                        filename={item["state"]["media"]["state"]["filename"]}
+                      />
+                      {item["state"]["media"]["state"]["filename"]}
+                    </div>
+                  </div>
+                ) : null}
                 <div className="chat-footer opacity-50">
                   <time className="text-xs">
                     {getTime(item["state"]["timestamp"])}

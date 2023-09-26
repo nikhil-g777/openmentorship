@@ -29,24 +29,19 @@ const ChatMessagesScreen = () => {
     // Reset conversations
     setConversations(null);
 
-    currentConversation?.getMessages().then(messages => {
-      const textMessages = messages.items.filter(item => item.type !== "media");
-      setConversations({...messages, items: textMessages});
-    });
-  }, [setConversations, currentConversation]);
-
-  // Scroll to bottom when conversations are loaded
-  useEffect(() => {
-    // Scroll to bottom
-    if (conversations) scrollToBottom(scrollElement);
-  }, [conversations, scrollToBottom, scrollElement]);
+    currentConversation
+      ?.getMessages()
+      .then(messages => {
+        setConversations(messages);
+      })
+      .then(() => {
+        scrollToBottom(scrollElement);
+      });
+  }, [setConversations, currentConversation, scrollToBottom]);
 
   useEffect(() => {
     // Scroll to bottom & add new message to conversations
     const messageAddedHandler = (message: Message) => {
-      // Return if message is media
-      if (message.type === "media") return;
-
       // Scroll to bottom & add new message to conversations
       scrollToBottom(scrollElement);
       if (conversations) {
@@ -64,7 +59,7 @@ const ChatMessagesScreen = () => {
       // Perform any cleanup if needed
       currentConversation?.off("messageAdded", messageAddedHandler);
     };
-  }, [currentConversation, setConversations, scrollToBottom, conversations]);
+  }, [currentConversation, setConversations, conversations, scrollToBottom]);
 
   useEffect(() => {
     // Trigger prevPage when first message is in view
@@ -80,12 +75,9 @@ const ChatMessagesScreen = () => {
             entries[0].target.scrollIntoView();
             setLoader(false);
             // add messages to conversations at the beginning
-            const textMessages = messages.items.filter(
-              item => item.type !== "media"
-            );
             setConversations({
               ...messages,
-              items: [...textMessages, ...conversations.items],
+              items: [...messages.items, ...conversations.items],
             });
           })
           .catch(() => setLoader(false));
