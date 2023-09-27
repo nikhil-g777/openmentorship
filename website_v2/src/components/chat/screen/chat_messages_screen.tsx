@@ -1,27 +1,40 @@
 "use client";
 
-import {getDate, getTime} from "@/helpers/chat";
 import {useChatStore} from "@/zustand/store";
 import {Message} from "@twilio/conversations";
-import {useSession} from "next-auth/react";
-import {MutableRefObject, useEffect, useRef, useState} from "react";
+import {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {MessagesWrapper} from "./messages_wrapper";
 
 const ChatMessagesScreen = () => {
-  const userId = useSession().data?.user.user._id;
-  const {chatId, currentConversation, conversations, setConversations} =
-    useChatStore();
+  const {
+    currentConversation,
+    conversations,
+    setConversations,
+    setChatIndicator,
+  } = useChatStore();
   const scrollElement = useRef<null | HTMLDivElement>(null);
-  const scrollToBottom = (element: MutableRefObject<null | HTMLDivElement>) => {
-    if (element.current) {
-      element.current.scrollTop = element.current?.scrollHeight;
-    }
-  };
+  const scrollToBottom = useCallback(
+    (element: MutableRefObject<null | HTMLDivElement>) => {
+      if (element.current) {
+        element.current.scrollTop = element.current?.scrollHeight;
+      }
+    },
+    []
+  );
   const chatContainer = useRef<null | HTMLDivElement>(null);
   const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
-    // Reset conversations
+    // Reset conversations & chat indicator
     setConversations(null);
+    setChatIndicator(true);
+
     currentConversation
       ?.getMessages()
       .then(messages => {
@@ -30,11 +43,14 @@ const ChatMessagesScreen = () => {
       .then(() => {
         scrollToBottom(scrollElement);
       });
-  }, [setConversations, currentConversation]);
+  }, [setConversations, currentConversation, scrollToBottom, setChatIndicator]);
 
   useEffect(() => {
     // Scroll to bottom & add new message to conversations
     const messageAddedHandler = (message: Message) => {
+      // Set chat indicator
+      if (message.type === "media") setChatIndicator(true);
+      // Scroll to bottom & add new message to conversations
       scrollToBottom(scrollElement);
       if (conversations) {
         setConversations({
@@ -51,7 +67,13 @@ const ChatMessagesScreen = () => {
       // Perform any cleanup if needed
       currentConversation?.off("messageAdded", messageAddedHandler);
     };
-  }, [currentConversation, setConversations, conversations]);
+  }, [
+    currentConversation,
+    setConversations,
+    conversations,
+    scrollToBottom,
+    setChatIndicator,
+  ]);
 
   useEffect(() => {
     // Trigger prevPage when first message is in view
@@ -91,51 +113,7 @@ const ChatMessagesScreen = () => {
           <button className="btn btn-square loading"></button>
         </div>
       ) : null}
-      {chatId &&
-      chatId.length &&
-      conversations &&
-      conversations?.items?.length ? (
-        <div
-          className="w-full p-4 flex flex-col last:mb-16"
-          ref={chatContainer}
-        >
-          {conversations.items.map((item, index) => (
-            <div key={item["state"]["sid"]} className="w-full">
-              {/* Show Date */}
-              {index === 0 ||
-              getDate(item["state"]["timestamp"]) !==
-                getDate(
-                  conversations.items[index - 1]["state"]["timestamp"]
-                ) ? (
-                <div className="text-center text-sm my-4 opacity-50">
-                  {getDate(item["state"]["timestamp"])}
-                </div>
-              ) : null}
-              {/* Chat Bubble Container */}
-              <div
-                className={`chat ${
-                  item["state"]["author"] === userId ? "chat-end" : "chat-start"
-                }`}
-              >
-                <div
-                  className={`chat-bubble text-sm md:text-base ${
-                    item["state"]["author"] === userId
-                      ? "chat-bubble-primary"
-                      : ""
-                  }`}
-                >
-                  {item["state"]["body"]}
-                </div>
-                <div className="chat-footer opacity-50">
-                  <time className="text-xs">
-                    {getTime(item["state"]["timestamp"])}
-                  </time>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : null}
+      <MessagesWrapper chatContainer={chatContainer} />
     </div>
   );
 };

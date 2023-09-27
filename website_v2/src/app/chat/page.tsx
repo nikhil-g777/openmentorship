@@ -1,5 +1,7 @@
 import {ChatWrapper} from "@/components/chat/chat_wrapper";
 import {StoreInitializer} from "@/components/chat/store_initializer";
+import {ChatAttachmentModal} from "@/components/modals/attachment/chat_attachment_modal";
+import {ChatMediaContentModal} from "@/components/modals/media/chat_media_content_modal";
 import {NoResult} from "@/components/noResult/no_result";
 import {getChatToken} from "@/endpoints/chat";
 import {getUserMatches} from "@/endpoints/matches";
@@ -46,6 +48,12 @@ const Page = async ({searchParams}: Props) => {
       {isNoActiveResult && isNoActiveResult ? (
         <NoResult message="Sorry! No Chat Found" />
       ) : null}
+
+      {/* Chat Attachment Modal */}
+      <ChatAttachmentModal />
+
+      {/* Chat Media Content Modal */}
+      <ChatMediaContentModal />
     </div>
   );
 };

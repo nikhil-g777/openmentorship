@@ -1,8 +1,8 @@
 "use client";
 
 import {useEffect} from "react";
-import {ChatContactList} from "./chat_contact_list";
-import {ChatScreen} from "./chat_screen";
+import {ChatContactList} from "./contact/chat_contact_list";
+import {ChatScreen} from "./screen/chat_screen";
 import {useChatStore, useListingStore} from "@/zustand/store";
 import {useSearchParams} from "next/navigation";
 
