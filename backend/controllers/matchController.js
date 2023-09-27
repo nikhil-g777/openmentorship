@@ -10,7 +10,7 @@ const User = require('../models/user');
 
 const x = 1;
 
-const constructExploreFilter = (query) => {
+const constructExploreFilter = (query, mentorIds) => {
   const {
     areasOfInterest,
     goals,
@@ -41,6 +41,9 @@ const constructExploreFilter = (query) => {
     console.log(preferences);
     filter.communicationPreferences = { $in: preferences };
   }
+
+  // Mentor Ids
+  filter._id = { $nin: mentorIds };
 
   return filter;
 };
@@ -239,15 +242,14 @@ const searchMentors = async (req, res) => {
   try {
     let results = [];
 
-    const filter = constructExploreFilter(req.query);
-
     // Get mentors Ids
-    const matches = await Match.find({ mentee: _id });
-    const mentorsId = matches
-      .filter((match) => match.status === 'active')
-      .map((match) => match.mentor);
+    const matches = await Match.find({ mentee: _id, status: 'active' }).select({mentor: 1, _id: 0});
+    const mentorIds = matches.map((match) => match.mentor);
 
-    results = await User.find({ ...filter, _id: { $nin: mentorsId } })
+    // filter
+    const filter = constructExploreFilter(req.query, mentorIds);
+
+    results = await User.find({ ...filter})
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
