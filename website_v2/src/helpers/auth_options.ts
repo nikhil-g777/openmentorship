@@ -50,6 +50,10 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Unable to login user");
         }
 
+        if (user.error === "Please register first") {
+          throw new Error("Please register first");
+        }
+
         // If no error and we have user data, return it
         if (res.ok && user.success) {
           return user;
