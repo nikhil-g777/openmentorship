@@ -6,8 +6,8 @@ import {
   useProfileSettingsStore,
   useRegisterStore,
 } from "@/zustand/store";
-import {useRouter} from "next/navigation";
-import {useRef} from "react";
+import {useEffect} from "react";
+import {notFound, useRouter} from "next/navigation";
 
 type Props = {
   data: UserProfile;
@@ -37,15 +37,19 @@ const StoreInitializer = ({data, token}: Props) => {
   } = useRegisterStore();
   const {setProfileImage, setisProfilePage} = useProfileSettingsStore();
   const {setErrorAlert} = useCommonStore();
-  const initialzied = useRef(false);
 
-  // Update states once
-  if (!initialzied.current) {
-    // Check if there is an error
-    if (!token || !data.success) {
+  // Update states
+  useEffect(() => {
+    // Redirect if no token
+    if (!token) {
       setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
       router.replace("/");
-      return null;
+      return;
+    }
+
+    // Not found if request failed
+    if (!data.success) {
+      notFound();
     }
 
     // Set states
@@ -69,9 +73,34 @@ const StoreInitializer = ({data, token}: Props) => {
     setCommunicationFrequency(data.user.communicationFrequency);
     setCommunicationPreferences(data.user.communicationPreferences);
 
-    // Set current to true
-    initialzied.current = true;
-  }
+    // Cleanup function
+    return () => setisProfilePage(false);
+  }, [
+    token,
+    data,
+    router,
+    setErrorAlert,
+    setToken,
+    setFirstName,
+    setLastName,
+    setEmail,
+    setLinkedInProfileUrl,
+    setProfileImage,
+    setisProfilePage,
+    setHeadline,
+    setBio,
+    setUserType,
+    setInterests,
+    setSkills,
+    setGoals,
+    setSocialLinks,
+    setExperiences,
+    setEducation,
+    setAreasOfInterest,
+    setCommunicationFrequency,
+    setCommunicationPreferences,
+  ]);
+
   return null;
 };
 

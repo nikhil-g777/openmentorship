@@ -1,12 +1,13 @@
 "use client";
 
-import {signOut} from "next-auth/react";
+import {signOut, useSession} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 
 const NavbarDropdown = () => {
+  const userType = useSession()?.data?.user?.user?.userType || "";
   const pathname = usePathname();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -53,14 +54,18 @@ const NavbarDropdown = () => {
               Matches
             </Link>
           </li>
-          <li>
-            <Link
-              href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
-              className={pathname === "/explore" ? "bg-primary text-white" : ""}
-            >
-              Discover
-            </Link>
-          </li>
+          {userType === "mentee" ? (
+            <li>
+              <Link
+                href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
+                className={
+                  pathname === "/explore" ? "bg-primary text-white" : ""
+                }
+              >
+                Discover
+              </Link>
+            </li>
+          ) : null}
           <li>
             <Link
               href="/chat"

@@ -227,7 +227,7 @@ const checkDuplicateCurrentFields = (
 };
 
 // Check duplicate title and degree
-const checkDuplicateTitleDegree = (
+const checkDuplicateExperienceEducation = (
   experiences: [] | WorkExperience[],
   education: [] | Education[],
   setInputError: (experienceError: {
@@ -240,15 +240,36 @@ const checkDuplicateTitleDegree = (
     }>
   >
 ) => {
-  const exp = experiences.map(field => field.title.toLowerCase());
-  const edu = education.map(field => field.degree.toLowerCase());
-  if (exp.length !== new Set(exp).size) {
-    setInputError({experience: "Duplicate title fields found", education: ""});
-    return true;
+  // Duplicate Experience
+  const uniqueExperience = new Set();
+  for (const experience of experiences) {
+    const combination = `${experience.title.toLowerCase()}-${experience.organization.toLowerCase()}`;
+
+    if (uniqueExperience.has(combination)) {
+      setInputError({
+        experience: "Duplicate experience fields found",
+        education: "",
+      });
+      return true;
+    }
+
+    uniqueExperience.add(combination);
   }
-  if (edu.length !== new Set(edu).size) {
-    setInputError({experience: "", education: "Duplicate degree fields found"});
-    return true;
+
+  // Duplicate Education
+  const uniqueEducation = new Set();
+  for (const edu of education) {
+    const combination = `${edu.degree.toLowerCase()}-${edu.school.toLowerCase()}`;
+
+    if (uniqueEducation.has(combination)) {
+      setInputError({
+        experience: "",
+        education: "Duplicate education fields found",
+      });
+      return true;
+    }
+
+    uniqueEducation.add(combination);
   }
 
   return false;
@@ -619,7 +640,7 @@ export {
   socialSites,
   checkExperiencesEducationLength,
   checkDuplicateCurrentFields,
-  checkDuplicateTitleDegree,
+  checkDuplicateExperienceEducation,
   checkExperiencesEducationBothFields,
   addExperienceEducation,
   updateExperienceEducation,
