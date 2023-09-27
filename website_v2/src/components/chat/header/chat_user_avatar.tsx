@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 type Props = {
   profileImage: string;
@@ -9,19 +9,24 @@ type Props = {
 };
 
 const ChatUserAvatar = ({profileImage, size}: Props) => {
-  const [fallbackSrc, setFallbackSrc] = useState<string | null>(null);
+  const [imageSrc, setImageSrc] = useState<string>("/assets/icons/profile.svg");
+
+  // Update imageSrc when profileImage changes
+  useEffect(() => {
+    if (profileImage && profileImage.length) {
+      setImageSrc(profileImage);
+    } else {
+      setImageSrc("/assets/icons/profile.svg");
+    }
+  }, [profileImage, setImageSrc]);
 
   return (
     <Image
-      src={
-        profileImage && profileImage.length && !fallbackSrc
-          ? profileImage
-          : "/assets/icons/profile.svg"
-      }
+      src={imageSrc}
       alt="profile"
       width={size}
       height={size}
-      onError={() => setFallbackSrc("/assets/icons/profile.svg")}
+      onError={() => setImageSrc("/assets/icons/profile.svg")}
       className="rounded-full"
     />
   );
