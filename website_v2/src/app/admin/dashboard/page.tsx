@@ -57,6 +57,7 @@ const Page = async ({searchParams}: Props) => {
     <div className="w-full">
       {/* Store Initializer */}
       <StoreInitializer
+        token={token}
         statsData={statsData}
         userRole={userRole}
         userType={userType}

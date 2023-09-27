@@ -147,6 +147,16 @@ const handleLoginErrors = async ({
         "Sorry, you cannot sign in at the moment because we are unable to login your account. Please try again later.",
     });
   }
+
+  // Please regsiter first
+  else if (error === "Please register first") {
+    setAuthenticationError({
+      heading: "Please Register",
+      subHeading: "Please register to continue.",
+      message:
+        "Sorry, you cannot sign in at the moment because you have not registered. Please register first.",
+    });
+  }
 };
 
 export {list, handleLoginErrors};
