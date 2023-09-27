@@ -35,7 +35,7 @@ const HeaderActions = ({
     <>
       {/* Mobile back button */}
       <button
-        className="md:hidden btn btn-circle btn-outline hover:btn-primary btn-sm my-4 mr-4"
+        className="md:hidden btn btn-ghost btn-circle btn-sm my-4 mr-4"
         onClick={handleBack}
       >
         <Image
