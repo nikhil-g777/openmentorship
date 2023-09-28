@@ -7,6 +7,7 @@ const { createChatConversation } = require('../config/twilio');
 const Match = require('../models/match');
 const Session = require('../models/session');
 const User = require('../models/user');
+const constants = require('../lib/constants');
 const { getActiveMentorIds } = require('../helpers/matches');
 
 const x = 1;
@@ -210,9 +211,15 @@ const updateMatch = (req, res) => {
 };
 
 const userRecommendations = async (req, res) => {
+  const { _id } = req.user;
+
   try {
+    // Get mentors Ids & filter
+    const mentorIds = await getActiveMentorIds(_id);
+    const filter = { userType: constants.userTypes.mentor, _id: { $nin: mentorIds } };
+
     // Improve recommendations based on users profile
-    const recommendations = await User.find({ userType: 'mentor' }, null, {
+    const recommendations = await User.find(filter, null, {
       limit: 10,
     });
 
