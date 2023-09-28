@@ -7,6 +7,7 @@ const { createChatConversation } = require('../config/twilio');
 const Match = require('../models/match');
 const Session = require('../models/session');
 const User = require('../models/user');
+const { getActiveMentorIds } = require('../helpers/matches');
 
 const x = 1;
 
@@ -243,13 +244,12 @@ const searchMentors = async (req, res) => {
     let results = [];
 
     // Get mentors Ids
-    const matches = await Match.find({ mentee: _id, status: 'active' }).select({mentor: 1, _id: 0});
-    const mentorIds = matches.map((match) => match.mentor);
+    const mentorIds = await getActiveMentorIds(_id);
 
     // filter
     const filter = constructExploreFilter(req.query, mentorIds);
 
-    results = await User.find({ ...filter})
+    results = await User.find(filter)
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
