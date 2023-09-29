@@ -6,6 +6,13 @@ import {
 } from "@/helpers/profile/confirmation";
 import {useCommonStore, useProfileStore} from "@/zustand/store";
 import {useRouter} from "next/navigation";
+import {useState} from "react";
+
+// Types
+type RequestLoading = {
+  approve: boolean;
+  decline: boolean;
+};
 
 const ConfirmationModal = () => {
   const router = useRouter();
@@ -26,6 +33,10 @@ const ConfirmationModal = () => {
     confirmationText,
     loading
   );
+  const [requestLoading, setRequestLoading] = useState<RequestLoading>({
+    approve: false,
+    decline: false,
+  });
 
   // isViewRequest
   const isViewRequest =
@@ -49,6 +60,12 @@ const ConfirmationModal = () => {
 
   // Handle Mentor Confirmation
   const handleMentorConfirmation = async (confirmationText: string) => {
+    // Set loading
+    setRequestLoading({
+      approve: confirmationText === "Approve Request",
+      decline: confirmationText === "Decline Request",
+    });
+
     await performConfirmationAction({
       currentPage,
       router,
@@ -59,6 +76,12 @@ const ConfirmationModal = () => {
       setConfirmationText,
       setSuccessAlert,
       setErrorAlert,
+    });
+
+    // Reset loading
+    setRequestLoading({
+      approve: false,
+      decline: false,
     });
   };
 
@@ -94,18 +117,22 @@ const ConfirmationModal = () => {
             <h3 className="text-base">{confirmationText}</h3>
             <div className="modal-action mt-20">
               <button
-                className="btn rounded-full btn-sm text-sm capitalize btn-outline btn-accent"
+                className={`btn rounded-full btn-sm text-sm capitalize btn-outline btn-accent ${
+                  requestLoading.approve ? "loading" : ""
+                }`}
                 onClick={() => handleMentorConfirmation("Approve Request")}
                 disabled={loading}
               >
-                Approve Request
+                {requestLoading.approve ? "Approving..." : "Approve Request"}
               </button>
               <button
-                className="btn rounded-full btn-sm text-sm capitalize btn-outline btn-error"
+                className={`btn rounded-full btn-sm text-sm capitalize btn-outline btn-error ${
+                  requestLoading.decline ? "loading" : ""
+                }`}
                 onClick={() => handleMentorConfirmation("Decline Request")}
                 disabled={loading}
               >
-                Decline Request
+                {requestLoading.decline ? "Declining..." : "Decline Request"}
               </button>
             </div>
           </div>
@@ -133,7 +160,7 @@ const ConfirmationModal = () => {
                   confirmationButtonText === "Enable Account"
                     ? "btn-accent"
                     : "btn-error"
-                }`}
+                } ${loading ? "loading" : ""}`}
                 onClick={handleEndSession}
                 disabled={loading}
               >
