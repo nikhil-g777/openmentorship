@@ -9,8 +9,8 @@ const Session = require('../models/session');
 const User = require('../models/user');
 const constants = require('../lib/constants');
 const { getActiveMentorIds } = require('../helpers/matches');
+const { sendMail } = require('../lib/mailer');
 
-const x = 1;
 
 const constructExploreFilter = (query, mentorIds) => {
   const {
@@ -85,6 +85,12 @@ const createMatch = (req, res) => {
       });
     })
     .then((createdMatch) => {
+        sendMail(
+        createdMatch.mentor.email, // CHECK IF mentor relation needs to be included
+        'Openmentorship Email Confirmation',
+        {},
+        config.sendgrid.templates.connection_request,
+      );
       return res.status(200).json({
         success: true,
         match: createdMatch,
