@@ -6,13 +6,7 @@ import {
 } from "@/helpers/profile/confirmation";
 import {useCommonStore, useProfileStore} from "@/zustand/store";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
-
-// Types
-type RequestLoading = {
-  approve: boolean;
-  decline: boolean;
-};
+import {ViewRequest} from "./view_request";
 
 const ConfirmationModal = () => {
   const router = useRouter();
@@ -20,7 +14,6 @@ const ConfirmationModal = () => {
     currentPage,
     currentTab,
     userType,
-    firstName,
     loading,
     setLoading,
     token,
@@ -33,10 +26,6 @@ const ConfirmationModal = () => {
     confirmationText,
     loading
   );
-  const [requestLoading, setRequestLoading] = useState<RequestLoading>({
-    approve: false,
-    decline: false,
-  });
 
   // isViewRequest
   const isViewRequest =
@@ -58,33 +47,6 @@ const ConfirmationModal = () => {
     });
   };
 
-  // Handle Mentor Confirmation
-  const handleMentorConfirmation = async (confirmationText: string) => {
-    // Set loading
-    setRequestLoading({
-      approve: confirmationText === "Approve Request",
-      decline: confirmationText === "Decline Request",
-    });
-
-    await performConfirmationAction({
-      currentPage,
-      router,
-      setLoading,
-      token,
-      chatId,
-      confirmationButtonText: confirmationText,
-      setConfirmationText,
-      setSuccessAlert,
-      setErrorAlert,
-    });
-
-    // Reset loading
-    setRequestLoading({
-      approve: false,
-      decline: false,
-    });
-  };
-
   return (
     <>
       {/* The button to open modal */}
@@ -100,45 +62,9 @@ const ConfirmationModal = () => {
         }`}
       >
         {/* View Request */}
-        {isViewRequest ? (
-          <div className="modal-box relative">
-            {/* Close */}
-            <button
-              onClick={() => setConfirmationText("")}
-              disabled={loading}
-              className="btn btn-sm btn-circle btn-ghost btn-active absolute right-2 top-2"
-            >
-              ✕
-            </button>
-            <h2 className="font-bold text-lg pt-4">
-              {firstName}
-              <span className="text-base font-normal mx-1">:</span>
-            </h2>
-            <h3 className="text-base">{confirmationText}</h3>
-            <div className="modal-action mt-20">
-              <button
-                className={`btn rounded-full btn-sm text-sm capitalize btn-outline btn-accent ${
-                  requestLoading.approve ? "loading" : ""
-                }`}
-                onClick={() => handleMentorConfirmation("Approve Request")}
-                disabled={loading}
-              >
-                {requestLoading.approve ? "Approving..." : "Approve Request"}
-              </button>
-              <button
-                className={`btn rounded-full btn-sm text-sm capitalize btn-outline btn-error ${
-                  requestLoading.decline ? "loading" : ""
-                }`}
-                onClick={() => handleMentorConfirmation("Decline Request")}
-                disabled={loading}
-              >
-                {requestLoading.decline ? "Declining..." : "Decline Request"}
-              </button>
-            </div>
-          </div>
-        ) : null}
+        {isViewRequest ? <ViewRequest /> : null}
 
-        {/* Confirmation Modal */}
+        {/* Confirmation Container */}
         {!isViewRequest ? (
           <div className="modal-box">
             <h3 className="font-bold text-lg py-8 text-center">
