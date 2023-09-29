@@ -56,6 +56,7 @@ const performCardData = (
         matches: {
           _id: single._id,
           initialMessage: single.initialMessage,
+          requestMessage: single.requestMessage,
           status: single.status,
           latestSession: single.latestSession,
         },

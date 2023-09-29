@@ -2,6 +2,7 @@ import {UserProfile} from "./profile";
 
 type MatchesProfile = {
   initialMessage: string;
+  requestMessage?: string;
   status: string;
   latestSession: {
     status: string;

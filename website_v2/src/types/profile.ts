@@ -45,6 +45,7 @@ type User = {
     // Matches
     _id: string;
     initialMessage: string;
+    requestMessage?: string;
     status: string;
     latestSession: {
       status: string;
@@ -105,6 +106,7 @@ type PerformProfileAction = {
   setConfirmationText?: (confirmationText: string) => void;
   setSuccessAlert?: (successAlert: string, time: number) => void;
   setErrorAlert?: (errorAlert: string, time: number) => void;
+  requestMessage?: string;
 };
 
 export type {

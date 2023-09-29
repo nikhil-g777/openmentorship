@@ -97,6 +97,7 @@ const Profile = ({data, rootData}: Props) => {
       setConfirmationText,
       menteeId,
       mentorId,
+      requestMessage: rootData?.matches.requestMessage,
     });
   };
 

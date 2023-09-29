@@ -32,14 +32,6 @@ const getSecondaryButtonText = ({
     return "End Session";
   }
 
-  if (
-    currentPage === "matches" &&
-    currentTab === "pending" &&
-    userType === "mentor"
-  ) {
-    return "Decline Request";
-  }
-
   // Return null if none of the above matches
   return "";
 };

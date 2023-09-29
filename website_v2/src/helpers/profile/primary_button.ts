@@ -41,7 +41,7 @@ const getButtonText = ({currentPage, currentTab, userType}: buttonArgs) => {
     userType === "mentor" &&
     currentTab === "pending"
   ) {
-    return "Approve Request";
+    return "View Request";
   }
   if (
     currentPage === "matches" &&
@@ -61,7 +61,7 @@ const getButtonColor = (buttonText: string) => {
     buttonText === "Send Request" ||
     buttonText === "Chat" ||
     buttonText === "Reconnect" ||
-    buttonText === "Approve Request"
+    buttonText === "View Request"
   ) {
     return "btn-accent";
   } else if (buttonText === "Withdraw Request") {
@@ -80,6 +80,7 @@ const performProfileAction = async ({
   setIsProfileModal,
   confirmationText,
   setConfirmationText,
+  requestMessage,
 }: PerformProfileAction) => {
   // Chat
   if (
@@ -126,11 +127,13 @@ const performProfileAction = async ({
   if (
     currentPage === "matches" &&
     currentTab === "pending" &&
-    buttonText === "Approve Request" &&
+    buttonText === "View Request" &&
     !confirmationText &&
-    setConfirmationText
+    setConfirmationText &&
+    requestMessage &&
+    requestMessage !== ""
   ) {
-    setConfirmationText("Are you sure you want to approve this request?");
+    setConfirmationText(requestMessage);
   }
 
   // Archived Chat
