@@ -45,6 +45,7 @@ const performProfileModalAction = async ({
       setIsProfileModal(false);
       setMessage("");
       setSuccessAlert("Your request has been sent!", 6);
+      router.refresh();
     }
   }
   // Reconnect
