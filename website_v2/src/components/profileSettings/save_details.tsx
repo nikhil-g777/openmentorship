@@ -25,6 +25,8 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
     linkedInProfileUrl,
     headline,
     bio,
+    userType,
+    careerStatus,
     areasOfInterest,
     experiences,
     education,
@@ -184,6 +186,8 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
         linkedInProfileUrl,
         headline,
         bio,
+        userType,
+        careerStatus,
         areasOfInterest,
         experiences: experiences.map(exp => ({
           organization: exp.organization,
