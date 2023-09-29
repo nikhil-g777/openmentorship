@@ -374,21 +374,14 @@ const updateUser = async (req, res) => {
 
   try {
     // eslint-disable-next-line no-unused-vars
-    const { role, registrationStatus, ...userObj } = req.body.user; // making sure role and registrationStatus are not updated by the request, for security
-
-    // For security, ensure admin is not accepted as a user type
-    if ([constants.userTypes.mentee, constants.userTypes.mentor].includes(userObj.userType) == false) {
-      return res.status(400).json({
-        success: false,
-        error: 'invalid user type',
-      });
-    }
+    const { role, registrationStatus, userType, ...userObj } = req.body.user; // making sure role,  registrationStatus and userType are not updated by the request, for security.
+    // For now, changing user type is not allowed.
 
     if (req.body.type == 'completeRegistration') {
       // if final step of the registration process
       userObj.registrationStatus =
         constants.registrationStatus.pendingConfirmation;
-      userObj.role = userObj.userType;
+      userObj.role = userType;
       sendRegistrationMail(userRecord);
     } else if (req.body.type == 'updateUser') {
       console.log('updateUser');
