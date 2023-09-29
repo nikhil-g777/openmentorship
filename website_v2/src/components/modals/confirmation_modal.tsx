@@ -47,6 +47,21 @@ const ConfirmationModal = () => {
     });
   };
 
+  // Handle Mentor Confirmation
+  const handleMentorConfirmation = async (confirmationText: string) => {
+    await performConfirmationAction({
+      currentPage,
+      router,
+      setLoading,
+      token,
+      chatId,
+      confirmationButtonText: confirmationText,
+      setConfirmationText,
+      setSuccessAlert,
+      setErrorAlert,
+    });
+  };
+
   return (
     <>
       {/* The button to open modal */}
@@ -78,10 +93,18 @@ const ConfirmationModal = () => {
             </h2>
             <h3 className="text-base">{confirmationText}</h3>
             <div className="modal-action mt-20">
-              <button className="btn rounded-full btn-sm text-sm capitalize btn-outline btn-accent">
+              <button
+                className="btn rounded-full btn-sm text-sm capitalize btn-outline btn-accent"
+                onClick={() => handleMentorConfirmation("Approve Request")}
+                disabled={loading}
+              >
                 Approve Request
               </button>
-              <button className="btn rounded-full btn-sm text-sm capitalize btn-outline btn-error">
+              <button
+                className="btn rounded-full btn-sm text-sm capitalize btn-outline btn-error"
+                onClick={() => handleMentorConfirmation("Decline Request")}
+                disabled={loading}
+              >
                 Decline Request
               </button>
             </div>
