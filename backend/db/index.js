@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 mongoose
-  .connect(process.env.MONGODB_CONNECTION_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
+  .connect(process.env.MONGODB_CONNECTION_URI)
   .catch((err) => {
     console.error('Connection Error', err.message);
   });
