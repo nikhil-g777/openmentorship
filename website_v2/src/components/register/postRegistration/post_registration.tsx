@@ -23,10 +23,7 @@ const PostRegistration = () => {
 
     setTimeout(() => {
       setLoading(false);
-      setSuccessAlert(
-        "Your profile is currently under review. Please check back later for updates.",
-        6
-      );
+      setSuccessAlert("Please check your email to confirm your account.", 6);
       resetState();
       router.replace("/");
     }, 3000);
