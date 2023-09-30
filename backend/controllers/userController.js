@@ -377,18 +377,20 @@ const updateUser = async (req, res) => {
     const { role, registrationStatus, userType, ...userObj } = req.body.user; // making sure role,  registrationStatus and userType are not updated by the request, for security.
     // For now, changing user type is not allowed.
 
-    if (req.body.type == 'completeRegistration') {
-      // if final step of the registration process
+    // Validate user type.
+    if(userType && !Object.values(constants.userTypes).includes(userType)) {
+      return res.status(400).json({ success: false, error: 'Invalid user type' });
+    }
+
+    if (req.body.type == 'completeRegistration') { // Final step of registration process.
       userObj.registrationStatus =
         constants.registrationStatus.pendingConfirmation;
-      if(userType){
-        userObj.role = userType;
-      }
-      sendRegistrationMail(userRecord);
+      userObj.role = userType;
+      sendRegistrationMail(userRecord); // Send mail so users can verify their account.
     } else if (req.body.type == 'updateUser') {
       console.log('updateUser');
     } else {
-      return res.status(400).json({ success: false, error: 'Invalid type' });
+      return res.status(400).json({ success: false, error: 'Invalid update type' });
     }
 
     const user = await User.findByIdAndUpdate(_id, userObj, {
