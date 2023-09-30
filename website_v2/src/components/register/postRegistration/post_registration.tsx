@@ -1,6 +1,5 @@
 "use client";
 
-import {updateUser} from "@/endpoints/user";
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
@@ -8,44 +7,29 @@ import {Guidelines} from "./guidelines";
 
 const PostRegistration = () => {
   const {
-    token,
     currentScreen,
-    userId,
     userType,
     menteeGuidelines,
     mentorGuidelines,
     resetState,
   } = useRegisterStore();
-  const {setSuccessAlert, setErrorAlert} = useCommonStore();
+  const {setSuccessAlert} = useCommonStore();
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  // Handle continue
-  const handleContinue = async () => {
-    // Update the user
+  // Handle click
+  const handleClick = () => {
     setLoading(true);
-    const res = await updateUser(token, {
-      _id: userId,
-      user: {
-        active: true,
-      },
-      type: "completeRegistration",
-    });
-    setLoading(false);
-    // Success alert if response is successful
-    if (res.success) {
+
+    setTimeout(() => {
       setSuccessAlert(
         "Your profile is currently under review. Please check back later for updates.",
         6
       );
       resetState();
       router.replace("/");
-    }
-    // Error alert if response is unsuccessful
-    if (!res.success) {
-      setErrorAlert("Failed to update the data!", 3);
-      return;
-    }
+      setLoading(false);
+    }, 3000);
   };
 
   return (
@@ -73,7 +57,7 @@ const PostRegistration = () => {
           className={`w-48 btn btn-outline btn-accent rounded-full hover:text-white ${
             loading ? "loading" : ""
           }`}
-          onClick={handleContinue}
+          onClick={handleClick}
           disabled={loading}
         >
           {loading ? "Redirecting..." : "Got it!"}
