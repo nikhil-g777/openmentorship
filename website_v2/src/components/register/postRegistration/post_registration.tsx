@@ -22,13 +22,13 @@ const PostRegistration = () => {
     setLoading(true);
 
     setTimeout(() => {
+      setLoading(false);
       setSuccessAlert(
         "Your profile is currently under review. Please check back later for updates.",
         6
       );
       resetState();
       router.replace("/");
-      setLoading(false);
     }, 3000);
   };
 
