@@ -1,7 +1,7 @@
 "use client";
 
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {Guidelines} from "./guidelines";
 
@@ -17,11 +17,15 @@ const PostRegistration = () => {
     setLoading(true);
 
     setTimeout(() => {
-      setLoading(false);
       setSuccessAlert("Please check your email to confirm your account.", 6);
       router.replace("/");
     }, 2000);
   };
+
+  // Set loading to false on unmount
+  useEffect(() => {
+    return () => setLoading(false);
+  }, [setLoading]);
 
   return (
     <div className={`w-full ${currentScreen === "step6" ? "" : "hidden"}`}>
