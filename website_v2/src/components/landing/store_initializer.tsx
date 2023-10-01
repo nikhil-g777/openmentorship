@@ -1,6 +1,6 @@
 "use client";
 
-import {useCommonStore} from "@/zustand/store";
+import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
@@ -15,7 +15,13 @@ const StoreInitializer = () => {
     routeActionLoading,
     setRouteActionLoading,
   } = useCommonStore();
+  const {resetState} = useRegisterStore();
   const [counter, setCounter] = useState<number>(0);
+
+  // Reset state
+  useEffect(() => {
+    resetState();
+  }, [resetState]);
 
   // Redirect on successful sign in
   useEffect(() => {
