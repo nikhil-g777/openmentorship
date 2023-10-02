@@ -1,8 +1,6 @@
 "use client";
 
 import {useLinkedIn} from "react-linkedin-login-oauth2";
-// You can use provided image shipped by this package or using your own
-import linkedin from "react-linkedin-login-oauth2/assets/linkedin.png";
 import Image from "next/image";
 import {signIn} from "next-auth/react";
 import {useCommonStore} from "@/zustand/store";
@@ -58,11 +56,15 @@ const Linkedin = () => {
     <button
       type="button"
       onClick={handleLinkedinLogin}
-      className={`btn btn-link p-0 ${routeActionLoading ? "loading" : ""}`}
+      className={`btn btn-link p-0 hover:opacity-90 ${
+        routeActionLoading ? "loading" : ""
+      }`}
     >
       <Image
-        src={linkedin}
-        alt="Sign in with Linked In"
+        src="/assets/images/linkedinConnect.png"
+        alt="Connect with LinkedIn"
+        width={180}
+        height={36}
         style={{maxWidth: "180px", cursor: "pointer"}}
         data-cy="linkedin-button"
       />
