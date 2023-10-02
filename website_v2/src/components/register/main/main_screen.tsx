@@ -1,7 +1,5 @@
 "use client";
 
-import {LinkedInConnect} from "./linkedin_connect";
-import Link from "next/link";
 import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {useState} from "react";
 import {ImageWrapper} from "./image_wrapper";
@@ -61,7 +59,6 @@ const MainScreen = () => {
           <h2 className="text-base text-center md:text-left md:text-lg">
             Find a Mentor who can help guide you to success.
           </h2>
-          <LinkedInConnect />
           {/* Form */}
           <MainForm
             headlineError={headlineError}
@@ -72,9 +69,6 @@ const MainScreen = () => {
           >
             {/* Login or Continue */}
             <div className="w-full mt-8 mb-16 flex flex-col-reverse md:flex-row justify-center items-center gap-4 md:gap-8">
-              <Link href="/" className="link">
-                Already have an account?
-              </Link>
               <button
                 type="submit"
                 className="w-48 btn btn-sm btn-primary rounded-full"
