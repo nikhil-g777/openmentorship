@@ -130,6 +130,15 @@ const handleLoginErrors = async ({
         "Sorry, you cannot sign in at the moment because we are unable to login your account. Please try again later.",
     });
   }
+  // Unable to register user
+  else if (error === "Unable to register user") {
+    setAuthenticationError({
+      heading: "Unable to Register",
+      subHeading: "Please try again later.",
+      message:
+        "Sorry, you cannot sign in at the moment because we are unable to register your account. Please try again later.",
+    });
+  }
   // Response JSON error
   else if (error === "res.json is not a function") {
     setAuthenticationError({
