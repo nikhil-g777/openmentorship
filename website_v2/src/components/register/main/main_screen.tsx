@@ -1,7 +1,11 @@
 "use client";
 
-import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
-import {useState} from "react";
+import {
+  useCommonStore,
+  useProfileSettingsStore,
+  useRegisterStore,
+} from "@/zustand/store";
+import {useEffect, useState} from "react";
 import {ImageWrapper} from "./image_wrapper";
 import {MainForm} from "./main_form";
 import {linkedInPattern} from "@/helpers/register";
@@ -18,6 +22,7 @@ const MainScreen = () => {
     bio,
   } = useRegisterStore();
   const {setLinkedInUrlError} = useProfileSettingsStore();
+  const {setRouteActionLoading} = useCommonStore();
 
   // Handle submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,6 +50,12 @@ const MainScreen = () => {
     // Move to next screen
     setCurrentScreen("step1");
   };
+
+  // Set routeActionLoading to false
+  useEffect(() => {
+    setRouteActionLoading(false);
+  }, [setRouteActionLoading]);
+
   return (
     <div className={`w-full ${currentScreen === "main" ? "" : "hidden"}`}>
       <div className="w-full min-h-screen h-full grid grid-cols-1 md:grid-cols-2 justify-center">

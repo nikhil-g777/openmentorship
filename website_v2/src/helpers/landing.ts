@@ -145,7 +145,6 @@ const handleLoginErrors = async ({
 const handleUserRegistration = ({
   user,
   setSuccessAlert,
-  setRouteActionLoading,
   setToken,
   setUserId,
   setFirstName,
@@ -157,7 +156,6 @@ const handleUserRegistration = ({
     "Welcome to OpenMentorship! We're so excited to have you on board.",
     6
   );
-  setRouteActionLoading(false);
   setToken(user.token);
   setUserId(user.user._id);
   setFirstName(user.user.firstName);

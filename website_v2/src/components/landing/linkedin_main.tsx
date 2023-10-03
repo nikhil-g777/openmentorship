@@ -37,7 +37,6 @@ const Linkedin = () => {
           handleUserRegistration({
             user,
             setSuccessAlert,
-            setRouteActionLoading,
             setToken,
             setUserId,
             setFirstName,

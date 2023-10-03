@@ -89,7 +89,6 @@ type HandleUserRegistration = {
     };
   };
   setSuccessAlert: (message: string, duration: number) => void;
-  setRouteActionLoading: (loading: boolean) => void;
   setToken: (token: string) => void;
   setUserId: (userId: string) => void;
   setFirstName: (firstName: string) => void;
