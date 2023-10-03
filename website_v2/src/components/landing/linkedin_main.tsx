@@ -3,16 +3,21 @@
 import {useLinkedIn} from "react-linkedin-login-oauth2";
 import Image from "next/image";
 import {signIn} from "next-auth/react";
-import {useCommonStore} from "@/zustand/store";
-import {handleLoginErrors} from "@/helpers/landing";
+import {useCommonStore, useRegisterStore} from "@/zustand/store";
+import {handleLoginErrors, handleUserRegistration} from "@/helpers/landing";
+import {isValidJSON} from "@/helpers/register";
+import {useRouter} from "next/navigation";
 
 const Linkedin = () => {
+  const router = useRouter();
   const {
     setAuthenticationError,
     setSuccessAlert,
     routeActionLoading,
     setRouteActionLoading,
   } = useCommonStore();
+  const {setToken, setUserId, setFirstName, setLastName, setEmail} =
+    useRegisterStore();
 
   const {linkedInLogin} = useLinkedIn({
     clientId: process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID!,
@@ -25,12 +30,29 @@ const Linkedin = () => {
       });
       if (res && res.error) {
         const error = res.error;
-        handleLoginErrors({
-          error,
-          setSuccessAlert,
-          setAuthenticationError,
-          setRouteActionLoading,
-        });
+        // Check if error is a valid JSON & handle registration
+        const isJSON = isValidJSON(error);
+        if (isJSON) {
+          const user = JSON.parse(error);
+          handleUserRegistration({
+            user,
+            setSuccessAlert,
+            setRouteActionLoading,
+            setToken,
+            setUserId,
+            setFirstName,
+            setLastName,
+            setEmail,
+            router,
+          });
+        } else {
+          handleLoginErrors({
+            error,
+            setSuccessAlert,
+            setAuthenticationError,
+            setRouteActionLoading,
+          });
+        }
       } else {
         setSuccessAlert("Successfully signed in!", 3);
         setRouteActionLoading(false);
