@@ -11,6 +11,7 @@ const constants = require('../lib/constants');
 const Match = require('../models/match');
 const Token = require('../models/token');
 const User = require('../models/user');
+const { handleUserRegistration } = require('../helpers/user');
 
 const linkedinAuth = axios.create({
   baseURL: 'https://www.linkedin.com/',
@@ -173,12 +174,11 @@ const loginUser = async (req, res) => {
       { new: true },
     ).exec();
 
-    if (!updatedUser) {
-      // If status is not complete
-      return res.status(401).json({
-        success: false,
-        error: 'Please register first',
-      });
+    // Handle registration if user is not found or registration is incomplete
+    if (!updatedUser || updatedUser.registrationStatus === "incomplete") {
+      const newRequest = req;
+      newRequest.body.type = 'linkedInSignup';
+      return await handleUserRegistration(newRequest, res, linkedInProfile);
     }
 
     if (
