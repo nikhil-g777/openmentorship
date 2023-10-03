@@ -25,6 +25,7 @@ const StoreInitializer = ({data, token}: Props) => {
     setHeadline,
     setBio,
     setUserType,
+    setCareerStatus,
     setInterests,
     setSkills,
     setGoals,
@@ -63,6 +64,7 @@ const StoreInitializer = ({data, token}: Props) => {
     setHeadline(data.user.headline);
     setBio(data.user.bio);
     setUserType(data.user.userType);
+    setCareerStatus(data.user.careerStatus);
     setInterests(data.user.interests);
     setSkills(data.user.skills);
     setGoals(data.user.goals);
@@ -90,6 +92,7 @@ const StoreInitializer = ({data, token}: Props) => {
     setHeadline,
     setBio,
     setUserType,
+    setCareerStatus,
     setInterests,
     setSkills,
     setGoals,
