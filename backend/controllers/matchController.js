@@ -8,6 +8,7 @@ const Match = require('../models/match');
 const Session = require('../models/session');
 const User = require('../models/user');
 const constants = require('../lib/constants');
+const config = require('../config/config');
 const { getActiveMentorIds } = require('../helpers/matches');
 const { sendMail } = require('../lib/mailer');
 
@@ -51,7 +52,7 @@ const constructExploreFilter = (query, mentorIds) => {
 };
 
 // Created when there is a request from a mentee
-const createMatch = (req, res) => {
+const createMatch = async (req, res) => {
   // inputs : menteeId, mentorId
 
   const { body } = req;
@@ -69,37 +70,41 @@ const createMatch = (req, res) => {
     });
   }
 
-  const { menteeId, mentorId, requestMessage } = body.match;
+  try{
+    const { menteeId, mentorId, requestMessage } = body.match;
 
-  Match.exists({ mentee: menteeId, mentor: mentorId })
-    .then((exists) => {
-      if (exists) {
-        return res
-          .status(500)
-          .json({ success: false, error: 'Match already exists' });
-      }
-      return Match.create({
-        mentee: menteeId,
-        mentor: mentorId,
-        requestMessage,
-      });
-    })
-    .then((createdMatch) => {
-        sendMail(
-        createdMatch.mentor.email, // CHECK IF mentor relation needs to be included
-        'Openmentorship Email Confirmation',
-        {},
-        config.sendgrid.templates.connection_request,
-      );
-      return res.status(200).json({
-        success: true,
-        match: createdMatch,
-      });
-    })
-    .catch((e) => {
+    existing_match = await Match.findOne({ mentee: menteeId, mentor: mentorId })
+
+    // Check if there is an existing active match.
+    if(existing_match && existing_match.status == constants.matchStatuses.active) {
+      return res
+      .status(500)
+      .json({ success: false, error: 'Match already exists' });
+    }
+
+    // Find and update match.
+    upserted_match = await Match.findOneAndUpdate(
+      { mentee: menteeId, mentor: mentorId },
+      {requestMessage, status: constants.matchStatuses.active}, 
+      {new: true, upsert: true}).populate({path: 'mentor', select: 'email'})
+    
+    // Send connection_request email to mentor.
+    sendMail(
+      upserted_match.mentor.email,
+          'Openmentorship: New Mentee Request',
+          {},
+          config.sendgrid.templates.connection_request,
+    );
+
+    return res.status(200).json({
+      success: true,
+      match: upserted_match,
+    });
+  }
+  catch(e) {
       console.log(e);
       return res.status(500).json({ success: false });
-    });
+  };
 };
 
 const updateMatch = (req, res) => {

@@ -317,7 +317,7 @@ const tempAuth = (req, res) => {
 
   const { _id } = req.params;
 
-  if (process.env.NODE_ENV == 'dev') {
+  if (process.env.NODE_ENV == 'local' || process.env.NODE_ENV == 'dev') {
     User.findById(_id, (err, user) => {
       if (err) {
         console.log(err);
