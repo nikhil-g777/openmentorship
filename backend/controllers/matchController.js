@@ -73,32 +73,31 @@ const createMatch = async (req, res) => {
   try{
     const { menteeId, mentorId, requestMessage } = body.match;
 
+    // Check if there is an existing match.
     existing_match = await Match.findOne({ mentee: menteeId, mentor: mentorId })
-
-    // Check if there is an existing active match.
-    if(existing_match && existing_match.status == constants.matchStatuses.active) {
+    if(existing_match) {
       return res
       .status(500)
       .json({ success: false, error: 'Match already exists' });
     }
 
-    // Find and update match.
-    upserted_match = await Match.findOneAndUpdate(
-      { mentee: menteeId, mentor: mentorId },
-      {requestMessage, status: constants.matchStatuses.active}, 
-      {new: true, upsert: true}).populate({path: 'mentor', select: 'email'})
-    
+    // Create a new match.
+    created_match = await Match.create(
+      { mentee: menteeId, mentor: mentorId, requestMessage, status: constants.matchStatuses.pending})
+
+
+    match = await Match.findById(created_match._id).populate({path: 'mentor', select: 'email'})
     // Send connection_request email to mentor.
     sendMail(
-      upserted_match.mentor.email,
-          'Openmentorship: New Mentee Request',
-          {},
-          config.sendgrid.templates.connection_request,
+      match.mentor.email,
+        'Openmentorship: New Mentee Request',
+        {},
+        config.sendgrid.templates.connection_request,
     );
 
     return res.status(200).json({
       success: true,
-      match: upserted_match,
+      match: match,
     });
   }
   catch(e) {
