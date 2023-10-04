@@ -8,20 +8,24 @@ const constants = require('../lib/constants');
 
 const Match = require('../models/match');
 const User = require('../models/user');
-const { handleUserRegistration, getLinkedInProfile, fetchUserToken } = require('../helpers/user');
+const {
+  handleUserRegistration,
+  getLinkedInProfile,
+  fetchUserToken,
+} = require('../helpers/user');
 
 const sendRegistrationMail = async (user) => {
   const confirmationToken = util.encodeRegistrationToken(user._id);
   const confirmationLink = `https://${process.env.FRONTEND_BASE_URL}/confirmUserRegistration?confirmationToken=${confirmationToken}`;
 
-  let sendgridTemplate = ""
-  if(user.userType == constants.userTypes.mentee){
+  let sendgridTemplate = '';
+  if (user.userType == constants.userTypes.mentee) {
     sendgridTemplate = config.sendgrid.templates.mentee_signup;
-  } else if(user.userType == constants.userTypes.mentor) {
+  } else if (user.userType == constants.userTypes.mentor) {
     sendgridTemplate = config.sendgrid.templates.mentor_signup;
   } else {
     // TODO: Add some email alerting for errors like this.
-    console.err("Invalid user type for sending registration mail");
+    console.err('Invalid user type for sending registration mail');
   }
 
   const response = await sendMail(
@@ -58,15 +62,17 @@ const loginUser = async (req, res) => {
     const linkedInProfile = await getLinkedInProfile(body.authCode, isLocal);
 
     // Update LinkedIn profile image URLs for the user
-    const updateData = { profileImageUrls: linkedInProfile.profileImageUrls };
     const updatedUser = await User.findOneAndUpdate(
       { linkedInId: linkedInProfile.linkedInId },
-      updateData,
+      { profileImageUrls: linkedInProfile.profileImageUrls },
       { new: true },
     ).exec();
 
     // Handle registration if user is not found or registration is incomplete
-    if (!updatedUser || updatedUser.registrationStatus === "incomplete") {
+    if (
+      !updatedUser ||
+      updatedUser.registrationStatus === constants.registrationStatus.incomplete
+    ) {
       const newRequest = req;
       newRequest.body.type = 'linkedInSignup';
       return await handleUserRegistration(newRequest, res, linkedInProfile);
@@ -76,22 +82,15 @@ const loginUser = async (req, res) => {
       updatedUser.registrationStatus == constants.registrationStatus.complete
     ) {
       const { token } = await fetchUserToken(updatedUser);
-      return (
-        res
-          // .cookie('accessToken', accessToken, {
-          //   sameSite: 'none',
-          //   secure: true,
-          // })
-          .json({
-            success: true,
-            message: 'Login Successful',
-            token,
-            user: {
-              _id: updatedUser._id,
-              userType: updatedUser.userType,
-            },
-          })
-      );
+      return res.json({
+        success: true,
+        message: 'Login Successful',
+        token,
+        user: {
+          _id: updatedUser._id,
+          userType: updatedUser.userType,
+        },
+      });
     }
     // If status is not complete
     return res.status(401).json({
@@ -140,7 +139,7 @@ const tempAuth = (req, res) => {
             _id,
             userType: user.userType,
           },
-        })
+        });
     });
   } else {
     return res.status(401).json({
@@ -177,7 +176,7 @@ const updateUser = async (req, res) => {
       // if final step of the registration process
       userObj.registrationStatus =
         constants.registrationStatus.pendingConfirmation;
-      if(userType){
+      if (userType) {
         userObj.role = userType;
       }
       sendRegistrationMail(userRecord);
