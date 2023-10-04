@@ -110,11 +110,11 @@ const extractImageUrls = (profileResponse) => {
 
 // Linkedin URLs
 const linkedinAuth = axios.create({
-  baseURL: 'https://www.linkedin.com/',
+  baseURL: constants.linkedInURL.auth,
 });
 
 const linkedinApi = axios.create({
-  baseURL: 'https://api.linkedin.com/',
+  baseURL: constants.linkedInURL.api,
 });
 
 // Get LinkedIn profile

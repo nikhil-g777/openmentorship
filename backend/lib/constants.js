@@ -29,4 +29,8 @@ module.exports = {
     denied: 'Login failed, account is denied',
     disabled: 'Login failed, account is diabled',
   },
+  linkedInURL: {
+    auth: 'https://www.linkedin.com/',
+    api: 'https://api.linkedin.com/',
+  }
 };
