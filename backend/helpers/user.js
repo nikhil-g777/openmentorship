@@ -118,8 +118,8 @@ const linkedinApi = axios.create({
 });
 
 // Get LinkedIn profile
-const getLinkedInProfile = (authCode, isLocal = false) =>
-  new Promise((resolve, reject) => {
+const getLinkedInProfile = async (authCode, isLocal = false) => {
+  try {
     let redirectUri = '';
     if (isLocal) {
       redirectUri = process.env.LINKEDIN_REDIRECT_URI_LOCAL;
@@ -127,57 +127,56 @@ const getLinkedInProfile = (authCode, isLocal = false) =>
       redirectUri = process.env.LINKEDIN_REDIRECT_URI;
     }
 
+    // Create auth url
     const authUrl = queryString.stringifyUrl({
-      url: '/oauth/v2/accessToken',
+      url: constants.linkedInAuthUrlConfig.url,
       query: {
-        grant_type: 'authorization_code',
+        grant_type: constants.linkedInAuthUrlConfig.grantType,
         code: authCode,
         redirect_uri: redirectUri,
         client_id: process.env.LINKEDIN_CLIENT_ID,
         client_secret: process.env.LINKEDIN_CLIENT_SECRET,
       },
     });
-    const profileUrl =
-      '/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))';
-    const emaileUrl = `/v2/emailAddress?q=members&projection=(elements*(handle~))`;
 
+    // profileUrl & emailUrl
+    const {profileUrl} = constants.linkedInAuthUrlConfig;
+    const {emailUrl} = constants.linkedInAuthUrlConfig;
+
+    // Results object to store the results
     const results = {};
 
-    linkedinAuth
-      .post(authUrl) // exchange auth code for access token
-      .then((response) => {
-        results.access_token = response.data.access_token;
-        return linkedinApi.get(profileUrl, {
-          // get user profile
-          headers: {
-            Authorization: `Bearer ${results.access_token}`,
-          },
-        });
-      })
-      .then((profileResponse) => {
-        results.profileResponse = profileResponse;
-        results.profileImageUrls = extractImageUrls(profileResponse);
-        return linkedinApi.get(emaileUrl, {
-          headers: {
-            Authorization: `Bearer ${results.access_token}`,
-          },
-        });
-      })
-      .then((emailResponse) => {
-        const response = {
-          firstName: results.profileResponse.data.localizedFirstName,
-          lastName: results.profileResponse.data.localizedLastName,
-          linkedInId: results.profileResponse.data.id,
-          email: emailResponse.data.elements[0]['handle~'].emailAddress,
-          profileImageUrls: results.profileImageUrls,
-        };
-        resolve(response);
-      })
-      .catch((error) => {
-        console.log(error);
-        reject(new Error({ msg: 'Error in getLinkedInProfile }))' }));
-      });
-  });
+    const response = await linkedinAuth.post(authUrl); // exchange auth code for access token
+    results.access_token = response.data.access_token;
+
+    const profileResponse = await linkedinApi.get(profileUrl, {
+      // get user profile
+      headers: {
+        Authorization: `Bearer ${results.access_token}`,
+      },
+    });
+    results.profileResponse = profileResponse;
+    results.profileImageUrls = extractImageUrls(profileResponse);
+
+    const emailResponse = await linkedinApi.get(emailUrl, {
+      headers: {
+        Authorization: `Bearer ${results.access_token}`,
+      },
+    });
+
+    const finalResponse = {
+      firstName: results.profileResponse.data.localizedFirstName,
+      lastName: results.profileResponse.data.localizedLastName,
+      linkedInId: results.profileResponse.data.id,
+      email: emailResponse.data.elements[0]['handle~'].emailAddress,
+      profileImageUrls: results.profileImageUrls,
+    };
+    return finalResponse;
+  } catch (error) {
+    console.log(error);
+    throw new Error({ msg: 'Error in getLinkedInProfile' });
+  }
+};
 
 // Fetch user token
 const fetchUserToken = async (user) => {
