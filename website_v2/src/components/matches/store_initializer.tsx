@@ -49,7 +49,7 @@ const StoreInitializer = ({
     }
 
     // Set listing data
-    const cardData = performCardData(filteredData, "matches", userType);
+    const cardData = performCardData(filteredData, PAGES.MATCHES, userType);
     setListingData(cardData);
     setHeading(heading);
     // Set profile data

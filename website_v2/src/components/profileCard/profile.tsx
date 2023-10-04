@@ -18,7 +18,7 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {AdminActionsWrapper} from "./admin/admin_action_wrapper";
 import {AdminUserDetails} from "./admin/admin_user_details";
-import {PAGES} from "@/constants/common";
+import {PAGES, USER_TYPE} from "@/constants/common";
 
 type Props = {
   data: {
@@ -70,12 +70,12 @@ const Profile = ({data, rootData}: Props) => {
     if (rootData) {
       setFirstName(rootData.firstName);
       setMentorId(rootData._id);
-      if (userType === "mentee") {
+      if (userType === USER_TYPE.MENTEE) {
         setMenteeId(session.data?.user?.user?._id || "");
         setMentorId(rootData._id);
         setChatId(rootData?.matches?._id || "");
       }
-      if (userType === "mentor") {
+      if (userType === USER_TYPE.MENTOR) {
         setMentorId(session.data?.user?.user?._id || "");
         setMenteeId(rootData._id);
         setChatId(rootData?.matches?._id || "");

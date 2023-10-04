@@ -1,4 +1,5 @@
 "use client";
+import {USER_TYPE} from "@/constants/common";
 import {
   handleDashboardNext,
   handleDashboardPrev,
@@ -36,7 +37,7 @@ const Pagination = ({data}: Props) => {
   const goals = params.get("goals") || "";
   const communicationFrequency = params.get("communicationFrequency") || "";
   const communicationPreferences = params.get("communicationPreferences") || "";
-  const userType = params.get("userType") || "mentee";
+  const userType = params.get("userType") || USER_TYPE.MENTEE;
   const searchString = params.get("searchQuery") || "";
   const paginationData =
     data.mentors || data.users || searchData || sessionData;

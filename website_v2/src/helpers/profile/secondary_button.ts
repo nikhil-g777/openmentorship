@@ -1,4 +1,4 @@
-import {PAGES, TABS} from "@/constants/common";
+import {PAGES, TABS, USER_TYPE} from "@/constants/common";
 import {PerformProfileAction, buttonArgs} from "@/types/profile";
 
 // Get Secondary Button Text
@@ -11,7 +11,7 @@ const getSecondaryButtonText = ({
   if (
     currentPage === PAGES.MATCHES &&
     currentTab === TABS.MATCHES.CLOSED &&
-    userType === "mentee"
+    userType === USER_TYPE.MENTEE
   ) {
     return "Archived Chat";
   }
@@ -19,7 +19,7 @@ const getSecondaryButtonText = ({
   if (
     currentPage === PAGES.MATCHES &&
     (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
-    userType === "mentee"
+    userType === USER_TYPE.MENTEE
   ) {
     return "End Session";
   }
@@ -28,7 +28,7 @@ const getSecondaryButtonText = ({
   if (
     currentPage === PAGES.MATCHES &&
     (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
-    userType === "mentor"
+    userType === USER_TYPE.MENTOR
   ) {
     return "End Session";
   }

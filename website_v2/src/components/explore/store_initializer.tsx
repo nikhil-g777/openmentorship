@@ -1,6 +1,6 @@
 "use client";
 
-import {PAGES} from "@/constants/common";
+import {PAGES, USER_TYPE} from "@/constants/common";
 import {UserProfile} from "@/types/profile";
 import {
   useCarouselStore,
@@ -56,7 +56,7 @@ const StoreInitializer = ({data, content, token}: Props) => {
     setCollapsable(true);
     setCurrentPage(PAGES.EXPLORE);
     setCurrentTab("");
-    setUserType("mentee");
+    setUserType(USER_TYPE.MENTEE);
   }, [
     router,
     token,

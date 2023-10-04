@@ -3,6 +3,7 @@ import {StoreInitializer} from "@/components/chat/store_initializer";
 import {ChatAttachmentModal} from "@/components/modals/attachment/chat_attachment_modal";
 import {ChatMediaContentModal} from "@/components/modals/media/chat_media_content_modal";
 import {NoResult} from "@/components/noResult/no_result";
+import {TABS} from "@/constants/common";
 import {getChatToken} from "@/endpoints/chat";
 import {getUserMatches} from "@/endpoints/matches";
 import {authOptions} from "@/helpers/auth_options";
@@ -27,8 +28,14 @@ const Page = async ({searchParams}: Props) => {
   let isNoActiveResult = null;
   let isNoArchiveResult = null;
   if (data && data.success && data.matches) {
-    isNoActiveResult = checkNoResult(userType, data?.matches["active"]);
-    isNoArchiveResult = checkNoResult(userType, data?.matches["closed"]);
+    isNoActiveResult = checkNoResult(
+      userType,
+      data?.matches[TABS.MATCHES.ACTIVE]
+    );
+    isNoArchiveResult = checkNoResult(
+      userType,
+      data?.matches[TABS.MATCHES.CLOSED]
+    );
   }
 
   return (

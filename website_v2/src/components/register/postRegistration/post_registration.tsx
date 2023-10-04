@@ -5,6 +5,7 @@ import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {Guidelines} from "./guidelines";
+import {USER_TYPE} from "@/constants/common";
 
 const PostRegistration = () => {
   const {
@@ -56,7 +57,9 @@ const PostRegistration = () => {
       </h1>
       <div className="w-full max-w-3xl mx-auto mt-8 px-4 flex justify-center">
         <ul className="steps steps-vertical">
-          {userType === "mentee" && menteeGuidelines && menteeGuidelines.length
+          {userType === USER_TYPE.MENTEE &&
+          menteeGuidelines &&
+          menteeGuidelines.length
             ? menteeGuidelines.map(guideline => (
                 <Guidelines key={guideline.id} guideline={guideline} />
               ))

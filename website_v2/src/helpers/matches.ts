@@ -1,4 +1,4 @@
-import {PAGES} from "@/constants/common";
+import {PAGES, USER_TYPE} from "@/constants/common";
 import {MatchesProfile} from "@/types/matches";
 import {UserProfile} from "@/types/profile";
 
@@ -8,12 +8,12 @@ const checkNoResult = (
   filteredData: MatchesProfile[]
 ): boolean => {
   if (
-    userType === "mentee" &&
+    userType === USER_TYPE.MENTEE &&
     !filteredData.map((list: MatchesProfile) => list.mentor).length
   ) {
     return true;
   } else if (
-    userType === "mentor" &&
+    userType === USER_TYPE.MENTOR &&
     !filteredData.map((list: MatchesProfile) => list.mentee).length
   ) {
     return true;
@@ -30,7 +30,7 @@ const performCardData = (
 ) => {
   const CardData: UserProfile["user"][] = [];
   // Mentee
-  if (currentPage === PAGES.MATCHES && userType === "mentee" && data) {
+  if (currentPage === PAGES.MATCHES && userType === USER_TYPE.MENTEE && data) {
     data.map((single: MatchesProfile) => {
       const mentor = single.mentor;
       const obj = {
@@ -47,7 +47,7 @@ const performCardData = (
   } else if (
     // Mentor
     currentPage === PAGES.MATCHES &&
-    userType === "mentor" &&
+    userType === USER_TYPE.MENTOR &&
     data
   ) {
     data.map((single: MatchesProfile) => {

@@ -1,29 +1,29 @@
-import {PAGES, TABS} from "@/constants/common";
+import {PAGES, TABS, USER_TYPE} from "@/constants/common";
 import {PerformProfileAction, buttonArgs} from "@/types/profile";
 
 // Get Button Text
 const getButtonText = ({currentPage, currentTab, userType}: buttonArgs) => {
   // Mentee's
-  if (currentPage === PAGES.EXPLORE && userType === "mentee") {
+  if (currentPage === PAGES.EXPLORE && userType === USER_TYPE.MENTEE) {
     return "Send Request";
   }
   if (
     currentPage === PAGES.MATCHES &&
-    userType === "mentee" &&
+    userType === USER_TYPE.MENTEE &&
     (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab)
   ) {
     return "Chat";
   }
   if (
     currentPage === PAGES.MATCHES &&
-    userType === "mentee" &&
+    userType === USER_TYPE.MENTEE &&
     currentTab === TABS.MATCHES.PENDING
   ) {
     return "Withdraw Request";
   }
   if (
     currentPage === PAGES.MATCHES &&
-    userType === "mentee" &&
+    userType === USER_TYPE.MENTEE &&
     currentTab === TABS.MATCHES.CLOSED
   ) {
     return "Reconnect";
@@ -32,21 +32,21 @@ const getButtonText = ({currentPage, currentTab, userType}: buttonArgs) => {
   // Mentor's
   if (
     currentPage === PAGES.MATCHES &&
-    userType === "mentor" &&
+    userType === USER_TYPE.MENTOR &&
     (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab)
   ) {
     return "Chat";
   }
   if (
     currentPage === PAGES.MATCHES &&
-    userType === "mentor" &&
+    userType === USER_TYPE.MENTOR &&
     currentTab === TABS.MATCHES.PENDING
   ) {
     return "View Request";
   }
   if (
     currentPage === PAGES.MATCHES &&
-    userType === "mentor" &&
+    userType === USER_TYPE.MENTOR &&
     currentTab === TABS.MATCHES.CLOSED
   ) {
     return "Archived Chat";
