@@ -60,9 +60,9 @@ const handleUserRegistration = async (req, res, linkedInProfile) => {
           //   sameSite: 'none',
           //   secure: true,
           // })
-          .status(401)
+          .status(200)
           .json({
-            success: false,
+            success: true,
             newUser: true,
             error: constants.loginMessageByStatus.incomplete,
             registrationStatus: constants.registrationStatus.incomplete,
