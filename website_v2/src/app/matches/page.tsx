@@ -9,6 +9,7 @@ import {checkNoResult} from "@/helpers/matches";
 import {StoreInitializer} from "@/components/matches/store_initializer";
 import {ProfileCardModal} from "@/components/modals/profile_card_modal";
 import {ConfirmationModal} from "@/components/modals/confirmation/confirmation_modal";
+import {TABS} from "@/constants/common";
 
 type Props = {
   searchParams: {
@@ -32,14 +33,18 @@ const Page = async ({searchParams}: Props) => {
   let headingText = "";
 
   if (data.success && data.matches) {
-    if (currentTab === "active" || currentTab === "" || !currentTab) {
-      filteredData = data.matches["active"];
+    if (
+      currentTab === TABS.MATCHES.ACTIVE ||
+      currentTab === "" ||
+      !currentTab
+    ) {
+      filteredData = data.matches[TABS.MATCHES.ACTIVE];
       headingText = "Your Active Connections";
-    } else if (currentTab === "pending") {
-      filteredData = data.matches["pending"];
+    } else if (currentTab === TABS.MATCHES.PENDING) {
+      filteredData = data.matches[TABS.MATCHES.PENDING];
       headingText = "Your Pending Connections";
     } else {
-      filteredData = data.matches["closed"];
+      filteredData = data.matches[TABS.MATCHES.CLOSED];
       headingText = "Your Past Connections";
     }
   }

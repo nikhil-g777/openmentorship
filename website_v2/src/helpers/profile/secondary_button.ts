@@ -1,4 +1,4 @@
-import {PAGES} from "@/constants/common";
+import {PAGES, TABS} from "@/constants/common";
 import {PerformProfileAction, buttonArgs} from "@/types/profile";
 
 // Get Secondary Button Text
@@ -10,7 +10,7 @@ const getSecondaryButtonText = ({
   // Mentee
   if (
     currentPage === PAGES.MATCHES &&
-    currentTab === "closed" &&
+    currentTab === TABS.MATCHES.CLOSED &&
     userType === "mentee"
   ) {
     return "Archived Chat";
@@ -18,7 +18,7 @@ const getSecondaryButtonText = ({
 
   if (
     currentPage === PAGES.MATCHES &&
-    (currentTab === "active" || currentTab === "" || !currentTab) &&
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
     userType === "mentee"
   ) {
     return "End Session";
@@ -27,7 +27,7 @@ const getSecondaryButtonText = ({
   // Mentor
   if (
     currentPage === PAGES.MATCHES &&
-    (currentTab === "active" || currentTab === "" || !currentTab) &&
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
     userType === "mentor"
   ) {
     return "End Session";
@@ -62,7 +62,7 @@ const performSecondaryButtonAction = async ({
   // End Session (Modal)
   if (
     (currentPage === PAGES.MATCHES || currentPage === PAGES.CHAT) &&
-    (currentTab === "active" || currentTab === "" || !currentTab) &&
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
     secondaryButtonText === "End Session" &&
     setConfirmationText &&
     confirmationText === ""
@@ -73,7 +73,7 @@ const performSecondaryButtonAction = async ({
   // Decline Request (Modal)
   if (
     currentPage === PAGES.MATCHES &&
-    currentTab === "pending" &&
+    currentTab === TABS.MATCHES.PENDING &&
     secondaryButtonText === "Decline Request" &&
     setConfirmationText &&
     confirmationText === ""
@@ -86,7 +86,7 @@ const performSecondaryButtonAction = async ({
   // Archived Chat
   if (
     currentPage === PAGES.MATCHES &&
-    currentTab === "closed" &&
+    currentTab === TABS.MATCHES.CLOSED &&
     secondaryButtonText === "Archived Chat"
   ) {
     router.push("/chat?id=" + chatId + "&type=archive");

@@ -1,4 +1,4 @@
-import {PAGES} from "@/constants/common";
+import {PAGES, TABS} from "@/constants/common";
 import {createMatch, updateMatches} from "@/endpoints/matches";
 import {PerformProfileAction} from "@/types/profile";
 
@@ -54,7 +54,7 @@ const performProfileModalAction = async ({
     isProfileModal &&
     setIsProfileModal &&
     currentPage === PAGES.MATCHES &&
-    currentTab === "closed" &&
+    currentTab === TABS.MATCHES.CLOSED &&
     buttonText === "Reconnect" &&
     message &&
     setMessage &&

@@ -1,4 +1,4 @@
-import {PAGES} from "@/constants/common";
+import {PAGES, TABS} from "@/constants/common";
 import {PerformProfileAction, buttonArgs} from "@/types/profile";
 
 // Get Button Text
@@ -10,21 +10,21 @@ const getButtonText = ({currentPage, currentTab, userType}: buttonArgs) => {
   if (
     currentPage === PAGES.MATCHES &&
     userType === "mentee" &&
-    (currentTab === "active" || currentTab === "" || !currentTab)
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab)
   ) {
     return "Chat";
   }
   if (
     currentPage === PAGES.MATCHES &&
     userType === "mentee" &&
-    currentTab === "pending"
+    currentTab === TABS.MATCHES.PENDING
   ) {
     return "Withdraw Request";
   }
   if (
     currentPage === PAGES.MATCHES &&
     userType === "mentee" &&
-    currentTab === "closed"
+    currentTab === TABS.MATCHES.CLOSED
   ) {
     return "Reconnect";
   }
@@ -33,21 +33,21 @@ const getButtonText = ({currentPage, currentTab, userType}: buttonArgs) => {
   if (
     currentPage === PAGES.MATCHES &&
     userType === "mentor" &&
-    (currentTab === "active" || currentTab === "" || !currentTab)
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab)
   ) {
     return "Chat";
   }
   if (
     currentPage === PAGES.MATCHES &&
     userType === "mentor" &&
-    currentTab === "pending"
+    currentTab === TABS.MATCHES.PENDING
   ) {
     return "View Request";
   }
   if (
     currentPage === PAGES.MATCHES &&
     userType === "mentor" &&
-    currentTab === "closed"
+    currentTab === TABS.MATCHES.CLOSED
   ) {
     return "Archived Chat";
   }
@@ -86,7 +86,7 @@ const performProfileAction = async ({
   // Chat
   if (
     currentPage === PAGES.MATCHES &&
-    (currentTab === "active" || currentTab === "" || !currentTab) &&
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
     buttonText === "Chat"
   ) {
     router.push("/chat?id=" + chatId);
@@ -95,7 +95,7 @@ const performProfileAction = async ({
   // Withdraw Request (Open Modal)
   if (
     currentPage === PAGES.MATCHES &&
-    currentTab === "pending" &&
+    currentTab === TABS.MATCHES.PENDING &&
     buttonText === "Withdraw Request" &&
     !confirmationText &&
     setConfirmationText
@@ -108,7 +108,7 @@ const performProfileAction = async ({
     !isProfileModal &&
     setIsProfileModal &&
     currentPage === PAGES.MATCHES &&
-    currentTab === "closed" &&
+    currentTab === TABS.MATCHES.CLOSED &&
     buttonText === "Reconnect"
   ) {
     setIsProfileModal(true);
@@ -127,7 +127,7 @@ const performProfileAction = async ({
   // Approve Request (Open Modal)
   if (
     currentPage === PAGES.MATCHES &&
-    currentTab === "pending" &&
+    currentTab === TABS.MATCHES.PENDING &&
     buttonText === "View Request" &&
     !confirmationText &&
     setConfirmationText &&
@@ -140,7 +140,7 @@ const performProfileAction = async ({
   // Archived Chat
   if (
     currentPage === PAGES.MATCHES &&
-    currentTab === "closed" &&
+    currentTab === TABS.MATCHES.CLOSED &&
     buttonText === "Archived Chat"
   ) {
     router.push("/chat?id=" + chatId + "&type=archive");
