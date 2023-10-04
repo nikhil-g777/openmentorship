@@ -161,16 +161,16 @@ const handleUserRegistration = ({
   setEmail,
   router,
 }: HandleUserRegistration) => {
-  setSuccessAlert(
-    "Welcome to OpenMentorship! We're so excited to have you on board.",
-    6
-  );
   setToken(user.token);
   setUserId(user.user._id);
   setFirstName(user.user.firstName);
   setLastName(user.user.lastName);
   setEmail(user.user.email);
   router.push("/register");
+  setSuccessAlert(
+    "Welcome to OpenMentorship! We're so excited to have you on board.",
+    6
+  );
 };
 
 export {list, handleLoginErrors, handleUserRegistration};
