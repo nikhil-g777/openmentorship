@@ -1,3 +1,6 @@
+require('dotenv').config();
+const queryString = require('query-string');
+const axios = require('axios');
 const User = require('../models/user');
 const Token = require('../models/token');
 const util = require('../lib/utils');
@@ -82,4 +85,98 @@ const handleUserRegistration = async (req, res, linkedInProfile) => {
   }
 };
 
-module.exports = { handleUserRegistration };
+// Extract image urls from linkedIn profile
+const extractImageUrls = (profileResponse) => {
+  const res = {};
+  if (profileResponse.data.profilePicture) {
+    const displayImages =
+      profileResponse.data.profilePicture['displayImage~'].elements;
+
+    displayImages.forEach((element) => {
+      const { displaySize } =
+        element.data['com.linkedin.digitalmedia.mediaartifact.StillImage'];
+      const imageKey = `${displaySize.width}x${displaySize.height}`;
+      const imageUrl = element.identifiers[0].identifier;
+
+      res[imageKey] = imageUrl;
+
+      if (imageKey == '200x200') {
+        res.default = imageUrl;
+      }
+    });
+  }
+  return res;
+};
+
+// Linkedin URLs
+const linkedinAuth = axios.create({
+  baseURL: 'https://www.linkedin.com/',
+});
+
+const linkedinApi = axios.create({
+  baseURL: 'https://api.linkedin.com/',
+});
+
+// Get LinkedIn profile
+const getLinkedInProfile = (authCode, isLocal = false) =>
+  new Promise((resolve, reject) => {
+    let redirectUri = '';
+    if (isLocal) {
+      redirectUri = process.env.LINKEDIN_REDIRECT_URI_LOCAL;
+    } else {
+      redirectUri = process.env.LINKEDIN_REDIRECT_URI;
+    }
+
+    const authUrl = queryString.stringifyUrl({
+      url: '/oauth/v2/accessToken',
+      query: {
+        grant_type: 'authorization_code',
+        code: authCode,
+        redirect_uri: redirectUri,
+        client_id: process.env.LINKEDIN_CLIENT_ID,
+        client_secret: process.env.LINKEDIN_CLIENT_SECRET,
+      },
+    });
+    const profileUrl =
+      '/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))';
+    const emaileUrl = `/v2/emailAddress?q=members&projection=(elements*(handle~))`;
+
+    const results = {};
+
+    linkedinAuth
+      .post(authUrl) // exchange auth code for access token
+      .then((response) => {
+        results.access_token = response.data.access_token;
+        return linkedinApi.get(profileUrl, {
+          // get user profile
+          headers: {
+            Authorization: `Bearer ${results.access_token}`,
+          },
+        });
+      })
+      .then((profileResponse) => {
+        results.profileResponse = profileResponse;
+        results.profileImageUrls = extractImageUrls(profileResponse);
+        return linkedinApi.get(emaileUrl, {
+          headers: {
+            Authorization: `Bearer ${results.access_token}`,
+          },
+        });
+      })
+      .then((emailResponse) => {
+        const response = {
+          firstName: results.profileResponse.data.localizedFirstName,
+          lastName: results.profileResponse.data.localizedLastName,
+          linkedInId: results.profileResponse.data.id,
+          email: emailResponse.data.elements[0]['handle~'].emailAddress,
+          profileImageUrls: results.profileImageUrls,
+        };
+        resolve(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(new Error({ msg: 'Error in getLinkedInProfile }))' }));
+      });
+  });
+
+module.exports = { handleUserRegistration, getLinkedInProfile };

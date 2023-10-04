@@ -15,7 +15,7 @@ router.use(cookieParser());
 
 router.post('/login', userController.loginUser);
 
-router.post('/register', userController.registerUser);
+// router.post('/register', userController.registerUser);
 
 router.get('/confirmRegistration', userController.confirmRegistration);
 
