@@ -7,6 +7,7 @@ import {
 import {useCommonStore, useProfileStore} from "@/zustand/store";
 import {useRouter} from "next/navigation";
 import {ViewRequest} from "./view_request";
+import {PAGES, TABS, USER_TYPE} from "@/constants/common";
 
 const ConfirmationModal = () => {
   const router = useRouter();
@@ -29,9 +30,9 @@ const ConfirmationModal = () => {
 
   // isViewRequest
   const isViewRequest =
-    currentPage === "matches" &&
-    currentTab === "pending" &&
-    userType === "mentor";
+    currentPage === PAGES.MATCHES &&
+    currentTab === TABS.MATCHES.PENDING &&
+    userType === USER_TYPE.MENTOR;
 
   const handleEndSession = async () => {
     await performConfirmationAction({
