@@ -18,6 +18,7 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {AdminActionsWrapper} from "./admin/admin_action_wrapper";
 import {AdminUserDetails} from "./admin/admin_user_details";
+import {PAGES} from "@/constants/common";
 
 type Props = {
   data: {
@@ -86,7 +87,7 @@ const Profile = ({data, rootData}: Props) => {
     await performProfileAction({
       currentPage,
       currentTab,
-      chatId: currentPage !== "matches" ? "" : rootData?.matches._id,
+      chatId: currentPage !== PAGES.MATCHES ? "" : rootData?.matches._id,
       isProfileModal,
       setIsProfileModal,
       router,
@@ -112,7 +113,7 @@ const Profile = ({data, rootData}: Props) => {
       currentPage,
       currentTab,
       router,
-      chatId: currentPage !== "matches" ? "" : rootData?.matches._id,
+      chatId: currentPage !== PAGES.MATCHES ? "" : rootData?.matches._id,
       secondaryButtonText,
       setLoading,
       token,
@@ -157,10 +158,10 @@ const Profile = ({data, rootData}: Props) => {
       ) : null}
 
       {/* Admin Actions & Details */}
-      {currentPage === "dashboard" && rootData ? (
+      {currentPage === PAGES.ADMIN.DASHBOARD && rootData ? (
         <AdminActionsWrapper data={rootData} />
       ) : null}
-      {currentPage === "dashboard" && rootData ? (
+      {currentPage === PAGES.ADMIN.DASHBOARD && rootData ? (
         <AdminUserDetails data={rootData} />
       ) : null}
     </div>

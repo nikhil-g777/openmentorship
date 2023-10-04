@@ -1,4 +1,5 @@
 import {CONFIRMATION_PROMPTS} from "@/constants/admin/dashboard";
+import {PAGES} from "@/constants/common";
 import {updateMentorRegistration} from "@/endpoints/admin";
 import {updateMatches} from "@/endpoints/matches";
 import {PerformConfirmationAction} from "@/types/profile";
@@ -17,7 +18,7 @@ const performConfirmationAction = async ({
 }: PerformConfirmationAction) => {
   // End Session
   if (
-    (currentPage === "matches" || currentPage === "chat") &&
+    (currentPage === PAGES.MATCHES || currentPage === PAGES.CHAT) &&
     confirmationButtonText === "End Session" &&
     chatId &&
     chatId.length &&
@@ -38,7 +39,7 @@ const performConfirmationAction = async ({
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
       setSuccessAlert("You have ended the session!", 6);
-      if (currentPage === "chat") {
+      if (currentPage === PAGES.CHAT) {
         router.push("/chat");
         router.refresh();
       } else {
@@ -50,7 +51,7 @@ const performConfirmationAction = async ({
 
   // Withdraw Request
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     confirmationButtonText === "Withdraw Request" &&
     chatId &&
     chatId.length &&
@@ -80,7 +81,7 @@ const performConfirmationAction = async ({
 
   // Approve Request
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     confirmationButtonText === "Approve Request" &&
     chatId &&
     chatId.length &&
@@ -105,7 +106,7 @@ const performConfirmationAction = async ({
 
   // Decline Request
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     confirmationButtonText === "Decline Request" &&
     chatId &&
     chatId.length &&
@@ -133,7 +134,7 @@ const performConfirmationAction = async ({
 
   // Approve Account / Enable Account (Admin Dashboard)
   if (
-    currentPage === "dashboard" &&
+    currentPage === PAGES.ADMIN.DASHBOARD &&
     (confirmationButtonText === "Approve Account" ||
       confirmationButtonText === "Enable Account") &&
     chatId &&
@@ -156,7 +157,7 @@ const performConfirmationAction = async ({
 
   // Deny Account (Admin Dashboard)
   if (
-    currentPage === "dashboard" &&
+    currentPage === PAGES.ADMIN.DASHBOARD &&
     confirmationButtonText === "Deny Account" &&
     chatId &&
     chatId.length &&
@@ -178,7 +179,7 @@ const performConfirmationAction = async ({
 
   // Disable Account (Admin Dashboard)
   if (
-    currentPage === "dashboard" &&
+    currentPage === PAGES.ADMIN.DASHBOARD &&
     confirmationButtonText === "Disable Account" &&
     chatId &&
     chatId.length &&

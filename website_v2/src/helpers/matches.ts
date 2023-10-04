@@ -1,3 +1,4 @@
+import {PAGES} from "@/constants/common";
 import {MatchesProfile} from "@/types/matches";
 import {UserProfile} from "@/types/profile";
 
@@ -29,7 +30,7 @@ const performCardData = (
 ) => {
   const CardData: UserProfile["user"][] = [];
   // Mentee
-  if (currentPage === "matches" && userType === "mentee" && data) {
+  if (currentPage === PAGES.MATCHES && userType === "mentee" && data) {
     data.map((single: MatchesProfile) => {
       const mentor = single.mentor;
       const obj = {
@@ -45,7 +46,7 @@ const performCardData = (
     });
   } else if (
     // Mentor
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     userType === "mentor" &&
     data
   ) {

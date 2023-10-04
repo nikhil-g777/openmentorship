@@ -1,5 +1,6 @@
 "use client";
 
+import {PAGES} from "@/constants/common";
 import {SearchData, StatsData, UsersData} from "@/types/admin/dashboard";
 import {
   useAdminDashboardStore,
@@ -68,7 +69,7 @@ const StoreInitializer = ({
     setUsersData(data);
     setHeading(userType.split("")[0].toUpperCase() + userType.slice(1) + "s");
     setListingData(data.users);
-    setCurrentPage("dashboard");
+    setCurrentPage(PAGES.ADMIN.DASHBOARD);
 
     // Set search data
     if (searchData) {

@@ -1,3 +1,4 @@
+import {PAGES} from "@/constants/common";
 import {PerformProfileAction, buttonArgs} from "@/types/profile";
 
 // Get Secondary Button Text
@@ -8,7 +9,7 @@ const getSecondaryButtonText = ({
 }: buttonArgs) => {
   // Mentee
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     currentTab === "closed" &&
     userType === "mentee"
   ) {
@@ -16,7 +17,7 @@ const getSecondaryButtonText = ({
   }
 
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     (currentTab === "active" || currentTab === "" || !currentTab) &&
     userType === "mentee"
   ) {
@@ -25,7 +26,7 @@ const getSecondaryButtonText = ({
 
   // Mentor
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     (currentTab === "active" || currentTab === "" || !currentTab) &&
     userType === "mentor"
   ) {
@@ -60,7 +61,7 @@ const performSecondaryButtonAction = async ({
 }: PerformProfileAction) => {
   // End Session (Modal)
   if (
-    (currentPage === "matches" || currentPage === "chat") &&
+    (currentPage === PAGES.MATCHES || currentPage === PAGES.CHAT) &&
     (currentTab === "active" || currentTab === "" || !currentTab) &&
     secondaryButtonText === "End Session" &&
     setConfirmationText &&
@@ -71,7 +72,7 @@ const performSecondaryButtonAction = async ({
 
   // Decline Request (Modal)
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     currentTab === "pending" &&
     secondaryButtonText === "Decline Request" &&
     setConfirmationText &&
@@ -84,7 +85,7 @@ const performSecondaryButtonAction = async ({
 
   // Archived Chat
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     currentTab === "closed" &&
     secondaryButtonText === "Archived Chat"
   ) {

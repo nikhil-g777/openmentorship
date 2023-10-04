@@ -1,3 +1,4 @@
+import {PAGES} from "@/constants/common";
 import {createMatch, updateMatches} from "@/endpoints/matches";
 import {PerformProfileAction} from "@/types/profile";
 
@@ -23,7 +24,7 @@ const performProfileModalAction = async ({
   if (
     isProfileModal &&
     setIsProfileModal &&
-    currentPage === "explore" &&
+    currentPage === PAGES.EXPLORE &&
     buttonText === "Send Request" &&
     message &&
     setMessage &&
@@ -52,7 +53,7 @@ const performProfileModalAction = async ({
   if (
     isProfileModal &&
     setIsProfileModal &&
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     currentTab === "closed" &&
     buttonText === "Reconnect" &&
     message &&

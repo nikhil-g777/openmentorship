@@ -1,5 +1,6 @@
 "use client";
 
+import {PAGES} from "@/constants/common";
 import {SessionData} from "@/types/admin/sessions";
 import {
   useAdminSessionStore,
@@ -48,7 +49,7 @@ const StoreInitializer = ({token, data, searchData}: Props) => {
         : data.sessions.filter(data => data.status === "closed" && data.match);
     setSessionData(filteredData);
     setSearchData(null);
-    setCurrentPage("sessions");
+    setCurrentPage(PAGES.ADMIN.SESSIONS);
     setCurrentTab(tab);
 
     // Set search data

@@ -1,27 +1,28 @@
+import {PAGES} from "@/constants/common";
 import {PerformProfileAction, buttonArgs} from "@/types/profile";
 
 // Get Button Text
 const getButtonText = ({currentPage, currentTab, userType}: buttonArgs) => {
   // Mentee's
-  if (currentPage === "explore" && userType === "mentee") {
+  if (currentPage === PAGES.EXPLORE && userType === "mentee") {
     return "Send Request";
   }
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     userType === "mentee" &&
     (currentTab === "active" || currentTab === "" || !currentTab)
   ) {
     return "Chat";
   }
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     userType === "mentee" &&
     currentTab === "pending"
   ) {
     return "Withdraw Request";
   }
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     userType === "mentee" &&
     currentTab === "closed"
   ) {
@@ -30,21 +31,21 @@ const getButtonText = ({currentPage, currentTab, userType}: buttonArgs) => {
 
   // Mentor's
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     userType === "mentor" &&
     (currentTab === "active" || currentTab === "" || !currentTab)
   ) {
     return "Chat";
   }
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     userType === "mentor" &&
     currentTab === "pending"
   ) {
     return "View Request";
   }
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     userType === "mentor" &&
     currentTab === "closed"
   ) {
@@ -84,7 +85,7 @@ const performProfileAction = async ({
 }: PerformProfileAction) => {
   // Chat
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     (currentTab === "active" || currentTab === "" || !currentTab) &&
     buttonText === "Chat"
   ) {
@@ -93,7 +94,7 @@ const performProfileAction = async ({
 
   // Withdraw Request (Open Modal)
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     currentTab === "pending" &&
     buttonText === "Withdraw Request" &&
     !confirmationText &&
@@ -106,7 +107,7 @@ const performProfileAction = async ({
   if (
     !isProfileModal &&
     setIsProfileModal &&
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     currentTab === "closed" &&
     buttonText === "Reconnect"
   ) {
@@ -117,7 +118,7 @@ const performProfileAction = async ({
   if (
     !isProfileModal &&
     setIsProfileModal &&
-    currentPage === "explore" &&
+    currentPage === PAGES.EXPLORE &&
     buttonText === "Send Request"
   ) {
     setIsProfileModal(true);
@@ -125,7 +126,7 @@ const performProfileAction = async ({
 
   // Approve Request (Open Modal)
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     currentTab === "pending" &&
     buttonText === "View Request" &&
     !confirmationText &&
@@ -138,7 +139,7 @@ const performProfileAction = async ({
 
   // Archived Chat
   if (
-    currentPage === "matches" &&
+    currentPage === PAGES.MATCHES &&
     currentTab === "closed" &&
     buttonText === "Archived Chat"
   ) {
