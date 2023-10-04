@@ -1,5 +1,6 @@
 "use client";
 
+import {TABS} from "@/constants/common";
 import {StatsLoader} from "@/loaders/admin/dashboard/stats_loader";
 import {UsersLoader} from "@/loaders/admin/dashboard/users_loader";
 import {useSearchParams} from "next/navigation";
@@ -19,7 +20,7 @@ const Loading = () => {
       </div>
       {/* Container */}
       <div className="py-16">
-        {currentTab === "analytics" || currentTab === "" ? (
+        {currentTab === TABS.ADMIN.DASHBOARD.ANALYTICS || currentTab === "" ? (
           <StatsLoader />
         ) : (
           <UsersLoader />

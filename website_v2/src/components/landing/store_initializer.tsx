@@ -1,5 +1,6 @@
 "use client";
 
+import {USER_TYPE} from "@/constants/common";
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
@@ -29,7 +30,7 @@ const StoreInitializer = () => {
     if (userType && successAlert === "Successfully signed in!") {
       // Fire after 3 seconds
       timer = setTimeout(() => {
-        if (userType === "mentee") {
+        if (userType === USER_TYPE.MENTEE) {
           setSuccessAlert("Redirecting you to dashboard...", 3);
           router.push(
             "/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="

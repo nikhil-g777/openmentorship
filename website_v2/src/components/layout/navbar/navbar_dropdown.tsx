@@ -1,5 +1,6 @@
 "use client";
 
+import {USER_TYPE} from "@/constants/common";
 import {signOut, useSession} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -54,7 +55,7 @@ const NavbarDropdown = () => {
               Matches
             </Link>
           </li>
-          {userType === "mentee" ? (
+          {userType === USER_TYPE.MENTEE ? (
             <li>
               <Link
                 href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="

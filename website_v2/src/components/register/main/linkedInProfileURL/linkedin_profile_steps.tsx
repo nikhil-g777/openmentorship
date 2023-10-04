@@ -5,6 +5,7 @@ import {DesktopGuidelines} from "./desktop_guidelines";
 import {MobileGuidelines} from "./mobile_guidelines";
 import {Source} from "./source";
 import {Tabs} from "./tabs";
+import {TABS} from "@/constants/common";
 
 const LinkedInProfileSteps = () => {
   const {currentTab} = useProfileStore();
@@ -34,9 +35,11 @@ const LinkedInProfileSteps = () => {
           {/* Tabs */}
           <Tabs />
           {/* Desktop Guide */}
-          {currentTab === "" ? <DesktopGuidelines /> : null}
+          {currentTab === TABS.GUIDELINES.DESKTOP ? (
+            <DesktopGuidelines />
+          ) : null}
           {/* Mobile Guide */}
-          {currentTab === "mobile" ? <MobileGuidelines /> : null}
+          {currentTab === TABS.GUIDELINES.MOBILE ? <MobileGuidelines /> : null}
           {/* Source */}
           <Source />
           <div className="modal-action">
