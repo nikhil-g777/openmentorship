@@ -7,7 +7,9 @@ type Props = {
   };
 };
 const Provides = ({heading, provides}: Props) => {
-  const provideKeys = Object.entries(provides).map(key => key[0]);
+  const provideKeys = provides
+    ? Object.entries(provides).map(key => key[0])
+    : [];
   const formattedStrings = provideKeys.map(camelCaseToWords);
 
   return (

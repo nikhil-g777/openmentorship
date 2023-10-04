@@ -381,7 +381,9 @@ const updateUser = async (req, res) => {
       // if final step of the registration process
       userObj.registrationStatus =
         constants.registrationStatus.pendingConfirmation;
-      userObj.role = userType;
+      if(userType){
+        userObj.role = userType;
+      }
       sendRegistrationMail(userRecord);
     } else if (req.body.type == 'updateUser') {
       console.log('updateUser');

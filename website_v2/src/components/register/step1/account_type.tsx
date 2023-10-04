@@ -3,7 +3,7 @@ import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 
 const AccountType = () => {
   const {userType, setUserType} = useRegisterStore();
-  const {isProfilePage, isEditable} = useProfileSettingsStore();
+  const {isProfilePage} = useProfileSettingsStore();
 
   return (
     <div className={isProfilePage ? "w-full" : "w-full mt-8"}>
@@ -15,14 +15,14 @@ const AccountType = () => {
         <button
           className={`btn ${userType === USER_TYPE.MENTEE ? "btn-active" : ""}`}
           onClick={() => setUserType(USER_TYPE.MENTEE)}
-          disabled={!isEditable}
+          disabled={isProfilePage}
         >
           Mentee
         </button>
         <button
           className={`btn ${userType === USER_TYPE.MENTOR ? "btn-active" : ""}`}
           onClick={() => setUserType(USER_TYPE.MENTOR)}
-          disabled={!isEditable}
+          disabled={isProfilePage}
         >
           Mentor
         </button>
