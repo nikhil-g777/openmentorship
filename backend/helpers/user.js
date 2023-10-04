@@ -179,4 +179,20 @@ const getLinkedInProfile = (authCode, isLocal = false) =>
       });
   });
 
-module.exports = { handleUserRegistration, getLinkedInProfile };
+// Fetch user token
+const fetchUserToken = async (user) => {
+  const token = await Token.findOne({ userId: user._id }).exec();
+  if (!token) {
+    // encrypt information
+    const t = util.refreshToken(user._id);
+    Token.create({ refreshToken: t, userId: user._id });
+  }
+  // send the access token
+  const accessToken = util.accessToken(user._id);
+
+  return {
+    token: accessToken,
+  };
+};
+
+module.exports = { handleUserRegistration, getLinkedInProfile, fetchUserToken };

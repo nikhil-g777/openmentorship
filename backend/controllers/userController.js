@@ -7,24 +7,8 @@ const { sendMail } = require('../lib/mailer');
 const constants = require('../lib/constants');
 
 const Match = require('../models/match');
-const Token = require('../models/token');
 const User = require('../models/user');
-const { handleUserRegistration, getLinkedInProfile } = require('../helpers/user');
-
-const fetchUserToken = async (user) => {
-  const token = await Token.findOne({ userId: user._id }).exec();
-  if (!token) {
-    // encrypt information
-    const t = util.refreshToken(user._id);
-    Token.create({ refreshToken: t, userId: user._id });
-  }
-  // send the access token
-  const accessToken = util.accessToken(user._id);
-
-  return {
-    token: accessToken,
-  };
-};
+const { handleUserRegistration, getLinkedInProfile, fetchUserToken } = require('../helpers/user');
 
 const sendRegistrationMail = async (user) => {
   const confirmationToken = util.encodeRegistrationToken(user._id);
