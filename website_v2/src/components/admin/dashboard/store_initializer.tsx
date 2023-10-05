@@ -37,13 +37,6 @@ const StoreInitializer = ({
   const {setCurrentPage} = useProfileStore();
 
   useEffect(() => {
-    // Redirect if token is not available
-    if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
-    }
-
     // Redirect if user is not admin
     if (userRole !== "admin") {
       setErrorAlert(

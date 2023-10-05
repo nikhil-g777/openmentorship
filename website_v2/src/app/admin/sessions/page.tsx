@@ -5,6 +5,7 @@ import {SessionsTab} from "@/components/tabs/sessions_tabs";
 import {getSessionList, searchSession} from "@/endpoints/admin";
 import {authOptions} from "@/helpers/auth_options";
 import {getServerSession} from "next-auth";
+import {redirect} from "next/navigation";
 
 type Props = {
   searchParams: {
@@ -21,6 +22,9 @@ const Page = async ({searchParams}: Props) => {
   const searchQuery = searchParams?.searchQuery;
   // Page
   const page = searchParams.page || "1";
+
+  // Check Authorization
+  if (!token) redirect("/");
 
   // Session Data
   const sessionData = await getSessionList(token, page);

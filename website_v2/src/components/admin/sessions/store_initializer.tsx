@@ -25,13 +25,6 @@ const StoreInitializer = ({token, data, searchData}: Props) => {
   const {setSessionData, setSearchData} = useAdminSessionStore();
 
   useEffect(() => {
-    // Redirect if token is not available
-    if (token === "") {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
-    }
-
     // Not found if request failed
     if (!data.success) {
       notFound();

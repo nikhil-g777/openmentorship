@@ -41,20 +41,13 @@ const StoreInitializer = ({data, token}: Props) => {
 
   // Update states
   useEffect(() => {
-    // Redirect if no token
-    if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
-    }
-
     // Not found if request failed
     if (!data.success) {
       notFound();
     }
 
     // Set states
-    setToken(token);
+    setToken(token || "");
     setFirstName(data.user.firstName);
     setLastName(data.user.lastName);
     setEmail(data.user.email);

@@ -36,13 +36,6 @@ const StoreInitializer = ({
 
   // Re-render on data change
   useEffect(() => {
-    // Redirect to landing page data not found
-    if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
-    }
-
     // 404 page if request failed
     if (!data.success) {
       notFound();
