@@ -7,7 +7,6 @@ import {TABS, USER_TYPE} from "@/constants/common";
 import {getStats, getUsersList, searchUsers} from "@/endpoints/admin";
 import {authOptions} from "@/helpers/auth_options";
 import {getServerSession} from "next-auth";
-import {redirect} from "next/navigation";
 
 type Props = {
   searchParams: {
@@ -23,9 +22,6 @@ const Page = async ({searchParams}: Props) => {
   const session = await getServerSession(authOptions);
   const token = session?.user?.token;
   const userRole = session?.profile?.user?.role;
-
-  // Check Authorization
-  if (!token) redirect("/");
 
   // Statistics
   const statsData = await getStats(token || "");

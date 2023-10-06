@@ -10,7 +10,6 @@ import {StoreInitializer} from "@/components/matches/store_initializer";
 import {ProfileCardModal} from "@/components/modals/profile_card_modal";
 import {ConfirmationModal} from "@/components/modals/confirmation/confirmation_modal";
 import {TABS} from "@/constants/common";
-import {redirect} from "next/navigation";
 
 type Props = {
   searchParams: {
@@ -22,9 +21,6 @@ const Page = async ({searchParams}: Props) => {
   // Session
   const session = await getServerSession(authOptions);
   const token = session?.user?.token;
-
-  // Check Authorization
-  if (!token) redirect("/");
 
   // Current Tab
   const currentTab = searchParams["tab"];

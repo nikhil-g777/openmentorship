@@ -9,7 +9,6 @@ import {NoResult} from "@/components/noResult/no_result";
 import {getExploreData, getExploreDataByContent} from "@/endpoints/explore";
 import {StoreInitializer} from "@/components/explore/store_initializer";
 import {ProfileCardModal} from "@/components/modals/profile_card_modal";
-import {redirect} from "next/navigation";
 
 type Props = {
   searchParams: {
@@ -20,9 +19,6 @@ const Page = async ({searchParams}: Props) => {
   // Session
   const session = await getServerSession(authOptions);
   const token = session?.user?.token;
-
-  // Check Authorization
-  if (!token) redirect("/");
 
   // Params
   const page = Number(searchParams["page"]) || 1;

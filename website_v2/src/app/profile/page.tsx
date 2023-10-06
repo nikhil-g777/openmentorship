@@ -9,14 +9,10 @@ import {Step5} from "@/components/register/step5/step_5";
 import {getUserInfo} from "@/endpoints/user";
 import {authOptions} from "@/helpers/auth_options";
 import {getServerSession} from "next-auth";
-import {redirect} from "next/navigation";
 
 const page = async () => {
   const session = await getServerSession(authOptions);
   const token = session?.user?.token;
-
-  // Check Authorization
-  if (!token) redirect("/");
 
   // Get User Info
   const data = await getUserInfo(token || "");

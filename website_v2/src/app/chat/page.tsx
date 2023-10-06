@@ -9,7 +9,6 @@ import {getUserMatches} from "@/endpoints/matches";
 import {authOptions} from "@/helpers/auth_options";
 import {checkNoResult} from "@/helpers/matches";
 import {getServerSession} from "next-auth";
-import {redirect} from "next/navigation";
 
 type Props = {
   searchParams: {
@@ -24,9 +23,6 @@ const Page = async ({searchParams}: Props) => {
   const data = await getUserMatches(token || "");
   const chatToken = await getChatToken(token || "");
   const userType = session?.user.user.userType || "";
-
-  // Check Authorization
-  if (!token) redirect("/");
 
   // No Result
   let isNoActiveResult = null;
