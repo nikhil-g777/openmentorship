@@ -6,9 +6,10 @@ import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {signIn} from "next-auth/react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
+import {FC} from "react";
 import {LoginSocialLinkedin, IResolveParams} from "reactjs-social-login";
 
-const LinkedIn: React.FC = () => {
+const LinkedIn: FC = () => {
   const router = useRouter();
   const {
     setAuthenticationError,
