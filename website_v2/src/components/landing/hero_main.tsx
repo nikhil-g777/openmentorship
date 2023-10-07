@@ -4,9 +4,12 @@ import {useSession} from "next-auth/react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 // Dynamically load non SSR component
-const LinkedIn = dynamic(() => import("./linkedin").then(mod => mod.LinkedIn), {
-  ssr: false,
-});
+const LinkedIn = dynamic<{}>(
+  () => import("./linkedin").then(mod => mod.LinkedIn),
+  {
+    ssr: false,
+  }
+);
 
 const Hero = () => {
   const {status} = useSession();

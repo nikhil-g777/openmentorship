@@ -8,7 +8,7 @@ import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {LoginSocialLinkedin, IResolveParams} from "reactjs-social-login";
 
-const LinkedIn = () => {
+const LinkedIn: React.FC = () => {
   const router = useRouter();
   const {
     setAuthenticationError,
