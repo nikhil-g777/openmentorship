@@ -1,5 +1,8 @@
 import {LoginHandler} from "@/types/landing";
-import {HandleUserRegistration} from "@/types/regsiter";
+import {
+  HandlePendingConfirmation,
+  HandleUserRegistration,
+} from "@/types/regsiter";
 
 const list = [
   {
@@ -85,17 +88,8 @@ const handleLoginErrors = async ({
 }: LoginHandler) => {
   setSuccessAlert("", 0);
   setRouteActionLoading(false);
-  // Registration Pending Confirmation
-  if (error === "registrationStatus: pendingConfirmation") {
-    setAuthenticationError({
-      heading: "Registration Pending Confirmation",
-      subHeading: "Please confirm your email to continue.",
-      message:
-        "Sorry, you cannot sign in at the moment because your registration is pending confirmation. Please check your email for a confirmation link.",
-    });
-  }
   // Registration Pending Approval
-  else if (error === "registrationStatus: pendingApproval") {
+  if (error === "registrationStatus: pendingApproval") {
     setAuthenticationError({
       heading: "Registration Pending Approval",
       subHeading: "Please wait for approval to continue.",
@@ -173,4 +167,33 @@ const handleUserRegistration = ({
   );
 };
 
-export {list, handleLoginErrors, handleUserRegistration};
+// Handle Pending Confirmation
+const handlePendingConfirmation = ({
+  user,
+  setSuccessAlert,
+  setRouteActionLoading,
+  setAuthenticationError,
+  setUserId,
+  setUserType,
+}: HandlePendingConfirmation) => {
+  setSuccessAlert("", 0);
+  setRouteActionLoading(false);
+
+  // Registration Pending Confirmation
+  setAuthenticationError({
+    heading: "Registration Pending Confirmation",
+    subHeading: "Please confirm your email to continue.",
+    message:
+      "Sorry, you cannot sign in at the moment because your registration is pending confirmation. Please check your email for a confirmation link.",
+  });
+  // Set States
+  setUserId(user.user._id);
+  setUserType(user.user.userType);
+};
+
+export {
+  list,
+  handleLoginErrors,
+  handleUserRegistration,
+  handlePendingConfirmation,
+};

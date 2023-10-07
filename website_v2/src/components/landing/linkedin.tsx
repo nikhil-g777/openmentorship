@@ -1,6 +1,10 @@
 "use client";
 
-import {handleLoginErrors, handleUserRegistration} from "@/helpers/landing";
+import {
+  handleLoginErrors,
+  handlePendingConfirmation,
+  handleUserRegistration,
+} from "@/helpers/landing";
 import {isValidJSON} from "@/helpers/register";
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {signIn} from "next-auth/react";
@@ -17,8 +21,14 @@ const LinkedIn: FC = () => {
     routeActionLoading,
     setRouteActionLoading,
   } = useCommonStore();
-  const {setToken, setUserId, setFirstName, setLastName, setEmail} =
-    useRegisterStore();
+  const {
+    setToken,
+    setUserId,
+    setUserType,
+    setFirstName,
+    setLastName,
+    setEmail,
+  } = useRegisterStore();
 
   return (
     <LoginSocialLinkedin
@@ -39,16 +49,31 @@ const LinkedIn: FC = () => {
           const isJSON = isValidJSON(error);
           if (isJSON) {
             const user = JSON.parse(error);
-            handleUserRegistration({
-              user,
-              setSuccessAlert,
-              setToken,
-              setUserId,
-              setFirstName,
-              setLastName,
-              setEmail,
-              router,
-            });
+            // Check if user is new
+            if (user.newUser) {
+              handleUserRegistration({
+                user,
+                setSuccessAlert,
+                setToken,
+                setUserId,
+                setFirstName,
+                setLastName,
+                setEmail,
+                router,
+              });
+            }
+
+            // Handle pending confirmation
+            if (user.success === false) {
+              handlePendingConfirmation({
+                user,
+                setSuccessAlert,
+                setRouteActionLoading,
+                setAuthenticationError,
+                setUserId,
+                setUserType,
+              });
+            }
           } else {
             handleLoginErrors({
               error,

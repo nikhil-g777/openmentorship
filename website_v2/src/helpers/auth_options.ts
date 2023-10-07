@@ -30,8 +30,8 @@ export const authOptions: NextAuthOptions = {
           throw new Error(JSON.stringify(user));
         }
 
-        if (user.registrationStatus === "pendingConfirmation") {
-          throw new Error("registrationStatus: pendingConfirmation");
+        if (user.registrationStatus === "pendingConfirmation" && user.user) {
+          throw new Error(JSON.stringify(user));
         }
 
         if (user.registrationStatus === "pendingApproval") {
