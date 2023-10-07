@@ -22,6 +22,7 @@ const LinkedIn: FC = () => {
 
   return (
     <LoginSocialLinkedin
+      className="w-[180px] h-[36px]"
       isOnlyGetCode
       client_id={process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID!}
       client_secret={process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_SECRET!}
