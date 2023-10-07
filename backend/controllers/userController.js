@@ -320,6 +320,25 @@ const confirmRegistration = async (req, res) => {
   }
 };
 
+// Resend confirmation email
+const resendConfirmationEmail = async (req, res) => {
+  try {
+    const { user } = req.body;
+    const response = await sendRegistrationMail(user);
+    if (response.success) {
+      return res.json({ success: true, message: 'Confirmation email sent' });
+    }
+    return res.json({
+      success: false,
+      error: 'Error sending confirmation email',
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, error: 'Error sending confirmation email' });
+  }
+};
+
 module.exports = {
   loginUser,
   tempAuth,
@@ -328,4 +347,5 @@ module.exports = {
   matches,
   twilioToken,
   confirmRegistration,
+  resendConfirmationEmail,
 };
