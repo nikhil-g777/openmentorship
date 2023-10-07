@@ -22,7 +22,7 @@ const LinkedIn: FC = () => {
 
   return (
     <LoginSocialLinkedin
-      className="w-[180px] h-[36px]"
+      className={`w-[180px] h-[36px] ${routeActionLoading ? "loading" : ""}`}
       isOnlyGetCode
       client_id={process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID!}
       client_secret={process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_SECRET!}
@@ -67,15 +67,17 @@ const LinkedIn: FC = () => {
       }}
       onLoginStart={() => setRouteActionLoading(true)}
     >
-      <Image
-        src="/assets/images/linkedinConnect.png"
-        alt="Connect with LinkedIn"
-        width={180}
-        height={36}
-        style={{maxWidth: "180px", height: "36px", cursor: "pointer"}}
-        data-cy="linkedin-button"
-        className={routeActionLoading ? "loading" : ""}
-      />
+      <button className="flex flex-row items-center gap-1 bg-[#0A66C2] p-2 rounded-md hover:opacity-80">
+        <Image
+          src="/assets/icons/linkedin.svg"
+          width={24}
+          height={24}
+          alt="LinkedIn Icon"
+        />
+        <span className="truncate text-xs text-white">
+          Connect with LinkedIn
+        </span>
+      </button>
     </LoginSocialLinkedin>
   );
 };
