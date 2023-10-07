@@ -72,6 +72,9 @@ const LinkedIn: FC = () => {
                 setAuthenticationError,
                 setUserId,
                 setUserType,
+                setEmail,
+                setFirstName,
+                setLastName,
               });
             }
           } else {

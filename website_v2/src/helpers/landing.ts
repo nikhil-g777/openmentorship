@@ -175,6 +175,9 @@ const handlePendingConfirmation = ({
   setAuthenticationError,
   setUserId,
   setUserType,
+  setEmail,
+  setFirstName,
+  setLastName,
 }: HandlePendingConfirmation) => {
   setSuccessAlert("", 0);
   setRouteActionLoading(false);
@@ -189,6 +192,9 @@ const handlePendingConfirmation = ({
   // Set States
   setUserId(user.user._id);
   setUserType(user.user.userType);
+  setEmail(user.user.email);
+  setFirstName(user.user.firstName);
+  setLastName(user.user.lastName);
 };
 
 export {

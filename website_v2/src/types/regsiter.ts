@@ -111,6 +111,9 @@ type HandlePendingConfirmation = {
   setAuthenticationError: (value: AuthenticationError | null) => void;
   setUserId: (userId: string) => void;
   setUserType: (userType: string) => void;
+  setEmail: (email: string) => void;
+  setFirstName: (firstName: string) => void;
+  setLastName: (lastName: string) => void;
 };
 
 export type {

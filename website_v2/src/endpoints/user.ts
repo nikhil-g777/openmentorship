@@ -1,6 +1,5 @@
 import {RegisterBody} from "@/types/regsiter";
 import {headerProvider} from "./root";
-import {UserProfile} from "@/types/profile";
 
 // Get User Details
 const getUserInfo = async (authCode: string) => {
@@ -101,14 +100,27 @@ const confirmRegistration = async (confirmationToken: string) => {
 };
 
 // Resend Confirmation Email
-const resendConfirmationEmail = async (user: UserProfile["user"]) => {
+const resendConfirmationEmail = async (user: {
+  _id: string;
+  userType: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/resendConfirmationEmail`,
       {
         method: "POST",
+        headers: headerProvider(),
         body: JSON.stringify({
-          ...user,
+          user: {
+            _id: user._id,
+            userType: user.userType,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          },
         }),
       }
     );
