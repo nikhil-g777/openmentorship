@@ -1,5 +1,6 @@
 import {RegisterBody} from "@/types/regsiter";
 import {headerProvider} from "./root";
+import {UserProfile} from "@/types/profile";
 
 // Get User Details
 const getUserInfo = async (authCode: string) => {
@@ -99,10 +100,29 @@ const confirmRegistration = async (confirmationToken: string) => {
   }
 };
 
+// Resend Confirmation Email
+const resendConfirmationEmail = async (user: UserProfile["user"]) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/resendConfirmationEmail`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          ...user,
+        }),
+      }
+    );
+    return res.json();
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   getUserInfo,
   nextAuthLogin,
   registerUser,
   updateUser,
   confirmRegistration,
+  resendConfirmationEmail,
 };
