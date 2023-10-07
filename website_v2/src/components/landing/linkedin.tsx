@@ -67,15 +67,15 @@ const LinkedIn: FC = () => {
       }}
       onLoginStart={() => setRouteActionLoading(true)}
     >
-      <button className="flex flex-row items-center gap-1 bg-[#0A66C2] p-2 rounded-md hover:opacity-80">
+      <button className="flex flex-row items-center gap-2 bg-[#0A66C2] p-2 rounded-md hover:opacity-80 w-[180px] h-[36px]">
         <Image
           src="/assets/icons/linkedin.svg"
           width={24}
           height={24}
           alt="LinkedIn Icon"
         />
-        <span className="truncate text-xs text-white">
-          Connect with LinkedIn
+        <span className="block w-full truncate text-xs text-white font-semibold text-center">
+          Sign in with LinkedIn
         </span>
       </button>
     </LoginSocialLinkedin>
