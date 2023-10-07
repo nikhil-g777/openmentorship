@@ -72,7 +72,7 @@ const LinkedIn: FC = () => {
         alt="Connect with LinkedIn"
         width={180}
         height={36}
-        style={{maxWidth: "180px", cursor: "pointer"}}
+        style={{maxWidth: "180px", height: "36px", cursor: "pointer"}}
         data-cy="linkedin-button"
         className={routeActionLoading ? "loading" : ""}
       />
