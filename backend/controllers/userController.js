@@ -51,6 +51,20 @@ const loginUser = async (req, res) => {
       return await handleUserRegistration(newRequest, res, linkedInProfile);
     }
 
+    // Handle pending confirmation
+    if (
+      updatedUser &&
+      updatedUser.registrationStatus ===
+        constants.registrationStatus.pendingConfirmation
+    ) {
+      return res.status(401).json({
+        success: false,
+        error: constants.loginMessageByStatus[updatedUser.registrationStatus],
+        registrationStatus: updatedUser.registrationStatus,
+        user: updatedUser,
+      });
+    }
+
     if (
       updatedUser.registrationStatus == constants.registrationStatus.complete
     ) {
