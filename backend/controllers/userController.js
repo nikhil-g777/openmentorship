@@ -340,9 +340,9 @@ const resendConfirmationEmail = async (req, res) => {
     const { user } = req.body;
     const response = await sendRegistrationMail(user);
     if (response.success) {
-      return res.json({ success: true, message: 'Confirmation email sent' });
+      return res.status(200).json({ success: true, message: 'Confirmation email sent' });
     }
-    return res.json({
+    return res.status(401).json({
       success: false,
       error: 'Error sending confirmation email',
     });
