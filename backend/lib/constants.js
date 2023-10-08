@@ -29,4 +29,14 @@ module.exports = {
     denied: 'Login failed, account is denied',
     disabled: 'Login failed, account is diabled',
   },
+  linkedInURL: {
+    auth: 'https://www.linkedin.com/',
+    api: 'https://api.linkedin.com/',
+  },
+  linkedInAuthUrlConfig: {
+    url: '/oauth/v2/accessToken',
+    grantType: 'authorization_code',
+    profileUrl: '/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))',
+    emailUrl: `/v2/emailAddress?q=members&projection=(elements*(handle~))`,
+  }
 };

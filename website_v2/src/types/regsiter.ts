@@ -1,3 +1,5 @@
+import {AppRouterInstance} from "next/dist/shared/lib/app-router-context";
+
 type WorkExperience = {
   key?: string;
   organization: string;
@@ -71,6 +73,30 @@ type UserConfirmation = {
   msg: string;
 };
 
+type HandleUserRegistration = {
+  user: {
+    success: boolean;
+    newUser: boolean;
+    error: string;
+    registrationStatus: string;
+    token: string;
+    user: {
+      _id: string;
+      firstName: string;
+      lastName: string;
+      linkedInId: string;
+      email: string;
+    };
+  };
+  setSuccessAlert: (message: string, duration: number) => void;
+  setToken: (token: string) => void;
+  setUserId: (userId: string) => void;
+  setFirstName: (firstName: string) => void;
+  setLastName: (lastName: string) => void;
+  setEmail: (email: string) => void;
+  router: AppRouterInstance;
+};
+
 export type {
   WorkExperience,
   Education,
@@ -79,4 +105,5 @@ export type {
   SocialLinks,
   RegisterBody,
   UserConfirmation,
+  HandleUserRegistration,
 };

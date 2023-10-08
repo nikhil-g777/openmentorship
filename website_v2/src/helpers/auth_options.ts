@@ -26,8 +26,8 @@ export const authOptions: NextAuthOptions = {
         const user = await res.json();
 
         // Throw errors if any
-        if (user.registrationStatus === "incomplete") {
-          throw new Error("registrationStatus: incomplete");
+        if (user.registrationStatus === "incomplete" && user.newUser) {
+          throw new Error(JSON.stringify(user));
         }
 
         if (user.registrationStatus === "pendingConfirmation") {
@@ -50,8 +50,8 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Unable to login user");
         }
 
-        if (user.error === "Please register first") {
-          throw new Error("Please register first");
+        if (user.error === "Unable to register user") {
+          throw new Error("Unable to register user");
         }
 
         // If no error and we have user data, return it

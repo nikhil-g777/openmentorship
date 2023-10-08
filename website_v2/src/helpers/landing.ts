@@ -1,4 +1,5 @@
 import {LoginHandler} from "@/types/landing";
+import {HandleUserRegistration} from "@/types/regsiter";
 
 const list = [
   {
@@ -84,17 +85,8 @@ const handleLoginErrors = async ({
 }: LoginHandler) => {
   setSuccessAlert("", 0);
   setRouteActionLoading(false);
-  // Registratiaon Incomplete
-  if (error === "registrationStatus: incomplete") {
-    setAuthenticationError({
-      heading: "Registration Incomplete",
-      subHeading: "Please complete your registration to continue.",
-      message:
-        "Sorry, you cannot sign in at the moment because your registration is incomplete. Please complete all required fields in the registration form before attempting to sign in.",
-    });
-  }
   // Registration Pending Confirmation
-  else if (error === "registrationStatus: pendingConfirmation") {
+  if (error === "registrationStatus: pendingConfirmation") {
     setAuthenticationError({
       heading: "Registration Pending Confirmation",
       subHeading: "Please confirm your email to continue.",
@@ -138,6 +130,15 @@ const handleLoginErrors = async ({
         "Sorry, you cannot sign in at the moment because we are unable to login your account. Please try again later.",
     });
   }
+  // Unable to register user
+  else if (error === "Unable to register user") {
+    setAuthenticationError({
+      heading: "Unable to Register",
+      subHeading: "Please try again later.",
+      message:
+        "Sorry, you cannot sign in at the moment because we are unable to register your account. Please try again later.",
+    });
+  }
   // Response JSON error
   else if (error === "res.json is not a function") {
     setAuthenticationError({
@@ -147,16 +148,29 @@ const handleLoginErrors = async ({
         "Sorry, you cannot sign in at the moment because we are unable to login your account. Please try again later.",
     });
   }
-
-  // Please regsiter first
-  else if (error === "Please register first") {
-    setAuthenticationError({
-      heading: "Please Register",
-      subHeading: "Please register to continue.",
-      message:
-        "Sorry, you cannot sign in at the moment because you have not registered. Please register first.",
-    });
-  }
 };
 
-export {list, handleLoginErrors};
+// Handle User Registration
+const handleUserRegistration = ({
+  user,
+  setSuccessAlert,
+  setToken,
+  setUserId,
+  setFirstName,
+  setLastName,
+  setEmail,
+  router,
+}: HandleUserRegistration) => {
+  setToken(user.token);
+  setUserId(user.user._id);
+  setFirstName(user.user.firstName);
+  setLastName(user.user.lastName);
+  setEmail(user.user.email);
+  router.push("/register");
+  setSuccessAlert(
+    "Welcome to OpenMentorship! We're so excited to have you on board.",
+    6
+  );
+};
+
+export {list, handleLoginErrors, handleUserRegistration};
