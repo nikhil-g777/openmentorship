@@ -1,8 +1,9 @@
 import {Analytics} from "@/components/admin/dashboard/analytics/analytics_wrapper";
 import {StoreInitializer} from "@/components/admin/dashboard/store_initializer";
 import {Users} from "@/components/admin/dashboard/users/users_wrapper";
-import {ConfirmationModal} from "@/components/modals/confirmation_modal";
+import {ConfirmationModal} from "@/components/modals/confirmation/confirmation_modal";
 import {AdminTabs} from "@/components/tabs/admin_tabs";
+import {TABS, USER_TYPE} from "@/constants/common";
 import {getStats, getUsersList, searchUsers} from "@/endpoints/admin";
 import {authOptions} from "@/helpers/auth_options";
 import {getServerSession} from "next-auth";
@@ -29,7 +30,7 @@ const Page = async ({searchParams}: Props) => {
   const currentTab = searchParams?.tab || "";
 
   // User Type
-  const userType = searchParams?.userType || "mentee";
+  const userType = searchParams?.userType || USER_TYPE.MENTEE;
 
   // Page
   const page = searchParams?.page || 1;
@@ -68,9 +69,11 @@ const Page = async ({searchParams}: Props) => {
       {/* Tabs */}
       <AdminTabs />
       {/* Analytics */}
-      {currentTab === "analytics" || currentTab === "" ? <Analytics /> : null}
+      {currentTab === TABS.ADMIN.DASHBOARD.ANALYTICS || currentTab === "" ? (
+        <Analytics />
+      ) : null}
       {/* Users */}
-      {currentTab === "users" ? <Users /> : null}
+      {currentTab === TABS.ADMIN.DASHBOARD.USERS ? <Users /> : null}
       {/* Confirmation Modal */}
       <ConfirmationModal />
     </div>

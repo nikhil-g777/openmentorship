@@ -1,5 +1,6 @@
 "use client";
 
+import {PAGES} from "@/constants/common";
 import {performCardData} from "@/helpers/matches";
 import {MatchesProfile, MatchesResponse} from "@/types/matches";
 import {
@@ -48,12 +49,12 @@ const StoreInitializer = ({
     }
 
     // Set listing data
-    const cardData = performCardData(filteredData, "matches", userType);
+    const cardData = performCardData(filteredData, PAGES.MATCHES, userType);
     setListingData(cardData);
     setHeading(heading);
     // Set profile data
     setCollapsable(true);
-    setCurrentPage("matches");
+    setCurrentPage(PAGES.MATCHES);
     setCurrentTab(currentTab);
     setUserType(userType);
   }, [

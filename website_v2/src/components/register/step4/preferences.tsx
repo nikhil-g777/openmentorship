@@ -2,6 +2,7 @@ import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {Goals} from "./goals";
 import {CommunicationFrequency} from "./frequency";
 import {CommunicationPreferences} from "./communication_preferences";
+import {USER_TYPE} from "@/constants/common";
 
 type Props = {
   error: {goals: string; frequency: string; preferences: string};
@@ -15,7 +16,7 @@ const Preferences = ({error}: Props) => {
       {/* Preferences */}
       <div className={isProfilePage ? "" : "w-full mt-8"}>
         <p className="text-base md:text-lg">
-          {userType === "mentee"
+          {userType === USER_TYPE.MENTEE
             ? "What do you need from your mentor? Select all that apply."
             : "What are you available to offer to your mentee? Select all that apply."}
         </p>

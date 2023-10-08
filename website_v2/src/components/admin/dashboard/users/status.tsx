@@ -1,4 +1,5 @@
 import {STATUS} from "@/constants/admin/dashboard";
+import {USER_TYPE} from "@/constants/common";
 import {useCommonStore} from "@/zustand/store";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useTransition} from "react";
@@ -9,7 +10,7 @@ const Status = () => {
   const pathname = usePathname();
   const params = useSearchParams();
   const registrationStatus = params.get("registrationStatus") || "";
-  const userType = params.get("userType") || "mentee";
+  const userType = params.get("userType") || USER_TYPE.MENTEE;
   const [isPending, startTransition] = useTransition();
 
   // Handle change

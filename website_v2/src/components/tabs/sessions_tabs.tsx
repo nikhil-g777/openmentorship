@@ -1,5 +1,6 @@
 "use client";
 
+import {TABS} from "@/constants/common";
 import Link from "next/link";
 import {usePathname, useSearchParams} from "next/navigation";
 
@@ -19,7 +20,9 @@ const SessionsTab = () => {
               (searchQuery ? "&searchQuery=" + searchQuery : "")
             }
             className={`tab sm:tab-md lg:tab-lg ${
-              currentTab === "active" || currentTab === "" || !currentTab
+              currentTab === TABS.ADMIN.SESSIONS.ACTIVE ||
+              currentTab === "" ||
+              !currentTab
                 ? "tab-active"
                 : ""
             }`}
@@ -33,7 +36,7 @@ const SessionsTab = () => {
               (searchQuery ? "&searchQuery=" + searchQuery : "")
             }
             className={`tab sm:tab-md lg:tab-lg ${
-              currentTab === "closed" ? "tab-active" : ""
+              currentTab === TABS.ADMIN.SESSIONS.CLOSED ? "tab-active" : ""
             }`}
           >
             Closed

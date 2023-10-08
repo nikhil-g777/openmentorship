@@ -1,5 +1,6 @@
 "use client";
 
+import {TABS} from "@/constants/common";
 import {useCommonStore} from "@/zustand/store";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import React, {useEffect, useTransition} from "react";
@@ -32,7 +33,9 @@ const Tabs = () => {
         <div className="tabs tabs-boxed">
           <button
             className={`tab sm:tab-md lg:tab-lg ${
-              currentTab === "active" || currentTab === "" || !currentTab
+              currentTab === TABS.MATCHES.ACTIVE ||
+              currentTab === "" ||
+              !currentTab
                 ? "tab-active"
                 : ""
             }`}
@@ -42,7 +45,7 @@ const Tabs = () => {
           </button>
           <button
             className={`tab sm:tab-md lg:tab-lg ${
-              currentTab === "pending" ? "tab-active" : ""
+              currentTab === TABS.MATCHES.PENDING ? "tab-active" : ""
             }`}
             onClick={() => handleClick("pending")}
           >
@@ -50,7 +53,7 @@ const Tabs = () => {
           </button>
           <button
             className={`tab sm:tab-md lg:tab-lg ${
-              currentTab === "closed" ? "tab-active" : ""
+              currentTab === TABS.MATCHES.CLOSED ? "tab-active" : ""
             }`}
             onClick={() => handleClick("closed")}
           >

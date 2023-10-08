@@ -1,6 +1,7 @@
 "use client";
 
-import {useCommonStore} from "@/zustand/store";
+import {USER_TYPE} from "@/constants/common";
+import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
@@ -15,7 +16,13 @@ const StoreInitializer = () => {
     routeActionLoading,
     setRouteActionLoading,
   } = useCommonStore();
+  const {resetState} = useRegisterStore();
   const [counter, setCounter] = useState<number>(0);
+
+  // Reset state
+  useEffect(() => {
+    resetState();
+  }, [resetState]);
 
   // Redirect on successful sign in
   useEffect(() => {
@@ -23,7 +30,7 @@ const StoreInitializer = () => {
     if (userType && successAlert === "Successfully signed in!") {
       // Fire after 3 seconds
       timer = setTimeout(() => {
-        if (userType === "mentee") {
+        if (userType === USER_TYPE.MENTEE) {
           setSuccessAlert("Redirecting you to dashboard...", 3);
           router.push(
             "/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="

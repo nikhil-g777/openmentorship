@@ -1,5 +1,6 @@
 "use client";
 
+import {PAGES} from "@/constants/common";
 import {performCardData} from "@/helpers/matches";
 import {MatchesProfile} from "@/types/matches";
 import {
@@ -79,7 +80,7 @@ const StoreInitializer = ({
     );
     setListingData(cardData);
     setArchiveListingData(archiveData);
-    setCurrentPage("chat");
+    setCurrentPage(PAGES.CHAT);
     setUserType(userType);
     setHeading("Chats");
     setArchiveHeader("Archived Chats");
