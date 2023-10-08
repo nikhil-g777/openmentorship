@@ -1,3 +1,4 @@
+import {PAGES, TABS, USER_TYPE} from "@/constants/common";
 import {PerformProfileAction, buttonArgs} from "@/types/profile";
 
 // Get Secondary Button Text
@@ -8,36 +9,28 @@ const getSecondaryButtonText = ({
 }: buttonArgs) => {
   // Mentee
   if (
-    currentPage === "matches" &&
-    currentTab === "closed" &&
-    userType === "mentee"
+    currentPage === PAGES.MATCHES &&
+    currentTab === TABS.MATCHES.CLOSED &&
+    userType === USER_TYPE.MENTEE
   ) {
     return "Archived Chat";
   }
 
   if (
-    currentPage === "matches" &&
-    (currentTab === "active" || currentTab === "" || !currentTab) &&
-    userType === "mentee"
+    currentPage === PAGES.MATCHES &&
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
+    userType === USER_TYPE.MENTEE
   ) {
     return "End Session";
   }
 
   // Mentor
   if (
-    currentPage === "matches" &&
-    (currentTab === "active" || currentTab === "" || !currentTab) &&
-    userType === "mentor"
+    currentPage === PAGES.MATCHES &&
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
+    userType === USER_TYPE.MENTOR
   ) {
     return "End Session";
-  }
-
-  if (
-    currentPage === "matches" &&
-    currentTab === "pending" &&
-    userType === "mentor"
-  ) {
-    return "Decline Request";
   }
 
   // Return null if none of the above matches
@@ -68,8 +61,8 @@ const performSecondaryButtonAction = async ({
 }: PerformProfileAction) => {
   // End Session (Modal)
   if (
-    (currentPage === "matches" || currentPage === "chat") &&
-    (currentTab === "active" || currentTab === "" || !currentTab) &&
+    (currentPage === PAGES.MATCHES || currentPage === PAGES.CHAT) &&
+    (currentTab === TABS.MATCHES.ACTIVE || currentTab === "" || !currentTab) &&
     secondaryButtonText === "End Session" &&
     setConfirmationText &&
     confirmationText === ""
@@ -79,8 +72,8 @@ const performSecondaryButtonAction = async ({
 
   // Decline Request (Modal)
   if (
-    currentPage === "matches" &&
-    currentTab === "pending" &&
+    currentPage === PAGES.MATCHES &&
+    currentTab === TABS.MATCHES.PENDING &&
     secondaryButtonText === "Decline Request" &&
     setConfirmationText &&
     confirmationText === ""
@@ -92,8 +85,8 @@ const performSecondaryButtonAction = async ({
 
   // Archived Chat
   if (
-    currentPage === "matches" &&
-    currentTab === "closed" &&
+    currentPage === PAGES.MATCHES &&
+    currentTab === TABS.MATCHES.CLOSED &&
     secondaryButtonText === "Archived Chat"
   ) {
     router.push("/chat?id=" + chatId + "&type=archive");

@@ -183,7 +183,7 @@ const handleUserRegistration = ({
   setEmail(user.user.email);
   router.push("/register");
   setSuccessAlert(
-    "Tell us more about yourself so we can fully setup your account.",
+    "Tell us more about yourself so we can fully setup your account!",
     6
   );
 };
