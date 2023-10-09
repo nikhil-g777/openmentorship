@@ -1,5 +1,7 @@
 import {LoginHandler} from "@/types/landing";
 import {HandleUserRegistration} from "@/types/regsiter";
+import {errorCodes} from "@/constants/errorCodes";
+import {mainConstants} from "@/constants/main";
 
 const list = [
   {
@@ -86,43 +88,56 @@ const handleLoginErrors = async ({
   setSuccessAlert("", 0);
   setRouteActionLoading(false);
   // Registration Pending Confirmation
-  if (error === "registrationStatus: pendingConfirmation") {
+
+  if (
+    error ===
+    `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.pendingConfirmation.name}`
+  ) {
     setAuthenticationError({
-      heading: "Registration Pending Confirmation",
+      heading: "Account Pending Confirmation",
       subHeading: "Please confirm your email to continue.",
       message:
-        "Sorry, you cannot sign in at the moment because your registration is pending confirmation. Please check your email for a confirmation link.",
+        "Sorry, you cannot sign in at the moment because your account is pending confirmation. Please check your email for a confirmation link.",
     });
   }
   // Registration Pending Approval
-  else if (error === "registrationStatus: pendingApproval") {
+  else if (
+    error ===
+    `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.pendingApproval.name}`
+  ) {
     setAuthenticationError({
-      heading: "Registration Pending Approval",
+      heading: "Account Pending Approval",
       subHeading: "Please wait for approval to continue.",
       message:
-        "Sorry, you cannot sign in at the moment because your registration is pending approval. Please wait for approval before attempting to sign in.",
+        "Sorry, you cannot sign in at the moment because your account is pending approval. Please wait for approval before attempting to sign in.",
     });
   }
   // Registration Denied
-  else if (error === "registrationStatus: denied") {
+  else if (
+    error ===
+    `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.denied.name}`
+  ) {
     setAuthenticationError({
-      heading: "Registration Denied",
-      subHeading: "Please contact support to continue.",
+      heading: "Application Denied",
+      subHeading: "Please contact support for more information.",
       message:
-        "Sorry, you cannot sign in at the moment because your registration has been denied. Please contact support for more information.",
+        "Sorry, you cannot sign in at the moment because your application has been denied. Please contact support for more information.",
     });
   }
-  // Registration Disabled
-  else if (error === "registrationStatus: disabled") {
+  // Account Disabled
+  else if (
+    error ===
+    `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.disabled.name}`
+  ) {
     setAuthenticationError({
-      heading: "Registration Disabled",
-      subHeading: "Please contact support to continue.",
+      heading: "Account Disabled",
+      subHeading: "Please contact support more information.",
       message:
-        "Sorry, you cannot sign in at the moment because your registration has been disabled. Please contact support for more information.",
+        "Sorry, you cannot sign in at the moment because your account has been disabled. Please contact support for more information.",
     });
   }
   // Unable to login user
-  else if (error === "Unable to login user") {
+  else if (error === errorCodes.loginServerError.code) {
     setAuthenticationError({
       heading: "Unable to Login",
       subHeading: "Please try again later.",
@@ -131,7 +146,7 @@ const handleLoginErrors = async ({
     });
   }
   // Unable to register user
-  else if (error === "Unable to register user") {
+  else if (error === errorCodes.registerServerError.code) {
     setAuthenticationError({
       heading: "Unable to Register",
       subHeading: "Please try again later.",
@@ -168,7 +183,7 @@ const handleUserRegistration = ({
   setEmail(user.user.email);
   router.push("/register");
   setSuccessAlert(
-    "Welcome to OpenMentorship! We're so excited to have you on board.",
+    "Tell us more about yourself so we can fully setup your account!",
     6
   );
 };

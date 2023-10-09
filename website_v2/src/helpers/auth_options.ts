@@ -2,6 +2,9 @@ import {getUserInfo, nextAuthLogin} from "@/endpoints/user";
 import {NextAuthOptions} from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
+import {mainConstants} from "@/constants/main";
+import {errorCodes} from "@/constants/errorCodes";
+
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -26,32 +29,26 @@ export const authOptions: NextAuthOptions = {
         const user = await res.json();
 
         // Throw errors if any
-        if (user.registrationStatus === "incomplete" && user.newUser) {
+        if (
+          user.registrationStatus ===
+            mainConstants.registrationStatus.incomplete.name &&
+          user.newUser
+        ) {
           throw new Error(JSON.stringify(user));
         }
 
-        if (user.registrationStatus === "pendingConfirmation") {
-          throw new Error("registrationStatus: pendingConfirmation");
+        if (user.errorCode === errorCodes.loginInvalid.code) {
+          throw new Error(
+            `${errorCodes.loginInvalid.code}-${user.registrationStatus}`
+          );
         }
 
-        if (user.registrationStatus === "pendingApproval") {
-          throw new Error("registrationStatus: pendingApproval");
+        if (user.errorCode === errorCodes.loginServerError.code) {
+          throw new Error(errorCodes.loginServerError.code);
         }
 
-        if (user.registrationStatus === "denied") {
-          throw new Error("registrationStatus: denied");
-        }
-
-        if (user.registrationStatus === "disabled") {
-          throw new Error("registrationStatus: disabled");
-        }
-
-        if (user.error === "Unable to login user") {
-          throw new Error("Unable to login user");
-        }
-
-        if (user.error === "Unable to register user") {
-          throw new Error("Unable to register user");
+        if (user.errorCode === errorCodes.registerServerError) {
+          throw new Error(errorCodes.registerServerError.code);
         }
 
         // If no error and we have user data, return it
