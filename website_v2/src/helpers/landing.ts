@@ -88,7 +88,7 @@ const handleLoginErrors = async ({
 }: LoginHandler) => {
   setSuccessAlert("", 0);
   setRouteActionLoading(false);
-  
+
   // Registration Pending Approval
   if (error === "registrationStatus: pendingApproval") {
     setAuthenticationError({

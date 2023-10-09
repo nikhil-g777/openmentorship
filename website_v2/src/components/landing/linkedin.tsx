@@ -76,7 +76,6 @@ const LinkedIn: FC = () => {
                 setLastName,
               });
             }
-        
           } else {
             handleLoginErrors({
               error,
