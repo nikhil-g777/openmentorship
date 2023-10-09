@@ -73,6 +73,7 @@ const StoreInitializer = ({
     userType,
     setUserType,
   ]);
+
   return null;
 };
 
