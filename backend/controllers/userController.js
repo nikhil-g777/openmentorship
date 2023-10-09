@@ -181,7 +181,8 @@ const updateUser = async (req, res) => {
       // if final step of the registration process
       userObj.registrationStatus =
         constants.registrationStatus.pendingConfirmation.name;
-      if (userType) {
+      if (userType && Object.keys(constants.userTypes).includes(userType)) {
+        userObj.userType = userType; // allow update only for completeRegistration.
         userObj.role = userType;
       }
       sendRegistrationMail(userRecord);
