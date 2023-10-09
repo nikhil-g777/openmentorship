@@ -73,6 +73,14 @@ const StoreInitializer = ({
     userType,
     setUserType,
   ]);
+
+  // Reset current page on unmount
+  useEffect(() => {
+    return () => {
+      setCurrentPage("");
+    };
+  }, [setCurrentPage]);
+
   return null;
 };
 
