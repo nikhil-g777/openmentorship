@@ -1,4 +1,4 @@
-import {AppRouterInstance} from "next/dist/shared/lib/app-router-context";
+import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 type WorkExperience = {
   key?: string;
