@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 
 const StoreInitializer = () => {
   const router = useRouter();
-  const userType = useSession().data?.user.user.userType;
+  const userType = useSession().data?.user?.user?.userType;
   const {
     successAlert,
     setSuccessAlert,
