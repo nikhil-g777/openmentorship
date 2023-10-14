@@ -1,6 +1,6 @@
 "use client";
 
-import {PAGES} from "@/constants/common";
+import {ERROR_ALERT, PAGES} from "@/constants/common";
 import {performCardData} from "@/helpers/matches";
 import {MatchesProfile, MatchesResponse} from "@/types/matches";
 import {
@@ -38,7 +38,7 @@ const StoreInitializer = ({
   useEffect(() => {
     // Redirect to landing page data not found
     if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
       router.replace("/");
       return;
     }

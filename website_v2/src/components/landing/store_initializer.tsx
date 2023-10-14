@@ -1,6 +1,6 @@
 "use client";
 
-import {USER_TYPE} from "@/constants/common";
+import {ERROR_ALERT, SUCCESS_ALERT, USER_TYPE} from "@/constants/common";
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
@@ -31,13 +31,13 @@ const StoreInitializer = () => {
       // Fire after 3 seconds
       timer = setTimeout(() => {
         if (userType === USER_TYPE.MENTEE) {
-          setSuccessAlert("Redirecting you to dashboard...", 3);
+          setSuccessAlert(SUCCESS_ALERT.REDIRECT_DASHBOARD, 3);
           router.push(
             "/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
           );
           router.refresh();
         } else {
-          setSuccessAlert("Redirecting you to matches...", 3);
+          setSuccessAlert(SUCCESS_ALERT.REDIRECT_MATCHES, 3);
           router.push("/matches");
           router.refresh();
         }
@@ -63,10 +63,7 @@ const StoreInitializer = () => {
 
     // Error if counter reaches 90 seconds
     if (counter === 90) {
-      setErrorAlert(
-        "Your sign-in session has timed out. Please refresh the page and try again.",
-        6
-      );
+      setErrorAlert(ERROR_ALERT.SESSION_TIMEOUT, 6);
       setRouteActionLoading(false);
       setCounter(0);
     }

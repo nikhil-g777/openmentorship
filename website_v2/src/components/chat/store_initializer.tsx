@@ -1,6 +1,6 @@
 "use client";
 
-import {PAGES} from "@/constants/common";
+import {ERROR_ALERT, PAGES, SUCCESS_ALERT} from "@/constants/common";
 import {performCardData} from "@/helpers/matches";
 import {MatchesProfile} from "@/types/matches";
 import {
@@ -59,7 +59,7 @@ const StoreInitializer = ({
   useEffect(() => {
     // Redirect if data not found
     if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
       router.replace("/");
       return;
     }
@@ -119,16 +119,13 @@ const StoreInitializer = ({
 
     // Set successfull chat connection
     client.on("initialized", () => {
-      setSuccessAlert("Connected!", 6);
+      setSuccessAlert(SUCCESS_ALERT.CHAT_CONNECTED, 6);
       setClient(client);
     });
 
     // Set failed chat connection
     client.on("initFailed", () => {
-      setErrorAlert(
-        "Error establishing chat connection, Try reloading the page",
-        6
-      );
+      setErrorAlert(ERROR_ALERT.CHAT_ESTABLISH, 6);
       setClient(null);
     });
 

@@ -1,4 +1,4 @@
-import {PAGES, TABS} from "@/constants/common";
+import {PAGES, SUCCESS_ALERT, TABS} from "@/constants/common";
 import {createMatch, updateMatches} from "@/endpoints/matches";
 import {PerformProfileAction} from "@/types/profile";
 
@@ -45,7 +45,7 @@ const performProfileModalAction = async ({
     if (res.success && setSuccessAlert) {
       setIsProfileModal(false);
       setMessage("");
-      setSuccessAlert("Your request has been sent!", 6);
+      setSuccessAlert(SUCCESS_ALERT.REQUEST_SENT, 6);
       router.refresh();
     }
   }
@@ -72,7 +72,7 @@ const performProfileModalAction = async ({
     if (res.success && setSuccessAlert) {
       setIsProfileModal(false);
       setMessage("");
-      setSuccessAlert("Your request has been sent!", 6);
+      setSuccessAlert(SUCCESS_ALERT.REQUEST_SENT, 6);
       router.push("/matches?tab=active");
     }
   }

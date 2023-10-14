@@ -1,5 +1,7 @@
 "use client";
 
+import {SUCCESS_ALERT} from "@/constants/common";
+import {authCodeRegex, linkedInRedirectUrl} from "@/constants/linkedin";
 import {handleLoginErrors, handleUserRegistration} from "@/helpers/landing";
 import {isValidJSON} from "@/helpers/register";
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
@@ -21,18 +23,15 @@ const LinkedIn = () => {
   const {setToken, setUserId, setFirstName, setLastName, setEmail} =
     useRegisterStore();
 
-  // LinkedIn Redirect URL
-  const linkedinRedirectUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI}&scope=r_liteprofile,r_emailaddress`;
-
   // Handle LinkedIn Login
   const handleLinkedinLogin = () => {
-    window.location.href = linkedinRedirectUrl;
+    window.location.href = linkedInRedirectUrl;
   };
 
   useEffect(() => {
     const windowUrl = window.location.href;
     if (windowUrl.includes("code=")) {
-      const codeMatch = windowUrl.match(/code=([a-zA-Z0-9_-]+)/);
+      const codeMatch = windowUrl.match(authCodeRegex);
       if (!codeMatch) return;
 
       // Set authorization code
@@ -78,7 +77,7 @@ const LinkedIn = () => {
               });
             }
           } else {
-            setSuccessAlert("Successfully signed in!", 3);
+            setSuccessAlert(SUCCESS_ALERT.SIGN_IN, 3);
             setRouteActionLoading(false);
           }
         })
