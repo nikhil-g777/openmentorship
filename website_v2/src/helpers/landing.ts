@@ -5,6 +5,7 @@ import {
 } from "@/types/regsiter";
 import {errorCodes} from "@/constants/errorCodes";
 import {mainConstants} from "@/constants/main";
+import {SUCCESS_ALERT} from "@/constants/common";
 
 const list = [
   {
@@ -185,10 +186,7 @@ const handleUserRegistration = ({
   setLastName(user.user.lastName);
   setEmail(user.user.email);
   router.push("/register");
-  setSuccessAlert(
-    "Tell us more about yourself so we can fully setup your account!",
-    6
-  );
+  setSuccessAlert(SUCCESS_ALERT.ACCOUNT_SETUP, 6);
 };
 
 // Handle Pending Confirmation

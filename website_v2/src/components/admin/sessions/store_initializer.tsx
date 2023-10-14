@@ -1,6 +1,6 @@
 "use client";
 
-import {PAGES} from "@/constants/common";
+import {ERROR_ALERT, PAGES} from "@/constants/common";
 import {SessionData} from "@/types/admin/sessions";
 import {
   useAdminSessionStore,
@@ -27,7 +27,7 @@ const StoreInitializer = ({token, data, searchData}: Props) => {
   useEffect(() => {
     // Redirect if token is not available
     if (token === "") {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
       router.replace("/");
       return;
     }

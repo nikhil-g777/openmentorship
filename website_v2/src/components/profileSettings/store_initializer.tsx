@@ -9,6 +9,7 @@ import {
 } from "@/zustand/store";
 import {useEffect} from "react";
 import {notFound, useRouter} from "next/navigation";
+import {ERROR_ALERT} from "@/constants/common";
 
 type Props = {
   data: UserProfile;
@@ -45,7 +46,7 @@ const StoreInitializer = ({data, token}: Props) => {
   useEffect(() => {
     // Redirect if no token
     if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
       router.replace("/");
       return;
     }

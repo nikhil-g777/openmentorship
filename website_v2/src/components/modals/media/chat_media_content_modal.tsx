@@ -4,6 +4,7 @@ import {useChatStore, useCommonStore} from "@/zustand/store";
 import {useEffect, useState} from "react";
 import {MediaContentWrapper} from "./media_content_wrapper";
 import {messageAddedHandler} from "@/helpers/chat";
+import {ERROR_ALERT} from "@/constants/common";
 
 const ChatMediaContentModal = () => {
   const {
@@ -44,10 +45,7 @@ const ChatMediaContentModal = () => {
         setMediaConversations({...messages, items: mediaMessages});
       })
       .catch(() => {
-        setErrorAlert(
-          "Media resource failed to load! Try reloading the page.",
-          6
-        );
+        setErrorAlert(ERROR_ALERT.MEDIA_RESOURCE_FAILED, 6);
       });
   }, [
     currentConversation,

@@ -4,7 +4,7 @@ import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {Guidelines} from "./guidelines";
-import {USER_TYPE} from "@/constants/common";
+import {SUCCESS_ALERT, USER_TYPE} from "@/constants/common";
 
 const PostRegistration = () => {
   const {currentScreen, userType, menteeGuidelines, mentorGuidelines} =
@@ -18,7 +18,7 @@ const PostRegistration = () => {
     setLoading(true);
 
     setTimeout(() => {
-      setSuccessAlert("Please check your email to confirm your account.", 6);
+      setSuccessAlert(SUCCESS_ALERT.CONFIRM_EMAIL, 6);
       router.replace("/");
     }, 2000);
   };

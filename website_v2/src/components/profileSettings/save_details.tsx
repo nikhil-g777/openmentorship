@@ -1,5 +1,6 @@
 "use client";
 
+import {ERROR_ALERT, SUCCESS_ALERT} from "@/constants/common";
 import {updateUser} from "@/endpoints/user";
 import {
   checkCommunicationFrequencyIsEmpty,
@@ -207,11 +208,11 @@ const SaveDetails = ({isTopPosition}: {isTopPosition: boolean}) => {
     if (res.success) {
       setLoading(false);
       setIsEditable(false);
-      setSuccessAlert("Profile updated successfully", 6);
+      setSuccessAlert(SUCCESS_ALERT.PROFILE_UPDATED, 6);
     }
     if (!res.success) {
       setLoading(false);
-      setErrorAlert("Something went wrong, please try again later", 6);
+      setErrorAlert(ERROR_ALERT.SOMETHING_WRONG, 6);
     }
   };
   return (
