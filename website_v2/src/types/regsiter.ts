@@ -79,7 +79,8 @@ type HandleUserRegistration = {
   user: {
     success: boolean;
     newUser: boolean;
-    error: string;
+    errorCode: string;
+    messsage: string;
     registrationStatus: string;
     token: string;
     user: {

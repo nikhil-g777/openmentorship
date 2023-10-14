@@ -3,6 +3,7 @@ const util = require('../lib/utils');
 
 const { generateTwilioToken } = require('../config/twilio');
 const constants = require('../lib/constants');
+const errorCodes = require('../lib/errorCodes');
 
 const Match = require('../models/match');
 const User = require('../models/user');
@@ -19,13 +20,13 @@ const loginUser = async (req, res) => {
   if (!body) {
     return res
       .status(400)
-      .json({ success: false, error: 'request body is empty' });
+      .json({ success: false, errorCode: errorCodes.missingInputs.code, message: 'request body is empty' });
   }
 
   if (!body.authCode) {
     return res
       .status(400)
-      .json({ success: false, error: 'authCode missing in the body' });
+      .json({ success: false, errorCode: errorCodes.missingInputs.code, message: 'authCode missing in the body' });
   }
 
   try {
@@ -39,34 +40,21 @@ const loginUser = async (req, res) => {
       { linkedInId: linkedInProfile.linkedInId },
       { profileImageUrls: linkedInProfile.profileImageUrls },
       { new: true },
-    ).exec();
+    )
 
-    // Handle registration if user is not found or registration is incomplete
+    // Handle registration if user is not found or registration is incomplete.
     if (
       !updatedUser ||
-      updatedUser.registrationStatus === constants.registrationStatus.incomplete
+      updatedUser.registrationStatus === constants.registrationStatus.incomplete.name
     ) {
       const newRequest = req;
       newRequest.body.type = 'linkedInSignup';
       return await handleUserRegistration(newRequest, res, linkedInProfile);
     }
-
-    // Handle pending confirmation
+    
+    // Successful login
     if (
-      updatedUser &&
-      updatedUser.registrationStatus ===
-        constants.registrationStatus.pendingConfirmation
-    ) {
-      return res.status(401).json({
-        success: false,
-        error: constants.loginMessageByStatus[updatedUser.registrationStatus],
-        registrationStatus: updatedUser.registrationStatus,
-        user: updatedUser,
-      });
-    }
-
-    if (
-      updatedUser.registrationStatus == constants.registrationStatus.complete
+      updatedUser.registrationStatus == constants.registrationStatus.complete.name
     ) {
       const { token } = await fetchUserToken(updatedUser);
       return res.json({
@@ -79,17 +67,21 @@ const loginUser = async (req, res) => {
         },
       });
     }
-    // If status is not complete
+
+    // If status is not complete.
     return res.status(401).json({
       success: false,
-      error: constants.loginMessageByStatus[updatedUser.registrationStatus],
+      errorCode: errorCodes.loginInvalid.code,
+      message: constants.registrationStatus[updatedUser.registrationStatus].loginMessage,
       registrationStatus: updatedUser.registrationStatus,
+      user: updatedUser,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
-      error: 'Unable to login user',
+      errorCode: errorCodes.loginServerError.code,
+      message: 'Unable to login user',
     });
   }
 };
@@ -162,8 +154,9 @@ const updateUser = async (req, res) => {
     if (req.body.type == 'completeRegistration') {
       // if final step of the registration process
       userObj.registrationStatus =
-        constants.registrationStatus.pendingConfirmation;
-      if (userType) {
+        constants.registrationStatus.pendingConfirmation.name;
+      if (userType && Object.keys(constants.userTypes).includes(userType)) {
+        userObj.userType = userType; // allow update only for completeRegistration.
         userObj.role = userType;
       }
       sendRegistrationMail(userRecord);
@@ -316,9 +309,9 @@ const confirmRegistration = async (req, res) => {
 
     let newRegistrationStatus = null;
     if (user.userType == constants.userTypes.mentee) {
-      newRegistrationStatus = constants.registrationStatus.complete;
+      newRegistrationStatus = constants.registrationStatus.complete.name;
     } else if (user.userType == constants.userTypes.mentor) {
-      newRegistrationStatus = constants.registrationStatus.pendingApproval;
+      newRegistrationStatus = constants.registrationStatus.pendingApproval.name;
     } else {
       res.status(500).json({ success: false, err: 'Invalid user type' });
     }

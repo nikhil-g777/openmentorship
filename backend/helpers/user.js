@@ -7,6 +7,7 @@ const util = require('../lib/utils');
 const constants = require('../lib/constants');
 const config = require('../config/config');
 const { sendMail } = require('../lib/mailer');
+const errorCodes = require('../lib/errorCodes');
 
 // Handle user registration
 const handleUserRegistration = async (req, res, linkedInProfile) => {
@@ -17,7 +18,7 @@ const handleUserRegistration = async (req, res, linkedInProfile) => {
       if (!body.authCode) {
         return res
           .status(400)
-          .json({ success: false, error: 'authCode missing in the body' });
+          .json({ success: false, errorCode: errorCodes.missingInputs, message: 'authCode missing in the body.' });
       }
 
       // Check if user already exists
@@ -60,8 +61,7 @@ const handleUserRegistration = async (req, res, linkedInProfile) => {
           .json({
             success: true,
             newUser: true,
-            error: constants.loginMessageByStatus.incomplete,
-            registrationStatus: constants.registrationStatus.incomplete,
+            registrationStatus: constants.registrationStatus.incomplete.name,
             token: accessToken,
             user: {
               _id: updatedUser._id,
@@ -76,7 +76,8 @@ const handleUserRegistration = async (req, res, linkedInProfile) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Unable to register user',
+      errorCode: errorCodes.registerServerError.code,
+      message: 'Unable to register user.',
     });
   }
 };
