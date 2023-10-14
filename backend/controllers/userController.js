@@ -74,7 +74,13 @@ const loginUser = async (req, res) => {
       errorCode: errorCodes.loginInvalid.code,
       message: constants.registrationStatus[updatedUser.registrationStatus].loginMessage,
       registrationStatus: updatedUser.registrationStatus,
-      user: updatedUser,
+      user: {
+        _id: updatedUser._id,
+        userType: updatedUser.userType,
+        email: updatedUser.email,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+      },
     });
   } catch (err) {
     console.log(err);
