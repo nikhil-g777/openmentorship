@@ -1,4 +1,6 @@
 import {AppRouterInstance} from "next/dist/shared/lib/app-router-context";
+import {UserProfile} from "./profile";
+import {AuthenticationError} from "./authentication";
 
 type WorkExperience = {
   key?: string;
@@ -98,6 +100,24 @@ type HandleUserRegistration = {
   router: AppRouterInstance;
 };
 
+type HandlePendingConfirmation = {
+  user: {
+    success: boolean;
+    error: string;
+    registrationStatus: string;
+    user: UserProfile["user"];
+  };
+  setSuccessAlert: (message: string, duration: number) => void;
+  setRouteActionLoading: (loading: boolean) => void;
+  setAuthenticationError: (value: AuthenticationError | null) => void;
+  setUserId: (userId: string) => void;
+  setUserType: (userType: string) => void;
+  setEmail: (email: string) => void;
+  setFirstName: (firstName: string) => void;
+  setLastName: (lastName: string) => void;
+  setRegistrationStatus: (registrationStatus: string) => void;
+};
+
 export type {
   WorkExperience,
   Education,
@@ -107,4 +127,5 @@ export type {
   RegisterBody,
   UserConfirmation,
   HandleUserRegistration,
+  HandlePendingConfirmation,
 };

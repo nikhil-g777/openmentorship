@@ -1,9 +1,7 @@
 const _ = require('lodash');
 const util = require('../lib/utils');
-const config = require('../config/config');
 
 const { generateTwilioToken } = require('../config/twilio');
-const { sendMail } = require('../lib/mailer');
 const constants = require('../lib/constants');
 const errorCodes = require('../lib/errorCodes');
 
@@ -13,33 +11,8 @@ const {
   handleUserRegistration,
   getLinkedInProfile,
   fetchUserToken,
+  sendRegistrationMail,
 } = require('../helpers/user');
-
-const sendRegistrationMail = async (user) => {
-  const confirmationToken = util.encodeRegistrationToken(user._id);
-  const confirmationLink = `https://${process.env.FRONTEND_BASE_URL}/confirmUserRegistration?confirmationToken=${confirmationToken}`;
-
-  let sendgridTemplate = '';
-  if (user.userType == constants.userTypes.mentee) {
-    sendgridTemplate = config.sendgrid.templates.mentee_signup;
-  } else if (user.userType == constants.userTypes.mentor) {
-    sendgridTemplate = config.sendgrid.templates.mentor_signup;
-  } else {
-    // TODO: Add some email alerting for errors like this.
-    console.err('Invalid user type for sending registration mail');
-  }
-
-  const response = await sendMail(
-    user.email,
-    'Openmentorship Email Confirmation',
-    {
-      name: `${user.firstName} ${user.lastName}`,
-      confirmationLink,
-    },
-    sendgridTemplate,
-  );
-  return response;
-};
 
 const loginUser = async (req, res) => {
   const { body } = req;
@@ -66,8 +39,18 @@ const loginUser = async (req, res) => {
     const updatedUser = await User.findOneAndUpdate(
       { linkedInId: linkedInProfile.linkedInId },
       { profileImageUrls: linkedInProfile.profileImageUrls },
-      { new: true },
-    )
+      {
+        new: true,
+        projection: {
+          _id: 1,
+          userType: 1,
+          email: 1,
+          firstName: 1,
+          lastName: 1,
+          registrationStatus: 1,
+        },
+      },
+    );
 
     // Handle registration if user is not found or registration is incomplete.
     if (
@@ -78,8 +61,8 @@ const loginUser = async (req, res) => {
       newRequest.body.type = 'linkedInSignup';
       return await handleUserRegistration(newRequest, res, linkedInProfile);
     }
-
-    // Successful login.
+    
+    // Successful login
     if (
       updatedUser.registrationStatus == constants.registrationStatus.complete.name
     ) {
@@ -101,6 +84,7 @@ const loginUser = async (req, res) => {
       errorCode: errorCodes.loginInvalid.code,
       message: constants.registrationStatus[updatedUser.registrationStatus].loginMessage,
       registrationStatus: updatedUser.registrationStatus,
+      user: updatedUser,
     });
   } catch (err) {
     console.log(err);
@@ -353,6 +337,25 @@ const confirmRegistration = async (req, res) => {
   }
 };
 
+// Resend confirmation email
+const resendConfirmationEmail = async (req, res) => {
+  try {
+    const { user } = req.body;
+    const response = await sendRegistrationMail(user);
+    if (response.success) {
+      return res.status(200).json({ success: true, message: 'Confirmation email sent' });
+    }
+    return res.status(401).json({
+      success: false,
+      error: 'Error sending confirmation email',
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, error: 'Error sending confirmation email' });
+  }
+};
+
 module.exports = {
   loginUser,
   tempAuth,
@@ -361,4 +364,5 @@ module.exports = {
   matches,
   twilioToken,
   confirmRegistration,
+  resendConfirmationEmail,
 };

@@ -5,6 +5,8 @@ const User = require('../models/user');
 const Token = require('../models/token');
 const util = require('../lib/utils');
 const constants = require('../lib/constants');
+const config = require('../config/config');
+const { sendMail } = require('../lib/mailer');
 const errorCodes = require('../lib/errorCodes');
 
 // Handle user registration
@@ -185,4 +187,44 @@ const fetchUserToken = async (user) => {
   };
 };
 
-module.exports = { handleUserRegistration, getLinkedInProfile, fetchUserToken };
+// Send Confirmation Email
+const sendRegistrationMail = async (user) => {
+  try {
+    const confirmationToken = util.encodeRegistrationToken(user._id);
+    const confirmationLink = `https://${process.env.FRONTEND_BASE_URL}/confirmUserRegistration?confirmationToken=${confirmationToken}`;
+
+    let sendgridTemplate = '';
+    if (user.userType == constants.userTypes.mentee) {
+      sendgridTemplate = config.sendgrid.templates.mentee_signup;
+    } else if (user.userType == constants.userTypes.mentor) {
+      sendgridTemplate = config.sendgrid.templates.mentor_signup;
+    } else {
+      // TODO: Add some email alerting for errors like this.
+      console.err('Invalid user type for sending registration mail');
+    }
+
+    const response = await sendMail(
+      user.email,
+      'Openmentorship Email Confirmation',
+      {
+        name: `${user.firstName} ${user.lastName}`,
+        confirmationLink,
+      },
+      sendgridTemplate,
+    );
+    return { success: true, response };
+  } catch (err) {
+    console.log(err);
+    return {
+      success: false,
+      response: null,
+    };
+  }
+};
+
+module.exports = {
+  handleUserRegistration,
+  getLinkedInProfile,
+  fetchUserToken,
+  sendRegistrationMail,
+};

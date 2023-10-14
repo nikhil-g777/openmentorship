@@ -2,7 +2,12 @@
 
 import {SUCCESS_ALERT} from "@/constants/common";
 import {authCodeRegex, linkedInRedirectUrl} from "@/constants/linkedin";
-import {handleLoginErrors, handleUserRegistration} from "@/helpers/landing";
+import {mainConstants} from "@/constants/main";
+import {
+  handleLoginErrors,
+  handlePendingConfirmation,
+  handleUserRegistration,
+} from "@/helpers/landing";
 import {isValidJSON} from "@/helpers/register";
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import {signIn} from "next-auth/react";
@@ -20,8 +25,15 @@ const LinkedIn = () => {
     setAuthorizationCode,
     authorizationCode,
   } = useCommonStore();
-  const {setToken, setUserId, setFirstName, setLastName, setEmail} =
-    useRegisterStore();
+  const {
+    setToken,
+    setUserId,
+    setUserType,
+    setFirstName,
+    setLastName,
+    setEmail,
+    setRegistrationStatus,
+  } = useRegisterStore();
 
   // Handle LinkedIn Login
   const handleLinkedinLogin = () => {
@@ -58,18 +70,40 @@ const LinkedIn = () => {
             const isJSON = isValidJSON(error);
             if (isJSON) {
               const user = JSON.parse(error);
-              handleUserRegistration({
-                user,
-                setSuccessAlert,
-                setToken,
-                setUserId,
-                setFirstName,
-                setLastName,
-                setEmail,
-                router,
-              });
+              // Check if user is new
+              if (user.newUser) {
+                return handleUserRegistration({
+                  user,
+                  setSuccessAlert,
+                  setToken,
+                  setUserId,
+                  setFirstName,
+                  setLastName,
+                  setEmail,
+                  router,
+                });
+              }
+
+              // Handle pending confirmation
+              if (
+                user.registrationStatus ===
+                mainConstants.registrationStatus.pendingConfirmation.name
+              ) {
+                return handlePendingConfirmation({
+                  user,
+                  setSuccessAlert,
+                  setRouteActionLoading,
+                  setAuthenticationError,
+                  setUserId,
+                  setUserType,
+                  setEmail,
+                  setFirstName,
+                  setLastName,
+                  setRegistrationStatus,
+                });
+              }
             } else {
-              handleLoginErrors({
+              return handleLoginErrors({
                 error,
                 setSuccessAlert,
                 setAuthenticationError,
@@ -100,6 +134,8 @@ const LinkedIn = () => {
     setSuccessAlert,
     setToken,
     setUserId,
+    setUserType,
+    setRegistrationStatus,
   ]);
 
   return (
