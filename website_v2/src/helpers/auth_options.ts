@@ -37,6 +37,14 @@ export const authOptions: NextAuthOptions = {
           throw new Error(JSON.stringify(user));
         }
 
+        if (
+          user.registrationStatus ===
+            mainConstants.registrationStatus.pendingConfirmation.name &&
+          user.user
+        ) {
+          throw new Error(JSON.stringify(user));
+        }
+
         if (user.errorCode === errorCodes.loginInvalid.code) {
           throw new Error(
             `${errorCodes.loginInvalid.code}-${user.registrationStatus}`

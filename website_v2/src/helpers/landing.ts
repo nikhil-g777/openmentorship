@@ -1,5 +1,8 @@
 import {LoginHandler} from "@/types/landing";
-import {HandleUserRegistration} from "@/types/regsiter";
+import {
+  HandlePendingConfirmation,
+  HandleUserRegistration,
+} from "@/types/regsiter";
 import {errorCodes} from "@/constants/errorCodes";
 import {mainConstants} from "@/constants/main";
 
@@ -87,8 +90,8 @@ const handleLoginErrors = async ({
 }: LoginHandler) => {
   setSuccessAlert("", 0);
   setRouteActionLoading(false);
-  // Registration Pending Confirmation
 
+  // Registration Pending Confirmation
   if (
     error ===
     `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.pendingConfirmation.name}`
@@ -188,4 +191,41 @@ const handleUserRegistration = ({
   );
 };
 
-export {list, handleLoginErrors, handleUserRegistration};
+// Handle Pending Confirmation
+const handlePendingConfirmation = ({
+  user,
+  setSuccessAlert,
+  setRouteActionLoading,
+  setAuthenticationError,
+  setUserId,
+  setUserType,
+  setEmail,
+  setFirstName,
+  setLastName,
+  setRegistrationStatus,
+}: HandlePendingConfirmation) => {
+  setSuccessAlert("", 0);
+  setRouteActionLoading(false);
+
+  // Registration Pending Confirmation
+  setAuthenticationError({
+    heading: "Registration Pending Confirmation",
+    subHeading: "Please confirm your email to continue.",
+    message:
+      "Sorry, you cannot sign in at the moment because your registration is pending confirmation. Please check your email for a confirmation link.",
+  });
+  // Set States
+  setUserId(user.user._id);
+  setUserType(user.user.userType);
+  setEmail(user.user.email);
+  setFirstName(user.user.firstName);
+  setLastName(user.user.lastName);
+  setRegistrationStatus(user.registrationStatus);
+};
+
+export {
+  list,
+  handleLoginErrors,
+  handleUserRegistration,
+  handlePendingConfirmation,
+};

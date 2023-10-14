@@ -46,4 +46,6 @@ router.get(
   userController.twilioToken,
 );
 
+router.post('/resendConfirmationEmail', userController.resendConfirmationEmail);
+
 module.exports = router;
