@@ -39,8 +39,18 @@ const loginUser = async (req, res) => {
     const updatedUser = await User.findOneAndUpdate(
       { linkedInId: linkedInProfile.linkedInId },
       { profileImageUrls: linkedInProfile.profileImageUrls },
-      { new: true },
-    )
+      {
+        new: true,
+        projection: {
+          _id: 1,
+          userType: 1,
+          email: 1,
+          firstName: 1,
+          lastName: 1,
+          registrationStatus: 1,
+        },
+      },
+    );
 
     // Handle registration if user is not found or registration is incomplete.
     if (
@@ -74,13 +84,7 @@ const loginUser = async (req, res) => {
       errorCode: errorCodes.loginInvalid.code,
       message: constants.registrationStatus[updatedUser.registrationStatus].loginMessage,
       registrationStatus: updatedUser.registrationStatus,
-      user: {
-        _id: updatedUser._id,
-        userType: updatedUser.userType,
-        email: updatedUser.email,
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
-      },
+      user: updatedUser,
     });
   } catch (err) {
     console.log(err);
