@@ -115,6 +115,7 @@ type HandlePendingConfirmation = {
   setEmail: (email: string) => void;
   setFirstName: (firstName: string) => void;
   setLastName: (lastName: string) => void;
+  setRegistrationStatus: (registrationStatus: string) => void;
 };
 
 export type {

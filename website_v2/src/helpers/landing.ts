@@ -202,6 +202,7 @@ const handlePendingConfirmation = ({
   setEmail,
   setFirstName,
   setLastName,
+  setRegistrationStatus,
 }: HandlePendingConfirmation) => {
   setSuccessAlert("", 0);
   setRouteActionLoading(false);
@@ -219,6 +220,7 @@ const handlePendingConfirmation = ({
   setEmail(user.user.email);
   setFirstName(user.user.firstName);
   setLastName(user.user.lastName);
+  setRegistrationStatus(user.registrationStatus);
 };
 
 export {

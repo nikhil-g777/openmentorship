@@ -1,5 +1,6 @@
 "use client";
 
+import {mainConstants} from "@/constants/main";
 import {
   handleLoginErrors,
   handlePendingConfirmation,
@@ -27,6 +28,7 @@ const LinkedIn: FC = () => {
     setFirstName,
     setLastName,
     setEmail,
+    setRegistrationStatus,
   } = useRegisterStore();
 
   return (
@@ -50,7 +52,7 @@ const LinkedIn: FC = () => {
             const user = JSON.parse(error);
             // Check if user is new
             if (user.newUser) {
-              handleUserRegistration({
+              return handleUserRegistration({
                 user,
                 setSuccessAlert,
                 setToken,
@@ -63,8 +65,11 @@ const LinkedIn: FC = () => {
             }
 
             // Handle pending confirmation
-            if (user.success === false) {
-              handlePendingConfirmation({
+            if (
+              user.registrationStatus ===
+              mainConstants.registrationStatus.pendingConfirmation.name
+            ) {
+              return handlePendingConfirmation({
                 user,
                 setSuccessAlert,
                 setRouteActionLoading,
@@ -74,10 +79,11 @@ const LinkedIn: FC = () => {
                 setEmail,
                 setFirstName,
                 setLastName,
+                setRegistrationStatus,
               });
             }
           } else {
-            handleLoginErrors({
+            return handleLoginErrors({
               error,
               setSuccessAlert,
               setAuthenticationError,

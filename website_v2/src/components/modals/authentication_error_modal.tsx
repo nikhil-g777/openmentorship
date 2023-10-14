@@ -1,5 +1,6 @@
 "use client";
 
+import {mainConstants} from "@/constants/main";
 import {resendConfirmationEmail} from "@/endpoints/user";
 import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import Image from "next/image";
@@ -12,7 +13,8 @@ const AuthenticationErrorModal = () => {
     setErrorAlert,
     setSuccessAlert,
   } = useCommonStore();
-  const {userId, userType, email, firstName, lastName} = useRegisterStore();
+  const {userId, userType, email, firstName, lastName, registrationStatus} =
+    useRegisterStore();
   const [loading, setLoading] = useState<boolean>(false);
 
   // Handle close modal
@@ -72,8 +74,8 @@ const AuthenticationErrorModal = () => {
           <p className="text-center py-4">{authenticationError?.message}</p>
           <div className="modal-action">
             {/* Resend Confirmation */}
-            {authenticationError?.heading ===
-            "Registration Pending Confirmation" ? (
+            {registrationStatus ===
+            mainConstants.registrationStatus.pendingConfirmation.name ? (
               <button
                 className={`btn rounded-full btn-sm text-sm capitalize btn-outline ${
                   loading ? "loading" : ""

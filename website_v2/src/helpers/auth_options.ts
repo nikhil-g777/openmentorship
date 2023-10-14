@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
 
         if (
           user.registrationStatus ===
-            mainConstants.registrationStatus.pendingConfirmation &&
+            mainConstants.registrationStatus.pendingConfirmation.name &&
           user.user
         ) {
           throw new Error(JSON.stringify(user));

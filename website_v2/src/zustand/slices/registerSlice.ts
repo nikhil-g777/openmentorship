@@ -54,6 +54,8 @@ export type RegisterSlice = {
   // Guidelines
   menteeGuidelines: {id: number; imageURL: string; text: string}[];
   mentorGuidelines: {id: number; imageURL: string; text: string}[];
+  // Registration status
+  registrationStatus: string;
 
   // Actions
   // Main screen
@@ -88,6 +90,8 @@ export type RegisterSlice = {
   setSocialLinks: (type: SocialLinks) => void;
   // Reset state
   resetState: () => void;
+  // Registration status
+  setRegistrationStatus: (type: string) => void;
 };
 
 // Initial state
@@ -136,6 +140,8 @@ const initialState = {
   // Guidelines
   menteeGuidelines: menteeGuidelines,
   mentorGuidelines: mentorGuidelines,
+  // Registration status
+  registrationStatus: "",
 };
 
 export const registerSlice: StateCreator<
@@ -242,5 +248,10 @@ export const registerSlice: StateCreator<
   resetState: () =>
     set(() => ({
       ...initialState,
+    })),
+  // Registration status
+  setRegistrationStatus: (registrationStatus: string) =>
+    set(() => ({
+      registrationStatus: registrationStatus,
     })),
 });
