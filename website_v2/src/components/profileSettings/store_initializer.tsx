@@ -4,10 +4,12 @@ import {UserProfile} from "@/types/profile";
 import {
   useCommonStore,
   useProfileSettingsStore,
+  useProfileStore,
   useRegisterStore,
 } from "@/zustand/store";
 import {useEffect} from "react";
 import {notFound, useRouter} from "next/navigation";
+import {PAGES} from "@/constants/common";
 
 type Props = {
   data: UserProfile;
@@ -38,6 +40,7 @@ const StoreInitializer = ({data, token}: Props) => {
   } = useRegisterStore();
   const {setProfileImage, setisProfilePage} = useProfileSettingsStore();
   const {setErrorAlert} = useCommonStore();
+  const {setCurrentPage} = useProfileStore();
 
   // Update states
   useEffect(() => {
@@ -47,6 +50,7 @@ const StoreInitializer = ({data, token}: Props) => {
     }
 
     // Set states
+    setCurrentPage(PAGES.PROFILE);
     setToken(token || "");
     setFirstName(data.user.firstName);
     setLastName(data.user.lastName);
@@ -74,6 +78,7 @@ const StoreInitializer = ({data, token}: Props) => {
     token,
     data,
     router,
+    setCurrentPage,
     setErrorAlert,
     setToken,
     setFirstName,

@@ -1,3 +1,4 @@
+import {ERROR_ALERT} from "@/constants/common";
 import {HandleFileInput, HandleSendMessage, MessageAdded} from "@/types/chat";
 
 // Get Time in AM/PM format
@@ -31,7 +32,7 @@ const handleSendMessage = ({
   e.preventDefault();
   if (!message.length) return;
   if (message.length > 800) {
-    setErrorAlert("Message should be less than 800 characters", 6);
+    setErrorAlert(ERROR_ALERT.MESSAGE_LENGTH_800, 6);
     return;
   }
 
@@ -44,7 +45,7 @@ const handleSendMessage = ({
       setChatConnectionStatus("connected");
     })
     .catch(() => {
-      setErrorAlert("Error sending message!", 6);
+      setErrorAlert(ERROR_ALERT.ERROR_SENDING_MESSAGE, 6);
       setChatConnectionStatus("connected");
     });
 };
@@ -61,7 +62,7 @@ const handleFileInput = ({
 
   // Set Error if file size is greater than 10MB
   if (file && file?.size > 10 * 1024 * 1024) {
-    setErrorAlert("File size should be less than 10MB", 6);
+    setErrorAlert(ERROR_ALERT.FILE_SIZE_10MB, 6);
     return;
   }
 
@@ -86,10 +87,7 @@ const messageAddedHandler = ({
         mediaContent.push(content);
       })
       .catch(() => {
-        setErrorAlert(
-          "Media resource failed to load! Try reloading the page.",
-          6
-        );
+        setErrorAlert(ERROR_ALERT.MEDIA_RESOURCE_FAILED, 6);
       });
   }
 };

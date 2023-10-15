@@ -1,5 +1,5 @@
 import {CONFIRMATION_PROMPTS} from "@/constants/admin/dashboard";
-import {PAGES} from "@/constants/common";
+import {PAGES, SUCCESS_ALERT} from "@/constants/common";
 import {updateMentorRegistration} from "@/endpoints/admin";
 import {updateMatches} from "@/endpoints/matches";
 import {PerformConfirmationAction} from "@/types/profile";
@@ -38,7 +38,7 @@ const performConfirmationAction = async ({
     }
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
-      setSuccessAlert("You have ended the session!", 6);
+      setSuccessAlert(SUCCESS_ALERT.SESSION_ENDED, 6);
       if (currentPage === PAGES.CHAT) {
         router.push("/chat");
         router.refresh();
@@ -72,7 +72,7 @@ const performConfirmationAction = async ({
       }
       if (res.success && setSuccessAlert) {
         setConfirmationText("");
-        setSuccessAlert("Your request has been withdrawn!", 6);
+        setSuccessAlert(SUCCESS_ALERT.REQUEST_WITHDRAWN, 6);
         router.push("/matches?tab=active");
         router.refresh();
       }
@@ -97,7 +97,7 @@ const performConfirmationAction = async ({
       }
       if (res.success && setSuccessAlert) {
         setConfirmationText("");
-        setSuccessAlert("You have approved the request!", 6);
+        setSuccessAlert(SUCCESS_ALERT.REQUEST_APPROVED, 6);
         router.push("/matches?tab=active");
         router.refresh();
       }
@@ -126,7 +126,7 @@ const performConfirmationAction = async ({
     }
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
-      setSuccessAlert("You have declined the request!", 6);
+      setSuccessAlert(SUCCESS_ALERT.REQUEST_DECLINED, 6);
       router.push("/matches?tab=active");
       router.refresh();
     }
@@ -150,7 +150,7 @@ const performConfirmationAction = async ({
     }
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
-      setSuccessAlert("You have approved the account!", 6);
+      setSuccessAlert(SUCCESS_ALERT.ACCOUNT_APPROVED, 6);
       router.refresh();
     }
   }
@@ -172,7 +172,7 @@ const performConfirmationAction = async ({
     }
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
-      setSuccessAlert("You have denied the account!", 6);
+      setSuccessAlert(SUCCESS_ALERT.ACCOUNT_DENIED, 6);
       router.refresh();
     }
   }
@@ -194,7 +194,7 @@ const performConfirmationAction = async ({
     }
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
-      setSuccessAlert("You have disabled the account!", 6);
+      setSuccessAlert(SUCCESS_ALERT.DISABLE_ACCOUNT, 6);
       router.refresh();
     }
   }

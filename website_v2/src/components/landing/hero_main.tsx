@@ -1,9 +1,15 @@
 "use client";
 
 import {useSession} from "next-auth/react";
-import {Linkedin} from "./linkedin_main";
 import Image from "next/image";
-import Link from "next/link";
+import dynamic from "next/dynamic";
+// Dynamically load non SSR component
+const LinkedIn = dynamic<{}>(
+  () => import("./linkedin").then(mod => mod.LinkedIn),
+  {
+    ssr: false,
+  }
+);
 
 const Hero = () => {
   const {status} = useSession();
@@ -25,15 +31,7 @@ const Hero = () => {
           {/* Buttons */}
           {status === "unauthenticated" ? (
             <div className="mt-4 w-full flex flex-col justify-center items-center gap-2 md:flex-row md:justify-start md:gap-4">
-              <Linkedin />
-              <div className="text-center">or</div>
-              <Link
-                href="/register"
-                className="w-48 btn btn-sm btn-primary rounded-full"
-                data-cy="landing-hero-register-button"
-              >
-                Register
-              </Link>
+              <LinkedIn />
             </div>
           ) : null}
         </div>

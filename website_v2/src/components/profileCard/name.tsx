@@ -29,6 +29,7 @@ const Name = ({firstName, lastName, linkedinURI}: Props) => {
             alt="linkedin"
             width={24}
             height={24}
+            className="bg-[#0A66C2] rounded-sm p-[2px]"
           />
         </a>
       ) : null}
