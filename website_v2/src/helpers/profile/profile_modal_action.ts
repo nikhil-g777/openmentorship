@@ -1,3 +1,4 @@
+import {PAGES, SUCCESS_ALERT, TABS} from "@/constants/common";
 import {createMatch, updateMatches} from "@/endpoints/matches";
 import {PerformProfileAction} from "@/types/profile";
 
@@ -23,7 +24,7 @@ const performProfileModalAction = async ({
   if (
     isProfileModal &&
     setIsProfileModal &&
-    currentPage === "explore" &&
+    currentPage === PAGES.EXPLORE &&
     buttonText === "Send Request" &&
     message &&
     setMessage &&
@@ -44,15 +45,16 @@ const performProfileModalAction = async ({
     if (res.success && setSuccessAlert) {
       setIsProfileModal(false);
       setMessage("");
-      setSuccessAlert("Your request has been sent!", 6);
+      setSuccessAlert(SUCCESS_ALERT.REQUEST_SENT, 6);
+      router.refresh();
     }
   }
   // Reconnect
   if (
     isProfileModal &&
     setIsProfileModal &&
-    currentPage === "matches" &&
-    currentTab === "closed" &&
+    currentPage === PAGES.MATCHES &&
+    currentTab === TABS.MATCHES.CLOSED &&
     buttonText === "Reconnect" &&
     message &&
     setMessage &&
@@ -70,7 +72,7 @@ const performProfileModalAction = async ({
     if (res.success && setSuccessAlert) {
       setIsProfileModal(false);
       setMessage("");
-      setSuccessAlert("Your request has been sent!", 6);
+      setSuccessAlert(SUCCESS_ALERT.REQUEST_SENT, 6);
       router.push("/matches?tab=active");
     }
   }

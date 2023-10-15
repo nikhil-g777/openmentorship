@@ -1,4 +1,11 @@
 import {LoginHandler} from "@/types/landing";
+import {
+  HandlePendingConfirmation,
+  HandleUserRegistration,
+} from "@/types/regsiter";
+import {errorCodes} from "@/constants/errorCodes";
+import {mainConstants} from "@/constants/main";
+import {SUCCESS_ALERT} from "@/constants/common";
 
 const list = [
   {
@@ -84,58 +91,71 @@ const handleLoginErrors = async ({
 }: LoginHandler) => {
   setSuccessAlert("", 0);
   setRouteActionLoading(false);
-  // Registratiaon Incomplete
-  if (error === "registrationStatus: incomplete") {
-    setAuthenticationError({
-      heading: "Registration Incomplete",
-      subHeading: "Please complete your registration to continue.",
-      message:
-        "Sorry, you cannot sign in at the moment because your registration is incomplete. Please complete all required fields in the registration form before attempting to sign in.",
-    });
-  }
+
   // Registration Pending Confirmation
-  else if (error === "registrationStatus: pendingConfirmation") {
+  if (
+    error ===
+    `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.pendingConfirmation.name}`
+  ) {
     setAuthenticationError({
-      heading: "Registration Pending Confirmation",
+      heading: "Account Pending Confirmation",
       subHeading: "Please confirm your email to continue.",
       message:
-        "Sorry, you cannot sign in at the moment because your registration is pending confirmation. Please check your email for a confirmation link.",
+        "Sorry, you cannot sign in at the moment because your account is pending confirmation. Please check your email for a confirmation link.",
     });
   }
   // Registration Pending Approval
-  else if (error === "registrationStatus: pendingApproval") {
+  else if (
+    error ===
+    `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.pendingApproval.name}`
+  ) {
     setAuthenticationError({
-      heading: "Registration Pending Approval",
+      heading: "Account Pending Approval",
       subHeading: "Please wait for approval to continue.",
       message:
-        "Sorry, you cannot sign in at the moment because your registration is pending approval. Please wait for approval before attempting to sign in.",
+        "Sorry, you cannot sign in at the moment because your account is pending approval. Please wait for approval before attempting to sign in.",
     });
   }
   // Registration Denied
-  else if (error === "registrationStatus: denied") {
+  else if (
+    error ===
+    `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.denied.name}`
+  ) {
     setAuthenticationError({
-      heading: "Registration Denied",
-      subHeading: "Please contact support to continue.",
+      heading: "Application Denied",
+      subHeading: "Please contact support for more information.",
       message:
-        "Sorry, you cannot sign in at the moment because your registration has been denied. Please contact support for more information.",
+        "Sorry, you cannot sign in at the moment because your application has been denied. Please contact support for more information.",
     });
   }
-  // Registration Disabled
-  else if (error === "registrationStatus: disabled") {
+  // Account Disabled
+  else if (
+    error ===
+    `${errorCodes.loginInvalid.code}-${mainConstants.registrationStatus.disabled.name}`
+  ) {
     setAuthenticationError({
-      heading: "Registration Disabled",
-      subHeading: "Please contact support to continue.",
+      heading: "Account Disabled",
+      subHeading: "Please contact support more information.",
       message:
-        "Sorry, you cannot sign in at the moment because your registration has been disabled. Please contact support for more information.",
+        "Sorry, you cannot sign in at the moment because your account has been disabled. Please contact support for more information.",
     });
   }
   // Unable to login user
-  else if (error === "Unable to login user") {
+  else if (error === errorCodes.loginServerError.code) {
     setAuthenticationError({
       heading: "Unable to Login",
       subHeading: "Please try again later.",
       message:
         "Sorry, you cannot sign in at the moment because we are unable to login your account. Please try again later.",
+    });
+  }
+  // Unable to register user
+  else if (error === errorCodes.registerServerError.code) {
+    setAuthenticationError({
+      heading: "Unable to Register",
+      subHeading: "Please try again later.",
+      message:
+        "Sorry, you cannot sign in at the moment because we are unable to register your account. Please try again later.",
     });
   }
   // Response JSON error
@@ -147,16 +167,63 @@ const handleLoginErrors = async ({
         "Sorry, you cannot sign in at the moment because we are unable to login your account. Please try again later.",
     });
   }
-
-  // Please regsiter first
-  else if (error === "Please register first") {
-    setAuthenticationError({
-      heading: "Please Register",
-      subHeading: "Please register to continue.",
-      message:
-        "Sorry, you cannot sign in at the moment because you have not registered. Please register first.",
-    });
-  }
 };
 
-export {list, handleLoginErrors};
+// Handle User Registration
+const handleUserRegistration = ({
+  user,
+  setSuccessAlert,
+  setToken,
+  setUserId,
+  setFirstName,
+  setLastName,
+  setEmail,
+  router,
+}: HandleUserRegistration) => {
+  setToken(user.token);
+  setUserId(user.user._id);
+  setFirstName(user.user.firstName);
+  setLastName(user.user.lastName);
+  setEmail(user.user.email);
+  router.push("/register");
+  setSuccessAlert(SUCCESS_ALERT.ACCOUNT_SETUP, 6);
+};
+
+// Handle Pending Confirmation
+const handlePendingConfirmation = ({
+  user,
+  setSuccessAlert,
+  setRouteActionLoading,
+  setAuthenticationError,
+  setUserId,
+  setUserType,
+  setEmail,
+  setFirstName,
+  setLastName,
+  setRegistrationStatus,
+}: HandlePendingConfirmation) => {
+  setSuccessAlert("", 0);
+  setRouteActionLoading(false);
+
+  // Registration Pending Confirmation
+  setAuthenticationError({
+    heading: "Registration Pending Confirmation",
+    subHeading: "Please confirm your email to continue.",
+    message:
+      "Sorry, you cannot sign in at the moment because your registration is pending confirmation. Please check your email for a confirmation link.",
+  });
+  // Set States
+  setUserId(user.user._id);
+  setUserType(user.user.userType);
+  setEmail(user.user.email);
+  setFirstName(user.user.firstName);
+  setLastName(user.user.lastName);
+  setRegistrationStatus(user.registrationStatus);
+};
+
+export {
+  list,
+  handleLoginErrors,
+  handleUserRegistration,
+  handlePendingConfirmation,
+};

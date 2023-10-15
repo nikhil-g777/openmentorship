@@ -15,8 +15,6 @@ router.use(cookieParser());
 
 router.post('/login', userController.loginUser);
 
-router.post('/register', userController.registerUser);
-
 router.get('/confirmRegistration', userController.confirmRegistration);
 
 router.post('/tempAuth/:_id', userController.tempAuth);
@@ -47,5 +45,7 @@ router.get(
   util.checkRole([role.mentee, role.mentor, role.admin]),
   userController.twilioToken,
 );
+
+router.post('/resendConfirmationEmail', userController.resendConfirmationEmail);
 
 module.exports = router;

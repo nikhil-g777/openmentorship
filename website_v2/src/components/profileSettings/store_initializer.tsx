@@ -4,10 +4,12 @@ import {UserProfile} from "@/types/profile";
 import {
   useCommonStore,
   useProfileSettingsStore,
+  useProfileStore,
   useRegisterStore,
 } from "@/zustand/store";
 import {useEffect} from "react";
 import {notFound, useRouter} from "next/navigation";
+import {ERROR_ALERT} from "@/constants/common";
 
 type Props = {
   data: UserProfile;
@@ -38,12 +40,13 @@ const StoreInitializer = ({data, token}: Props) => {
   } = useRegisterStore();
   const {setProfileImage, setisProfilePage} = useProfileSettingsStore();
   const {setErrorAlert} = useCommonStore();
+  const {setCurrentPage} = useProfileStore();
 
   // Update states
   useEffect(() => {
     // Redirect if no token
     if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
       router.replace("/");
       return;
     }
@@ -54,6 +57,7 @@ const StoreInitializer = ({data, token}: Props) => {
     }
 
     // Set states
+    setCurrentPage("profile");
     setToken(token);
     setFirstName(data.user.firstName);
     setLastName(data.user.lastName);
@@ -81,6 +85,7 @@ const StoreInitializer = ({data, token}: Props) => {
     token,
     data,
     router,
+    setCurrentPage,
     setErrorAlert,
     setToken,
     setFirstName,

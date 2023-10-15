@@ -625,6 +625,16 @@ const handleUserConfirmation = (
   }
 };
 
+// Check is valid JSON
+const isValidJSON = (str: string) => {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
+
 export {
   linkedInPattern,
   twitterPattern,
@@ -652,4 +662,5 @@ export {
   checkAtleastOneSocialLinkProvided,
   validateSocialLinks,
   handleUserConfirmation,
+  isValidJSON,
 };

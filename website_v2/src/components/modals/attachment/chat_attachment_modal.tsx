@@ -4,6 +4,7 @@ import {useChatStore, useCommonStore} from "@/zustand/store";
 import {useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {AttachmentWrapper} from "./attachment_wrapper";
+import {ERROR_ALERT} from "@/constants/common";
 
 const ChatAttachmentModal = () => {
   const {
@@ -31,7 +32,7 @@ const ChatAttachmentModal = () => {
   const handleSend = () => {
     // Return if no attachment found
     if (!chatAttachment) {
-      setErrorAlert("No attachment found!", 6);
+      setErrorAlert(ERROR_ALERT.NO_ATTACHMENT, 6);
       return;
     }
 
@@ -47,7 +48,7 @@ const ChatAttachmentModal = () => {
         setChatAttachment(null);
       })
       .catch(() => {
-        setErrorAlert("Error sending attachment!", 6);
+        setErrorAlert(ERROR_ALERT.ERROR_SENDING_ATTACHMENT, 6);
         setChatConnectionStatus("connected");
       });
   };

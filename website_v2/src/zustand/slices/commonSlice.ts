@@ -20,6 +20,8 @@ export type CommonSlice = {
   setUserConfirmation: (
     userConfirmation: CommonSlice["userConfirmation"] | null
   ) => void;
+  authorizationCode: string;
+  setAuthorizationCode: (authorizationCode: string) => void;
 };
 
 const initialState = {
@@ -28,6 +30,7 @@ const initialState = {
   authenticationError: null,
   routeActionLoading: false,
   userConfirmation: null,
+  authorizationCode: "",
 };
 
 export const commonSlice: StateCreator<
@@ -78,6 +81,11 @@ export const commonSlice: StateCreator<
   ) => {
     set(() => ({
       userConfirmation: userConfirmation,
+    }));
+  },
+  setAuthorizationCode: (authorizationCode: string) => {
+    set(() => ({
+      authorizationCode: authorizationCode,
     }));
   },
 });

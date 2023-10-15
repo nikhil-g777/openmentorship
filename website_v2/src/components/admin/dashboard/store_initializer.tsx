@@ -1,5 +1,6 @@
 "use client";
 
+import {ERROR_ALERT, PAGES} from "@/constants/common";
 import {SearchData, StatsData, UsersData} from "@/types/admin/dashboard";
 import {
   useAdminDashboardStore,
@@ -38,17 +39,14 @@ const StoreInitializer = ({
   useEffect(() => {
     // Redirect if token is not available
     if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
       router.replace("/");
       return;
     }
 
     // Redirect if user is not admin
     if (userRole !== "admin") {
-      setErrorAlert(
-        "You are not authorized to access this page! Redirecting you to homepage.",
-        6
-      );
+      setErrorAlert(ERROR_ALERT.NOT_AUHTORIZED, 6);
       router.replace("/");
       return;
     }
@@ -68,7 +66,7 @@ const StoreInitializer = ({
     setUsersData(data);
     setHeading(userType.split("")[0].toUpperCase() + userType.slice(1) + "s");
     setListingData(data.users);
-    setCurrentPage("dashboard");
+    setCurrentPage(PAGES.ADMIN.DASHBOARD);
 
     // Set search data
     if (searchData) {

@@ -1,5 +1,6 @@
 "use client";
 
+import {PAGES} from "@/constants/common";
 import {useProfileStore} from "@/zustand/store";
 
 const ProfileCardLoader = () => {
@@ -18,7 +19,7 @@ const ProfileCardLoader = () => {
             className="mt-2 rounded-full bg-base-300 animate-pulse"
             style={{width: "150px", height: "32px"}}
           ></div>
-          {currentPage !== "explore" ? (
+          {currentPage !== PAGES.EXPLORE ? (
             <div
               className="mt-2 rounded-full bg-base-300 animate-pulse"
               style={{width: "150px", height: "32px"}}

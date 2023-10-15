@@ -1,5 +1,6 @@
 "use client";
 
+import {ERROR_ALERT, PAGES} from "@/constants/common";
 import {performCardData} from "@/helpers/matches";
 import {MatchesProfile, MatchesResponse} from "@/types/matches";
 import {
@@ -37,7 +38,7 @@ const StoreInitializer = ({
   useEffect(() => {
     // Redirect to landing page data not found
     if (!token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
       router.replace("/");
       return;
     }
@@ -48,12 +49,12 @@ const StoreInitializer = ({
     }
 
     // Set listing data
-    const cardData = performCardData(filteredData, "matches", userType);
+    const cardData = performCardData(filteredData, PAGES.MATCHES, userType);
     setListingData(cardData);
     setHeading(heading);
     // Set profile data
     setCollapsable(true);
-    setCurrentPage("matches");
+    setCurrentPage(PAGES.MATCHES);
     setCurrentTab(currentTab);
     setUserType(userType);
   }, [
@@ -72,6 +73,7 @@ const StoreInitializer = ({
     userType,
     setUserType,
   ]);
+
   return null;
 };
 

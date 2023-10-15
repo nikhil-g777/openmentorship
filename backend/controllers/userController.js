@@ -1,148 +1,18 @@
 const _ = require('lodash');
-const axios = require('axios');
-const queryString = require('query-string');
 const util = require('../lib/utils');
-const config = require('../config/config');
 
 const { generateTwilioToken } = require('../config/twilio');
-const { sendMail } = require('../lib/mailer');
 const constants = require('../lib/constants');
+const errorCodes = require('../lib/errorCodes');
 
 const Match = require('../models/match');
-const Token = require('../models/token');
 const User = require('../models/user');
-
-const linkedinAuth = axios.create({
-  baseURL: 'https://www.linkedin.com/',
-});
-
-const linkedinApi = axios.create({
-  baseURL: 'https://api.linkedin.com/',
-});
-
-const extractImageUrls = (profileResponse) => {
-  const res = {};
-  if (profileResponse.data.profilePicture) {
-    const displayImages =
-      profileResponse.data.profilePicture['displayImage~'].elements;
-
-    displayImages.forEach((element) => {
-      const { displaySize } =
-        element.data['com.linkedin.digitalmedia.mediaartifact.StillImage'];
-      const imageKey = `${displaySize.width}x${displaySize.height}`;
-      const imageUrl = element.identifiers[0].identifier;
-
-      res[imageKey] = imageUrl;
-
-      if (imageKey == '200x200') {
-        res.default = imageUrl;
-      }
-    });
-  }
-  return res;
-};
-
-const fetchUserToken = async (user) => {
-  const token = await Token.findOne({ userId: user._id }).exec();
-  if (!token) {
-    // encrypt information
-    const t = util.refreshToken(user._id);
-    Token.create({ refreshToken: t, userId: user._id });
-  }
-  // send the access token
-  const accessToken = util.accessToken(user._id);
-
-  return {
-    token: accessToken,
-  };
-};
-
-const sendRegistrationMail = async (user) => {
-  const confirmationToken = util.encodeRegistrationToken(user._id);
-  const confirmationLink = `https://${process.env.FRONTEND_BASE_URL}/confirmUserRegistration?confirmationToken=${confirmationToken}`;
-
-  var sendgridTemplate = ""
-  if(user.userType == constants.userTypes.mentee){
-    sendgridTemplate = config.sendgrid.templates.mentee_signup;
-  } else if(user.userType == constants.userTypes.mentor) {
-    sendgridTemplate = config.sendgrid.templates.mentor_signup;
-  } else {
-    // TODO: Add some email alerting for errors like this.
-    console.err("Invalid user type for sending registration mail");
-  }
-
-  const response = await sendMail(
-    user.email,
-    'Openmentorship Email Confirmation',
-    {
-      name: `${user.firstName} ${user.lastName}`,
-      confirmationLink,
-    },
-    sendgridTemplate,
-  );
-  return response;
-};
-
-const getLinkedInProfile = (authCode, isLocal = false) =>
-  new Promise((resolve, reject) => {
-    let redirectUri = '';
-    if (isLocal) {
-      redirectUri = process.env.LINKEDIN_REDIRECT_URI_LOCAL;
-    } else {
-      redirectUri = process.env.LINKEDIN_REDIRECT_URI;
-    }
-
-    const authUrl = queryString.stringifyUrl({
-      url: '/oauth/v2/accessToken',
-      query: {
-        grant_type: 'authorization_code',
-        code: authCode,
-        redirect_uri: redirectUri,
-        client_id: process.env.LINKEDIN_CLIENT_ID,
-        client_secret: process.env.LINKEDIN_CLIENT_SECRET,
-      },
-    });
-    const profileUrl =
-      '/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))';
-    const emaileUrl = `/v2/emailAddress?q=members&projection=(elements*(handle~))`;
-
-    const results = {};
-
-    linkedinAuth
-      .post(authUrl) // exchange auth code for access token
-      .then((response) => {
-        results.access_token = response.data.access_token;
-        return linkedinApi.get(profileUrl, {
-          // get user profile
-          headers: {
-            Authorization: `Bearer ${results.access_token}`,
-          },
-        });
-      })
-      .then((profileResponse) => {
-        results.profileResponse = profileResponse;
-        results.profileImageUrls = extractImageUrls(profileResponse);
-        return linkedinApi.get(emaileUrl, {
-          headers: {
-            Authorization: `Bearer ${results.access_token}`,
-          },
-        });
-      })
-      .then((emailResponse) => {
-        const response = {
-          firstName: results.profileResponse.data.localizedFirstName,
-          lastName: results.profileResponse.data.localizedLastName,
-          linkedInId: results.profileResponse.data.id,
-          email: emailResponse.data.elements[0]['handle~'].emailAddress,
-          profileImageUrls: results.profileImageUrls,
-        };
-        resolve(response);
-      })
-      .catch((error) => {
-        console.log(error);
-        reject(new Error({ msg: 'Error in getLinkedInProfile }))' }));
-      });
-  });
+const {
+  handleUserRegistration,
+  getLinkedInProfile,
+  fetchUserToken,
+  sendRegistrationMail,
+} = require('../helpers/user');
 
 const loginUser = async (req, res) => {
   const { body } = req;
@@ -150,13 +20,13 @@ const loginUser = async (req, res) => {
   if (!body) {
     return res
       .status(400)
-      .json({ success: false, error: 'request body is empty' });
+      .json({ success: false, errorCode: errorCodes.missingInputs.code, message: 'request body is empty' });
   }
 
   if (!body.authCode) {
     return res
       .status(400)
-      .json({ success: false, error: 'authCode missing in the body' });
+      .json({ success: false, errorCode: errorCodes.missingInputs.code, message: 'authCode missing in the body' });
   }
 
   try {
@@ -166,148 +36,62 @@ const loginUser = async (req, res) => {
     const linkedInProfile = await getLinkedInProfile(body.authCode, isLocal);
 
     // Update LinkedIn profile image URLs for the user
-    const updateData = { profileImageUrls: linkedInProfile.profileImageUrls };
     const updatedUser = await User.findOneAndUpdate(
       { linkedInId: linkedInProfile.linkedInId },
-      updateData,
-      { new: true },
-    ).exec();
+      { profileImageUrls: linkedInProfile.profileImageUrls },
+      {
+        new: true,
+        projection: {
+          _id: 1,
+          userType: 1,
+          email: 1,
+          firstName: 1,
+          lastName: 1,
+          registrationStatus: 1,
+        },
+      },
+    );
 
-    if (!updatedUser) {
-      // If status is not complete
-      return res.status(401).json({
-        success: false,
-        error: 'Please register first',
+    // Handle registration if user is not found or registration is incomplete.
+    if (
+      !updatedUser ||
+      updatedUser.registrationStatus === constants.registrationStatus.incomplete.name
+    ) {
+      const newRequest = req;
+      newRequest.body.type = 'linkedInSignup';
+      return await handleUserRegistration(newRequest, res, linkedInProfile);
+    }
+    
+    // Successful login
+    if (
+      updatedUser.registrationStatus == constants.registrationStatus.complete.name
+    ) {
+      const { token } = await fetchUserToken(updatedUser);
+      return res.json({
+        success: true,
+        message: 'Login Successful',
+        token,
+        user: {
+          _id: updatedUser._id,
+          userType: updatedUser.userType,
+        },
       });
     }
 
-    if (
-      updatedUser.registrationStatus == constants.registrationStatus.complete
-    ) {
-      const { token } = await fetchUserToken(updatedUser);
-      return (
-        res
-          // .cookie('accessToken', accessToken, {
-          //   sameSite: 'none',
-          //   secure: true,
-          // })
-          .json({
-            success: true,
-            message: 'Login Successful',
-            token,
-            user: {
-              _id: updatedUser._id,
-              userType: updatedUser.userType,
-            },
-          })
-      );
-    }
-    // If status is not complete
+    // If status is not complete.
     return res.status(401).json({
       success: false,
-      error: constants.loginMessageByStatus[updatedUser.registrationStatus],
+      errorCode: errorCodes.loginInvalid.code,
+      message: constants.registrationStatus[updatedUser.registrationStatus].loginMessage,
       registrationStatus: updatedUser.registrationStatus,
+      user: updatedUser,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
-      error: 'Unable to login user',
-    });
-  }
-};
-
-const registerUser = (req, res) => {
-  const { body } = req;
-
-  if (!body) {
-    return res
-      .status(400)
-      .json({ success: false, error: 'request body is empty' });
-  }
-
-  if (body.type == 'linkedInSignup') {
-    if (!body.authCode) {
-      return res
-        .status(400)
-        .json({ success: false, error: 'authCode missing in the body' });
-    }
-    const results = {};
-
-    const isLocal = body.isLocal == true;
-
-    getLinkedInProfile(body.authCode, isLocal)
-      .then((linkedInProfile) => {
-        results.linkedInProfile = linkedInProfile;
-        return User.findOne({ linkedInId: linkedInProfile.linkedInId }).exec();
-      })
-      .then((user) => {
-        let userObj = user;
-        if (user) {
-          userObj = Object.assign(user, results.linkedInProfile);
-        } else {
-          userObj = new User(results.linkedInProfile);
-        }
-        userObj.profileImageUrls = results.linkedInProfile.profileImageUrls;
-        return userObj.save();
-      })
-      .then((updatedUser) => {
-        results.updatedUser = updatedUser;
-        return Token.findOne({ userId: updatedUser._id });
-      })
-      .then((token) => {
-        // if token isn't in our DB, store
-        if (!token) {
-          // encrypt information
-          const t = util.refreshToken(results.updatedUser._id);
-
-          Token.create({
-            refreshToken: t,
-            userId: results.updatedUser._id,
-          });
-        }
-        // send the access token
-        const accessToken = util.accessToken(results.updatedUser._id);
-
-        return (
-          res
-            // .cookie('accessToken', accessToken, {
-            //   sameSite: 'none',
-            //   secure: true,
-            // })
-            .json({
-              success: true,
-              token: accessToken,
-              user: {
-                _id: results.updatedUser._id,
-                firstName: results.linkedInProfile.firstName,
-                lastName: results.linkedInProfile.lastName,
-                linkedInId: results.linkedInProfile.linkedInId,
-                email: results.linkedInProfile.email,
-              },
-            })
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json({
-          success: false,
-          error: 'Error in registering the user',
-        });
-      });
-  } else if (body.type == 'completeRegistration') {
-    if (!body.user) {
-      return res.status(400).json({
-        success: false,
-        error: 'request body does not have user object',
-      });
-    }
-
-    return {};
-  } else {
-    return res.status(400).json({
-      success: false,
-      error: 'invalid type',
+      errorCode: errorCodes.loginServerError.code,
+      message: 'Unable to login user',
     });
   }
 };
@@ -317,7 +101,7 @@ const tempAuth = (req, res) => {
 
   const { _id } = req.params;
 
-  if (process.env.NODE_ENV == 'dev') {
+  if (process.env.NODE_ENV == 'local' || process.env.NODE_ENV == 'dev') {
     User.findById(_id, (err, user) => {
       if (err) {
         console.log(err);
@@ -344,7 +128,7 @@ const tempAuth = (req, res) => {
             _id,
             userType: user.userType,
           },
-        })
+        });
     });
   } else {
     return res.status(401).json({
@@ -380,8 +164,9 @@ const updateUser = async (req, res) => {
     if (req.body.type == 'completeRegistration') {
       // if final step of the registration process
       userObj.registrationStatus =
-        constants.registrationStatus.pendingConfirmation;
-      if(userType){
+        constants.registrationStatus.pendingConfirmation.name;
+      if (userType && Object.keys(constants.userTypes).includes(userType)) {
+        userObj.userType = userType; // allow update only for completeRegistration.
         userObj.role = userType;
       }
       sendRegistrationMail(userRecord);
@@ -534,9 +319,9 @@ const confirmRegistration = async (req, res) => {
 
     let newRegistrationStatus = null;
     if (user.userType == constants.userTypes.mentee) {
-      newRegistrationStatus = constants.registrationStatus.complete;
+      newRegistrationStatus = constants.registrationStatus.complete.name;
     } else if (user.userType == constants.userTypes.mentor) {
-      newRegistrationStatus = constants.registrationStatus.pendingApproval;
+      newRegistrationStatus = constants.registrationStatus.pendingApproval.name;
     } else {
       res.status(500).json({ success: false, err: 'Invalid user type' });
     }
@@ -552,13 +337,32 @@ const confirmRegistration = async (req, res) => {
   }
 };
 
+// Resend confirmation email
+const resendConfirmationEmail = async (req, res) => {
+  try {
+    const { user } = req.body;
+    const response = await sendRegistrationMail(user);
+    if (response.success) {
+      return res.status(200).json({ success: true, message: 'Confirmation email sent' });
+    }
+    return res.status(401).json({
+      success: false,
+      error: 'Error sending confirmation email',
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, error: 'Error sending confirmation email' });
+  }
+};
+
 module.exports = {
   loginUser,
-  registerUser,
   tempAuth,
   updateUser,
   userInfo,
   matches,
   twilioToken,
   confirmRegistration,
+  resendConfirmationEmail,
 };

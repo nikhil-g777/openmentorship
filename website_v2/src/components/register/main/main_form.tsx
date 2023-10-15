@@ -101,7 +101,7 @@ const MainForm = ({
           <textarea
             id="bio"
             placeholder="* Bio"
-            className={`textarea textarea-bordered textarea-lg px-4 text-base w-full max-h-48 min-h-16 ${
+            className={`textarea textarea-bordered textarea-lg px-4 text-base w-full max-h-48 min-h-[128px] ${
               bioError.length ? "border-error" : ""
             }`}
             disabled={firstName === "" || lastName === ""}
