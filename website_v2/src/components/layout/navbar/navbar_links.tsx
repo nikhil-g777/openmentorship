@@ -63,7 +63,7 @@ const NavbarLinks = () => {
                 pathname === "/blogs" ? "text-primary" : ""
               }`}
             >
-              Blogs
+              Blog
             </Link>
           </>
         )}
@@ -158,7 +158,7 @@ const NavbarLinks = () => {
                     pathname === "/blogs" ? "bg-primary text-white" : ""
                   }
                 >
-                  Blogs
+                  Blog
                 </Link>
               </li>
             </>

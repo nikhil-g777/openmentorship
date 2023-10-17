@@ -29,7 +29,7 @@ const Navbar = () => {
               pathname === "/blogs" ? "text-primary" : ""
             }`}
           >
-            Blogs
+            Blog
           </Link>
         ) : null}
         {/* Logo */}
