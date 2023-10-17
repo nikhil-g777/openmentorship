@@ -31,7 +31,7 @@ const NavbarLinks = () => {
           </>
         ) : (
           <>
-            {userType === "mentee" ? (
+            {userType === USER_TYPE.MENTEE ? (
               <Link
                 href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
                 className={`btn btn-ghost normal-case text-base ${
