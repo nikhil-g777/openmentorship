@@ -1,14 +1,12 @@
 "use client";
 
-import {USER_TYPE} from "@/constants/common";
-import {signOut, useSession} from "next-auth/react";
+import {signOut} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 
 const NavbarDropdown = () => {
-  const userType = useSession()?.data?.user?.user?.userType || "";
   const pathname = usePathname();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -45,34 +43,6 @@ const NavbarDropdown = () => {
               className={pathname === "/profile" ? "bg-primary text-white" : ""}
             >
               Profile
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/matches"
-              className={pathname === "/matches" ? "bg-primary text-white" : ""}
-            >
-              Matches
-            </Link>
-          </li>
-          {userType === USER_TYPE.MENTEE ? (
-            <li>
-              <Link
-                href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
-                className={
-                  pathname === "/explore" ? "bg-primary text-white" : ""
-                }
-              >
-                Discover
-              </Link>
-            </li>
-          ) : null}
-          <li>
-            <Link
-              href="/chat"
-              className={pathname === "/chat" ? "bg-primary text-white" : ""}
-            >
-              Chat
             </Link>
           </li>
           <li onClick={() => signOut()}>
