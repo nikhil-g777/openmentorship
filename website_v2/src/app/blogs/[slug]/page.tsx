@@ -3,6 +3,13 @@ import {getBlogData, getSortedBlogsData} from "../../../../lib/blogs";
 import Image from "next/image";
 import Link from "next/link";
 
+// Types
+type Props = {
+  params: {
+    slug: string;
+  };
+};
+
 // Get static params
 export async function generateStaticParams() {
   const allBlogsData = getSortedBlogsData();
@@ -11,12 +18,15 @@ export async function generateStaticParams() {
   }));
 }
 
-// Types
-type Props = {
-  params: {
-    slug: string;
+// Generate dynamic metadata
+export async function generateMetadata({params}: Props) {
+  const blogData = await getBlogData(params.slug);
+  const title = "OpenMentorship - " + blogData.title;
+  return {
+    title: title,
+    description: blogData.description,
   };
-};
+}
 
 const Page = async ({params}: Props) => {
   const {slug} = params;

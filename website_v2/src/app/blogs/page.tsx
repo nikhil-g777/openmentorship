@@ -1,9 +1,18 @@
 import Link from "next/link";
 import {getSortedBlogsData} from "../../../lib/blogs";
 import Image from "next/image";
+import type {Metadata} from "next";
+
+export const metadata: Metadata = {
+  title: "OpenMentorship - All Blogs",
+  description:
+    "This is the homepage for the blogs at OpenMentorship. This page lists all the blog posts available at OpenMentorship.",
+  keywords:
+    "blogs, openmentorship, openmentorship guidelines, openmentorship blogs, openmentorship articles",
+};
 
 const Page = async () => {
-  const allBlogsData = await getSortedBlogsData();
+  const allBlogsData = getSortedBlogsData();
   return (
     <div className="w-full max-w-6xl mx-auto px-4 pb-20">
       <h1 className="w-full max-w-6xl mx-auto pt-16 text-xl text-center md:text-left sm:text-heading sm:leading-normal font-bold">
