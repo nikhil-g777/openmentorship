@@ -1,6 +1,9 @@
 ---
 title: "Mentorship session template"
+description: "In a mentorship session, the mentor and mentee come together to discuss the mentee's challenges and goals. The mentor provides guidance and support to help the mentees overcome obstacles and achieve their objectives. This template outlines the structure of a typical mentorship session, including the introduction, exploration, planning, reflection, and next steps. By following this framework, both the mentor and mentee can maximize the value and effectiveness of their sessions."
 date: "2023-10-16"
+thumbnail: "/assets/blogs/mentorship-session-template.jpg"
+author: "Satwik Polkampally"
 ---
 
 In a mentorship session, the mentor and mentee come together to discuss the mentee's challenges and goals. The mentor provides guidance and support to help the mentees overcome obstacles and achieve their objectives. This template outlines the structure of a typical mentorship session, including the introduction, exploration, planning, reflection, and next steps. By following this framework, both the mentor and mentee can maximize the value and effectiveness of their sessions.

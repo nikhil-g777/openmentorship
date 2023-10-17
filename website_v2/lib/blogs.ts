@@ -23,6 +23,9 @@ export function getSortedBlogsData() {
       id,
       date: matterResult.data.date,
       title: matterResult.data.title,
+      description: matterResult.data.description,
+      thumbnail: matterResult.data.thumbnail,
+      author: matterResult.data.author,
       ...matterResult.data,
     };
   });

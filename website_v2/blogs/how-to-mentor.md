@@ -1,6 +1,9 @@
 ---
 title: "How to Mentor: A comprehensive guide"
+description: "Welcome to \"How to Mentor: A Comprehensive Guide\"! This guide provides valuable insights and strategies for becoming an effective mentor. Whether you're new to mentoring or looking to enhance your mentoring skills, this comprehensive guide will equip you with the knowledge and tools you need. Let's dive in and explore the key principles and practices of successful mentoring."
 date: "2023-10-16"
+thumbnail: "/assets/blogs/how-to-mentor.jpg"
+author: "Satwik Polkampally"
 ---
 
 ## Introduction

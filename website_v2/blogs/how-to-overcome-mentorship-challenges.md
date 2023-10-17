@@ -1,6 +1,9 @@
 ---
 title: "How to overcome common Mentorship challenges"
+description: "Mentoring is a rewarding journey that offers both mentors and mentees a chance to learn and grow together. However, like any meaningful relationship, mentoring isn't without its challenges. In this article, we'll explore some common obstacles mentors and mentees face and provide practical tips to overcome them, ensuring a successful and enriching mentoring experience."
 date: "2023-10-16"
+thumbnail: "/assets/blogs/how-to-overcome-mentorship-challenges.jpg"
+author: "Satwik Polkampally"
 ---
 
 ## Introduction
