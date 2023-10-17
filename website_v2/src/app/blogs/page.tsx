@@ -31,7 +31,7 @@ const Page = async () => {
                   ? blog.description.slice(0, 250) + "..."
                   : blog.description}
               </p>
-              <p className="font-semibold">~ {blog.author}</p>
+              <p className="text-sm font-semibold">~ {blog.author}</p>
               <div className="card-actions justify-end">
                 <button className="btn btn-link normal-case">Read more</button>
               </div>
