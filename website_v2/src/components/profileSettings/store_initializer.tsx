@@ -9,7 +9,7 @@ import {
 } from "@/zustand/store";
 import {useEffect} from "react";
 import {notFound, useRouter} from "next/navigation";
-import {ERROR_ALERT} from "@/constants/common";
+import {PAGES} from "@/constants/common";
 
 type Props = {
   data: UserProfile;
@@ -44,21 +44,14 @@ const StoreInitializer = ({data, token}: Props) => {
 
   // Update states
   useEffect(() => {
-    // Redirect if no token
-    if (!token) {
-      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
-      router.replace("/");
-      return;
-    }
-
     // Not found if request failed
     if (!data.success) {
       notFound();
     }
 
     // Set states
-    setCurrentPage("profile");
-    setToken(token);
+    setCurrentPage(PAGES.PROFILE);
+    setToken(token || "");
     setFirstName(data.user.firstName);
     setLastName(data.user.lastName);
     setEmail(data.user.email);

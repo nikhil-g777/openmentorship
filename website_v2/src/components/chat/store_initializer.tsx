@@ -57,12 +57,6 @@ const StoreInitializer = ({
   const {setErrorAlert, setSuccessAlert} = useCommonStore();
 
   useEffect(() => {
-    // Redirect if data not found
-    if (!token) {
-      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
-      router.replace("/");
-      return;
-    }
     // Check if twilio token is available
     if (!data.success || !twilioToken.success) {
       notFound();
@@ -86,7 +80,7 @@ const StoreInitializer = ({
     setArchiveHeader("Archived Chats");
     setChatId(chatId);
     setProfileChatId(chatId);
-    setToken(token);
+    setToken(token || "");
     setTwilioToken(twilioToken?.twilioToken || "");
   }, [
     router,
