@@ -1,6 +1,6 @@
 "use client";
 
-import {ERROR_ALERT, PAGES, USER_TYPE} from "@/constants/common";
+import {PAGES, USER_TYPE} from "@/constants/common";
 import {UserProfile} from "@/types/profile";
 import {
   useCarouselStore,
@@ -35,13 +35,6 @@ const StoreInitializer = ({data, content, token}: Props) => {
 
   // Re-render on data change
   useEffect(() => {
-    // Redirect if no data found
-    if (!token) {
-      setErrorAlert(ERROR_ALERT.REDIRECT_HOMEPAGE, 6);
-      router.replace("/");
-      return;
-    }
-
     // 404 page if request failed
     if (!data.success || !content.success) {
       notFound();
