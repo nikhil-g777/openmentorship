@@ -69,7 +69,7 @@ const NavbarLinks = () => {
         )}
       </div>
       {/* Dropdown */}
-      <div className="dropdown lg:hidden">
+      <div className="dropdown lg:hidden" data-cy="dropdown">
         <label tabIndex={0} className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -137,6 +137,7 @@ const NavbarLinks = () => {
                   className={
                     pathname === "/matches" ? "bg-primary text-white" : ""
                   }
+                  data-cy="matches-link"
                 >
                   Matches
                 </Link>

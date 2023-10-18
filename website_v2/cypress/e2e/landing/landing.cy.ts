@@ -31,17 +31,19 @@ describe("Page load test", () => {
       "contain.text",
       "hello@openmentorship.com"
     );
-    cy.getCypress("landing-hero-register-button").should(
+    cy.getCypress("linkedin-button").should("be.visible");
+    cy.getCypress("linkedin-button").should(
       "contain.text",
-      "Register"
+      "Sign in with LinkedIn"
     );
-
     cy.getCypress("navbar-logo-img").should("be.visible");
     cy.getCypress("footer-logo-img").should("be.visible");
     cy.getCypress("landing-hero-img").should("be.visible");
     cy.getCypress("landing-howItWorks-img").should("be.visible");
     cy.getCypress("landing-dreamCareer-img").should("be.visible");
     cy.getCypress("linkedin-button").should("be.visible");
+    cy.getCypress("blogs-link-unauthenticated").should("be.visible");
+    cy.getCypress("blogs-link-unauthenticated").click();
   });
 });
 

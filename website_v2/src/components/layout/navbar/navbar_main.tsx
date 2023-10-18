@@ -28,6 +28,7 @@ const Navbar = () => {
             className={`btn btn-ghost normal-case text-base ${
               pathname === "/blogs" ? "text-primary" : ""
             }`}
+            data-cy="blogs-link-unauthenticated"
           >
             Blog
           </Link>
