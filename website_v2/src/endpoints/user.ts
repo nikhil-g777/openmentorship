@@ -130,6 +130,21 @@ const resendConfirmationEmail = async (user: {
   }
 };
 
+// Temp Auth
+const tempAuth = async (userId: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/tempAuth/${userId}`,
+      {
+        method: "POST",
+      }
+    );
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   getUserInfo,
   nextAuthLogin,
@@ -137,4 +152,5 @@ export {
   updateUser,
   confirmRegistration,
   resendConfirmationEmail,
+  tempAuth,
 };
