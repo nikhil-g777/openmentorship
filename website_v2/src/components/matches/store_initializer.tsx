@@ -1,5 +1,6 @@
 "use client";
 
+import {PAGES} from "@/constants/common";
 import {performCardData} from "@/helpers/matches";
 import {MatchesProfile, MatchesResponse} from "@/types/matches";
 import {
@@ -7,7 +8,7 @@ import {
   useListingStore,
   useProfileStore,
 } from "@/zustand/store";
-import {useRouter} from "next/navigation";
+import {notFound, useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
@@ -35,20 +36,18 @@ const StoreInitializer = ({
 
   // Re-render on data change
   useEffect(() => {
-    // Redirect to landing page data not found
-    if (!data.success || !token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
+    // 404 page if request failed
+    if (!data.success) {
+      notFound();
     }
 
     // Set listing data
-    const cardData = performCardData(filteredData, "matches", userType);
+    const cardData = performCardData(filteredData, PAGES.MATCHES, userType);
     setListingData(cardData);
     setHeading(heading);
     // Set profile data
     setCollapsable(true);
-    setCurrentPage("matches");
+    setCurrentPage(PAGES.MATCHES);
     setCurrentTab(currentTab);
     setUserType(userType);
   }, [
@@ -67,6 +66,7 @@ const StoreInitializer = ({
     userType,
     setUserType,
   ]);
+
   return null;
 };
 

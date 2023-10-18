@@ -45,7 +45,7 @@ const ProfileCard = ({data}: Props) => {
                   <Name
                     firstName={data.firstName}
                     lastName={data.lastName}
-                    linkedinURI={data.linkedInId}
+                    linkedinURI={data.linkedInProfileUrl}
                   />
                   {/* Designation */}
                   <Designation headline={data.headline} />
@@ -62,7 +62,7 @@ const ProfileCard = ({data}: Props) => {
                   {/* Top Skills */}
                   <Skills skills={data.skills} />
                   {/* Open to providing */}
-                  <Provides heading="Open to providing" provides={data.goals} />
+                  <Provides heading="Open to Providing" provides={data.goals} />
                   {/* Social Links */}
                   <Socials data={data.socialLinks} />
                 </div>

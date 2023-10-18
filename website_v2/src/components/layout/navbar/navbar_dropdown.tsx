@@ -45,30 +45,6 @@ const NavbarDropdown = () => {
               Profile
             </Link>
           </li>
-          <li>
-            <Link
-              href="/matches"
-              className={pathname === "/matches" ? "bg-primary text-white" : ""}
-            >
-              Matches
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
-              className={pathname === "/explore" ? "bg-primary text-white" : ""}
-            >
-              Discover
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/chat"
-              className={pathname === "/chat" ? "bg-primary text-white" : ""}
-            >
-              Chat
-            </Link>
-          </li>
           <li onClick={() => signOut()}>
             <button>Logout</button>
           </li>

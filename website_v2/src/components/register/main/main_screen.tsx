@@ -1,17 +1,28 @@
 "use client";
 
-import {LinkedInConnect} from "./linkedin_connect";
-import Link from "next/link";
-import {useRegisterStore} from "@/zustand/store";
-import {useState} from "react";
+import {
+  useCommonStore,
+  useProfileSettingsStore,
+  useRegisterStore,
+} from "@/zustand/store";
+import {useEffect, useState} from "react";
 import {ImageWrapper} from "./image_wrapper";
 import {MainForm} from "./main_form";
+import {linkedInPattern} from "@/helpers/register";
 
 const MainScreen = () => {
   const [headlineError, setHeadlineError] = useState<string>("");
   const [bioError, setBioError] = useState<string>("");
-  const {token, currentScreen, setCurrentScreen, headline, bio} =
-    useRegisterStore();
+  const {
+    token,
+    currentScreen,
+    setCurrentScreen,
+    linkedInProfileUrl,
+    headline,
+    bio,
+  } = useRegisterStore();
+  const {setLinkedInUrlError} = useProfileSettingsStore();
+  const {setRouteActionLoading} = useCommonStore();
 
   // Handle submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,6 +34,10 @@ const MainScreen = () => {
     setBioError("");
 
     // Show errors
+    if (!linkedInPattern.test(linkedInProfileUrl)) {
+      setLinkedInUrlError("Please enter a valid LinkedIn profile URL.");
+      return;
+    }
     if (headline.length <= 3 || headline.length > 100) {
       setHeadlineError("Your headline should be between 3 and 100 characters.");
       return;
@@ -35,6 +50,12 @@ const MainScreen = () => {
     // Move to next screen
     setCurrentScreen("step1");
   };
+
+  // Set routeActionLoading to false
+  useEffect(() => {
+    setRouteActionLoading(false);
+  }, [setRouteActionLoading]);
+
   return (
     <div className={`w-full ${currentScreen === "main" ? "" : "hidden"}`}>
       <div className="w-full min-h-screen h-full grid grid-cols-1 md:grid-cols-2 justify-center">
@@ -49,7 +70,6 @@ const MainScreen = () => {
           <h2 className="text-base text-center md:text-left md:text-lg">
             Find a Mentor who can help guide you to success.
           </h2>
-          <LinkedInConnect />
           {/* Form */}
           <MainForm
             headlineError={headlineError}
@@ -60,9 +80,6 @@ const MainScreen = () => {
           >
             {/* Login or Continue */}
             <div className="w-full mt-8 mb-16 flex flex-col-reverse md:flex-row justify-center items-center gap-4 md:gap-8">
-              <Link href="/" className="link">
-                Already have an account?
-              </Link>
               <button
                 type="submit"
                 className="w-48 btn btn-sm btn-primary rounded-full"

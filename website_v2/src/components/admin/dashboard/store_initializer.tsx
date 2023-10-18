@@ -1,5 +1,6 @@
 "use client";
 
+import {ERROR_ALERT, PAGES} from "@/constants/common";
 import {SearchData, StatsData, UsersData} from "@/types/admin/dashboard";
 import {
   useAdminDashboardStore,
@@ -7,10 +8,11 @@ import {
   useListingStore,
   useProfileStore,
 } from "@/zustand/store";
-import {useRouter} from "next/navigation";
+import {notFound, useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
+  token: string | null | undefined;
   statsData: StatsData;
   userRole: string | undefined | null;
   userType: string;
@@ -20,6 +22,7 @@ type Props = {
 };
 
 const StoreInitializer = ({
+  token,
   statsData,
   userRole,
   userType,
@@ -36,24 +39,19 @@ const StoreInitializer = ({
   useEffect(() => {
     // Redirect if user is not admin
     if (userRole !== "admin") {
-      setErrorAlert(
-        "You are not authorized to access this page! Redirecting you to homepage.",
-        6
-      );
-      router.replace("/");
-      return;
-    }
-    // Redirect if data is not available
-    if (!statsData.success) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
+      setErrorAlert(ERROR_ALERT.NOT_AUHTORIZED, 6);
       router.replace("/");
       return;
     }
 
-    if (!data.success) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
+    // Not found is request failed
+    if (!statsData.success || !data.success) {
+      notFound();
+    }
+
+    // Not found if search request failed
+    if (searchData && !searchData.success) {
+      notFound();
     }
 
     // Set states
@@ -61,7 +59,7 @@ const StoreInitializer = ({
     setUsersData(data);
     setHeading(userType.split("")[0].toUpperCase() + userType.slice(1) + "s");
     setListingData(data.users);
-    setCurrentPage("dashboard");
+    setCurrentPage(PAGES.ADMIN.DASHBOARD);
 
     // Set search data
     if (searchData) {
@@ -74,6 +72,7 @@ const StoreInitializer = ({
       }
     }
   }, [
+    token,
     userRole,
     router,
     setErrorAlert,

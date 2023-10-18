@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const mongoose = require('mongoose');
 
 const PUBLIC = fs.readFileSync(`${__dirname}/../keys/public.pem`);
 const PRIVATE = fs.readFileSync(`${__dirname}/../keys/private.pem`);
@@ -81,4 +82,22 @@ module.exports = {
       };
     }
   },
+
+  convertPaginationQueryParamsToInt: () => (req, res, next) => {
+    req.query.page = parseInt(req.query.page);
+    req.query.limit = parseInt(req.query.limit);
+    next();
+  },
+
+  constructSearchFilter(searchString) {
+    searchFilter = {}
+    if(mongoose.Types.ObjectId.isValid(searchString)){
+      searchFilter = {"_id": searchString}
+    } else {
+      searchFilter = {$text: {$search: searchString}}
+    }
+
+    return searchFilter;
+  }
+
 };

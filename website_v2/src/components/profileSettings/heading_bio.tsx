@@ -3,6 +3,7 @@
 import {useProfileSettingsStore, useRegisterStore} from "@/zustand/store";
 import {Profile} from "../profileCard/profile";
 import {Name} from "../profileCard/name";
+import {LinkedInProfileURL} from "../register/main/linkedInProfileURL/linkedin_profile_url";
 
 const HeadingBio = () => {
   const {profileImage, headlineError, isEditable, setBioError, bioError} =
@@ -30,10 +31,11 @@ const HeadingBio = () => {
         <div className="w-full flex flex-col gap-4">
           {/* Name */}
           <div className="w-full">
-            <Name firstName={firstName} lastName={lastName} linkedinURI="" />
+            <Name firstName={firstName} lastName={lastName} />
           </div>
           {/* Headline and Bio */}
           <div className="w-full form-control">
+            <LinkedInProfileURL />
             <label className="label">
               <span className="label-text">Headline</span>
             </label>

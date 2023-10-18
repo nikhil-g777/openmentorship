@@ -30,4 +30,6 @@ const Session = new Schema(
   },
 );
 
+Session.index({ '$**': 'text' });
+
 module.exports = mongoose.model('Session', Session);

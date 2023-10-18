@@ -1,4 +1,5 @@
-import {DashboardTypes, ExploreTypes} from "@/types/pagination";
+import {TABS} from "@/constants/common";
+import {DashboardTypes, ExploreTypes, SessionsTypes} from "@/types/pagination";
 
 // Handle previous for explore page
 const handleExplorePrev = ({
@@ -76,9 +77,51 @@ const handleDashboardNext = ({
   });
 };
 
+// Handle previous for sessions page
+const handleSessionsPrev = ({
+  pathname,
+  currentPage,
+  currentTab,
+  searchString,
+  router,
+  startTransition,
+}: SessionsTypes) => {
+  const uri =
+    `${pathname}?tab=${
+      currentTab ? currentTab : TABS.ADMIN.SESSIONS.ACTIVE
+    }&page=${currentPage - 1}` +
+    (searchString ? `&searchQuery=${searchString}` : "");
+  startTransition(() => {
+    router.push(uri);
+    router.refresh();
+  });
+};
+
+// Handle next for sessions page
+const handleSessionsNext = ({
+  pathname,
+  currentPage,
+  currentTab,
+  searchString,
+  router,
+  startTransition,
+}: SessionsTypes) => {
+  const uri =
+    `${pathname}?tab=${
+      currentTab ? currentTab : TABS.ADMIN.SESSIONS.ACTIVE
+    }&page=${currentPage + 1}` +
+    (searchString ? `&searchQuery=${searchString}` : "");
+  startTransition(() => {
+    router.push(uri);
+    router.refresh();
+  });
+};
+
 export {
   handleExplorePrev,
   handleExploreNext,
   handleDashboardPrev,
   handleDashboardNext,
+  handleSessionsPrev,
+  handleSessionsNext,
 };

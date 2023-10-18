@@ -15,8 +15,6 @@ const Page = async ({searchParams}: Props) => {
   // Confirmation data
   const data = await confirmRegistration(confirmationToken);
 
-  console.log(data);
-
   return (
     <div>
       <StoreInitializer data={data} />

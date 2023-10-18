@@ -24,6 +24,7 @@ export type RegisterSlice = {
   firstName: string;
   lastName: string;
   email: string;
+  linkedInProfileUrl: string;
   headline: string;
   bio: string;
   // Screen1
@@ -53,6 +54,8 @@ export type RegisterSlice = {
   // Guidelines
   menteeGuidelines: {id: number; imageURL: string; text: string}[];
   mentorGuidelines: {id: number; imageURL: string; text: string}[];
+  // Registration status
+  registrationStatus: string;
 
   // Actions
   // Main screen
@@ -62,6 +65,7 @@ export type RegisterSlice = {
   setFirstName: (type: string) => void;
   setLastName: (type: string) => void;
   setEmail: (type: string) => void;
+  setLinkedInProfileUrl: (type: string) => void;
   setHeadline: (type: string) => void;
   setBio: (type: string) => void;
   // Screen1
@@ -86,6 +90,8 @@ export type RegisterSlice = {
   setSocialLinks: (type: SocialLinks) => void;
   // Reset state
   resetState: () => void;
+  // Registration status
+  setRegistrationStatus: (type: string) => void;
 };
 
 // Initial state
@@ -97,6 +103,7 @@ const initialState = {
   firstName: "",
   lastName: "",
   email: "",
+  linkedInProfileUrl: "",
   headline: "",
   bio: "",
   // Screen1
@@ -133,6 +140,8 @@ const initialState = {
   // Guidelines
   menteeGuidelines: menteeGuidelines,
   mentorGuidelines: mentorGuidelines,
+  // Registration status
+  registrationStatus: "",
 };
 
 export const registerSlice: StateCreator<
@@ -167,6 +176,10 @@ export const registerSlice: StateCreator<
   setEmail: (email: string) =>
     set(() => ({
       email: email,
+    })),
+  setLinkedInProfileUrl: (linkedInProfileUrl: string) =>
+    set(() => ({
+      linkedInProfileUrl: linkedInProfileUrl,
     })),
   setHeadline: (headline: string) =>
     set(() => ({
@@ -235,5 +248,10 @@ export const registerSlice: StateCreator<
   resetState: () =>
     set(() => ({
       ...initialState,
+    })),
+  // Registration status
+  setRegistrationStatus: (registrationStatus: string) =>
+    set(() => ({
+      registrationStatus: registrationStatus,
     })),
 });

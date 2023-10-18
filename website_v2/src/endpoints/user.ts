@@ -99,16 +99,32 @@ const confirmRegistration = async (confirmationToken: string) => {
   }
 };
 
-// Temp Auth
-const tempAuth = async (userId: string) => {
+// Resend Confirmation Email
+const resendConfirmationEmail = async (user: {
+  _id: string;
+  userType: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/tempAuth/${userId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/resendConfirmationEmail`,
       {
         method: "POST",
+        headers: headerProvider(),
+        body: JSON.stringify({
+          user: {
+            _id: user._id,
+            userType: user.userType,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          },
+        }),
       }
     );
-    return res;
+    return res.json();
   } catch (error) {
     return error;
   }
@@ -120,5 +136,5 @@ export {
   registerUser,
   updateUser,
   confirmRegistration,
-  tempAuth,
+  resendConfirmationEmail,
 };

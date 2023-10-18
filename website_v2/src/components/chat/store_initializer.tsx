@@ -1,5 +1,6 @@
 "use client";
 
+import {ERROR_ALERT, PAGES, SUCCESS_ALERT} from "@/constants/common";
 import {performCardData} from "@/helpers/matches";
 import {MatchesProfile} from "@/types/matches";
 import {
@@ -9,7 +10,7 @@ import {
   useProfileStore,
 } from "@/zustand/store";
 import {Client} from "@twilio/conversations";
-import {useRouter} from "next/navigation";
+import {notFound, useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 type Props = {
@@ -24,7 +25,10 @@ type Props = {
   };
   userType: string;
   chatId: string;
-  twilioToken: string;
+  twilioToken: {
+    success: boolean;
+    twilioToken: string;
+  };
 };
 
 const StoreInitializer = ({
@@ -53,16 +57,9 @@ const StoreInitializer = ({
   const {setErrorAlert, setSuccessAlert} = useCommonStore();
 
   useEffect(() => {
-    // Check if data and token is available
-    if (!data.success || !token) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return;
-    }
     // Check if twilio token is available
-    if (twilioToken === "") {
-      setErrorAlert("Error getting twilio token, Try reloading the page", 6);
-      return;
+    if (!data.success || !twilioToken.success) {
+      notFound();
     }
 
     const cardData = performCardData(
@@ -77,14 +74,14 @@ const StoreInitializer = ({
     );
     setListingData(cardData);
     setArchiveListingData(archiveData);
-    setCurrentPage("chat");
+    setCurrentPage(PAGES.CHAT);
     setUserType(userType);
     setHeading("Chats");
     setArchiveHeader("Archived Chats");
     setChatId(chatId);
     setProfileChatId(chatId);
-    setToken(token);
-    setTwilioToken(twilioToken);
+    setToken(token || "");
+    setTwilioToken(twilioToken?.twilioToken || "");
   }, [
     router,
     data,
@@ -107,26 +104,22 @@ const StoreInitializer = ({
 
   useEffect(() => {
     // Check if twilio token is available
-    if (twilioToken === "") {
-      setErrorAlert("Error getting twilio token, Try reloading the page", 6);
-      return;
+    if (!twilioToken.success) {
+      notFound();
     }
 
     // Init chat
-    const client: Client = new Client(twilioToken);
+    const client: Client = new Client(twilioToken?.twilioToken || "");
 
     // Set successfull chat connection
     client.on("initialized", () => {
-      setSuccessAlert("Connected!", 6);
+      setSuccessAlert(SUCCESS_ALERT.CHAT_CONNECTED, 6);
       setClient(client);
     });
 
     // Set failed chat connection
     client.on("initFailed", () => {
-      setErrorAlert(
-        "Error establishing chat connection, Try reloading the page",
-        6
-      );
+      setErrorAlert(ERROR_ALERT.CHAT_ESTABLISH, 6);
       setClient(null);
     });
 

@@ -7,7 +7,7 @@ import {SaveDetails} from "../profileSettings/save_details";
 type Props = {
   firstName: string;
   lastName: string;
-  linkedinURI: string;
+  linkedinURI?: string;
 };
 const Name = ({firstName, lastName, linkedinURI}: Props) => {
   const {isProfilePage} = useProfileSettingsStore();
@@ -16,19 +16,23 @@ const Name = ({firstName, lastName, linkedinURI}: Props) => {
       <h2 className="text-xl md:text-2xl font-bold">
         {firstName} {lastName}
       </h2>
-      <a
-        href={linkedinURI}
-        target="_blank"
-        rel="noreferrer"
-        className="hover:brightness-110"
-      >
-        <Image
-          src="/assets/icons/linkedin.svg"
-          alt="linkedin"
-          width={24}
-          height={24}
-        />
-      </a>
+      {/* LinkedIn */}
+      {linkedinURI && linkedinURI.length ? (
+        <a
+          href={linkedinURI}
+          target="_blank"
+          rel="noreferrer"
+          className="hover:brightness-110"
+        >
+          <Image
+            src="/assets/icons/linkedin.svg"
+            alt="linkedin"
+            width={24}
+            height={24}
+            className="bg-[#0A66C2] rounded-sm p-[2px]"
+          />
+        </a>
+      ) : null}
 
       {/* Edit/Save Button */}
       {isProfilePage ? <SaveDetails isTopPosition={true} /> : null}

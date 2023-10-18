@@ -1,5 +1,6 @@
 "use client";
 
+import {TABS} from "@/constants/common";
 import Link from "next/link";
 import {usePathname, useSearchParams} from "next/navigation";
 
@@ -14,7 +15,9 @@ const AdminTabs = () => {
           <Link
             href={pathname + "?tab=analytics"}
             className={`tab sm:tab-md lg:tab-lg ${
-              currentTab === "analytics" || currentTab === "" || !currentTab
+              currentTab === TABS.ADMIN.DASHBOARD.ANALYTICS ||
+              currentTab === "" ||
+              !currentTab
                 ? "tab-active"
                 : ""
             }`}
@@ -24,7 +27,7 @@ const AdminTabs = () => {
           <Link
             href={pathname + "?tab=users&userType=mentee&page=1"}
             className={`tab sm:tab-md lg:tab-lg ${
-              currentTab === "users" ? "tab-active" : ""
+              currentTab === TABS.ADMIN.DASHBOARD.USERS ? "tab-active" : ""
             }`}
           >
             Users

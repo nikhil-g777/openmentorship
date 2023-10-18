@@ -4,10 +4,12 @@ import {UserProfile} from "@/types/profile";
 import {
   useCommonStore,
   useProfileSettingsStore,
+  useProfileStore,
   useRegisterStore,
 } from "@/zustand/store";
-import {useRouter} from "next/navigation";
-import {useRef} from "react";
+import {useEffect} from "react";
+import {notFound, useRouter} from "next/navigation";
+import {PAGES} from "@/constants/common";
 
 type Props = {
   data: UserProfile;
@@ -21,9 +23,11 @@ const StoreInitializer = ({data, token}: Props) => {
     setFirstName,
     setLastName,
     setEmail,
+    setLinkedInProfileUrl,
     setHeadline,
     setBio,
     setUserType,
+    setCareerStatus,
     setInterests,
     setSkills,
     setGoals,
@@ -36,27 +40,28 @@ const StoreInitializer = ({data, token}: Props) => {
   } = useRegisterStore();
   const {setProfileImage, setisProfilePage} = useProfileSettingsStore();
   const {setErrorAlert} = useCommonStore();
-  const initialzied = useRef(false);
+  const {setCurrentPage} = useProfileStore();
 
-  // Update states once
-  if (!initialzied.current) {
-    // Check if there is an error
-    if (!token || !data.success) {
-      setErrorAlert("Error getting data! Redirecting you to homepage.", 6);
-      router.replace("/");
-      return null;
+  // Update states
+  useEffect(() => {
+    // Not found if request failed
+    if (!data.success) {
+      notFound();
     }
 
     // Set states
-    setToken(token);
+    setCurrentPage(PAGES.PROFILE);
+    setToken(token || "");
     setFirstName(data.user.firstName);
     setLastName(data.user.lastName);
     setEmail(data.user.email);
+    setLinkedInProfileUrl(data.user.linkedInProfileUrl);
     setProfileImage(data.user.profileImageUrls);
     setisProfilePage(true);
     setHeadline(data.user.headline);
     setBio(data.user.bio);
     setUserType(data.user.userType);
+    setCareerStatus(data.user.careerStatus);
     setInterests(data.user.interests);
     setSkills(data.user.skills);
     setGoals(data.user.goals);
@@ -67,9 +72,36 @@ const StoreInitializer = ({data, token}: Props) => {
     setCommunicationFrequency(data.user.communicationFrequency);
     setCommunicationPreferences(data.user.communicationPreferences);
 
-    // Set current to true
-    initialzied.current = true;
-  }
+    // Cleanup function
+    return () => setisProfilePage(false);
+  }, [
+    token,
+    data,
+    router,
+    setCurrentPage,
+    setErrorAlert,
+    setToken,
+    setFirstName,
+    setLastName,
+    setEmail,
+    setLinkedInProfileUrl,
+    setProfileImage,
+    setisProfilePage,
+    setHeadline,
+    setBio,
+    setUserType,
+    setCareerStatus,
+    setInterests,
+    setSkills,
+    setGoals,
+    setSocialLinks,
+    setExperiences,
+    setEducation,
+    setAreasOfInterest,
+    setCommunicationFrequency,
+    setCommunicationPreferences,
+  ]);
+
   return null;
 };
 

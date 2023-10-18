@@ -1,14 +1,46 @@
 "use client";
 
-import {useCommonStore} from "@/zustand/store";
+import {mainConstants} from "@/constants/main";
+import {resendConfirmationEmail} from "@/endpoints/user";
+import {useCommonStore, useRegisterStore} from "@/zustand/store";
 import Image from "next/image";
+import {useState} from "react";
 
 const AuthenticationErrorModal = () => {
-  const {authenticationError, setAuthenticationError} = useCommonStore();
+  const {
+    authenticationError,
+    setAuthenticationError,
+    setErrorAlert,
+    setSuccessAlert,
+  } = useCommonStore();
+  const {userId, userType, email, firstName, lastName, registrationStatus} =
+    useRegisterStore();
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Handle close modal
   const handleClose = () => {
     setAuthenticationError(null);
+  };
+
+  // Handle Resend Confirmation Email
+  const handleResendConfirmationEmail = async () => {
+    setLoading(true);
+
+    const res = await resendConfirmationEmail({
+      _id: userId,
+      userType,
+      email,
+      firstName,
+      lastName,
+    });
+    if (res.success) {
+      setSuccessAlert("Confirmation email sent successfully!", 6);
+      handleClose();
+    }
+    if (!res.success)
+      setErrorAlert("Something went wrong, please try again later!", 6);
+
+    setLoading(false);
   };
 
   return (
@@ -41,9 +73,26 @@ const AuthenticationErrorModal = () => {
           </h4>
           <p className="text-center py-4">{authenticationError?.message}</p>
           <div className="modal-action">
+            {/* Resend Confirmation */}
+            {registrationStatus ===
+            mainConstants.registrationStatus.pendingConfirmation.name ? (
+              <button
+                className={`btn rounded-full btn-sm text-sm capitalize btn-outline ${
+                  loading ? "loading" : ""
+                }`}
+                onClick={handleResendConfirmationEmail}
+                disabled={loading}
+              >
+                {loading
+                  ? "Sending Confirmation Email..."
+                  : "Resend Confirmation Email"}
+              </button>
+            ) : null}
+            {/* Close */}
             <button
               className="btn rounded-full btn-sm text-sm capitalize btn-outline"
               onClick={handleClose}
+              disabled={loading}
             >
               Close
             </button>

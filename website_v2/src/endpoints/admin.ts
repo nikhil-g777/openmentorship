@@ -78,4 +78,47 @@ const updateMentorRegistration = async (
   }
 };
 
-export {getStats, getUsersList, searchUsers, updateMentorRegistration};
+// Session List
+const getSessionList = async (token: string, page: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_BASE_URL}/admin/sessionList?limit=10&page=${page}`,
+      {
+        headers: headerProvider(token),
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+// Session Search
+const searchSession = async (
+  token: string,
+  page: string,
+  searchString: string
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_BASE_URL}/admin/sessionSearch?limit=10&page=${page}&searchString=${searchString}`,
+      {
+        headers: headerProvider(token),
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {
+  getStats,
+  getUsersList,
+  searchUsers,
+  updateMentorRegistration,
+  getSessionList,
+  searchSession,
+};

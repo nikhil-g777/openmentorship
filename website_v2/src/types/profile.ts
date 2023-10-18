@@ -1,4 +1,4 @@
-import {AppRouterInstance} from "next/dist/shared/lib/app-router-context";
+import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {Education, WorkExperience} from "./regsiter";
 
 type User = {
@@ -15,6 +15,7 @@ type User = {
   firstName: string;
   lastName: string;
   linkedInId: string;
+  linkedInProfileUrl: string;
   email: string;
   experiences: WorkExperience[];
   education: Education[];
@@ -44,6 +45,7 @@ type User = {
     // Matches
     _id: string;
     initialMessage: string;
+    requestMessage?: string;
     status: string;
     latestSession: {
       status: string;
@@ -104,6 +106,7 @@ type PerformProfileAction = {
   setConfirmationText?: (confirmationText: string) => void;
   setSuccessAlert?: (successAlert: string, time: number) => void;
   setErrorAlert?: (errorAlert: string, time: number) => void;
+  requestMessage?: string;
 };
 
 export type {
