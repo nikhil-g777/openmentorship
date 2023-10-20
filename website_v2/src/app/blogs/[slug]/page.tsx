@@ -38,10 +38,17 @@ const Page = async ({params}: Props) => {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 pb-20">
       {/* All Blogs & Title */}
-      <Link href="/blogs" className="btn btn-link normal-case px-0 pt-16">
+      <Link
+        href="/blogs"
+        className="btn btn-link normal-case px-0 pt-16"
+        data-cy="all-blogs-link"
+      >
         ❮ All Blogs
       </Link>
-      <h1 className="w-full max-w-6xl mx-auto text-xl text-left sm:text-heading sm:leading-normal font-bold mt-4">
+      <h1
+        className="w-full max-w-6xl mx-auto text-xl text-left sm:text-heading sm:leading-normal font-bold mt-4"
+        data-cy="blog-content-title"
+      >
         {blogData.title}
       </h1>
       {/* Header image */}
@@ -51,19 +58,26 @@ const Page = async ({params}: Props) => {
         width={1280}
         height={720}
         className="mt-4"
+        data-cy="blog-content-header-image"
       />
       {/* Author and Date */}
       <div className="flex flex-row gap-8 justify-between py-4">
         <p className="text-xs">
-          Written by: <span className="font-semibold">{blogData.author}</span>
+          Written by:{" "}
+          <span className="font-semibold" data-cy="blog-content-author">
+            {blogData.author}
+          </span>
         </p>
-        <p className="text-xs">{blogData.date}</p>
+        <p className="text-xs" data-cy="blog-content-date">
+          {blogData.date}
+        </p>
       </div>
       {/* Markdown Content */}
       <article className="min-w-full prose lg:prose-xl">
         <div
           dangerouslySetInnerHTML={{__html: blogData.contentHtml}}
           className="min-w-full"
+          data-cy="blog-content-markdown"
         />
       </article>
     </div>
