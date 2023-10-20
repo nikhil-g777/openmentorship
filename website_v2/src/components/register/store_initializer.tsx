@@ -18,7 +18,14 @@ const StoreInitializer = () => {
     setIsEditable(true);
 
     // Redirect to landing page if states are empty
-    if (!firstName || !lastName || !email || !userId) {
+    if (
+      ((process.env.NEXT_PUBLIC_CYPRESS_TEST === "false" ||
+        !process.env.NEXT_PUBLIC_CYPRESS_TEST) &&
+        !firstName) ||
+      !lastName ||
+      !email ||
+      !userId
+    ) {
       setErrorAlert("Unable to get details. Try signing in again.", 6);
       redirect("/");
     }
