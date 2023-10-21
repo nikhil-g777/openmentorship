@@ -21,6 +21,7 @@ const StoreInitializer = () => {
     setLastName,
     setEmail,
     setUserId,
+    setToken,
   } = useRegisterStore();
   const {setErrorAlert} = useCommonStore();
 
@@ -34,6 +35,9 @@ const StoreInitializer = () => {
             : process.env.NEXT_PUBLIC_CYPRESS_MENTEE_ID!
         )) as Response;
         const tempAuthRes = await res.json();
+        // Set token
+        setToken(tempAuthRes.token);
+
         const userRes = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/info`,
           {
@@ -49,7 +53,7 @@ const StoreInitializer = () => {
       };
       fetchCypressStates();
     }
-  }, [setEmail, setFirstName, setLastName, setUserId]);
+  }, [setEmail, setFirstName, setLastName, setUserId, setToken]);
 
   // Set isEditable to true on mount
   useEffect(() => {

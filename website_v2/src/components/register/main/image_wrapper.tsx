@@ -8,6 +8,7 @@ const ImageWrapper = () => {
         fill={true}
         className="object-cover"
         alt="register-hero"
+        data-cy="register-hero"
       />
     </div>
   );
