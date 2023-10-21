@@ -64,10 +64,16 @@ const MainScreen = () => {
         {/* Typography */}
         <div className="w-full flex flex-col gap-4 mt-8 px-4 sm:px-8 md:px-16">
           {/* Heading and Linkedin */}
-          <h1 className="text-xl text-center md:text-left sm:text-heading sm:leading-normal font-bold">
+          <h1
+            className="text-xl text-center md:text-left sm:text-heading sm:leading-normal font-bold"
+            data-cy="register-main-heading"
+          >
             Open Mentorship
           </h1>
-          <h2 className="text-base text-center md:text-left md:text-lg">
+          <h2
+            className="text-base text-center md:text-left md:text-lg"
+            data-cy="register-main-sub-heading"
+          >
             Find a Mentor who can help guide you to success.
           </h2>
           {/* Form */}

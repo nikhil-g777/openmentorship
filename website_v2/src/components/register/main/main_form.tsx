@@ -56,6 +56,7 @@ const MainForm = ({
           disabled
           required
           value={firstName}
+          data-cy="register-main-first-name-field"
         />
         <input
           type="text"
@@ -64,6 +65,7 @@ const MainForm = ({
           disabled
           required
           value={lastName}
+          data-cy="register-main-last-name-field"
         />
       </div>
       {/* Email, LinkedInProfileURL, Headline & Bio */}
@@ -75,6 +77,7 @@ const MainForm = ({
           disabled
           required
           value={email}
+          data-cy="register-main-email-field"
         />
         {/* LinkedIn Profile URL */}
         <LinkedInProfileURL />
