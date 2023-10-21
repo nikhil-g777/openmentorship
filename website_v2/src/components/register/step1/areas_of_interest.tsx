@@ -24,8 +24,16 @@ const AreasOfInterest = ({error}: Props) => {
   };
   return (
     <div className="w-full mt-8">
-      <p className="text-base md:text-lg">What is your area of interest?</p>
-      <div className="form-control mt-2">
+      <p
+        className="text-base md:text-lg"
+        data-cy="register-step1-area-of-interest-heading"
+      >
+        What is your area of interest?
+      </p>
+      <div
+        className="form-control mt-2"
+        data-cy="register-step1-area-of-interest-checkboxes"
+      >
         {/* Software */}
         <label className="label cursor-pointer justify-start gap-2">
           <input
@@ -35,6 +43,7 @@ const AreasOfInterest = ({error}: Props) => {
             checked={areasOfInterest.software}
             onChange={handleCheckboxChange}
             disabled={!isEditable}
+            data-cy="register-step1-area-of-interest-software"
           />
           <span className="label-text text-base">Software</span>
         </label>
@@ -47,6 +56,7 @@ const AreasOfInterest = ({error}: Props) => {
             checked={areasOfInterest.design}
             onChange={handleCheckboxChange}
             disabled={!isEditable}
+            data-cy="register-step1-area-of-interest-design"
           />
           <span className="label-text text-base">Design</span>
         </label>
@@ -59,13 +69,19 @@ const AreasOfInterest = ({error}: Props) => {
             checked={areasOfInterest.other}
             onChange={handleCheckboxChange}
             disabled={!isEditable}
+            data-cy="register-step1-area-of-interest-other"
           />
           <span className="label-text text-base">Other</span>
         </label>
         {/* Error */}
         {error.length ? (
           <label className="label">
-            <span className="label-text-alt text-error">{error}</span>
+            <span
+              className="label-text-alt text-error"
+              data-cy="register-step1-area-of-interest-error"
+            >
+              {error}
+            </span>
           </label>
         ) : null}
       </div>

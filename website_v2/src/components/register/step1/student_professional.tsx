@@ -12,7 +12,10 @@ const StudentProfessional = () => {
   };
   return (
     <div className="w-full mt-8">
-      <p className="text-base md:text-lg">
+      <p
+        className="text-base md:text-lg"
+        data-cy="register-step1-career-status-heading"
+      >
         Which of the following best describes you?
       </p>
       <select
@@ -20,6 +23,7 @@ const StudentProfessional = () => {
         value={careerStatus}
         onChange={handleCareerStatusChange}
         disabled={!isEditable}
+        data-cy="register-step1-career-status-select"
       >
         <option value="Student">Student</option>
         <option value="Professional">Professional</option>
