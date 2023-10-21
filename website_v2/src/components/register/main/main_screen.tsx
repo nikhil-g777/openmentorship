@@ -90,6 +90,7 @@ const MainScreen = () => {
                 type="submit"
                 className="w-48 btn btn-sm btn-primary rounded-full"
                 disabled={token.length === 0}
+                data-cy="register-main-continue-button"
               >
                 Continue
               </button>

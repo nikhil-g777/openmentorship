@@ -37,11 +37,15 @@ const LinkedInProfileURL = () => {
           required
           value={linkedInProfileUrl}
           onChange={handleLinkedinProfileURLChange}
+          data-cy="register-main-linkedin-profile-url-field"
         />
         {/* LinkedIn Error */}
         {linkedInUrlError.length ? (
           <label className="label" htmlFor="headline">
-            <span className="label-text-alt text-error">
+            <span
+              className="label-text-alt text-error"
+              data-cy="register-main-linkedin-error"
+            >
               {linkedInUrlError}
             </span>
           </label>
