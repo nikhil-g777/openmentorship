@@ -28,6 +28,7 @@ const InputProvider = ({
       {/* Heading */}
       <h2
         className={isProfilePage ? "text-lg" : "text-lg md:text-xl font-medium"}
+        data-cy="register-step2-sub-heading"
       >
         {type === "experiences" ? "Work Experience" : "Education"}
       </h2>
@@ -51,6 +52,7 @@ const InputProvider = ({
                     handleChangeInput(index, e)
                   }
                   disabled={!isEditable}
+                  data-cy="register-step2-first-input"
                 />
                 <input
                   className="input input-bordered w-full"
@@ -61,12 +63,14 @@ const InputProvider = ({
                     handleChangeInput(index, e)
                   }
                   disabled={!isEditable}
+                  data-cy="register-step2-second-input"
                 />
                 {inputFields.length ? (
                   <button
                     onClick={() => handleRemoveInput(index)}
                     className="place-self-end btn btn-error mb-8 md:mb-0"
                     disabled={!isEditable}
+                    data-cy="register-step2-remove-button"
                   >
                     <Image
                       src="/assets/icons/trash.svg"
@@ -82,14 +86,20 @@ const InputProvider = ({
         {/* Input Error */}
         {type === "experiences" && inputError.experience.length ? (
           <label className="label">
-            <span className="label-text-alt text-error">
+            <span
+              className="label-text-alt text-error"
+              data-cy="register-step2-experience-error"
+            >
               {inputError.experience}
             </span>
           </label>
         ) : null}
         {type === "education" && inputError.education.length ? (
           <label className="label">
-            <span className="label-text-alt text-error">
+            <span
+              className="label-text-alt text-error"
+              data-cy="register-step2-education-error"
+            >
               {inputError.education}
             </span>
           </label>
@@ -101,6 +111,7 @@ const InputProvider = ({
           onClick={handleAddInput}
           className="btn btn-primary mt-2 mb-8"
           disabled={!isEditable}
+          data-cy="register-step2-add-button"
         >
           {type === "experiences" ? "Add Experience" : "Add Education"}
         </button>

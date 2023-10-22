@@ -70,7 +70,10 @@ const Step2 = () => {
       <div className="w-full max-w-3xl mx-auto mt-8 px-4">
         {/* Heading */}
         {!isProfilePage ? (
-          <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
+          <h1
+            className="text-xl text-center sm:text-sub_heading sm:leading-normal"
+            data-cy="register-step2-heading"
+          >
             About You
           </h1>
         ) : (
@@ -94,6 +97,7 @@ const Step2 = () => {
             <button
               className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
               onClick={handleContinue}
+              data-cy="register-step2-continue"
             >
               Continue
             </button>

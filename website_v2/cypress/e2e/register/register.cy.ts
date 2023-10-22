@@ -167,5 +167,90 @@ describe("Register page test", () => {
     cy.getCypress("register-step1-area-of-interest-other").should("be.checked");
     cy.getCypress("register-step1-continue").click();
     cy.getCypress("register-step1-area-of-interest-error").should("not.exist");
+
+    // Check step2 fields
+    cy.getCypress("register-step2-heading").should("exist");
+    cy.getCypress("register-step2-heading").should("be.visible");
+    cy.getCypress("register-step2-heading").should("contain.text", "About You");
+    cy.getCypress("register-step2-sub-heading").should("exist");
+    cy.getCypress("register-step2-sub-heading").should("be.visible");
+    cy.getCypress("register-step2-sub-heading")
+      .first()
+      .should("contain.text", "Work Experience");
+    cy.getCypress("register-step2-sub-heading")
+      .last()
+      .should("contain.text", "Education");
+    cy.getCypress("register-step2-add-button").should("exist");
+    cy.getCypress("register-step2-add-button").should("be.visible");
+    cy.getCypress("register-step2-add-button")
+      .first()
+      .should("contain.text", "Add Experience");
+    cy.getCypress("register-step2-add-button")
+      .last()
+      .should("contain.text", "Add Education");
+    cy.getCypress("register-step2-continue").should("exist");
+    cy.getCypress("register-step2-continue").should("be.visible");
+    cy.getCypress("register-step2-continue").should("be.enabled");
+    cy.getCypress("register-step2-continue").click();
+    cy.getCypress("register-step2-experience-error").should("exist");
+    cy.getCypress("register-step2-experience-error").should("be.visible");
+    cy.getCypress("register-step2-experience-error").should(
+      "contain.text",
+      "Please add at least one experience"
+    );
+    cy.getCypress("register-step2-add-button").first().click();
+    cy.getCypress("register-step2-remove-button").first().should("exist");
+    cy.getCypress("register-step2-remove-button").first().should("be.visible");
+    cy.getCypress("register-step2-remove-button").first().click();
+    cy.getCypress("register-step2-add-button").first().click();
+    cy.getCypress("register-step2-first-input").first().should("exist");
+    cy.getCypress("register-step2-first-input").first().should("be.visible");
+    cy.getCypress("register-step2-first-input").first().click();
+    cy.getCypress("register-step2-first-input").first().type("Test");
+    cy.getCypress("register-step2-second-input").first().should("exist");
+    cy.getCypress("register-step2-second-input").first().should("be.visible");
+    cy.getCypress("register-step2-second-input").first().click();
+    cy.getCypress("register-step2-second-input").first().type("Test");
+    cy.getCypress("register-step2-add-button").first().click();
+    cy.getCypress("register-step2-experience-error").should("exist");
+    cy.getCypress("register-step2-experience-error").should("be.visible");
+    cy.getCypress("register-step2-experience-error").should(
+      "contain.text",
+      "Organization and title cannot be same"
+    );
+    cy.getCypress("register-step2-second-input").first().click();
+    cy.getCypress("register-step2-second-input").first().clear();
+    cy.getCypress("register-step2-second-input").first().type("Test 2");
+    cy.getCypress("register-step2-add-button").last().click();
+    cy.getCypress("register-step2-add-button").last().click();
+    cy.getCypress("register-step2-education-error").should(
+      "contain.text",
+      "Please fill all fields"
+    );
+    cy.getCypress("register-step2-remove-button").last().should("exist");
+    cy.getCypress("register-step2-remove-button").last().should("be.visible");
+    cy.getCypress("register-step2-remove-button").last().click();
+    cy.getCypress("register-step2-add-button").last().click();
+    cy.getCypress("register-step2-first-input").last().should("exist");
+    cy.getCypress("register-step2-first-input").last().should("be.visible");
+    cy.getCypress("register-step2-first-input").last().click();
+    cy.getCypress("register-step2-first-input").last().type("Test");
+    cy.getCypress("register-step2-second-input").last().should("exist");
+    cy.getCypress("register-step2-second-input").last().should("be.visible");
+    cy.getCypress("register-step2-second-input").last().click();
+    cy.getCypress("register-step2-second-input").last().type("Test");
+    cy.getCypress("register-step2-add-button").last().click();
+    cy.getCypress("register-step2-education-error").should("exist");
+    cy.getCypress("register-step2-education-error").should("be.visible");
+    cy.getCypress("register-step2-education-error").should(
+      "contain.text",
+      "School and degree cannot be same"
+    );
+    cy.getCypress("register-step2-second-input").last().click();
+    cy.getCypress("register-step2-second-input").last().clear();
+    cy.getCypress("register-step2-second-input").last().type("Test 2");
+    cy.getCypress("register-step2-continue").click();
+    cy.getCypress("register-step2-experience-error").should("not.exist");
+    cy.getCypress("register-step2-education-error").should("not.exist");
   });
 });
