@@ -70,7 +70,12 @@ const TagsProvider = ({type, heading, error, setError}: Props) => {
   };
   return (
     <div className="w-full mt-8">
-      <label className="block text-base md:text-xl mb-2">{heading}</label>
+      <label
+        className="block text-base md:text-xl mb-2"
+        data-cy="register-step3-sub-heading"
+      >
+        {heading}
+      </label>
       {/* Form */}
       <Form
         type={type}
@@ -88,12 +93,22 @@ const TagsProvider = ({type, heading, error, setError}: Props) => {
       {/* Error */}
       {type === "skills" && error.skills.length ? (
         <label className="label">
-          <span className="label-text-alt text-error">{error.skills}</span>
+          <span
+            className="label-text-alt text-error"
+            data-cy="register-step3-skills-error"
+          >
+            {error.skills}
+          </span>
         </label>
       ) : null}
       {type === "interests" && error.interests.length ? (
         <label className="label">
-          <span className="label-text-alt text-error">{error.interests}</span>
+          <span
+            className="label-text-alt text-error"
+            data-cy="register-step3-interests-error"
+          >
+            {error.interests}
+          </span>
         </label>
       ) : null}
     </div>

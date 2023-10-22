@@ -252,5 +252,66 @@ describe("Register page test", () => {
     cy.getCypress("register-step2-continue").click();
     cy.getCypress("register-step2-experience-error").should("not.exist");
     cy.getCypress("register-step2-education-error").should("not.exist");
+
+    // Check step3 fields
+    cy.getCypress("register-step3-heading").should("exist");
+    cy.getCypress("register-step3-heading").should("be.visible");
+    cy.getCypress("register-step3-heading").should(
+      "contain.text",
+      "Let's get more specific"
+    );
+    cy.getCypress("register-step3-sub-heading").should("exist");
+    cy.getCypress("register-step3-sub-heading").should("be.visible");
+    cy.getCypress("register-step3-sub-heading")
+      .first()
+      .should("contain.text", "What are some of your top skills?");
+    cy.getCypress("register-step3-sub-heading")
+      .last()
+      .should("contain.text", "What are your areas of interest?");
+    cy.getCypress("register-step3-info").should("exist");
+    cy.getCypress("register-step3-info").should("be.visible");
+    cy.getCypress("register-step3-info")
+      .first()
+      .should("contain.text", "Web Development");
+    cy.getCypress("register-step3-info")
+      .last()
+      .should("contain.text", "Startups");
+    cy.getCypress("register-step3-continue").should("exist");
+    cy.getCypress("register-step3-continue").should("be.visible");
+    cy.getCypress("register-step3-continue").click();
+    cy.getCypress("register-step3-skills-error").should("exist");
+    cy.getCypress("register-step3-skills-error").should("be.visible");
+    cy.getCypress("register-step3-skills-error").should(
+      "contain.text",
+      "Please add at least one skill"
+    );
+    cy.getCypress("register-step3-input").first().should("exist");
+    cy.getCypress("register-step3-input").first().should("be.visible");
+    cy.getCypress("register-step3-input").first().click();
+    cy.getCypress("register-step3-input").first().type("Test");
+    cy.getCypress("register-step3-add-button").first().click();
+    cy.getCypress("register-step3-continue").click();
+    cy.getCypress("register-step3-interests-error").should("exist");
+    cy.getCypress("register-step3-interests-error").should("be.visible");
+    cy.getCypress("register-step3-interests-error").should(
+      "contain.text",
+      "Please add at least one interest"
+    );
+    cy.getCypress("register-step3-input").last().should("exist");
+    cy.getCypress("register-step3-input").last().should("be.visible");
+    cy.getCypress("register-step3-input").last().click();
+    cy.getCypress("register-step3-input").last().type("Test");
+    cy.getCypress("register-step3-add-button").last().click();
+    cy.getCypress("register-step3-delete-button").first().should("exist");
+    cy.getCypress("register-step3-delete-button").first().should("be.visible");
+    cy.getCypress("register-step3-delete-button").first().click();
+    cy.getCypress("register-step3-input").first().type("Test");
+    cy.getCypress("register-step3-add-button").first().click();
+    cy.getCypress("register-step3-delete-button").last().should("exist");
+    cy.getCypress("register-step3-delete-button").last().should("be.visible");
+    cy.getCypress("register-step3-delete-button").last().click();
+    cy.getCypress("register-step3-input").last().type("Test");
+    cy.getCypress("register-step3-add-button").last().click();
+    cy.getCypress("register-step3-continue").click();
   });
 });

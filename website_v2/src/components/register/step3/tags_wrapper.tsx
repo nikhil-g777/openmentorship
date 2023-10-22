@@ -26,6 +26,7 @@ const TagsWrapper = ({tags, handleDelete}: TagsWrapper) => {
                   !isEditable ? "pointer-events-none cursor-not-allowed" : ""
                 }`}
                 onClick={() => handleDelete(index)}
+                data-cy="register-step3-delete-button"
               />
             </div>
           ))
