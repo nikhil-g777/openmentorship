@@ -39,6 +39,7 @@ const Goals = ({error}: Props) => {
                 checked={goals[goal.name] || false}
                 onChange={handleChange}
                 disabled={!isEditable}
+                data-cy="register-step4-goals-checkbox"
               />
               <span className="label-text text-base">{goal.title}</span>
             </label>
@@ -48,7 +49,12 @@ const Goals = ({error}: Props) => {
       {/* Error */}
       {error.goals.length ? (
         <label className="label">
-          <span className="label-text-alt text-error">{error.goals}</span>
+          <span
+            className="label-text-alt text-error"
+            data-cy="register-step4-goals-error"
+          >
+            {error.goals}
+          </span>
         </label>
       ) : null}
     </div>

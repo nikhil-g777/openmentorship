@@ -57,7 +57,10 @@ const Step4 = () => {
       <div className="w-full max-w-3xl mx-auto mt-8 px-4">
         {/* Heading */}
         {!isProfilePage ? (
-          <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
+          <h1
+            className="text-xl text-center sm:text-sub_heading sm:leading-normal"
+            data-cy="register-step4-heading"
+          >
             Mentorship
           </h1>
         ) : (
@@ -72,6 +75,7 @@ const Step4 = () => {
             <button
               className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
               onClick={handleContinue}
+              data-cy="register-step4-continue"
             >
               Continue
             </button>

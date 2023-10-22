@@ -36,6 +36,7 @@ const CommunicationFrequency = ({error}: Props) => {
                   frequency.value.toLowerCase()
                 }
                 disabled={!isEditable}
+                data-cy="register-step4-frequency-radio"
               />
               <span className="label-text text-base">{frequency.title}</span>
             </label>
@@ -44,7 +45,12 @@ const CommunicationFrequency = ({error}: Props) => {
       {/* Error */}
       {error.frequency.length ? (
         <label className="label">
-          <span className="label-text-alt text-error">{error.frequency}</span>
+          <span
+            className="label-text-alt text-error"
+            data-cy="register-step4-frequency-error"
+          >
+            {error.frequency}
+          </span>
         </label>
       ) : null}
     </div>

@@ -313,5 +313,72 @@ describe("Register page test", () => {
     cy.getCypress("register-step3-input").last().type("Test");
     cy.getCypress("register-step3-add-button").last().click();
     cy.getCypress("register-step3-continue").click();
+
+    // Check step4 fields
+    cy.getCypress("register-step4-heading").should("exist");
+    cy.getCypress("register-step4-heading").should("be.visible");
+    cy.getCypress("register-step4-heading").should(
+      "contain.text",
+      "Mentorship"
+    );
+    cy.getCypress("register-step4-goals-heading").should("exist");
+    cy.getCypress("register-step4-goals-heading").should("be.visible");
+    cy.getCypress("register-step4-goals-heading").should(
+      "contain.text",
+      process.env.NEXT_PUBLIC_CYPRESS_USER_TYPE === "mentor"
+        ? "What are you available to offer to your mentee? Select all that apply."
+        : "What do you need from your mentor? Select all that apply."
+    );
+    cy.getCypress("register-step4-continue").should("exist");
+    cy.getCypress("register-step4-continue").should("be.visible");
+    cy.getCypress("register-step4-continue").click();
+    cy.getCypress("register-step4-goals-error").should("exist");
+    cy.getCypress("register-step4-goals-error").should("be.visible");
+    cy.getCypress("register-step4-goals-error").should(
+      "contain.text",
+      "Please select at least one goal"
+    );
+    cy.getCypress("register-step4-goals-checkbox").first().should("exist");
+    cy.getCypress("register-step4-goals-checkbox").first().should("be.visible");
+    cy.getCypress("register-step4-goals-checkbox").first().check();
+    cy.getCypress("register-step4-frequency-heading").should("exist");
+    cy.getCypress("register-step4-frequency-heading").should("be.visible");
+    cy.getCypress("register-step4-frequency-heading").should(
+      "contain.text",
+      "How often would you expect to communicate in your mentorship?"
+    );
+    cy.getCypress("register-step4-continue").click();
+    cy.getCypress("register-step4-frequency-error").should("exist");
+    cy.getCypress("register-step4-frequency-error").should("be.visible");
+    cy.getCypress("register-step4-frequency-error").should(
+      "contain.text",
+      "Please select a frequency"
+    );
+    cy.getCypress("register-step4-frequency-radio").first().should("exist");
+    cy.getCypress("register-step4-frequency-radio")
+      .first()
+      .should("be.visible");
+    cy.getCypress("register-step4-frequency-radio").first().check();
+    cy.getCypress("register-step4-preferences-heading").should("exist");
+    cy.getCypress("register-step4-preferences-heading").should("be.visible");
+    cy.getCypress("register-step4-preferences-heading").should(
+      "contain.text",
+      "What are your communication preferences? Select all that apply."
+    );
+    cy.getCypress("register-step4-continue").click();
+    cy.getCypress("register-step4-preferences-error").should("exist");
+    cy.getCypress("register-step4-preferences-error").should("be.visible");
+    cy.getCypress("register-step4-preferences-error").should(
+      "contain.text",
+      "Please select at least one preference"
+    );
+    cy.getCypress("register-step4-preferences-checkbox")
+      .first()
+      .should("exist");
+    cy.getCypress("register-step4-preferences-checkbox")
+      .first()
+      .should("be.visible");
+    cy.getCypress("register-step4-preferences-checkbox").first().check();
+    cy.getCypress("register-step4-continue").click();
   });
 });
