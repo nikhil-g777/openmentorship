@@ -36,6 +36,7 @@ const LinksProvider = ({error, handleChanges}: Props) => {
                     handleChanges(e)
                   }
                   disabled={!isEditable}
+                  data-cy="register-step5-social-links-input"
                 />
               </div>
               {/* Error */}
@@ -43,7 +44,10 @@ const LinksProvider = ({error, handleChanges}: Props) => {
                 <div className="w-full flex flex-col md:flex-row md:items-center gap-2">
                   <label className="w-[14%]"></label>
                   <label className="label">
-                    <span className="label-text-alt text-error">
+                    <span
+                      className="label-text-alt text-error"
+                      data-cy="register-step5-social-links-error"
+                    >
                       {error[site as keyof SocialLinks]}
                     </span>
                   </label>

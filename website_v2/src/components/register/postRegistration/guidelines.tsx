@@ -18,9 +18,12 @@ const Guidelines = ({guideline}: Props) => {
           className="mx-auto p-4"
           width={100}
           height={100}
+          data-cy="register-post-registration-guidelines-image"
         />
         <div className="card-body">
-          <p>{guideline.text}</p>
+          <p data-cy="register-post-registration-guidelines">
+            {guideline.text}
+          </p>
         </div>
       </div>
     </li>

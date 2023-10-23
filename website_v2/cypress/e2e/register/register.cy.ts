@@ -113,7 +113,7 @@ describe("Register page test", () => {
       "contain.text",
       "I am registering as a: Mentor"
     );
-    if (process.env.NEXT_PUBLIC_CYPRESS_USER_TYPE === "mentor") {
+    if (Cypress.env("NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE") === "mentor") {
       cy.getCypress("register-step1-user-type-mentor").click();
     } else {
       cy.getCypress("register-step1-user-type-mentee").click();
@@ -325,7 +325,7 @@ describe("Register page test", () => {
     cy.getCypress("register-step4-goals-heading").should("be.visible");
     cy.getCypress("register-step4-goals-heading").should(
       "contain.text",
-      process.env.NEXT_PUBLIC_CYPRESS_USER_TYPE === "mentor"
+      Cypress.env("NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE") === "mentor"
         ? "What are you available to offer to your mentee? Select all that apply."
         : "What do you need from your mentor? Select all that apply."
     );
@@ -380,5 +380,112 @@ describe("Register page test", () => {
       .should("be.visible");
     cy.getCypress("register-step4-preferences-checkbox").first().check();
     cy.getCypress("register-step4-continue").click();
+
+    // Check step5 fields
+    cy.getCypress("register-step5-heading").should("exist");
+    cy.getCypress("register-step5-heading").should("be.visible");
+    cy.getCypress("register-step5-heading").should(
+      "contain.text",
+      "Add social links and showcase your work"
+    );
+    cy.getCypress("register-step5-social-links-input").should("exist");
+    cy.getCypress("register-step5-social-links-input").should("be.visible");
+    cy.getCypress("register-step5-social-links-input").last().click();
+    cy.getCypress("register-step5-social-links-input").last().type("Test");
+    cy.getCypress("register-step5-continue").should("exist");
+    cy.getCypress("register-step5-continue").should("be.visible");
+    cy.getCypress("register-step5-continue").click();
+    cy.getCypress("register-step5-social-links-error").should("exist");
+    cy.getCypress("register-step5-social-links-error").should("be.visible");
+    cy.getCypress("register-step5-social-links-error").should(
+      "contain.text",
+      "Invalid url"
+    );
+    cy.getCypress("register-step5-social-links-input").last().click();
+    cy.getCypress("register-step5-social-links-input").last().clear();
+    cy.getCypress("register-step5-social-links-input")
+      .last()
+      .type("https://openmentorship.com");
+    cy.getCypress("register-step5-continue").click();
+
+    // Check post registration
+    cy.getCypress("register-post-registration-heading").should("exist");
+    cy.getCypress("register-post-registration-heading").should("be.visible");
+    cy.getCypress("register-post-registration-heading").should(
+      "contain.text",
+      "Registration complete, here are your next steps:"
+    );
+    cy.getCypress("register-post-registration-guidelines-image").should(
+      "exist"
+    );
+    cy.getCypress("register-post-registration-guidelines-image").should(
+      "be.visible"
+    );
+    cy.getCypress("register-post-registration-guidelines").should("exist");
+    cy.getCypress("register-post-registration-guidelines").should("be.visible");
+    if (Cypress.env("NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE") === "mentee") {
+      cy.getCypress("register-post-registration-guidelines")
+        .first()
+        .should(
+          "contain.text",
+          "You will recieve an email confirmation of your registration."
+        );
+      cy.getCypress("register-post-registration-guidelines")
+        .eq(1)
+        .should(
+          "contain.text",
+          "Explore and find mentors based on your interests and goals."
+        );
+      cy.getCypress("register-post-registration-guidelines")
+        .eq(2)
+        .should(
+          "contain.text",
+          "Send a request to connect with mentors you like. Be specific about what you are looking for."
+        );
+      cy.getCypress("register-post-registration-guidelines")
+        .eq(3)
+        .should(
+          "contain.text",
+          "Sit tight, the mentors will have one week to accept your request."
+        );
+      cy.getCypress("register-post-registration-guidelines")
+        .eq(4)
+        .should("contain.text", "Connect with your mentor. Make it count!");
+    }
+    if (Cypress.env("NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE") === "mentor") {
+      cy.getCypress("register-post-registration-guidelines")
+        .first()
+        .should(
+          "contain.text",
+          "You will recieve an email confirmation of your registration."
+        );
+      cy.getCypress("register-post-registration-guidelines")
+        .eq(1)
+        .should(
+          "contain.text",
+          "Mentees will find you and send a connection request based on your profile and their goals (Ps: You can mentor upto 3 people at a time)"
+        );
+      cy.getCypress("register-post-registration-guidelines")
+        .eq(2)
+        .should(
+          "contain.text",
+          "You will have 1 week from the time of the request to review and respond. (Ps: Don't leave them hanging)"
+        );
+      cy.getCypress("register-post-registration-guidelines")
+        .eq(3)
+        .should(
+          "contain.text",
+          "Connect with your mentee. Time to be a sherpa!"
+        );
+    }
+    cy.getCypress("register-post-registration-continue").should("exist");
+    cy.getCypress("register-post-registration-continue").should("be.visible");
+    cy.getCypress("register-post-registration-continue").should(
+      "contain.text",
+      "Got it!"
+    );
+    cy.getCypress("register-post-registration-continue").click();
+    // url should be /
+    cy.url().should("eq", Cypress.config().baseUrl + "/");
   });
 });
