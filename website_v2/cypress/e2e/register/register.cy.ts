@@ -489,3 +489,5 @@ describe("Register page test", () => {
     cy.url().should("eq", Cypress.config().baseUrl + "/");
   });
 });
+
+export {};
