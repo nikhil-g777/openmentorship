@@ -1,7 +1,7 @@
 import Script from "next/script";
 
 const GoogleAnalytics4 = () => {
-  const GTM_ID = process.env.NEXT_PUBLIC_GMT_ID;
+  const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
   // Return null if GTM ID is not defined
   if (!GTM_ID) return null;
