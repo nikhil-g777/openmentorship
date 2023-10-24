@@ -41,8 +41,8 @@ const CookieConsent = () => {
   if (cookieConsent === "true" || cookieConsent === null) return null;
 
   return (
-    <div className="w-screen h-screen bg-[rgba(0,0,0,0.5)] p-4 fixed top-0 left-0 right-0 bottom-0 flex flex-col items-center justify-end z-[55] backdrop-blur-md">
-      <div className="alert shadow-lg w-full max-w-6xl mb-4">
+    <div className="p-4 fixed left-0 right-0 bottom-0 flex flex-col items-center justify-end z-[55]">
+      <div className="alert text-neutral shadow-lg w-full max-w-6xl mb-4">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
