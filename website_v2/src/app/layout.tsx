@@ -5,6 +5,7 @@ import {Footer} from "@/components/layout/footer_main";
 import {Providers} from "./providers_main";
 import {GoogleAnalytics4} from "@/components/analytics/google_analytics_4";
 import {NoScriptGoogleAnalytics} from "@/components/analytics/no_script_google_analytics";
+import {CookieConsent} from "@/components/alerts/cookie_consent";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -23,6 +24,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           <div className="w-full h-full flex flex-col">
             <Navbar />
             <div className="w-full">{children}</div>
+            {/* Cookie Consent */}
+            <CookieConsent />
             <Footer />
           </div>
         </Providers>
