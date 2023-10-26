@@ -117,7 +117,7 @@ const updateMatch = (req, res) => {
       .json({ success: false, error: 'request body is empty' });
   }
 
-  const { matchId, status } = body;
+  const { matchId, status, review } = body;
 
   if (!matchId || !status) {
     return res.status(400).json({
@@ -150,6 +150,7 @@ const updateMatch = (req, res) => {
               startDate: moment.utc().toDate().toUTCString(),
               status: 'active',
               twilioConversationSid: chatResult.conversationSid,
+              review: null,
             }).then((session) => {
               return Match.findByIdAndUpdate(
                 matchId,
@@ -197,7 +198,7 @@ const updateMatch = (req, res) => {
             results.updatedMatch = updatedMatch;
             return Session.findByIdAndUpdate(updatedMatch.latestSession, {
               status,
-              emdDate: moment.utc().toDate().toUTCString(),
+              endDate: moment.utc().toDate().toUTCString(),
             });
           })
           .then((updatedSession) => {
@@ -210,7 +211,39 @@ const updateMatch = (req, res) => {
             console.log(e);
             return res.status(500).json({ success: false });
           });
-      } else {
+      } else if(match.status === 'active' && status === 'closed' && review) {
+        const results = {};
+        return Match.findByIdAndUpdate(
+          matchId,
+          {
+            status,
+          },
+          { new: true },
+        )
+          .populate('mentor')
+          .populate('mentee')
+          .populate('latestSession')
+          .exec()
+          .then((updatedMatch) => {
+            results.updatedMatch = updatedMatch;
+            return Session.findByIdAndUpdate(updatedMatch.latestSession, {
+              status,
+              endDate: moment.utc().toDate().toUTCString(),
+              review,
+            });
+          })
+          .then((updatedSession) => {
+            return res.status(200).json({
+              success: true,
+              updatedMatch: results.updatedMatch,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+            return res.status(500).json({ success: false });
+          });
+      } 
+      else {
         throw new Error('Invalid Request');
       }
     })

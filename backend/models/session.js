@@ -24,6 +24,10 @@ const Session = new Schema(
       required: true,
       ref: 'Match',
     },
+    review: {
+      type: Object,
+      default: null,
+    }
   },
   {
     timestamps: true,
