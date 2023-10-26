@@ -74,19 +74,19 @@ const createMatch = async (req, res) => {
     const { menteeId, mentorId, requestMessage } = body.match;
 
     // Check if there is an existing match.
-    existing_match = await Match.findOne({ mentee: menteeId, mentor: mentorId })
-    if(existing_match) {
+    const existingMatch = await Match.findOne({ mentee: menteeId, mentor: mentorId })
+    if(existingMatch) {
       return res
       .status(500)
       .json({ success: false, error: 'Match already exists' });
     }
 
     // Create a new match.
-    created_match = await Match.create(
+    const createdMatch = await Match.create(
       { mentee: menteeId, mentor: mentorId, requestMessage, status: constants.matchStatuses.pending})
 
 
-    match = await Match.findById(created_match._id).populate({path: 'mentor', select: 'email'})
+    const match = await Match.findById(createdMatch._id).populate({path: 'mentor', select: 'email'})
     // Send connection_request email to mentor.
     sendMail(
       match.mentor.email,
@@ -97,7 +97,7 @@ const createMatch = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      match: match,
+      match,
     });
   }
   catch(e) {
