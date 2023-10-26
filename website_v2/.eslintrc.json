@@ -1,6 +1,9 @@
 {
   "extends": ["./node_modules/gts/", "next/core-web-vitals", "prettier"],
   "rules": {
-    "quotes": ["error", "double"]
+    "quotes": ["error", "double"],
+    "node/no-unpublished-require": ["error", {
+      "allowModules": ["@tailwindcss/typography"]
+    }]
   }
 }

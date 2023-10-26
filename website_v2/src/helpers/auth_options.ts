@@ -1,4 +1,4 @@
-import {getUserInfo, nextAuthLogin} from "@/endpoints/user";
+import {getUserInfo, nextAuthLogin, tempAuth} from "@/endpoints/user";
 import {NextAuthOptions} from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -19,6 +19,35 @@ export const authOptions: NextAuthOptions = {
         authCode: {type: "text"},
       },
       async authorize(credentials) {
+        // Return cypress test user if available
+        if (
+          process.env.NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE &&
+          process.env.NEXT_PUBLIC_CYPRESS_MENTEE_ID &&
+          process.env.NEXT_PUBLIC_CYPRESS_MENTOR_ID &&
+          process.env.NEXT_PUBLIC_CYPRESS_TEST &&
+          process.env.NEXT_PUBLIC_CYPRESS_TEST.toLowerCase() === "true"
+        ) {
+          if (credentials?.authCode === "mentee") {
+            const res = (await tempAuth(
+              process.env.NEXT_PUBLIC_CYPRESS_MENTEE_ID
+            )) as Response;
+            const user = await res.json();
+            if (res.ok && user.success) {
+              return user;
+            }
+            return null;
+          }
+          if (credentials?.authCode === "mentor") {
+            const res = (await tempAuth(
+              process.env.NEXT_PUBLIC_CYPRESS_MENTOR_ID
+            )) as Response;
+            const user = await res.json();
+            if (res.ok && user.success) {
+              return user;
+            }
+            return null;
+          }
+        }
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid.
@@ -81,5 +110,8 @@ export const authOptions: NextAuthOptions = {
       session.profile = await getUserInfo(token.user.token);
       return session;
     },
+  },
+  pages: {
+    signIn: "/",
   },
 };

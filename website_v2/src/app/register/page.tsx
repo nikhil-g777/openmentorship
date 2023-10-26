@@ -7,8 +7,16 @@ import {Step5} from "@/components/register/step5/step_5";
 import {PostRegistration} from "@/components/register/postRegistration/post_registration";
 import {StepsDots} from "@/components/register/steps_dots";
 import {StoreInitializer} from "@/components/register/store_initializer";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/helpers/auth_options";
+import {redirect} from "next/navigation";
 
-const Page = () => {
+const Page = async () => {
+  const session = await getServerSession(authOptions);
+  const token = session?.user?.token;
+
+  if (token) redirect("/");
+
   return (
     <div className="w-full">
       <StoreInitializer />

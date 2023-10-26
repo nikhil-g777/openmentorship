@@ -37,6 +37,19 @@ const LinkedIn = () => {
 
   // Handle LinkedIn Login
   const handleLinkedinLogin = () => {
+    if (
+      process.env.NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE &&
+      process.env.NEXT_PUBLIC_CYPRESS_MENTEE_ID &&
+      process.env.NEXT_PUBLIC_CYPRESS_MENTOR_ID &&
+      process.env.NEXT_PUBLIC_CYPRESS_TEST &&
+      process.env.NEXT_PUBLIC_CYPRESS_TEST.toLowerCase() === "true"
+    ) {
+      signIn("credentials", {
+        authCode: process.env.NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE,
+      });
+      return;
+    }
+
     window.location.href = linkedInRedirectUrl;
   };
 
@@ -143,6 +156,7 @@ const LinkedIn = () => {
       onClick={handleLinkedinLogin}
       className="flex flex-row items-center gap-2 bg-[#0A66C2] p-2 rounded-md hover:opacity-80 w-[180px] h-[36px]"
       disabled={routeActionLoading}
+      data-cy="linkedin-button"
     >
       <Image
         src="/assets/icons/linkedin.svg"
