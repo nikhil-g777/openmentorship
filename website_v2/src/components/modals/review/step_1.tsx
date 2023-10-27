@@ -21,6 +21,7 @@ const Step1 = ({setCurrentStep}: Props) => {
           name="rating-8"
           className="rating-hidden hidden"
           checked={rating === 0}
+          readOnly
         />
         <input
           type="radio"
