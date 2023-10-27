@@ -2,6 +2,7 @@ import {ChatWrapper} from "@/components/chat/chat_wrapper";
 import {StoreInitializer} from "@/components/chat/store_initializer";
 import {ChatAttachmentModal} from "@/components/modals/attachment/chat_attachment_modal";
 import {ChatMediaContentModal} from "@/components/modals/media/chat_media_content_modal";
+import {MentorReviewModal} from "@/components/modals/review/mentor_review_modal";
 import {NoResult} from "@/components/noResult/no_result";
 import {TABS} from "@/constants/common";
 import {getChatToken} from "@/endpoints/chat";
@@ -61,6 +62,9 @@ const Page = async ({searchParams}: Props) => {
 
       {/* Chat Media Content Modal */}
       <ChatMediaContentModal />
+
+      {/* Mentor Review Modal */}
+      <MentorReviewModal />
     </div>
   );
 };

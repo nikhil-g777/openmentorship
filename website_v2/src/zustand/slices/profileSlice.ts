@@ -17,6 +17,7 @@ export type ProfileSlice = {
   isProfileModal: boolean;
   loading: boolean;
   confirmationText: string;
+  mentorReviewModal: boolean;
   // Actions
   setData: (data: UserProfile) => void;
   setToken: (token: string) => void;
@@ -31,6 +32,7 @@ export type ProfileSlice = {
   setIsProfileModal: (isProfileModal: boolean) => void;
   setLoading: (loading: boolean) => void;
   setConfirmationText: (confirmationText: string) => void;
+  setMentorReviewModal: (mentorReviewModal: boolean) => void;
 };
 
 // Initial state
@@ -48,6 +50,7 @@ const initialState = {
   mentorId: "",
   loading: false,
   confirmationText: "",
+  mentorReviewModal: false,
 };
 
 export const profileSlice: StateCreator<
@@ -121,6 +124,11 @@ export const profileSlice: StateCreator<
   setConfirmationText: (confirmationText: string) => {
     set(() => ({
       confirmationText: confirmationText,
+    }));
+  },
+  setMentorReviewModal: (mentorReviewModal: boolean) => {
+    set(() => ({
+      mentorReviewModal: mentorReviewModal,
     }));
   },
 });
