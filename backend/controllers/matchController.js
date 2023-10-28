@@ -117,7 +117,7 @@ const updateMatch = (req, res) => {
       .json({ success: false, error: 'request body is empty' });
   }
 
-  const { matchId, status, review } = body;
+  const { matchId, status } = body;
 
   if (!matchId || !status) {
     return res.status(400).json({
@@ -199,37 +199,6 @@ const updateMatch = (req, res) => {
             return Session.findByIdAndUpdate(updatedMatch.latestSession, {
               status,
               endDate: moment.utc().toDate().toUTCString(),
-            });
-          })
-          .then((updatedSession) => {
-            return res.status(200).json({
-              success: true,
-              updatedMatch: results.updatedMatch,
-            });
-          })
-          .catch((e) => {
-            console.log(e);
-            return res.status(500).json({ success: false });
-          });
-      } else if(match.status === 'active' && status === 'closed' && review) {
-        const results = {};
-        return Match.findByIdAndUpdate(
-          matchId,
-          {
-            status,
-          },
-          { new: true },
-        )
-          .populate('mentor')
-          .populate('mentee')
-          .populate('latestSession')
-          .exec()
-          .then((updatedMatch) => {
-            results.updatedMatch = updatedMatch;
-            return Session.findByIdAndUpdate(updatedMatch.latestSession, {
-              status,
-              endDate: moment.utc().toDate().toUTCString(),
-              review,
             });
           })
           .then((updatedSession) => {
