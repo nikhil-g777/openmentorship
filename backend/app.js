@@ -17,6 +17,7 @@ const matchesRouter = require('./routes/matches');
 const sessionsRouter = require('./routes/sessions');
 const waitlistRouter = require('./routes/waitlist');
 const adminRouter = require('./routes/admin');
+const reviewsRouter = require('./routes/reviews');
 // const matchesRouter = require('./routes/match');
 
 const app = express();
@@ -55,6 +56,7 @@ app.use('/matches', matchesRouter);
 app.use('/sessions', sessionsRouter);
 app.use('/waitlist', waitlistRouter);
 app.use('/admin', adminRouter);
+app.use('/reviews', reviewsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
