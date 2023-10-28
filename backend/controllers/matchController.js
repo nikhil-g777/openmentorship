@@ -11,6 +11,7 @@ const constants = require('../lib/constants');
 const config = require('../config/config');
 const { getActiveMentorIds } = require('../helpers/matches');
 const { sendMail } = require('../lib/mailer');
+const Review = require('../models/review');
 
 
 const constructExploreFilter = (query, mentorIds) => {
@@ -152,6 +153,14 @@ const updateMatch = (req, res) => {
               twilioConversationSid: chatResult.conversationSid,
               review: null,
             }).then((session) => {
+              // Create review in collection and populate session with it
+              Review.create({
+                session: session._id,
+                rating: null,
+                review: null,
+                personalNote: null,
+              }).populate('session').exec();
+
               return Match.findByIdAndUpdate(
                 matchId,
                 {
