@@ -27,31 +27,31 @@ const Step1 = ({currentStep, setCurrentStep}: Props) => {
         <input
           type="radio"
           name="rating-8"
-          className="mask mask-star-2 bg-orange-400"
+          className="mask mask-star-2 bg-primary"
           onClick={() => setRating(1)}
         />
         <input
           type="radio"
           name="rating-8"
-          className="mask mask-star-2 bg-orange-400"
+          className="mask mask-star-2 bg-primary"
           onClick={() => setRating(2)}
         />
         <input
           type="radio"
           name="rating-8"
-          className="mask mask-star-2 bg-orange-400"
+          className="mask mask-star-2 bg-primary"
           onClick={() => setRating(3)}
         />
         <input
           type="radio"
           name="rating-8"
-          className="mask mask-star-2 bg-orange-400"
+          className="mask mask-star-2 bg-primary"
           onClick={() => setRating(4)}
         />
         <input
           type="radio"
           name="rating-8"
-          className="mask mask-star-2 bg-orange-400"
+          className="mask mask-star-2 bg-primary"
           onClick={() => setRating(5)}
         />
       </div>
