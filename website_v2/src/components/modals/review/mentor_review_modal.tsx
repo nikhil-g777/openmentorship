@@ -27,7 +27,7 @@ const MentorReviewModal = () => {
         {/* Confirmation Container */}
         <div className="modal-box min-h-[460px]">
           <h2 className="font-bold text-xl">
-            {currentStep === 1 ? "Step 1" : "Step 2"}
+            {currentStep === 1 ? "Step 1" : currentStep === 2 ? "Step 2" : null}
           </h2>
 
           {/* Progess Bar */}
@@ -38,11 +38,11 @@ const MentorReviewModal = () => {
           ></div>
 
           {/* Step 1 */}
-          {currentStep === 1 ? <Step1 setCurrentStep={setCurrentStep} /> : null}
+          <Step1 currentStep={currentStep} setCurrentStep={setCurrentStep} />
           {/* Step 2 */}
-          {currentStep === 2 ? <Step2 setCurrentStep={setCurrentStep} /> : null}
+          <Step2 currentStep={currentStep} setCurrentStep={setCurrentStep} />
           {/* Step 3 */}
-          {currentStep === 3 ? <Step3 /> : null}
+          <Step3 currentStep={currentStep} />
         </div>
       </div>
     </>

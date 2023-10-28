@@ -3,12 +3,17 @@
 import {Dispatch, SetStateAction} from "react";
 
 type Props = {
+  currentStep: number;
   setCurrentStep: Dispatch<SetStateAction<number>>;
 };
 
-const Step2 = ({setCurrentStep}: Props) => {
+const Step2 = ({currentStep, setCurrentStep}: Props) => {
   return (
-    <div className="w-full min-h-[368px] flex flex-col">
+    <div
+      className={`w-full min-h-[368px] flex flex-col ${
+        currentStep === 2 ? "" : "hidden"
+      }`}
+    >
       {/* Heading */}
       <h3 className="text-lg my-4 font-semibold">
         Write a personal note to the mentor

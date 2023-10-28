@@ -3,14 +3,15 @@
 import {Dispatch, SetStateAction, useState} from "react";
 
 type Props = {
+  currentStep: number;
   setCurrentStep: Dispatch<SetStateAction<number>>;
 };
 
-const Step1 = ({setCurrentStep}: Props) => {
+const Step1 = ({currentStep, setCurrentStep}: Props) => {
   const [rating, setRating] = useState<number>(0);
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${currentStep === 1 ? "" : "hidden"}`}>
       {/* Heading */}
       <h3 className="text-lg my-4 font-semibold">Create a public review</h3>
       {/* Rating */}

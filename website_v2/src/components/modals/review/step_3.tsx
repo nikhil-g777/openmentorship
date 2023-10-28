@@ -1,11 +1,19 @@
 import {useProfileStore} from "@/zustand/store";
 
-const Step3 = () => {
+type Props = {
+  currentStep: number;
+};
+
+const Step3 = ({currentStep}: Props) => {
   const {setMentorReviewModal} = useProfileStore();
   return (
-    <div className="w-full min-h-[368px] flex flex-col">
+    <div
+      className={`w-full min-h-[396px] flex flex-col ${
+        currentStep === 3 ? "" : "hidden"
+      }`}
+    >
       {/* Heading */}
-      <h3 className="text-lg my-4 font-semibold">
+      <h3 className="text-lg font-semibold text-center my-8">
         Thanks for providing feedback!
       </h3>
 
