@@ -7,21 +7,21 @@ const reviewSchema = new Schema({
   session: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'session',
+    ref: 'Session',
   },
   rating: {
     type: Number,
-    required: true,
     min: 1,
     max: 5,
+    default: null,
   },
   review: {
     type: String,
-    required: true,
+    default: null,
   },
   personalNote: {
     type: String,
-    required: false,
+    default: null,
   },
 });
 
