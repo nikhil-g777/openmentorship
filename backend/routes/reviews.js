@@ -28,4 +28,12 @@ router.post(
   reviewController.addReview,
 );
 
+// Get a review
+router.get(
+  '/getReview',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee, role.mentor, role.admin]),
+  reviewController.getReview,
+);
+
 module.exports = router;

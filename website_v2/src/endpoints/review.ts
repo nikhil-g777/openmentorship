@@ -35,4 +35,21 @@ const addReview = async (token: string, review: object, sessionId: string) => {
   }
 };
 
-export {getAllReviews, addReview};
+// Get a Review
+const getReview = async (token: string, sessionId: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/reviews/getReview?sessionId=${sessionId}`,
+      {
+        headers: headerProvider(token),
+        method: "GET",
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {getAllReviews, addReview, getReview};
