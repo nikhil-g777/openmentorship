@@ -21,6 +21,7 @@ const ConfirmationModal = () => {
     chatId,
     confirmationText,
     setConfirmationText,
+    setMentorReviewModal,
   } = useProfileStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
   const confirmationButtonText = getConfirmationButtonText(
@@ -45,6 +46,7 @@ const ConfirmationModal = () => {
       setConfirmationText,
       setSuccessAlert,
       setErrorAlert,
+      setMentorReviewModal,
     });
   };
 

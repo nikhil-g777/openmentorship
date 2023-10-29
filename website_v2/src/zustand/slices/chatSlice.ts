@@ -50,6 +50,8 @@ export type ChatSlice = {
   setMediaContent: (mediaContent: MediaContent) => void;
   chatIndicator: boolean;
   setChatIndicator: (chatIndicator: boolean) => void;
+  currentChatData: object | null | undefined;
+  setCurrentChatData: (currentChatData: Object | null | undefined) => void;
 };
 
 // Initial state
@@ -72,6 +74,7 @@ const initialState = {
   mediaConversations: null,
   mediaContent: [],
   chatIndicator: true,
+  currentChatData: null,
 };
 
 export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
@@ -106,4 +109,6 @@ export const chatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = set => ({
     set({mediaConversations}),
   setMediaContent: (mediaContent: MediaContent) => set({mediaContent}),
   setChatIndicator: (chatIndicator: boolean) => set({chatIndicator}),
+  setCurrentChatData: (currentChatData: object | null | undefined) =>
+    set({currentChatData}),
 });

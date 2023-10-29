@@ -15,6 +15,7 @@ const performConfirmationAction = async ({
   setSuccessAlert,
   setErrorAlert,
   router,
+  setMentorReviewModal,
 }: PerformConfirmationAction) => {
   // End Session
   if (
@@ -40,8 +41,12 @@ const performConfirmationAction = async ({
       setConfirmationText("");
       setSuccessAlert(SUCCESS_ALERT.SESSION_ENDED, 6);
       if (currentPage === PAGES.CHAT) {
-        router.push("/chat");
-        router.refresh();
+        if (setMentorReviewModal) {
+          setMentorReviewModal(true);
+        } else {
+          router.push("/chat");
+          router.refresh();
+        }
       } else {
         router.push("/matches?tab=closed");
         router.refresh();

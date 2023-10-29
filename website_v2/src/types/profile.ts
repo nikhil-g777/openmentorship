@@ -84,6 +84,7 @@ type PerformConfirmationAction = {
   setSuccessAlert: (text: string, time: number) => void;
   setErrorAlert: (text: string, time: number) => void;
   router: AppRouterInstance;
+  setMentorReviewModal?: (type: boolean) => void;
 };
 
 // Profile action type
