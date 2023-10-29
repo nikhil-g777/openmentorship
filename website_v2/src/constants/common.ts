@@ -62,6 +62,7 @@ export const SUCCESS_ALERT = {
   DISABLE_ACCOUNT: "You have disabled the account!",
   ACCOUNT_SETUP:
     "Tell us more about yourself so we can fully setup your account!",
+  REVIEW_SUBMITTED: "Your review has been submitted!",
 } as const;
 
 // Error Alert Messages
@@ -80,4 +81,5 @@ export const ERROR_ALERT = {
   SOMETHING_WRONG: "Something went wrong, please try again later",
   MESSAGE_LENGTH_800: "Message should be less than 800 characters",
   FILE_SIZE_10MB: "File size should be less than 10MB",
+  REVIEW_SUBMIT_ERROR: "Error submitting review! Please try again later",
 } as const;

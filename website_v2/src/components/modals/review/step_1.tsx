@@ -1,6 +1,7 @@
 "use client";
 
-import {Dispatch, SetStateAction, useState} from "react";
+import {useProfileStore} from "@/zustand/store";
+import {Dispatch, SetStateAction} from "react";
 
 type Props = {
   currentStep: number;
@@ -8,7 +9,8 @@ type Props = {
 };
 
 const Step1 = ({currentStep, setCurrentStep}: Props) => {
-  const [rating, setRating] = useState<number>(0);
+  const {mentorRating, mentorReview, setMentorRating, setMentorReview} =
+    useProfileStore();
 
   return (
     <div className={`w-full ${currentStep === 1 ? "" : "hidden"}`}>
@@ -21,38 +23,38 @@ const Step1 = ({currentStep, setCurrentStep}: Props) => {
           type="radio"
           name="rating-8"
           className="rating-hidden hidden"
-          checked={rating === 0}
+          checked={mentorRating === 0}
           readOnly
         />
         <input
           type="radio"
           name="rating-8"
           className="mask mask-star-2 bg-primary"
-          onClick={() => setRating(1)}
+          onClick={() => setMentorRating(1)}
         />
         <input
           type="radio"
           name="rating-8"
           className="mask mask-star-2 bg-primary"
-          onClick={() => setRating(2)}
+          onClick={() => setMentorRating(2)}
         />
         <input
           type="radio"
           name="rating-8"
           className="mask mask-star-2 bg-primary"
-          onClick={() => setRating(3)}
+          onClick={() => setMentorRating(3)}
         />
         <input
           type="radio"
           name="rating-8"
           className="mask mask-star-2 bg-primary"
-          onClick={() => setRating(4)}
+          onClick={() => setMentorRating(4)}
         />
         <input
           type="radio"
           name="rating-8"
           className="mask mask-star-2 bg-primary"
-          onClick={() => setRating(5)}
+          onClick={() => setMentorRating(5)}
         />
       </div>
       {/* Review post */}
@@ -60,12 +62,15 @@ const Step1 = ({currentStep, setCurrentStep}: Props) => {
       <textarea
         placeholder="Your review..."
         className="textarea textarea-bordered textarea-lg px-4 text-base w-full max-h-48 min-h-[128px]"
+        onChange={e => setMentorReview(e.target.value)}
+        value={mentorReview}
       ></textarea>
 
       <div className="modal-action">
         <button
           className="btn rounded-full btn-primary btn-sm text-sm capitalize px-8"
           onClick={() => setCurrentStep(2)}
+          disabled={mentorRating === 0 || mentorReview === ""}
         >
           Next
         </button>
