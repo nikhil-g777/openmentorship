@@ -7,11 +7,19 @@ type Props = {
 
 const Step3 = ({currentStep}: Props) => {
   const router = useRouter();
-  const {setMentorReviewModal} = useProfileStore();
+  const {
+    setMentorReviewModal,
+    setMentorRating,
+    setMentorReview,
+    setMentorPersonalNote,
+  } = useProfileStore();
 
   // Handle close
   const handleClose = () => {
     setMentorReviewModal(false);
+    setMentorRating(0);
+    setMentorReview("");
+    setMentorPersonalNote("");
     router.push("/chat");
     router.refresh();
   };
