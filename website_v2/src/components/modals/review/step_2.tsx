@@ -2,7 +2,7 @@
 
 import {ERROR_ALERT, SUCCESS_ALERT} from "@/constants/common";
 import {addReview} from "@/endpoints/review";
-import {useCommonStore, useProfileStore} from "@/zustand/store";
+import {useChatStore, useCommonStore, useProfileStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import {redirect} from "next/navigation";
 import {Dispatch, SetStateAction, useState} from "react";
@@ -22,6 +22,7 @@ const Step2 = ({currentStep, setCurrentStep}: Props) => {
     setMentorPersonalNote,
   } = useProfileStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
+  const {currentChatData} = useChatStore();
   const [loading, setLoading] = useState<boolean>(false);
 
   // Handle submit
@@ -33,7 +34,7 @@ const Step2 = ({currentStep, setCurrentStep}: Props) => {
     }
 
     // Move to landing page if token is not available
-    if (!token) {
+    if (!token || !currentChatData) {
       redirect("/");
     }
 
@@ -45,7 +46,11 @@ const Step2 = ({currentStep, setCurrentStep}: Props) => {
 
     // Perform submit
     setLoading(true);
-    const response = await addReview(token, review);
+    const response = await addReview(
+      token,
+      review,
+      currentChatData?.matches?.latestSession?._id
+    );
     if (response.success) {
       setSuccessAlert(SUCCESS_ALERT.REVIEW_SUBMITTED, 6);
       setLoading(false);

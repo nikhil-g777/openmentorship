@@ -18,10 +18,10 @@ const getAllReviews = async (token: string, page = 1, limit = 10) => {
 };
 
 // Add a Review
-const addReview = async (token: string, review: object) => {
+const addReview = async (token: string, review: object, sessionId: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/reviews/addReview`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/reviews/addReview?sessionId=${sessionId}`,
       {
         headers: headerProvider(token),
         method: "POST",
