@@ -12,7 +12,6 @@ const config = require('../config/config');
 const { getActiveMentorIds } = require('../helpers/matches');
 const { sendMail } = require('../lib/mailer');
 
-
 const constructExploreFilter = (query, mentorIds) => {
   const {
     areasOfInterest,
@@ -70,40 +69,48 @@ const createMatch = async (req, res) => {
     });
   }
 
-  try{
+  try {
     const { menteeId, mentorId, requestMessage } = body.match;
 
     // Check if there is an existing match.
-    existing_match = await Match.findOne({ mentee: menteeId, mentor: mentorId })
-    if(existing_match) {
+    existing_match = await Match.findOne({
+      mentee: menteeId,
+      mentor: mentorId,
+    });
+    if (existing_match) {
       return res
-      .status(500)
-      .json({ success: false, error: 'Match already exists' });
+        .status(500)
+        .json({ success: false, error: 'Match already exists' });
     }
 
     // Create a new match.
-    created_match = await Match.create(
-      { mentee: menteeId, mentor: mentorId, requestMessage, status: constants.matchStatuses.pending})
+    created_match = await Match.create({
+      mentee: menteeId,
+      mentor: mentorId,
+      requestMessage,
+      status: constants.matchStatuses.pending,
+    });
 
-
-    match = await Match.findById(created_match._id).populate({path: 'mentor', select: 'email'})
+    match = await Match.findById(created_match._id).populate({
+      path: 'mentor',
+      select: 'email',
+    });
     // Send connection_request email to mentor.
     sendMail(
       match.mentor.email,
-        'Openmentorship: New Mentee Request',
-        {},
-        config.sendgrid.templates.connection_request,
+      'Openmentorship: New Mentee Request',
+      {},
+      config.sendgrid.templates.connection_request,
     );
 
     return res.status(200).json({
       success: true,
       match: match,
     });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ success: false });
   }
-  catch(e) {
-      console.log(e);
-      return res.status(500).json({ success: false });
-  };
 };
 
 const updateMatch = async (req, res) => {
@@ -189,9 +196,23 @@ const updateMatch = async (req, res) => {
         .populate('latestSession')
         .exec();
 
-      // Send session end email to mentor and mentee 
-      await sendMail(updatedMatch.mentee.email, 'Openmentorship: Session Ended', {}, config.sendgrid.templates.mentee_session_end);
-      await sendMail(updatedMatch.mentor.email, 'Openmentorship: Session Ended', {}, config.sendgrid.templates.mentor_session_end);
+      // Send session end email to mentor and mentee
+      await sendMail(
+        updatedMatch.mentee.email,
+        'Openmentorship: Session Ended',
+        {
+          mentor_name: `${updatedMatch.mentor.firstName} ${updatedMatch.mentor.lastName}`,
+        },
+        config.sendgrid.templates.mentee_session_end,
+      );
+      await sendMail(
+        updatedMatch.mentor.email,
+        'Openmentorship: Session Ended',
+        {
+          mentee_name: `${updatedMatch.mentee.firstName} ${updatedMatch.mentee.lastName}`,
+        },
+        config.sendgrid.templates.mentor_session_end,
+      );
 
       await Session.findByIdAndUpdate(updatedMatch.latestSession, {
         status,
@@ -216,7 +237,10 @@ const userRecommendations = async (req, res) => {
   try {
     // Get mentors Ids & filter
     const mentorIds = await getActiveMentorIds(_id);
-    const filter = { userType: constants.userTypes.mentor, _id: { $nin: mentorIds } };
+    const filter = {
+      userType: constants.userTypes.mentor,
+      _id: { $nin: mentorIds },
+    };
 
     // Improve recommendations based on users profile
     const recommendations = await User.find(filter, null, {
