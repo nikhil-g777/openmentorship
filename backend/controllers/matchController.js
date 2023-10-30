@@ -165,6 +165,9 @@ const updateMatch = async (req, res) => {
         .populate('latestSession')
         .exec();
 
+      // Send mentee_match_made email to mentee
+      await sendMail(updatedMatch.mentee.email, 'Openmentorship: Match Made', {}, config.sendgrid.templates.mentee_match_made);
+
       return res.status(200).json({
         success: true,
         updatedMatch,
