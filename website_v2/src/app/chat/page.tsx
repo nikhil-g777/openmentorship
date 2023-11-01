@@ -52,7 +52,7 @@ const Page = async ({searchParams}: Props) => {
       {isNoActiveResult && isNoArchiveResult ? null : <ChatWrapper />}
 
       {/* No Result */}
-      {isNoActiveResult && isNoActiveResult ? (
+      {isNoActiveResult && isNoArchiveResult ? (
         <NoResult message="Sorry! No Chat Found" />
       ) : null}
 
