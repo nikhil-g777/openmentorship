@@ -33,15 +33,16 @@ const options = {
   algorithms: 'RS256',
 };
 
-const verify = (payload, done) => {
-  User.findById(payload._id)
-    .then((user) => {
-      if (user) {
-        return done(null, user);
-      }
-      return done(null, false);
-    })
-    .catch((err) => done(err));
+const verify = async (payload, done) => {
+  try {
+    const user = await User.findById(payload._id);
+    if (user) {
+      return done(null, user);
+    }
+    return done(null, false);
+  } catch (error) {
+    done(error);
+  }
 };
 
 const strategy = new JwtStrategy(options, verify);

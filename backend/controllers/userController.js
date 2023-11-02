@@ -20,13 +20,21 @@ const loginUser = async (req, res) => {
   if (!body) {
     return res
       .status(400)
-      .json({ success: false, errorCode: errorCodes.missingInputs.code, message: 'request body is empty' });
+      .json({
+        success: false,
+        errorCode: errorCodes.missingInputs.code,
+        message: 'request body is empty',
+      });
   }
 
   if (!body.authCode) {
     return res
       .status(400)
-      .json({ success: false, errorCode: errorCodes.missingInputs.code, message: 'authCode missing in the body' });
+      .json({
+        success: false,
+        errorCode: errorCodes.missingInputs.code,
+        message: 'authCode missing in the body',
+      });
   }
 
   try {
@@ -55,16 +63,18 @@ const loginUser = async (req, res) => {
     // Handle registration if user is not found or registration is incomplete.
     if (
       !updatedUser ||
-      updatedUser.registrationStatus === constants.registrationStatus.incomplete.name
+      updatedUser.registrationStatus ===
+        constants.registrationStatus.incomplete.name
     ) {
       const newRequest = req;
       newRequest.body.type = 'linkedInSignup';
       return await handleUserRegistration(newRequest, res, linkedInProfile);
     }
-    
+
     // Successful login
     if (
-      updatedUser.registrationStatus == constants.registrationStatus.complete.name
+      updatedUser.registrationStatus ==
+      constants.registrationStatus.complete.name
     ) {
       const { token } = await fetchUserToken(updatedUser);
       return res.json({
@@ -82,7 +92,9 @@ const loginUser = async (req, res) => {
     return res.status(401).json({
       success: false,
       errorCode: errorCodes.loginInvalid.code,
-      message: constants.registrationStatus[updatedUser.registrationStatus].loginMessage,
+      message:
+        constants.registrationStatus[updatedUser.registrationStatus]
+          .loginMessage,
       registrationStatus: updatedUser.registrationStatus,
       user: updatedUser,
     });
@@ -96,17 +108,14 @@ const loginUser = async (req, res) => {
   }
 };
 
-const tempAuth = (req, res) => {
+const tempAuth = async (req, res) => {
   console.log('Got temp auth user request');
 
   const { _id } = req.params;
 
-  if (process.env.NODE_ENV == 'local' || process.env.NODE_ENV == 'dev') {
-    User.findById(_id, (err, user) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({ success: false, error: err });
-      }
+  try {
+    if (process.env.NODE_ENV == 'local' || process.env.NODE_ENV == 'dev') {
+      const user = await User.findById(_id);
       if (!user) {
         return res
           .status(404)
@@ -129,12 +138,16 @@ const tempAuth = (req, res) => {
             userType: user.userType,
           },
         });
-    });
-  } else {
-    return res.status(401).json({
-      success: false,
-      message: 'Unauthorized',
-    });
+    }
+    if (process.env.NODE_ENV != 'local' || process.env.NODE_ENV != 'dev') {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized',
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ success: false, error: err });
   }
 };
 
@@ -196,18 +209,16 @@ const updateUser = async (req, res) => {
   }
 };
 
-const userInfo = (req, res) => {
-  const { _id } = req.user;
+const userInfo = async (req, res) => {
+  try {
+    const { _id } = req.user;
 
-  if (!_id) {
-    return res.status(400).json({ success: false, error: 'id not sent' });
-  }
-
-  User.findById(_id, (err, user) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ success: false, error: err });
+    if (!_id) {
+      return res.status(400).json({ success: false, error: 'id not sent' });
     }
+
+    const user = await User.findById(_id);
+
     if (!user) {
       return res.status(404).json({ success: false, error: 'user not found' });
     }
@@ -216,21 +227,22 @@ const userInfo = (req, res) => {
       success: true,
       user,
     });
-  });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ success: false, error: err });
+  }
 };
 
-const matches = (req, res) => {
-  const { _id } = req.user;
+const matches = async (req, res) => {
+  try {
+    const { _id } = req.user;
 
-  if (!_id) {
-    return res.status(400).json({ success: false, error: '_id not sent' });
-  }
-
-  User.findById(_id).exec((err, user) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ success: false, error: err });
+    if (!_id) {
+      return res.status(400).json({ success: false, error: '_id not sent' });
     }
+
+    const user = await User.findById(_id);
+
     if (!user) {
       return res.status(404).json({ success: false, error: 'user not found' });
     }
@@ -249,37 +261,35 @@ const matches = (req, res) => {
         .json({ success: false, error: 'user type in invalid' });
     }
 
-    Match.find(findQuery)
+    const matchesList = await Match.find(findQuery)
       .populate('mentor')
       .populate('mentee')
       .populate('latestSession')
-      .exec((matchErr, matchesList) => {
-        if (matchErr) {
-          console.log(err);
-          return res.status(500).json({ success: false, error: matchErr });
-        }
+      .exec();
 
-        const result = { pending: [], active: [], closed: [] };
+    const result = { pending: [], active: [], closed: [] };
 
-        _.forEach(matchesList, (match) => {
-          switch (userType) {
-            case 'mentor':
-              result[match.status].push(match);
-              break;
-            case 'mentee':
-              result[match.status].push(match);
-              break;
-            default:
-              console.log('Invalid user type');
-          }
-        });
+    _.forEach(matchesList, (match) => {
+      switch (userType) {
+        case 'mentor':
+          result[match.status].push(match);
+          break;
+        case 'mentee':
+          result[match.status].push(match);
+          break;
+        default:
+          console.log('Invalid user type');
+      }
+    });
 
-        return res.status(200).json({
-          success: true,
-          matches: result,
-        });
-      });
-  });
+    return res.status(200).json({
+      success: true,
+      matches: result,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ success: false, error: err });
+  }
 };
 
 // Created when there is a request from a mentee
@@ -343,7 +353,9 @@ const resendConfirmationEmail = async (req, res) => {
     const { user } = req.body;
     const response = await sendRegistrationMail(user);
     if (response.success) {
-      return res.status(200).json({ success: true, message: 'Confirmation email sent' });
+      return res
+        .status(200)
+        .json({ success: true, message: 'Confirmation email sent' });
     }
     return res.status(401).json({
       success: false,

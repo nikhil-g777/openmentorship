@@ -31,40 +31,36 @@ const generateTwilioToken = (identity) => {
   return token.toJwt();
 };
 
-const createChatConversation = (menteeId, mentorId) => {
+const createChatConversation = async (menteeId, mentorId) => {
   const result = {
     menteeParticipationId: null,
     mentorParicipationId: null,
     conversationSid: null,
   };
 
-  return new Promise((resolve, reject) => {
-    client.conversations
+  try {
+    const conversation = await client.conversations
       .services(twilioConfig.serviceSid)
-      .conversations.create({ friendlyName: `${mentorId}-${menteeId}` })
-      .then((conversation) => {
-        result.conversationSid = conversation.sid;
-        return client.conversations
-          .services(twilioConfig.serviceSid)
-          .conversations(result.conversationSid)
-          .participants.create({ identity: menteeId.toString() });
-      })
-      .then((mentee) => {
-        result.menteeParticipationId = mentee.sid;
-        return client.conversations
-          .services(twilioConfig.serviceSid)
-          .conversations(result.conversationSid)
-          .participants.create({ identity: mentorId.toString() });
-      })
-      .then((mentor) => {
-        result.mentorParicipationId = mentor.sid;
-        resolve(result);
-      })
-      .catch((e) => {
-        console.log(e);
-        reject(e);
-      });
-  });
+      .conversations.create({ friendlyName: `${mentorId}-${menteeId}` });
+    result.conversationSid = conversation.sid;
+
+    const mentee = await client.conversations
+      .services(twilioConfig.serviceSid)
+      .conversations(result.conversationSid)
+      .participants.create({ identity: menteeId.toString() });
+    result.menteeParticipationId = mentee.sid;
+
+    const mentor = await client.conversations
+      .services(twilioConfig.serviceSid)
+      .conversations(result.conversationSid)
+      .participants.create({ identity: mentorId.toString() });
+    result.mentorParicipationId = mentor.sid;
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 module.exports = {
