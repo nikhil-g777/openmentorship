@@ -1,10 +1,13 @@
 const supertest = require('supertest');
-const app = require('../server');
-const db = require('../db');
+const app = require('../../server');
+const db = require('../../db');
 
 describe('tempAuth test', () => {
   // Close DB connection after all tests are done
-  afterAll(() => db.close());
+  afterAll(() => {
+    db.close();
+    process.env.NODE_ENV = 'test';
+  });
 
   // No user id provided
   test('no user id provided', async () => {
@@ -43,7 +46,6 @@ describe('tempAuth test', () => {
           : process.env.JEST_MENTOR_ID
       }`,
     );
-
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
     expect(response.body.message).toBe('Login Successful');
