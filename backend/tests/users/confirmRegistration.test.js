@@ -4,7 +4,7 @@ const db = require('../../db');
 const utils = require('../../lib/utils');
 
 describe('confirma registration test', () => {
-      // Add token to environment variable
+  // Add token to environment variable
   beforeAll(async () => {
     const response = await supertest(app).post(
       `/users/tempAuth/${
