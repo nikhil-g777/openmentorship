@@ -38,7 +38,6 @@ describe('userInfo test', () => {
   // Unauthorized user info retrieval
   test('unauthorized user info', async () => {
     const response = await supertest(app).get('/users/info');
-    console.log(response);
     expect(response.status).toBe(401);
     expect(response.body).toBeDefined();
     expect(response.text).toBeDefined();
