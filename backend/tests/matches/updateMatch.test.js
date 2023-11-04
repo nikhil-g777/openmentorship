@@ -3,7 +3,7 @@ const app = require('../../server');
 const db = require('../../db');
 
 describe('update match test', () => {
-      // Add token to environment variable
+  // Add token to environment variable
   beforeAll(async () => {
     const response = await supertest(app).post(
       `/users/tempAuth/${
