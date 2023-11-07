@@ -1,6 +1,6 @@
 const supertest = require('supertest');
-const app = require('../../server');
-const db = require('../../db');
+const app = require('../../../server');
+const db = require('../../../db');
 
 describe('matches test', () => {
   // Add token to environment variable

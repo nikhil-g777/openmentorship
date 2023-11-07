@@ -1,7 +1,7 @@
 const supertest = require('supertest');
-const app = require('../../server');
-const db = require('../../db');
-const Match = require('../../models/match');
+const app = require('../../../server');
+const db = require('../../../db');
+const Match = require('../../../models/match');
 
 describe('create match test', () => {
   // Add token to environment variable

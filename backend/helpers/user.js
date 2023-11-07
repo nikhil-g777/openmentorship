@@ -200,7 +200,7 @@ const sendRegistrationMail = async (user) => {
       sendgridTemplate = config.sendgrid.templates.mentor_signup;
     } else {
       // TODO: Add some email alerting for errors like this.
-      console.err('Invalid user type for sending registration mail');
+      console.error('Invalid user type for sending registration mail');
     }
 
     const response = await sendMail(
