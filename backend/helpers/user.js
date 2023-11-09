@@ -74,6 +74,7 @@ const handleUserRegistration = async (req, res, linkedInProfile) => {
       );
     }
   } catch (err) {
+    console.log(res);
     return res.status(500).json({
       success: false,
       errorCode: errorCodes.registerServerError.code,
@@ -116,6 +117,11 @@ const linkedinApi = axios.create({
 
 // Get LinkedIn profile
 const getLinkedInProfile = async (authCode, isLocal = false) => {
+  // Check if authCode provided
+  if(!authCode) {
+    throw Error('authCode is missing');
+  }
+
   try {
     let redirectUri = '';
     if (isLocal) {
@@ -173,6 +179,11 @@ const getLinkedInProfile = async (authCode, isLocal = false) => {
 
 // Fetch user token
 const fetchUserToken = async (user) => {
+  // check if user is provided
+  if (!user || typeof user !== 'object' || !user._id) {
+    throw new Error('User not provided');
+  }
+
   const token = await Token.findOne({ userId: user._id });
   if (!token) {
     // encrypt information
@@ -189,6 +200,11 @@ const fetchUserToken = async (user) => {
 
 // Send Confirmation Email
 const sendRegistrationMail = async (user) => {
+  // check if user is provided
+  if (!user || typeof user !== 'object' || !user._id) {
+    throw new Error('User not provided');
+  }
+
   try {
     const confirmationToken = util.encodeRegistrationToken(user._id);
     const confirmationLink = `https://${process.env.FRONTEND_BASE_URL}/confirmUserRegistration?confirmationToken=${confirmationToken}`;
@@ -200,7 +216,7 @@ const sendRegistrationMail = async (user) => {
       sendgridTemplate = config.sendgrid.templates.mentor_signup;
     } else {
       // TODO: Add some email alerting for errors like this.
-      console.error('Invalid user type for sending registration mail');
+      throw Error('Invalid user type for sending registration mail');
     }
 
     const response = await sendMail(
