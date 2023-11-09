@@ -8,7 +8,7 @@ const {
   twilioConfig,
   generateTwilioToken,
   createChatConversation,
-} = require('../../../config/twilio');
+} = require('./twilio');
 
 describe('twilioConfig test', () => {
   test('should have a valid accountSid', () => {

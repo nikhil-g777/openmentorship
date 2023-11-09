@@ -1,6 +1,6 @@
 require('dotenv').config();
-const db = require('../../../db');
-const { getActiveMentorIds } = require('../../../helpers/matches');
+const db = require('../db');
+const { getActiveMentorIds } = require('./matches');
 
 describe('getActiveMentorIds helper function test', () => {
   // Close connection after test

@@ -4,9 +4,9 @@ const {
   headerTokenExtractor,
   options,
   verify,
-} = require('../../../config/passportJWT');
+} = require('./passportJWT');
 
-const PUBLIC_KEY = fs.readFileSync(`${__dirname}/../../../keys/public.pem`);
+const PUBLIC_KEY = fs.readFileSync(`${__dirname}/../keys/public.pem`);
 
 // Header token extractor
 describe('header token extractor', () => {
@@ -69,9 +69,9 @@ describe('Options object', () => {
 });
 
 // Verify function
-const User = require('../../../models/user');
+const User = require('../models/user');
 
-jest.mock('../../../models/User');
+jest.mock('../models/User');
 
 describe('Verify function', () => {
   test('return user if user exists', async () => {

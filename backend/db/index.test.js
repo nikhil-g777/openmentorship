@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const db = require('../../../db');
+const db = require('./index');
 
 describe('database connection', () => {
   // Close connection after each test

@@ -1,4 +1,4 @@
-const config = require('../../../config/config');
+const config = require('./config');
 
 describe('config test', () => {
   test('should be an object', () => {

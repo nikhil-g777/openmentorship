@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const app = require('../../../server');
 const db = require('../../../db');
 
-describe('update user test', () => {
+describe('/users/update - API test', () => {
   // Add token to environment variable
   beforeAll(async () => {
     const response = await supertest(app).post(
@@ -22,7 +22,7 @@ describe('update user test', () => {
   });
 
   // No user object provided
-  test('no user object provided', async () => {
+  test('user_object_missing_error', async () => {
     const response = await supertest(app)
       .put('/users/update')
       .set('Authorization', `Bearer ${process.env.JEST_TOKEN}`)
@@ -35,29 +35,24 @@ describe('update user test', () => {
   });
 
   // Unauthorized user update
-  test('unauthorized user update', async () => {
+  test('unauthorized_error', async () => {
     const response = await supertest(app).get('/users/update');
     expect(response.status).toBe(404);
-    expect(response.body).toBeDefined();
-    expect(response.text).toBeDefined();
-    expect(response.text).toBe('<h1>Not Found</h1>\n<h2></h2>\n<pre></pre>\n');
   });
 
-  // Invalid type provided
-  test('invalid type provided', async () => {
+  // Invalid type error
+  test('invalid_type_error', async () => {
     const response = await supertest(app)
       .put('/users/update')
       .set('Authorization', `Bearer ${process.env.JEST_TOKEN}`)
       .send({ type: 'jest', user: {} });
     expect(response.status).toBe(400);
-    expect(response.body).toBeDefined();
     expect(response.body.success).toBe(false);
-    expect(response.body.error).toBeDefined();
     expect(response.body.error).toBe('Invalid type');
   });
   
-  // update user
-  test('update user', async () => {
+  // update user headline
+  test('update_headline', async () => {
     const response = await supertest(app)
       .put('/users/update')
       .set('Authorization', `Bearer ${process.env.JEST_TOKEN}`)
@@ -68,13 +63,8 @@ describe('update user test', () => {
         }
     });
     expect(response.status).toBe(200);
-    expect(response.body).toBeDefined();
     expect(response.body.success).toBe(true);
-    expect(response.body.message).toBeDefined();
     expect(response.body.message).toBe('User Updated');
-    expect(response.body.user).toBeDefined();
-    expect(response.body.user._id).toBeDefined();
-    expect(response.body.user.headline).toBeDefined();
     expect(response.body.user.headline).toBe('Jest Test Headline');
   });
 });

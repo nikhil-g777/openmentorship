@@ -1,12 +1,12 @@
 require('dotenv').config();
-const db = require('../../../db');
+const db = require('../db');
 
 const {
   fetchUserToken,
   sendRegistrationMail,
   getLinkedInProfile,
   handleUserRegistration,
-} = require('../../../helpers/user');
+} = require('./user');
 
 // FetchUserToken tests
 describe('fetchUserToken tests', () => {
