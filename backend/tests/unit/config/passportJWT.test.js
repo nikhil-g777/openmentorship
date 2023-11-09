@@ -10,18 +10,14 @@ const PUBLIC_KEY = fs.readFileSync(`${__dirname}/../../../keys/public.pem`);
 
 // Header token extractor
 describe('header token extractor', () => {
-  test('should be a function', () => {
-    expect(typeof headerTokenExtractor).toBe('function');
-  });
-
-  test('should return null if no authorization header', () => {
+  test('return null if no authorization header', () => {
     const req = {
       headers: {},
     };
     expect(headerTokenExtractor(req)).toBe(null);
   });
 
-  test('should return null if authorization header is not Bearer', () => {
+  test('return null if authorization header is not Bearer', () => {
     const req = {
       headers: {
         authorization: 'Basic abc123',
@@ -30,7 +26,7 @@ describe('header token extractor', () => {
     expect(headerTokenExtractor(req)).toBe(null);
   });
 
-  test('should return token if authorization header is Bearer', () => {
+  test('return token if authorization header is Bearer', () => {
     const req = {
       headers: {
         authorization: 'Bearer abc123',
@@ -60,13 +56,13 @@ describe('Options object', () => {
   });
 
   describe('jwtFromRequest property', () => {
-    test('should be equal to headerTokenExtractor', () => {
+    test('equal to headerTokenExtractor', () => {
       expect(currentOptions.jwtFromRequest).toEqual(options.jwtFromRequest);
     });
   });
 
   describe('algorithms property', () => {
-    test('should be equal to RS256', () => {
+    test('equal to RS256', () => {
       expect(currentOptions.algorithms).toEqual(options.algorithms);
     });
   });
@@ -78,7 +74,7 @@ const User = require('../../../models/user');
 jest.mock('../../../models/User');
 
 describe('Verify function', () => {
-  test('should return user if user exists', async () => {
+  test('return user if user exists', async () => {
     const mockUser = { _id: '123', name: 'Test User' };
     User.findById.mockResolvedValue(mockUser);
 
@@ -90,7 +86,7 @@ describe('Verify function', () => {
     expect(done).toHaveBeenCalledWith(null, mockUser);
   });
 
-  test('should return false if user does not exist', async () => {
+  test('return false on user not exist', async () => {
     User.findById.mockResolvedValue(null);
 
     const payload = { _id: '123' };
@@ -101,7 +97,7 @@ describe('Verify function', () => {
     expect(done).toHaveBeenCalledWith(null, false);
   });
 
-  test('should return error if there is a database error', () => {
+  test('return error on database error', () => {
     const mockError = new Error('Database error');
     User.findById.mockRejectedValue(mockError);
 
