@@ -1,40 +1,29 @@
 const supertest = require('supertest');
 const app = require('../../../server');
 const db = require('../../../db');
+const { addToken } = require('../../../helpers/jest');
 
 describe('/users/update - API test', () => {
   // Add token to environment variable
-  beforeAll(async () => {
-    const response = await supertest(app).post(
-      `/users/tempAuth/${
-        process.env.JEST_ACCOUNT_TYPE === 'mentee'
-          ? process.env.JEST_MENTEE_ID
-          : process.env.JEST_MENTOR_ID
-      }`,
-    );
-    expect(response.body.success).toBe(true);
-    process.env.JEST_TOKEN = response.body.token;
-  });
+  addToken(supertest);
 
   // Close DB connection after all tests are done
   afterAll(() => {
     db.close();
   });
 
-  // No user object provided
+  // User object missing error
   test('user_object_missing_error', async () => {
     const response = await supertest(app)
       .put('/users/update')
       .set('Authorization', `Bearer ${process.env.JEST_TOKEN}`)
       .send({});
     expect(response.status).toBe(400);
-    expect(response.body).toBeDefined();
     expect(response.body.success).toBe(false);
-    expect(response.body.error).toBeDefined();
     expect(response.body.error).toBe('request body does not have user object');
   });
 
-  // Unauthorized user update
+  // Unauthorized user error
   test('unauthorized_error', async () => {
     const response = await supertest(app).get('/users/update');
     expect(response.status).toBe(404);
@@ -50,7 +39,7 @@ describe('/users/update - API test', () => {
     expect(response.body.success).toBe(false);
     expect(response.body.error).toBe('Invalid type');
   });
-  
+
   // update user headline
   test('update_headline', async () => {
     const response = await supertest(app)
@@ -60,8 +49,8 @@ describe('/users/update - API test', () => {
         type: 'updateUser',
         user: {
           headline: 'Jest Test Headline',
-        }
-    });
+        },
+      });
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
     expect(response.body.message).toBe('User Updated');
