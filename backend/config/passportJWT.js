@@ -19,7 +19,7 @@ const User = require('../models/user');
 const headerTokenExtractor = (req) => {
   const authHeader = req.headers.authorization;
 
-  if (authHeader) {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.split(' ')[1];
 
     return token;
@@ -33,7 +33,7 @@ const options = {
   algorithms: 'RS256',
 };
 
-const verify = (payload, done) => {
+const verify = async (payload, done) => {
   User.findById(payload._id)
     .then((user) => {
       if (user) {
@@ -45,5 +45,11 @@ const verify = (payload, done) => {
 };
 
 const strategy = new JwtStrategy(options, verify);
+const passportJWT = (passport) => passport.use(strategy);
 
-module.exports = (passport) => passport.use(strategy);
+module.exports = {
+  passportJWT,
+  headerTokenExtractor,
+  options,
+  verify,
+}
