@@ -1,8 +1,8 @@
 const supertest = require('supertest');
-const app = require('../../../server');
-const db = require('../../../db');
-const utils = require('../../../lib/utils');
-const { mentee } = require('../../../lib/role');
+const app = require('../../server');
+const db = require('../../db');
+const utils = require('../../lib/utils');
+const { mentee } = require('../../lib/role');
 
 describe('/users/confirmRegistration - API test', () => {
   // Add _id to environment variable

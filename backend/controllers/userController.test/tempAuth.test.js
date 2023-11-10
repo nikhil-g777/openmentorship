@@ -1,7 +1,7 @@
 const supertest = require('supertest');
-const app = require('../../../server');
-const db = require('../../../db');
-const { mentee } = require('../../../lib/role');
+const app = require('../../server');
+const db = require('../../db');
+const { mentee } = require('../../lib/role');
 
 describe('/users/tempAuth - API test', () => {
   // Close DB connection after all tests are done

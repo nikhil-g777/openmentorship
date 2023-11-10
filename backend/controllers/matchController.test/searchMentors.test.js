@@ -1,7 +1,7 @@
 const supertest = require('supertest');
-const app = require('../../../server');
-const db = require('../../../db');
-const { addToken } = require('../../../helpers/jest');
+const app = require('../../server');
+const db = require('../../db');
+const { addToken } = require('../../helpers/jest');
 
 describe('/matches/searchMentors - API test', () => {
   // Add token to environment variable

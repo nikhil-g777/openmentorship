@@ -1,7 +1,7 @@
 const supertest = require('supertest');
-const app = require('../../../server');
-const db = require('../../../db');
-const { loginServerError } = require('../../../lib/errorCodes');
+const app = require('../../server');
+const db = require('../../db');
+const { loginServerError } = require('../../lib/errorCodes');
 
 describe('/users/login - API test', () => {
   // Close DB connection after all tests are done
