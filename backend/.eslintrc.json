@@ -1,6 +1,7 @@
 {
   "env": {
-    "node": true
+    "node": true,
+    "jest": true
   },
   "extends": ["airbnb-base", "prettier"],
   "parser": "babel-eslint",
@@ -10,6 +11,14 @@
     "eqeqeq": 0,
     "no-underscore-dangle": 0,
     "no-console": 0,
-    "prettier/prettier": 0
+    "prettier/prettier": 0,
+    "import/no-extraneous-dependencies":[
+      "error",
+      {
+         "devDependencies":[
+            "**/*.test.js"
+         ]
+      }
+    ]
   }
 }
