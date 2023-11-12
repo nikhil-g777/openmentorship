@@ -5,7 +5,9 @@ const { addToken } = require('../../helpers/jest');
 
 describe('/users/matches - API test', () => {
   // Add token to environment variable
-  addToken(supertest);
+  beforeAll(async () => {
+    await addToken(supertest);
+  });
 
   // Close DB connection after all tests are done
   afterAll(() => {
