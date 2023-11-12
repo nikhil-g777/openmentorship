@@ -1,3 +1,4 @@
+const { MongoMemoryServer } = require('mongodb-memory-server');
 const app = require('../server');
 const { mentee } = require('../lib/role');
 
@@ -12,5 +13,19 @@ module.exports = {
     );
     expect(response.body.success).toBe(true);
     process.env.JEST_TOKEN = response.body.token;
+  },
+  startDatabase: async (MongoClient) => {
+    const mongod = new MongoMemoryServer();
+    const uri = await mongod.getUri();
+    const client = await MongoClient.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    const db = client.db(await mongod.getDbName());
+    return { client, db };
+  },
+  stopDatabase: async (mongod, client) => {
+    await client.close();
+    await mongod.stop();
   },
 };

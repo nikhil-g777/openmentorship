@@ -16,7 +16,8 @@
       "error",
       {
          "devDependencies":[
-            "**/*.test.js"
+            "**/*.test.js",
+            "**/*.js" 
          ]
       }
     ]
