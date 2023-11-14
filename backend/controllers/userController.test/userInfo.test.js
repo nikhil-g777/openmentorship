@@ -1,17 +1,27 @@
 const supertest = require('supertest');
 const app = require('../../server');
-const db = require('../../db');
-const { addToken } = require('../../helpers/jest');
+const {
+  initUsers,
+  initDBServer,
+  closeDBServer,
+  addToken,
+} = require('../../helpers/initTestDB');
 
 describe('/users/info - API test', () => {
-  // Add token to environment variable
   beforeAll(async () => {
+    // Init MongoDB memory server
+    await initDBServer();
+
+    // Add User to DB
+    await initUsers();
+
+    // Add token to environment variable
     await addToken(supertest);
   });
 
   // Close DB connection after all tests are done
-  afterAll(() => {
-    db.close();
+  afterAll(async () => {
+    await closeDBServer();
   });
 
   // Successful user info

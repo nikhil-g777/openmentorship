@@ -24,6 +24,7 @@
   "dependencies": {
     "@sendgrid/mail": "^7.6.2",
     "axios": "^0.19.2",
+    "bson": "^6.2.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
