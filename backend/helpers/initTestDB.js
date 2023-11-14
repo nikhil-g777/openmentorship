@@ -87,6 +87,13 @@ const initMatches = async () => {
   return result;
 };
 
+// Insert all data to DB
+const initAll = async () => {
+  await initUsers();
+  await initSessions();
+  await initMatches();
+};
+
 module.exports = {
   initDBServer,
   closeDBServer,
@@ -94,4 +101,5 @@ module.exports = {
   initUsers,
   initSessions,
   initMatches,
+  initAll,
 };
