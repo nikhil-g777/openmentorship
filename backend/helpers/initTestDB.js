@@ -5,6 +5,8 @@ const { EJSON } = require('bson');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const User = require('../models/user');
+const Session = require('../models/session');
+const Match = require('../models/match');
 const app = require('../server');
 const { mentee } = require('../lib/role');
 
@@ -12,12 +14,30 @@ const { mentee } = require('../lib/role');
 let mongoServer;
 
 // Read users.json
-const json = fs.readFileSync(
+const userJSON = fs.readFileSync(
   path.resolve(__dirname, '../dump/users.json'),
   'utf8',
 );
 // Parse users.json
-const users = EJSON.parse(json);
+const users = EJSON.parse(userJSON);
+
+// Read sessions.json
+const sessionJSON = fs.readFileSync(
+  path.resolve(__dirname, '../dump/sessions.json'),
+  'utf8',
+);
+
+// Parse sessions.json
+const sessions = EJSON.parse(sessionJSON);
+
+// Read matches.json
+const matchJSON = fs.readFileSync(
+  path.resolve(__dirname, '../dump/matches.json'),
+  'utf8',
+);
+
+// Parse matches.json
+const matches = EJSON.parse(matchJSON);
 
 // Init MongoDB memory server
 const initDBServer = async () => {
@@ -55,4 +75,23 @@ const initUsers = async () => {
   return result;
 };
 
-module.exports = { initDBServer, closeDBServer, addToken, initUsers };
+// Insert sessions to DB
+const initSessions = async () => {
+  const result = await Session.insertMany(sessions);
+  return result;
+};
+
+// Insert matches to DB
+const initMatches = async () => {
+  const result = await Match.insertMany(matches);
+  return result;
+};
+
+module.exports = {
+  initDBServer,
+  closeDBServer,
+  addToken,
+  initUsers,
+  initSessions,
+  initMatches,
+};
