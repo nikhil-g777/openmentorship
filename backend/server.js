@@ -7,7 +7,7 @@ const createError = require('http-errors');
 const logger = require('morgan');
 const path = require('path');
 
-require('dotenv-flow').config();
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');

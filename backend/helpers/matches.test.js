@@ -1,11 +1,16 @@
 require('dotenv').config();
-const db = require('../db');
+const { initDBServer, closeDBServer, initUsers } = require('./initTestDB');
 const { getActiveMentorIds } = require('./matches');
 
 describe('getActiveMentorIds helper function test', () => {
+  // Init DB server
+  beforeAll(async () => {
+    await initDBServer();
+    await initUsers();
+  });
   // Close connection after test
-  afterAll(() => {
-    db.close();
+  afterAll(async () => {
+    await closeDBServer();
   });
 
   test('should be a function', () => {
