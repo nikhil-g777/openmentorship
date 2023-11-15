@@ -32,6 +32,11 @@ const generateTwilioToken = (identity) => {
 };
 
 const createChatConversation = (menteeId, mentorId) => {
+  // Throw error if menteeId or mentorId is not provided
+  if (!menteeId || !mentorId) {
+    throw new Error('MenteeId or MentorId is missing');
+  }
+  
   const result = {
     menteeParticipationId: null,
     mentorParicipationId: null,
@@ -68,6 +73,7 @@ const createChatConversation = (menteeId, mentorId) => {
 };
 
 module.exports = {
+  twilioConfig,
   generateTwilioToken,
   createChatConversation,
 };
