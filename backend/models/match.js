@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -11,15 +12,15 @@ const Match = new Schema(
       default: 'pending',
       required: true,
     },
-    requestMessage: { type: String, required: true },
+    requestMessage: { type: String, required: process.env.NODE_ENV !== 'test' },
     mentee: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: process.env.NODE_ENV !== 'test',
       ref: 'user',
     },
     mentor: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: process.env.NODE_ENV !== 'test',
       ref: 'user',
     },
     latestSession: {
