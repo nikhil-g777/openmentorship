@@ -16,10 +16,6 @@ describe('/matches/create - API test', () => {
     await closeDBServer();
   });
 
-  test('test', async () => {
-    console.log(process.env.JEST_TOKEN);
-  });
-
   // Unauthorized error
   test('unauthorized_error', async () => {
     const response = await supertest(app).post('/matches/create');

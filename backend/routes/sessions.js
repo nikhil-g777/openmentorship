@@ -20,4 +20,12 @@ router.get(
   sessionController.sessionList,
 );
 
+// Get Matches In Session
+router.get(
+  '/matchesInSession',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee, role.mentor, role.admin]),
+  sessionController.getMatchesInSession,
+);
+
 module.exports = router;
