@@ -1,12 +1,14 @@
 const supertest = require('supertest');
 const app = require('../../server');
-const db = require('../../db');
 const utils = require('../../lib/utils');
 const { mentee } = require('../../lib/role');
+const { initDBServer, closeDBServer, initUsers } = require('../../helpers/initTestDB');
 
 describe('/users/confirmRegistration - API test', () => {
   // Add _id to environment variable
   beforeAll(async () => {
+    await initDBServer();
+    await initUsers();
     const response = await supertest(app).post(
       `/users/tempAuth/${
         process.env.JEST_ACCOUNT_TYPE === mentee
@@ -19,8 +21,8 @@ describe('/users/confirmRegistration - API test', () => {
   });
 
   // Close DB connection after all tests are done
-  afterAll(() => {
-    db.close();
+  afterAll(async () => {
+    await closeDBServer();
   });
 
   // Missing confirmation token error

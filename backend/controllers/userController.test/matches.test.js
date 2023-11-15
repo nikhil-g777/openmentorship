@@ -1,17 +1,18 @@
 const supertest = require('supertest');
 const app = require('../../server');
-const db = require('../../db');
-const { addToken } = require('../../helpers/initTestDB');
+const { addToken, initDBServer, initUsers, closeDBServer } = require('../../helpers/initTestDB');
 
 describe('/users/matches - API test', () => {
   // Add token to environment variable
   beforeAll(async () => {
+    await initDBServer();
+    await initUsers();
     await addToken(supertest);
   });
 
   // Close DB connection after all tests are done
-  afterAll(() => {
-    db.close();
+  afterAll(async () => {
+    await closeDBServer();
   });
 
   // Unauthorized user matches error

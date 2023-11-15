@@ -1,12 +1,17 @@
 const supertest = require('supertest');
 const app = require('../../server');
-const db = require('../../db');
 const { mentee } = require('../../lib/role');
+const { initDBServer, closeDBServer, initUsers } = require('../../helpers/initTestDB');
 
 describe('/users/tempAuth - API test', () => {
+  // Init DB server
+  beforeAll(async () => {
+    await initDBServer();
+    await initUsers();
+  });
   // Close DB connection after all tests are done
-  afterAll(() => {
-    db.close();
+  afterAll(async () => {
+    await closeDBServer();
     process.env.NODE_ENV = 'test';
   });
 

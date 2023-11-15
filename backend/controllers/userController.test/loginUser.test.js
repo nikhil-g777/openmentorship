@@ -1,12 +1,17 @@
 const supertest = require('supertest');
 const app = require('../../server');
-const db = require('../../db');
 const { loginServerError } = require('../../lib/errorCodes');
+const { initDBServer, initUsers, closeDBServer } = require('../../helpers/initTestDB');
 
 describe('/users/login - API test', () => {
+  // Add token to environment variable
+  beforeAll(async () => {
+    await initDBServer();
+    await initUsers();
+  });
   // Close DB connection after all tests are done
-  afterAll(() => {
-    db.close();
+  afterAll(async () => {
+    await closeDBServer();
   });
 
   // No authCode error

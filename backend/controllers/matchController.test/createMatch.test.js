@@ -1,18 +1,23 @@
 const supertest = require('supertest');
 const app = require('../../server');
-const db = require('../../db');
 const Match = require('../../models/match');
-const { addToken } = require('../../helpers/initTestDB');
+const { addToken, initDBServer, closeDBServer, initUsers } = require('../../helpers/initTestDB');
 
 describe('/matches/create - API test', () => {
   // Add token to environment variable
   beforeAll(async () => {
+    await initDBServer();
+    await initUsers();
     await addToken(supertest);
   });
 
   // Close DB connection after all tests are done
-  afterAll(() => {
-    db.close();
+  afterAll(async () => {
+    await closeDBServer();
+  });
+
+  test('test', async () => {
+    console.log(process.env.JEST_TOKEN);
   });
 
   // Unauthorized error
