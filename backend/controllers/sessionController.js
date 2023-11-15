@@ -3,32 +3,24 @@ const _ = require('lodash');
 const Session = require('../models/session');
 const Match = require('../models/match');
 
-const sessionList = (req, res) => {
-  Session.find({})
-    .sort('startDate')
-    .populate('match')
-    .exec((err, sessions) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({ success: false, error: err });
-      }
-
-      return res.status(200).json({
-        success: true,
-        sessions,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        error: 'Unable to process request',
-      });
+const sessionList = async (req, res) => {
+  try {
+    const sessions = await Session.find({}).sort('startDate').populate('match');
+    return res.status(200).json({
+      success: true,
+      sessions,
     });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: 'Unable to process request',
+    });
+  }
 };
 
 const getMatchesInSession = (req, res) => {
-  const { sessionId } = req.params;
+  const { sessionId } = req.query;
 
   if (!sessionId) {
     return res
@@ -36,31 +28,32 @@ const getMatchesInSession = (req, res) => {
       .json({ success: false, error: 'sessionId not sent' });
   }
 
-  Match.find({ sessionId })
-    .populate('menteeId')
-    .populate('mentorId')
-    .then((matchesList) => {
-      const result = { pending: [], active: [], closed: [] };
-      _.forEach(matchesList, (match) => {
-        result[match.status].push({
-          _id: match._id,
-          mentee: match.menteeId,
-          mentor: match.mentorId,
+  try {
+    Match.find({ sessionId })
+      .populate('menteeId')
+      .populate('mentorId')
+      .then((matchesList) => {
+        const result = { pending: [], active: [], closed: [] };
+        _.forEach(matchesList, (match) => {
+          result[match.status].push({
+            _id: match._id,
+            mentee: match.menteeId,
+            mentor: match.mentorId,
+          });
+        });
+
+        return res.status(200).json({
+          success: true,
+          matches: result,
         });
       });
-
-      return res.status(200).json({
-        success: true,
-        matches: result,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        error: 'Failed to process request',
-      });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to process request',
     });
+  }
 };
 
 module.exports = {

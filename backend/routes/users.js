@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-require('../config/passportJWT')(passport);
+require('../config/passportJWT').passportJWT(passport);
 
 const userController = require('../controllers/userController');
 const util = require('../lib/utils');

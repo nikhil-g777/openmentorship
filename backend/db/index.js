@@ -1,14 +1,20 @@
 const mongoose = require('mongoose');
 
-mongoose
-  .connect(process.env.MONGODB_CONNECTION_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .catch((err) => {
-    console.error('Connection Error', err.message);
-  });
+// Connection URI
+const connectionURI = process.env.MONGODB_CONNECTION_URI;
+
+// Connect to MongoDB
+if (process.env.NODE_ENV !== 'test') {
+  mongoose
+    .connect(connectionURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    })
+    .catch((err) => {
+      console.error('Connection Error', err.message);
+    });
+}
 
 const db = mongoose.connection;
 
