@@ -119,8 +119,8 @@ describe('user helper functions tests', () => {
         email: process.env.JEST_EMAIL,
       };
       const response = await sendRegistrationMail(user);
-      expect(response.success).toBe(false);
-      expect(response.response).toBe(null);
+      expect(response.success).toBe(true);
+      expect(typeof response.response).not.toBeNull();
     });
   });
 

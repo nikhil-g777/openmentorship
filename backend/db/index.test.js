@@ -1,11 +1,18 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const db = require('./index');
+const { initDBServer, closeDBServer } = require('../helpers/initTestDB');
+
+// db
+const db = mongoose.connection;
 
 describe('database connection', () => {
+  // Init DB server
+  beforeAll(async () => {
+    await initDBServer();
+  })
   // Close connection after each test
-  afterEach(() => {
-    db.close();
+  afterEach(async () => {
+    await closeDBServer();
   });
 
   // Should be a object
