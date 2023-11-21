@@ -148,7 +148,10 @@ const fetchUserProfile = async (req, res) => {
       sessions,
     });
   } catch (err) {
-    console.error(err.message);
+    return res.status(500).json({
+      success: false,
+      error: 'Could not process request',
+    });
   }
 };
 
