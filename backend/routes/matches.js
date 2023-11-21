@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-require('../config/passportJWT')(passport);
+require('../config/passportJWT').passportJWT(passport);
 
 const matchController = require('../controllers/matchController');
 const util = require('../lib/utils');

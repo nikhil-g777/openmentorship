@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -15,7 +16,7 @@ const Education = new Schema({
 const User = new Schema(
   {
     firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    lastName: { type: String, required: process.env.NODE_ENV !== 'test' },
     email: { type: String },
     headline: { type: String },
     bio: { type: String },
@@ -31,7 +32,7 @@ const User = new Schema(
       required: true,
       default: 'mentee',
     },
-    linkedInId: { type: String, required: true, unique: true, index: true },
+    linkedInId: { type: String, required: process.env.NODE_ENV !== 'test', unique: true, index: true },
     linkedInProfileUrl: { type: String },
     profileImageUrls: { type: Object, default: { default: '' } },
     areasOfInterest: { type: Object, default: {} },

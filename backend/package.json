@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "dev": "NODE_ENV=local nodemon app.js",
     "lint": "eslint --ignore-path .gitignore .",
-    "format": "pretty-quick --staged"
+    "format": "pretty-quick --staged",
+    "test": "jest"
   },
   "lint-staged": {
     "*.js": [
@@ -23,6 +24,7 @@
   "dependencies": {
     "@sendgrid/mail": "^7.6.2",
     "axios": "^0.19.2",
+    "bson": "^6.2.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -52,8 +54,11 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^9.0.1",
     "nodemon": "^2.0.18",
     "prettier": "^2.1.1",
-    "pretty-quick": "^3.1.0"
+    "pretty-quick": "^3.1.0",
+    "supertest": "^6.3.3"
   }
 }

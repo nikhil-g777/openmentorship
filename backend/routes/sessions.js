@@ -3,7 +3,7 @@ const express = require('express');
 
 const router = express.Router();
 const passport = require('passport');
-require('../config/passportJWT')(passport);
+require('../config/passportJWT').passportJWT(passport);
 
 const sessionController = require('../controllers/sessionController');
 const util = require('../lib/utils');
@@ -18,6 +18,14 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.mentee, role.mentor, role.admin]),
   sessionController.sessionList,
+);
+
+// Get Matches In Session
+router.get(
+  '/matchesInSession',
+  passport.authenticate('jwt', { session: false }),
+  util.checkRole([role.mentee, role.mentor, role.admin]),
+  sessionController.getMatchesInSession,
 );
 
 module.exports = router;
