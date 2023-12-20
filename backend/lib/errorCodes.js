@@ -10,5 +10,8 @@ module.exports = {
     },
     registerServerError: {
         code: 'registerServerError' // Interval server error while registering.
-    }
+    },
+    serverError: {
+        code: 'serverError' // Interval server error.
+    },
 }

@@ -1,3 +1,4 @@
+const errorCodes = require('../lib/errorCodes');
 const Review = require('../models/review');
 
 // Get all reviews
@@ -8,6 +9,7 @@ const getAllReviews = async (req, res) => {
     return res.status(400).json({
       success: false,
       error: 'page and limit needs to be sent',
+      errorCode: errorCodes.missingInputs.code,
     });
   }
   try {
@@ -33,6 +35,7 @@ const getAllReviews = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: 'Unable to process request',
+      errorCode: errorCodes.serverError.code,
     });
   }
 };
@@ -46,6 +49,7 @@ const addReview = async (req, res) => {
     return res.status(400).json({
       success: false,
       error: 'sessionId needs to be sent',
+      errorCode: errorCodes.missingInputs.code,
     });
   }
 
@@ -53,6 +57,7 @@ const addReview = async (req, res) => {
     return res.status(400).json({
       success: false,
       error: 'rating and review needs to be sent',
+      errorCode: errorCodes.missingInputs.code,
     });
   }
 
@@ -74,6 +79,7 @@ const addReview = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: 'Unable to process request',
+      errorCode: errorCodes.serverError.code,
     });
   }
 };
@@ -86,6 +92,7 @@ const getReview = async (req, res) => {
     return res.status(400).json({
       success: false,
       error: 'sessionId needs to be sent',
+      errorCode: errorCodes.missingInputs.code,
     });
   }
 
@@ -105,6 +112,7 @@ const getReview = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: 'Unable to process request',
+      errorCode: errorCodes.serverError.code,
     });
   }
 };
