@@ -8,6 +8,7 @@ type Props = {
 const Step3 = ({currentStep}: Props) => {
   const router = useRouter();
   const {
+    currentPage,
     setMentorReviewModal,
     setMentorRating,
     setMentorReview,
@@ -20,7 +21,11 @@ const Step3 = ({currentStep}: Props) => {
     setMentorRating(0);
     setMentorReview("");
     setMentorPersonalNote("");
-    router.push("/chat");
+    if (currentPage === "chat") {
+      router.push("/chat");
+    } else {
+      router.push("/matches");
+    }
     router.refresh();
   };
   return (

@@ -42,7 +42,7 @@ const performConfirmationAction = async ({
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
       setSuccessAlert(SUCCESS_ALERT.SESSION_ENDED, 6);
-      if (currentPage === PAGES.CHAT) {
+      if (currentPage === PAGES.CHAT || currentPage === PAGES.MATCHES) {
         if (setMentorReviewModal && userType === "mentee" && sessionId) {
           setMentorReviewModal(true);
         } else {
