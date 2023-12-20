@@ -63,10 +63,8 @@ const addReview = async (req, res) => {
 
   try {
     // Find by session in reviews and update
-    const updatedReview = await Review.findOneAndUpdate(
-      { session: sessionId },
-      { rating, review, personalNote },
-      { upsert: true, new: true },
+    const updatedReview = await Review.create(
+      { session: sessionId, rating, review, personalNote }
     );
 
     // Return response
