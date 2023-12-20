@@ -158,11 +158,6 @@ const updateMatch = async (req, res) => {
         status: 'active',
         twilioConversationSid: chatResult.conversationSid,
       });
-      
-      // Add review to the collection
-      await Review.create({
-        session: session._id,
-      });
 
       const updatedMatch = await Match.findByIdAndUpdate(
         matchId,

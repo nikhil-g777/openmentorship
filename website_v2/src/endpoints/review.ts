@@ -1,10 +1,15 @@
 import {headerProvider} from "./root";
 
 // Get All Reviews
-const getAllReviews = async (token: string, page = 1, limit = 10) => {
+const getReviews = async (
+  token: string,
+  page = 1,
+  limit = 10,
+  mentorId: string
+) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/reviews/getAllReviews?page=${page}&limit=${limit}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/reviews/getReviews?page=${page}&limit=${limit}&mentorId=${mentorId}`,
       {
         headers: headerProvider(token),
         method: "GET",
@@ -52,4 +57,4 @@ const getReview = async (token: string, sessionId: string) => {
   }
 };
 
-export {getAllReviews, addReview, getReview};
+export {getReviews, addReview, getReview};

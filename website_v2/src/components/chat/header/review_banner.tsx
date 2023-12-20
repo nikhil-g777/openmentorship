@@ -15,32 +15,35 @@ const ReviewBanner = () => {
   const [reviewData, setReviewData] = useState<null | {
     [key: string]: string | number | null | object;
   }>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch review data
   useEffect(() => {
+    setLoading(true);
     if (token && currentChatData?.matches?.latestSession?._id) {
       getReview(token, currentChatData?.matches?.latestSession?._id).then(
         res => {
+          setLoading(false);
           if (res.success && res.review) {
             setReviewData(res.review);
           }
         }
       );
     }
-  }, [token, currentChatData?.matches?.latestSession?._id]);
+  }, [token, currentChatData?.matches?.latestSession?._id, setLoading]);
 
+  // Check if review banner should be shown
   const reviewBanner =
     currentChatData &&
     currentChatData?.matches?.status === "closed" &&
     currentChatData?.matches?.latestSession?._id &&
     currentChatData.userType === "mentor" &&
-    reviewData !== null &&
-    reviewData?.rating === null &&
+    reviewData === null &&
     chatType === "archive";
 
   return (
     <>
-      {reviewBanner ? (
+      {reviewBanner && !loading ? (
         <div className="mx-4">
           <div className="w-full p-4 bg-primary flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 mt-4 rounded-lg">
             {/* Typography */}

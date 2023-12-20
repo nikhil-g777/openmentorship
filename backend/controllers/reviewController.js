@@ -2,8 +2,8 @@ const errorCodes = require('../lib/errorCodes');
 const Review = require('../models/review');
 
 // Get all reviews
-const getAllReviews = async (req, res) => {
-  const { page, limit } = req.query;
+const getReviews = async (req, res) => {
+  const { page, limit, mentorId } = req.query;
 
   if (!page || !limit) {
     return res.status(400).json({
@@ -12,16 +12,14 @@ const getAllReviews = async (req, res) => {
       errorCode: errorCodes.missingInputs.code,
     });
   }
+  
   try {
-    const reviews = await Review.find({})
+    const reviews = await Review.find({mentor: mentorId})
       .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .populate('session')
-      .exec();
-    console.log(reviews);
+      .skip((page - 1) * limit);
 
     // Count total reviews
-    const count = await Review.countDocuments();
+    const count = await Review.countDocuments({mentor: mentorId});
 
     // Return response
     return res.status(200).json({
@@ -43,7 +41,7 @@ const getAllReviews = async (req, res) => {
 // Add a review
 const addReview = async (req, res) => {
   const { sessionId } = req.query;
-  const { rating, review, personalNote } = req.body;
+  const { mentorId, menteeId, rating, review, personalNote } = req.body;
 
   if (!sessionId) {
     return res.status(400).json({
@@ -53,10 +51,10 @@ const addReview = async (req, res) => {
     });
   }
 
-  if (!rating || !review) {
+  if (!mentorId || !menteeId || !rating || !review) {
     return res.status(400).json({
       success: false,
-      error: 'rating and review needs to be sent',
+      error: 'please provide all required fields',
       errorCode: errorCodes.missingInputs.code,
     });
   }
@@ -64,7 +62,7 @@ const addReview = async (req, res) => {
   try {
     // Find by session in reviews and update
     const updatedReview = await Review.create(
-      { session: sessionId, rating, review, personalNote }
+      { session: sessionId, rating, review, personalNote, mentor: mentorId, mentee: menteeId }
     );
 
     // Return response
@@ -115,4 +113,4 @@ const getReview = async (req, res) => {
   }
 };
 
-module.exports = { getAllReviews, addReview, getReview };
+module.exports = { getReviews, addReview, getReview };

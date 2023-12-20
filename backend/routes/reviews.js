@@ -14,10 +14,10 @@ router.use(cookieParser());
 
 // Get List of Sessions
 router.get(
-  '/getAllReviews',
+  '/getReviews',
   passport.authenticate('jwt', { session: false }),
   util.checkRole([role.mentee, role.mentor, role.admin]),
-  reviewController.getAllReviews,
+  reviewController.getReviews,
 );
 
 // Add a review

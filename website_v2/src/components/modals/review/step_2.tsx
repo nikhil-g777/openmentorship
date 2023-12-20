@@ -15,6 +15,7 @@ type Props = {
 const Step2 = ({currentStep, setCurrentStep}: Props) => {
   const session = useSession();
   const token = session?.data?.user?.token;
+  const userId = session?.data?.user?.user._id;
   const {
     mentorRating,
     mentorReview,
@@ -42,6 +43,8 @@ const Step2 = ({currentStep, setCurrentStep}: Props) => {
       rating: mentorRating,
       review: mentorReview,
       personalNote: mentorPersonalNote,
+      mentorId: currentChatData?._id,
+      menteeId: userId,
     };
 
     // Perform submit

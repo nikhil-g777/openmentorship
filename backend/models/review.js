@@ -9,6 +9,16 @@ const reviewSchema = new Schema({
     required: true,
     ref: 'Session',
   },
+  mentor: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
+  },
+  mentee: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
+  },
   rating: {
     type: Number,
     min: 1,
@@ -22,7 +32,7 @@ const reviewSchema = new Schema({
   personalNote: {
     type: String,
     default: null,
-  },
+  }
 });
 
 module.exports = mongoose.model('Review', reviewSchema);
