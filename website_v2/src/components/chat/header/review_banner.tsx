@@ -1,6 +1,6 @@
 "use client";
 
-import {getReview} from "@/endpoints/review";
+import {getReviews} from "@/endpoints/review";
 import {useChatStore, useProfileStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import {useSearchParams} from "next/navigation";
@@ -21,14 +21,18 @@ const ReviewBanner = () => {
   useEffect(() => {
     setLoading(true);
     if (token && currentChatData?.matches?.latestSession?._id) {
-      getReview(token, currentChatData?.matches?.latestSession?._id).then(
-        res => {
-          setLoading(false);
-          if (res.success && res.review) {
-            setReviewData(res.review);
-          }
+      getReviews(
+        token,
+        1,
+        10,
+        "",
+        currentChatData?.matches?.latestSession?._id
+      ).then(res => {
+        setLoading(false);
+        if (res.success && res.reviews && res.reviews.length > 0) {
+          setReviewData(res.reviews);
         }
-      );
+      });
     }
   }, [token, currentChatData?.matches?.latestSession?._id, setLoading]);
 

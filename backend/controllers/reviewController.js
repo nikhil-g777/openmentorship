@@ -1,25 +1,32 @@
+const { constructReviewsFilter } = require('../helpers/review');
 const errorCodes = require('../lib/errorCodes');
 const Review = require('../models/review');
 
-// Get all reviews
+// Get reviews for a mentor
 const getReviews = async (req, res) => {
-  const { page, limit, mentorId } = req.query;
+  const { page, limit, mentorId, sessionId } = req.query;
 
-  if (!page || !limit) {
+  // Check if all required fields are sent
+  if ((!mentorId && !sessionId) || !page || !limit) {
     return res.status(400).json({
       success: false,
-      error: 'page and limit needs to be sent',
+      message: 'please provide all required fields',
       errorCode: errorCodes.missingInputs.code,
     });
   }
-  
+
+  // Filter
+  const filter = constructReviewsFilter(mentorId, sessionId);
+
   try {
-    const reviews = await Review.find({mentor: mentorId})
+    const reviews = await Review.find(filter)
       .limit(limit * 1)
-      .skip((page - 1) * limit);
+      .skip((page - 1) * limit)
+      .populate('session')
+      .exec();
 
     // Count total reviews
-    const count = await Review.countDocuments({mentor: mentorId});
+    const count = await Review.countDocuments(filter);
 
     // Return response
     return res.status(200).json({
@@ -32,7 +39,7 @@ const getReviews = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
-      error: 'Unable to process request',
+      message: 'Unable to process request',
       errorCode: errorCodes.serverError.code,
     });
   }
@@ -46,7 +53,7 @@ const addReview = async (req, res) => {
   if (!sessionId) {
     return res.status(400).json({
       success: false,
-      error: 'sessionId needs to be sent',
+      message: 'sessionId needs to be sent',
       errorCode: errorCodes.missingInputs.code,
     });
   }
@@ -54,63 +61,35 @@ const addReview = async (req, res) => {
   if (!mentorId || !menteeId || !rating || !review) {
     return res.status(400).json({
       success: false,
-      error: 'please provide all required fields',
+      message: 'please provide all required fields',
       errorCode: errorCodes.missingInputs.code,
     });
   }
 
   try {
     // Find by session in reviews and update
-    const updatedReview = await Review.create(
-      { session: sessionId, rating, review, personalNote, mentor: mentorId, mentee: menteeId }
-    );
+    const createdReview = await Review.create({
+      session: sessionId,
+      rating,
+      review,
+      personalNote,
+      mentor: mentorId,
+      mentee: menteeId,
+    });
 
     // Return response
     return res.status(200).json({
       success: true,
-      review: updatedReview,
+      review: createdReview,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
-      error: 'Unable to process request',
+      message: 'Unable to process request',
       errorCode: errorCodes.serverError.code,
     });
   }
 };
 
-// Get Review
-const getReview = async (req, res) => {
-  const { sessionId } = req.query;
-
-  if (!sessionId) {
-    return res.status(400).json({
-      success: false,
-      error: 'sessionId needs to be sent',
-      errorCode: errorCodes.missingInputs.code,
-    });
-  }
-
-  try {
-    // Find by session in reviews and update
-    const response = await Review.findOne({ session: sessionId })
-      .populate('session')
-      .exec();
-
-    // Return response
-    return res.status(200).json({
-      success: true,
-      review: response,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      error: 'Unable to process request',
-      errorCode: errorCodes.serverError.code,
-    });
-  }
-};
-
-module.exports = { getReviews, addReview, getReview };
+module.exports = { getReviews, addReview };

@@ -5,11 +5,12 @@ const getReviews = async (
   token: string,
   page = 1,
   limit = 10,
-  mentorId: string
+  mentorId: string,
+  sessionId: string
 ) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/reviews/getReviews?page=${page}&limit=${limit}&mentorId=${mentorId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/reviews/getReviews?page=${page}&limit=${limit}&mentorId=${mentorId}&sessionId=${sessionId}`,
       {
         headers: headerProvider(token),
         method: "GET",
@@ -40,21 +41,4 @@ const addReview = async (token: string, review: object, sessionId: string) => {
   }
 };
 
-// Get a Review
-const getReview = async (token: string, sessionId: string) => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/reviews/getReview?sessionId=${sessionId}`,
-      {
-        headers: headerProvider(token),
-        method: "GET",
-      }
-    );
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export {getReviews, addReview, getReview};
+export {getReviews, addReview};
