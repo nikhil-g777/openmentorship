@@ -42,7 +42,7 @@ const MentorReviewModal = () => {
           {/* Step 2 */}
           <Step2 currentStep={currentStep} setCurrentStep={setCurrentStep} />
           {/* Step 3 */}
-          <Step3 currentStep={currentStep} />
+          <Step3 currentStep={currentStep} setCurrentStep={setCurrentStep} />
         </div>
       </div>
     </>
