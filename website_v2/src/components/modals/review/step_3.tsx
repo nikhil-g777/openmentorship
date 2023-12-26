@@ -3,11 +3,13 @@ import {useRouter} from "next/navigation";
 
 type Props = {
   currentStep: number;
+  setCurrentStep: (step: number) => void;
 };
 
-const Step3 = ({currentStep}: Props) => {
+const Step3 = ({currentStep, setCurrentStep}: Props) => {
   const router = useRouter();
   const {
+    currentPage,
     setMentorReviewModal,
     setMentorRating,
     setMentorReview,
@@ -20,9 +22,15 @@ const Step3 = ({currentStep}: Props) => {
     setMentorRating(0);
     setMentorReview("");
     setMentorPersonalNote("");
-    router.push("/chat");
+    setCurrentStep(1);
+    if (currentPage === "chat") {
+      router.push("/chat");
+    } else {
+      router.push("/matches");
+    }
     router.refresh();
   };
+
   return (
     <div
       className={`w-full min-h-[396px] flex flex-col ${
