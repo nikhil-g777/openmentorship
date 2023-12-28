@@ -2,10 +2,17 @@ import {USER_TYPE} from "@/constants/common";
 import {useSession} from "next-auth/react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
 
 const NavbarLinks = () => {
   const userType = useSession()?.data?.user?.user?.userType || "";
   const pathname = usePathname();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Close the dropdown when the route changes
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [pathname]);
 
   return (
     <>
@@ -70,7 +77,11 @@ const NavbarLinks = () => {
       </div>
       {/* Dropdown */}
       <div className="dropdown lg:hidden" data-cy="dropdown">
-        <label tabIndex={0} className="btn btn-ghost btn-circle">
+        <label
+          tabIndex={0}
+          className="btn btn-ghost btn-circle"
+          onClick={() => setIsDropdownOpen(true)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -86,85 +97,87 @@ const NavbarLinks = () => {
             />
           </svg>
         </label>
-        <ul
-          tabIndex={0}
-          className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-        >
-          {pathname.startsWith("/admin") ? (
-            <>
-              <li>
-                <Link
-                  href="/admin/dashboard"
-                  className={
-                    pathname === "/admin/dashboard"
-                      ? "bg-primary text-white"
-                      : ""
-                  }
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/admin/sessions"
-                  className={
-                    pathname === "/admin/sessions"
-                      ? "bg-primary text-white"
-                      : ""
-                  }
-                >
-                  Sessions
-                </Link>
-              </li>
-            </>
-          ) : (
-            <>
-              {userType === USER_TYPE.MENTEE ? (
+        {isDropdownOpen ? (
+          <ul
+            tabIndex={0}
+            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            {pathname.startsWith("/admin") ? (
+              <>
                 <li>
                   <Link
-                    href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
+                    href="/admin/dashboard"
                     className={
-                      pathname === "/explore" ? "bg-primary text-white" : ""
+                      pathname === "/admin/dashboard"
+                        ? "bg-primary text-white"
+                        : ""
                     }
                   >
-                    Discover
+                    Dashboard
                   </Link>
                 </li>
-              ) : null}
-              <li>
-                <Link
-                  href="/matches"
-                  className={
-                    pathname === "/matches" ? "bg-primary text-white" : ""
-                  }
-                  data-cy="matches-link"
-                >
-                  Matches
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/chat"
-                  className={
-                    pathname === "/chat" ? "bg-primary text-white" : ""
-                  }
-                >
-                  Chat
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blogs"
-                  className={
-                    pathname === "/blogs" ? "bg-primary text-white" : ""
-                  }
-                >
-                  Blog
-                </Link>
-              </li>
-            </>
-          )}
-        </ul>
+                <li>
+                  <Link
+                    href="/admin/sessions"
+                    className={
+                      pathname === "/admin/sessions"
+                        ? "bg-primary text-white"
+                        : ""
+                    }
+                  >
+                    Sessions
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                {userType === USER_TYPE.MENTEE ? (
+                  <li>
+                    <Link
+                      href="/explore?page=1&limit=10&areasOfInterest=&goals=&communicationFrequency=&communicationPreferences="
+                      className={
+                        pathname === "/explore" ? "bg-primary text-white" : ""
+                      }
+                    >
+                      Discover
+                    </Link>
+                  </li>
+                ) : null}
+                <li>
+                  <Link
+                    href="/matches"
+                    className={
+                      pathname === "/matches" ? "bg-primary text-white" : ""
+                    }
+                    data-cy="matches-link"
+                  >
+                    Matches
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/chat"
+                    className={
+                      pathname === "/chat" ? "bg-primary text-white" : ""
+                    }
+                  >
+                    Chat
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/blogs"
+                    className={
+                      pathname === "/blogs" ? "bg-primary text-white" : ""
+                    }
+                  >
+                    Blog
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        ) : null}
       </div>
     </>
   );

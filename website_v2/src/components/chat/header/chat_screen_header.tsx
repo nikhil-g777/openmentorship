@@ -7,6 +7,7 @@ import {useSearchParams} from "next/navigation";
 import {UserProfile} from "@/types/profile";
 import {Participant} from "@twilio/conversations";
 import {HeaderActions} from "./header_actions";
+import {ReviewBanner} from "./review_banner";
 
 const ChatScreenHeader = () => {
   const chatType = useSearchParams().get("type");
@@ -90,6 +91,8 @@ const ChatScreenHeader = () => {
           <ChatUserAvatar profileImage={profileImage} size={48} />
         </HeaderActions>
       </div>
+      {/* Review Banner */}
+      <ReviewBanner />
     </div>
   );
 };
