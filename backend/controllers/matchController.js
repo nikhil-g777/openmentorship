@@ -9,7 +9,12 @@ const Session = require('../models/session');
 const User = require('../models/user');
 const constants = require('../lib/constants');
 const config = require('../config/config');
-const { getActiveMentorIds, reconnectMentor } = require('../helpers/matches');
+const {
+  getActiveMentorIds,
+  reconnectMentor,
+  acceptMatch,
+  closeMatch,
+} = require('../helpers/matches');
 const { sendMail } = require('../lib/mailer');
 const Review = require('../models/review');
 
@@ -135,38 +140,12 @@ const updateMatch = async (req, res) => {
       });
     }
 
+    // Match result
     const match = await Match.findById(matchId).exec();
-    const { mentee, mentor } = match;
-    if (
-      match.status == 'pending' &&
-      status === 'active'
-    ) {
-      const {requestMessage} = match;
 
-      const chatResult = await createChatConversation(mentee, mentor);
-
-      const session = await Session.create({
-        match: match._id,
-        requestMessage,
-        startDate: moment.utc().toDate().toUTCString(),
-        status: 'active',
-        twilioConversationSid: chatResult.conversationSid,
-      });
-
-      const updatedMatch = await Match.findByIdAndUpdate(
-        matchId,
-        {
-          status,
-          latestSession: session._id,
-          requestMessage,
-        },
-        { new: true },
-      )
-        .populate('mentor')
-        .populate('mentee')
-        .populate('latestSession')
-        .exec();
-
+    // Accept match
+    if (match.status == 'pending' && status === 'active') {
+      const updatedMatch = await acceptMatch(matchId, status, match);
       return res.status(200).json({
         success: true,
         updatedMatch,
@@ -174,36 +153,23 @@ const updateMatch = async (req, res) => {
     }
 
     // Reconnect mentor
-    if(match.status == 'closed' && status == 'active') {
-      await reconnectMentor(res, body);
-    };
+    if (match.status == 'closed' && status == 'active') {
+      return await reconnectMentor(res, body);
+    }
 
+    // Close match
     if (
       (match.status == 'active' || match.status == 'pending') &&
       status == 'closed'
     ) {
-      const updatedMatch = await Match.findByIdAndUpdate(
-        matchId,
-        {
-          status,
-        },
-        { new: true },
-      )
-        .populate('mentor')
-        .populate('mentee')
-        .populate('latestSession')
-        .exec();
-
-      await Session.findByIdAndUpdate(updatedMatch.latestSession, {
-        status,
-        endDate: moment.utc().toDate().toUTCString(),
-      });
-
+      const updatedMatch = await closeMatch(matchId, status);
       return res.status(200).json({
         success: true,
         updatedMatch,
       });
     }
+
+    // Throw error if invalid request
     throw new Error('Invalid Request');
   } catch (error) {
     console.log(error);
