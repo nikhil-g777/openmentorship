@@ -9,7 +9,7 @@ const Session = require('../models/session');
 const User = require('../models/user');
 const constants = require('../lib/constants');
 const config = require('../config/config');
-const { getActiveMentorIds } = require('../helpers/matches');
+const { getActiveMentorIds, reconnectMentor } = require('../helpers/matches');
 const { sendMail } = require('../lib/mailer');
 const Review = require('../models/review');
 
@@ -138,16 +138,10 @@ const updateMatch = async (req, res) => {
     const match = await Match.findById(matchId).exec();
     const { mentee, mentor } = match;
     if (
-      (match.status == 'pending' || match.status == 'closed') &&
+      match.status == 'pending' &&
       status === 'active'
     ) {
-      let requestMessage = '';
-      if (match.status == 'closed') {
-        // reconnecting
-        requestMessage = body.requestMessage;
-      } else {
-        requestMessage = match.requestMessage;
-      }
+      const {requestMessage} = match;
 
       const chatResult = await createChatConversation(mentee, mentor);
 
@@ -178,6 +172,12 @@ const updateMatch = async (req, res) => {
         updatedMatch,
       });
     }
+
+    // Reconnect mentor
+    if(match.status == 'closed' && status == 'active') {
+      await reconnectMentor(res, body);
+    };
+
     if (
       (match.status == 'active' || match.status == 'pending') &&
       status == 'closed'
