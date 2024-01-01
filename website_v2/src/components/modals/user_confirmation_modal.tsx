@@ -3,9 +3,11 @@
 import {useCommonStore} from "@/zustand/store";
 import Image from "next/image";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 const UserConfirmationModal = () => {
-  const {userConfirmation} = useCommonStore();
+  const router = useRouter();
+  const {userConfirmation, setUserConfirmation} = useCommonStore();
   const imageUrl =
     userConfirmation?.heading === "Congratulations!"
       ? "/assets/images/userConfirm.svg"
@@ -18,7 +20,7 @@ const UserConfirmationModal = () => {
       }`}
       style={{backgroundColor: "#EEE"}}
     >
-      <div className="modal-box">
+      <div className="modal-box relative">
         <h3 className="text-2xl font-bold text-center py-4">
           {userConfirmation?.heading}
         </h3>
@@ -42,6 +44,28 @@ const UserConfirmationModal = () => {
               SignIn
             </Link>
           </p>
+        ) : null}
+
+        {/* Mentorship Program Action Button */}
+        {userConfirmation?.heading === "Join Our Mentorship Program!" ? (
+          <>
+            <div className="modal-action justify-center mt-0 pb-2">
+              <button
+                className="btn btn-primary"
+                onClick={() => router.push("/")}
+              >
+                Join Mentorship Program
+              </button>
+            </div>
+            <Image
+              src="/assets/icons/cancel.svg"
+              alt="close"
+              width={24}
+              height={24}
+              className="absolute top-2 right-2 cursor-pointer btn btn-sm btn-ghost btn-active btn-circle p-1"
+              onClick={() => setUserConfirmation(null)}
+            />
+          </>
         ) : null}
       </div>
     </div>

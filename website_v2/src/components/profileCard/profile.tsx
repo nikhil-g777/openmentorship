@@ -50,7 +50,8 @@ const Profile = ({data, rootData}: Props) => {
     setConfirmationText,
   } = useProfileStore();
   const {setCurrentChatData} = useChatStore();
-  const {setSuccessAlert, setErrorAlert} = useCommonStore();
+  const {setSuccessAlert, setErrorAlert, setUserConfirmation} =
+    useCommonStore();
   const buttonText = getButtonText({
     currentPage,
     currentTab,
@@ -83,6 +84,15 @@ const Profile = ({data, rootData}: Props) => {
       }
     }
     if (userToken && userToken.length) setToken(userToken);
+    // Set User Confirmation Modal
+    if (currentPage === PAGES.EXPLORE && !userToken) {
+      return setUserConfirmation({
+        heading: "Join Our Mentorship Program!",
+        subHeading: "Sign in to connect with mentors",
+        message:
+          "You're just one step away from connecting with our experienced mentors. Please sign in or create an account to send a request and start your journey in our mentorship program.",
+      });
+    }
 
     // Perform action
     await performProfileAction({
