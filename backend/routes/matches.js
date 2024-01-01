@@ -36,11 +36,12 @@ router.get(
 );
 
 // Search for mentors
-router.get(
-  '/userRecommendations',
-  passport.authenticate('jwt', { session: false }),
-  util.checkRole([role.mentee, role.admin]),
-  matchController.userRecommendations,
-);
+router.get('/userRecommendations', (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    if (err || !user) return next();
+    req.user = user;
+    next();
+  })(req, res, next);
+}, matchController.userRecommendations);
 
 module.exports = router;
