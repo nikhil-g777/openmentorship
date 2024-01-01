@@ -217,7 +217,6 @@ const userRecommendations = async (req, res) => {
 
 const searchMentors = async (req, res) => {
   const { page, limit } = req.query;
-  const { _id } = req.user;
 
   if (!page || !limit) {
     return res.status(400).json({
@@ -226,11 +225,16 @@ const searchMentors = async (req, res) => {
     });
   }
 
+  // mentorIds
+  let mentorIds = [];
+
   try {
     let results = [];
 
     // Get mentors Ids
-    const mentorIds = await getActiveMentorIds(_id);
+    if(req.user) {
+      mentorIds = await getActiveMentorIds(req.user._id);
+    }
 
     // filter
     const filter = constructExploreFilter(req.query, mentorIds);

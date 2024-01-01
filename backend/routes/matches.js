@@ -30,18 +30,27 @@ router.post(
 // Search for mentors
 router.get(
   '/searchMentors',
-  passport.authenticate('jwt', { session: false }),
-  util.checkRole([role.mentee, role.admin]),
+  (req, res, next) => {
+    passport.authenticate('jwt', { session: false }, (err, user) => {
+      if (err || !user) return next();
+      req.user = user;
+      next();
+    })(req, res, next);
+  },
   matchController.searchMentors,
 );
 
 // Search for mentors
-router.get('/userRecommendations', (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user) => {
-    if (err || !user) return next();
-    req.user = user;
-    next();
-  })(req, res, next);
-}, matchController.userRecommendations);
+router.get(
+  '/userRecommendations',
+  (req, res, next) => {
+    passport.authenticate('jwt', { session: false }, (err, user) => {
+      if (err || !user) return next();
+      req.user = user;
+      next();
+    })(req, res, next);
+  },
+  matchController.userRecommendations,
+);
 
 module.exports = router;
