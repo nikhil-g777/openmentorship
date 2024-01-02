@@ -31,16 +31,18 @@ const Page = async ({searchParams}: Props) => {
     searchParams["communicationPreferences"] || "";
 
   // Get data
-  const data = await getExploreData(token || "");
-  const contentData = await getExploreDataByContent(
-    token || "",
-    page,
-    limit,
-    areasOfInterest,
-    goals,
-    communicationFrequency,
-    communicationPreferences
-  );
+  const [data, contentData] = await Promise.all([
+    getExploreData(token || ""),
+    getExploreDataByContent(
+      token || "",
+      page,
+      limit,
+      areasOfInterest,
+      goals,
+      communicationFrequency,
+      communicationPreferences
+    ),
+  ]);
 
   return (
     <div className="w-full">
@@ -52,11 +54,11 @@ const Page = async ({searchParams}: Props) => {
       !goals.length &&
       !communicationFrequency.length &&
       !communicationPreferences.length ? (
-        <CarouselWrapper />
+        <CarouselWrapper data={data.recommendations} />
       ) : null}
 
       {/* Listing and Pagination */}
-      <Listing />
+      <Listing data={contentData.mentors} dataHeading="All Results" />
       <Pagination data={contentData} />
 
       {/* No Result */}
