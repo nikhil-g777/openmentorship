@@ -46,7 +46,11 @@ const performConfirmationAction = async ({
         if (setMentorReviewModal && userType === "mentee" && sessionId) {
           setMentorReviewModal(true);
         } else {
-          router.push("/chat");
+          if (currentPage === PAGES.CHAT) {
+            router.push("/chat");
+          } else {
+            router.push("/matches?tab=closed");
+          }
           router.refresh();
         }
       } else {
