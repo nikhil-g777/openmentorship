@@ -45,6 +45,16 @@ const ChatContactListProvider = ({type, data, heading}: Props) => {
                     size={36}
                   />
                   {contact.firstName}
+
+                  {/* Unread messages count */}
+                  {contact?.matches?.latestSession?.unreadCount &&
+                  type === "active" ? (
+                    <div className="badge badge-primary badge-lg ml-auto">
+                      {contact.matches.latestSession.unreadCount > 99
+                        ? "99+"
+                        : contact.matches.latestSession.unreadCount}
+                    </div>
+                  ) : null}
                 </Link>
               </li>
             ))
