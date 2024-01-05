@@ -21,9 +21,11 @@ const Page = async ({searchParams}: Props) => {
   const searchQuery = searchParams?.searchQuery;
   // Page
   const page = searchParams.page || "1";
+  // Tab
+  const tab = searchParams?.tab || "active";
 
   // Session Data
-  const sessionData = await getSessionList(token, page);
+  const sessionData = await getSessionList(token, page, tab);
 
   // Search Data
   let searchData = null;
