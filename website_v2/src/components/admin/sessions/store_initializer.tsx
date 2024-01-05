@@ -43,15 +43,7 @@ const StoreInitializer = ({token, data, searchData}: Props) => {
 
     // Set search data
     if (searchData) {
-      const filteredData =
-        tab === "active" || tab === ""
-          ? searchData.sessions.filter(
-              data => data.status === "active" && data.match
-            )
-          : searchData.sessions.filter(
-              data => data.status === "closed" && data.match
-            );
-      setSearchData(filteredData);
+      setSearchData(searchData.sessions);
       setSessionData(null);
     }
   }, [

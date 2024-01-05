@@ -14,30 +14,22 @@ const SessionsTab = () => {
       <div className="w-full max-w-6xl mx-auto flex justify-center mt-4">
         <div className="tabs tabs-boxed">
           <Link
-            href={
-              pathname +
-              "?tab=active" +
-              (searchQuery ? "&searchQuery=" + searchQuery : "")
-            }
+            href={pathname + "?tab=active"}
             className={`tab sm:tab-md lg:tab-lg ${
               currentTab === TABS.ADMIN.SESSIONS.ACTIVE ||
               currentTab === "" ||
               !currentTab
                 ? "tab-active"
                 : ""
-            }`}
+            } ${searchQuery ? "tab-disabled" : ""}`}
           >
             Active
           </Link>
           <Link
-            href={
-              pathname +
-              "?tab=closed" +
-              (searchQuery ? "&searchQuery=" + searchQuery : "")
-            }
+            href={pathname + "?tab=closed"}
             className={`tab sm:tab-md lg:tab-lg ${
               currentTab === TABS.ADMIN.SESSIONS.CLOSED ? "tab-active" : ""
-            }`}
+            } ${searchQuery ? "tab-disabled" : ""}`}
           >
             Closed
           </Link>
