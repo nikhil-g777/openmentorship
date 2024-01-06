@@ -57,6 +57,7 @@ type User = {
       createdAt: string;
       updatedAt: string;
       __v: number;
+      unreadCount?: number | null;
     };
   };
 };
@@ -84,6 +85,9 @@ type PerformConfirmationAction = {
   setSuccessAlert: (text: string, time: number) => void;
   setErrorAlert: (text: string, time: number) => void;
   router: AppRouterInstance;
+  setMentorReviewModal?: (type: boolean) => void;
+  sessionId?: string | null | undefined;
+  userType?: string;
 };
 
 // Profile action type

@@ -73,7 +73,7 @@ const performProfileModalAction = async ({
       setIsProfileModal(false);
       setMessage("");
       setSuccessAlert(SUCCESS_ALERT.REQUEST_SENT, 6);
-      router.push("/matches?tab=active");
+      router.push("/matches?tab=pending");
     }
   }
 };

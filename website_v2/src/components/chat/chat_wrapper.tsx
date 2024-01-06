@@ -9,8 +9,13 @@ import {useSearchParams} from "next/navigation";
 const ChatWrapper = () => {
   const chatType = useSearchParams().get("type");
   const {listingData} = useListingStore();
-  const {archiveListingData, client, setCurrentConversation, chatId} =
-    useChatStore();
+  const {
+    archiveListingData,
+    client,
+    setCurrentConversation,
+    chatId,
+    setCurrentChatData,
+  } = useChatStore();
 
   useEffect(() => {
     const currentData =
@@ -18,6 +23,7 @@ const ChatWrapper = () => {
     const currentContact = currentData.find(
       item => item?.matches?._id === chatId
     );
+    setCurrentChatData(currentContact);
     const twilioId =
       currentContact?.matches?.latestSession?.twilioConversationSid;
     if (currentContact && twilioId) {
@@ -34,6 +40,7 @@ const ChatWrapper = () => {
     setCurrentConversation,
     chatId,
     listingData,
+    setCurrentChatData,
   ]);
 
   return (

@@ -17,6 +17,10 @@ export type ProfileSlice = {
   isProfileModal: boolean;
   loading: boolean;
   confirmationText: string;
+  mentorReviewModal: boolean;
+  mentorRating: number;
+  mentorReview: string;
+  mentorPersonalNote: string;
   // Actions
   setData: (data: UserProfile) => void;
   setToken: (token: string) => void;
@@ -31,6 +35,10 @@ export type ProfileSlice = {
   setIsProfileModal: (isProfileModal: boolean) => void;
   setLoading: (loading: boolean) => void;
   setConfirmationText: (confirmationText: string) => void;
+  setMentorReviewModal: (mentorReviewModal: boolean) => void;
+  setMentorRating: (mentorRating: number) => void;
+  setMentorReview: (mentorReview: string) => void;
+  setMentorPersonalNote: (mentorPersonalNote: string) => void;
 };
 
 // Initial state
@@ -48,6 +56,10 @@ const initialState = {
   mentorId: "",
   loading: false,
   confirmationText: "",
+  mentorReviewModal: false,
+  mentorRating: 0,
+  mentorReview: "",
+  mentorPersonalNote: "",
 };
 
 export const profileSlice: StateCreator<
@@ -121,6 +133,26 @@ export const profileSlice: StateCreator<
   setConfirmationText: (confirmationText: string) => {
     set(() => ({
       confirmationText: confirmationText,
+    }));
+  },
+  setMentorReviewModal: (mentorReviewModal: boolean) => {
+    set(() => ({
+      mentorReviewModal: mentorReviewModal,
+    }));
+  },
+  setMentorRating: (mentorRating: number) => {
+    set(() => ({
+      mentorRating: mentorRating,
+    }));
+  },
+  setMentorReview: (mentorReview: string) => {
+    set(() => ({
+      mentorReview: mentorReview,
+    }));
+  },
+  setMentorPersonalNote: (mentorPersonalNote: string) => {
+    set(() => ({
+      mentorPersonalNote: mentorPersonalNote,
     }));
   },
 });
