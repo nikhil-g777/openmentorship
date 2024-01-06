@@ -4,27 +4,28 @@ const Session = require('../models/session');
 const Match = require('../models/match');
 
 const sessionList = (req, res) => {
-  Session.find({})
-    .sort('startDate')
-    .populate('match')
-    .exec((err, sessions) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({ success: false, error: err });
-      }
+  try {
+    Session.find({})
+      .sort('startDate')
+      .populate('match')
+      .exec((err, sessions) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ success: false, error: err });
+        }
 
-      return res.status(200).json({
-        success: true,
-        sessions,
+        return res.status(200).json({
+          success: true,
+          sessions,
+        });
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        error: 'Unable to process request',
-      });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: 'Unable to process request',
     });
+  }
 };
 
 const getMatchesInSession = (req, res) => {

@@ -9,9 +9,14 @@ const Session = require('../models/session');
 const User = require('../models/user');
 const constants = require('../lib/constants');
 const config = require('../config/config');
-const { getActiveMentorIds } = require('../helpers/matches');
+const {
+  getActiveMentorIds,
+  reconnectMentor,
+  acceptMatch,
+  closeMatch,
+} = require('../helpers/matches');
 const { sendMail } = require('../lib/mailer');
-
+const Review = require('../models/review');
 
 const constructExploreFilter = (query, mentorIds) => {
   const {
@@ -70,154 +75,110 @@ const createMatch = async (req, res) => {
     });
   }
 
-  try{
+  try {
     const { menteeId, mentorId, requestMessage } = body.match;
 
     // Check if there is an existing match.
-    existing_match = await Match.findOne({ mentee: menteeId, mentor: mentorId })
-    if(existing_match) {
+    const existingMatch = await Match.findOne({
+      mentee: menteeId,
+      mentor: mentorId,
+    });
+    if (existingMatch) {
       return res
-      .status(500)
-      .json({ success: false, error: 'Match already exists' });
+        .status(500)
+        .json({ success: false, error: 'Match already exists' });
     }
 
     // Create a new match.
-    created_match = await Match.create(
-      { mentee: menteeId, mentor: mentorId, requestMessage, status: constants.matchStatuses.pending})
+    const createdMatch = await Match.create({
+      mentee: menteeId,
+      mentor: mentorId,
+      requestMessage,
+      status: constants.matchStatuses.pending,
+    });
 
-
-    match = await Match.findById(created_match._id).populate({path: 'mentor', select: 'email'})
+    const match = await Match.findById(createdMatch._id).populate({
+      path: 'mentor',
+      select: 'email',
+    });
     // Send connection_request email to mentor.
     sendMail(
       match.mentor.email,
-        'Openmentorship: New Mentee Request',
-        {},
-        config.sendgrid.templates.connection_request,
+      'Openmentorship: New Mentee Request',
+      {},
+      config.sendgrid.templates.connection_request,
     );
 
     return res.status(200).json({
       success: true,
-      match: match,
+      match,
     });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ success: false });
   }
-  catch(e) {
-      console.log(e);
-      return res.status(500).json({ success: false });
-  };
 };
 
-const updateMatch = (req, res) => {
+const updateMatch = async (req, res) => {
   // inputs : matchId
 
-  const { body } = req;
+  try {
+    const { body } = req;
 
-  if (!body) {
-    return res
-      .status(400)
-      .json({ success: false, error: 'request body is empty' });
+    if (!body) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'request body is empty' });
+    }
+
+    const { matchId, status } = body;
+
+    if (!matchId || !status) {
+      return res.status(400).json({
+        success: false,
+        error: 'request body does not have the required parameters',
+      });
+    }
+
+    // Match result
+    const match = await Match.findById(matchId).exec();
+
+    // Accept match
+    if (match.status == constants.matchStatuses.pending && status === constants.matchStatuses.active) {
+      const updatedMatch = await acceptMatch(matchId, status, match);
+      return res.status(200).json({
+        success: true,
+        updatedMatch,
+      });
+    }
+
+    // Reconnect mentor
+    if (match.status == constants.matchStatuses.closed && status == constants.matchStatuses.active) {
+      const updatedMatch = await reconnectMentor(matchId, match.requestMessage);
+      return res.status(200).json({
+        success: true,
+        updatedMatch,
+      });
+    }
+
+    // Close match
+    if (
+      (match.status == constants.matchStatuses.active || match.status == constants.matchStatuses.pending) &&
+      status == constants.matchStatuses.closed
+    ) {
+      const updatedMatch = await closeMatch(matchId, status);
+      return res.status(200).json({
+        success: true,
+        updatedMatch,
+      });
+    }
+
+    // Throw error if invalid request
+    throw new Error('Invalid Request');
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false });
   }
-
-  const { matchId, status } = body;
-
-  if (!matchId || !status) {
-    return res.status(400).json({
-      success: false,
-      error: 'request body does not have the required parameters',
-    });
-  }
-
-  Match.findById(matchId)
-    .exec()
-    .then((match) => {
-      const { mentee, mentor } = match;
-      if (
-        (match.status == 'pending' || match.status == 'closed') &&
-        status === 'active'
-      ) {
-        let requestMessage = '';
-        if (match.status == 'closed') {
-          // reconnecting
-          requestMessage = body.requestMessage;
-        } else {
-          requestMessage = match.requestMessage;
-        }
-
-        createChatConversation(mentee, mentor)
-          .then((chatResult) => {
-            return Session.create({
-              match: match._id,
-              requestMessage,
-              startDate: moment.utc().toDate().toUTCString(),
-              status: 'active',
-              twilioConversationSid: chatResult.conversationSid,
-            }).then((session) => {
-              return Match.findByIdAndUpdate(
-                matchId,
-                {
-                  status,
-                  latestSession: session._id,
-                  requestMessage,
-                },
-                { new: true },
-              )
-                .populate('mentor')
-                .populate('mentee')
-                .populate('latestSession')
-                .exec();
-            });
-          })
-          .then((updatedMatch) => {
-            console.log(updatedMatch);
-            return res.status(200).json({
-              success: true,
-              updatedMatch,
-            });
-          })
-          .catch((e) => {
-            console.log(e);
-            return res.status(500).json({ success: false });
-          });
-      } else if (
-        (match.status == 'active' || match.status == 'pending') &&
-        status == 'closed'
-      ) {
-        const results = {};
-        return Match.findByIdAndUpdate(
-          matchId,
-          {
-            status,
-          },
-          { new: true },
-        )
-          .populate('mentor')
-          .populate('mentee')
-          .populate('latestSession')
-          .exec()
-          .then((updatedMatch) => {
-            results.updatedMatch = updatedMatch;
-            return Session.findByIdAndUpdate(updatedMatch.latestSession, {
-              status,
-              emdDate: moment.utc().toDate().toUTCString(),
-            });
-          })
-          .then((updatedSession) => {
-            return res.status(200).json({
-              success: true,
-              updatedMatch: results.updatedMatch,
-            });
-          })
-          .catch((e) => {
-            console.log(e);
-            return res.status(500).json({ success: false });
-          });
-      } else {
-        throw new Error('Invalid Request');
-      }
-    })
-    .catch((e) => {
-      console.log(e);
-      return res.status(500).json({ success: false });
-    });
 };
 
 const userRecommendations = async (req, res) => {
@@ -226,7 +187,10 @@ const userRecommendations = async (req, res) => {
   try {
     // Get mentors Ids & filter
     const mentorIds = await getActiveMentorIds(_id);
-    const filter = { userType: constants.userTypes.mentor, _id: { $nin: mentorIds } };
+    const filter = {
+      userType: constants.userTypes.mentor,
+      _id: { $nin: mentorIds },
+    };
 
     // Improve recommendations based on users profile
     const recommendations = await User.find(filter, null, {

@@ -11,7 +11,7 @@ import {
   performSecondaryButtonAction,
 } from "@/helpers/profile/secondary_button";
 import {UserProfile} from "@/types/profile";
-import {useCommonStore, useProfileStore} from "@/zustand/store";
+import {useChatStore, useCommonStore, useProfileStore} from "@/zustand/store";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
@@ -49,6 +49,7 @@ const Profile = ({data, rootData}: Props) => {
     confirmationText,
     setConfirmationText,
   } = useProfileStore();
+  const {setCurrentChatData} = useChatStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
   const buttonText = getButtonText({
     currentPage,
@@ -107,6 +108,7 @@ const Profile = ({data, rootData}: Props) => {
     if (rootData) {
       setToken(userToken || "");
       setChatId(rootData?.matches?._id || "");
+      setCurrentChatData(rootData);
     }
 
     await performSecondaryButtonAction({

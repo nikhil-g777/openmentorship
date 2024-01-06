@@ -10,6 +10,7 @@ import {StoreInitializer} from "@/components/matches/store_initializer";
 import {ProfileCardModal} from "@/components/modals/profile_card_modal";
 import {ConfirmationModal} from "@/components/modals/confirmation/confirmation_modal";
 import {TABS} from "@/constants/common";
+import {MentorReviewModal} from "@/components/modals/review/mentor_review_modal";
 
 type Props = {
   searchParams: {
@@ -76,6 +77,8 @@ const Page = async ({searchParams}: Props) => {
       <ProfileCardModal />
       {/* Confirmation Modal */}
       <ConfirmationModal />
+      {/* Mentor Review Modal */}
+      <MentorReviewModal />
     </div>
   );
 };

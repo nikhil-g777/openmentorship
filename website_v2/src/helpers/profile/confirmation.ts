@@ -15,6 +15,9 @@ const performConfirmationAction = async ({
   setSuccessAlert,
   setErrorAlert,
   router,
+  setMentorReviewModal,
+  sessionId,
+  userType,
 }: PerformConfirmationAction) => {
   // End Session
   if (
@@ -39,9 +42,17 @@ const performConfirmationAction = async ({
     if (res.success && setSuccessAlert) {
       setConfirmationText("");
       setSuccessAlert(SUCCESS_ALERT.SESSION_ENDED, 6);
-      if (currentPage === PAGES.CHAT) {
-        router.push("/chat");
-        router.refresh();
+      if (currentPage === PAGES.CHAT || currentPage === PAGES.MATCHES) {
+        if (setMentorReviewModal && userType === "mentee" && sessionId) {
+          setMentorReviewModal(true);
+        } else {
+          if (currentPage === PAGES.CHAT) {
+            router.push("/chat");
+          } else {
+            router.push("/matches?tab=closed");
+          }
+          router.refresh();
+        }
       } else {
         router.push("/matches?tab=closed");
         router.refresh();
