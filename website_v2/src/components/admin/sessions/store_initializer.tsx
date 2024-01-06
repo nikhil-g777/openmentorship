@@ -36,11 +36,7 @@ const StoreInitializer = ({token, data, searchData}: Props) => {
     }
 
     // Set states
-    const filteredData =
-      tab === "active" || tab === ""
-        ? data.sessions.filter(data => data.status === "active" && data.match)
-        : data.sessions.filter(data => data.status === "closed" && data.match);
-    setSessionData(filteredData);
+    setSessionData(data.sessions);
     setSearchData(null);
     setCurrentPage(PAGES.ADMIN.SESSIONS);
     setCurrentTab(tab);
