@@ -24,7 +24,9 @@ const ChatForm = ({
       {/* File Input */}
       <label
         htmlFor="file-input"
-        className="btn btn-square btn-ghost border-neutral border-opacity-20 border-r-0"
+        className={`btn btn-square btn-ghost border-neutral border-opacity-20 border-r-0 ${
+          chatType === "archive" ? "btn-disabled border-none" : ""
+        }`}
       >
         <input
           type="file"
@@ -39,6 +41,7 @@ const ChatForm = ({
           alt="attachment"
           width={24}
           height={24}
+          className={chatType === "archive" ? "grayscale" : ""}
         />
       </label>
       {/* Message Input */}
