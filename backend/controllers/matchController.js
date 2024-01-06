@@ -182,16 +182,21 @@ const updateMatch = async (req, res) => {
 };
 
 const userRecommendations = async (req, res) => {
-  const { _id } = req.user;
+  let _id;
+  let mentorIds = [];
+
+  if (req.user) {
+    _id = req.user._id;
+    // Get mentors Ids & filter
+    mentorIds = await getActiveMentorIds(_id);
+  }
+
+  const filter = {
+    userType: constants.userTypes.mentor,
+    _id: { $nin: mentorIds },
+  };
 
   try {
-    // Get mentors Ids & filter
-    const mentorIds = await getActiveMentorIds(_id);
-    const filter = {
-      userType: constants.userTypes.mentor,
-      _id: { $nin: mentorIds },
-    };
-
     // Improve recommendations based on users profile
     const recommendations = await User.find(filter, null, {
       limit: 10,
