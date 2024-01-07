@@ -14,24 +14,20 @@ const SessionCard = ({data}: Props) => {
           <p className="flex gap-2 truncate">
             <b>Match Date: </b>
             <span>
-              {data?.match?.createdAt
-                ? new Date(data.match.createdAt).toLocaleDateString()
+              {data?.createdAt
+                ? new Date(data.createdAt).toLocaleDateString()
                 : ""}
             </span>
           </p>
           <p className="flex gap-2 truncate">
             <b>Session ID: </b>
-            <span>{data?.match?.latestSession}</span>
+            <span>{data?._id}</span>
           </p>
         </div>
         {/* Mentor Card */}
-        {data?.match?.mentor ? (
-          <SessionProfile data={data?.match?.mentor} />
-        ) : null}
+        <SessionProfile data={data?.match?.mentor} />
         {/* Mentee Card */}
-        {data?.match?.mentee ? (
-          <SessionProfile data={data?.match?.mentee} />
-        ) : null}
+        <SessionProfile data={data?.match?.mentee} />
       </div>
     </div>
   );

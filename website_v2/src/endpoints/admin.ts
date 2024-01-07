@@ -79,10 +79,10 @@ const updateMentorRegistration = async (
 };
 
 // Session List
-const getSessionList = async (token: string, page: string) => {
+const getSessionList = async (token: string, page: string, status: string) => {
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}/admin/sessionList?limit=10&page=${page}`,
+      `${process.env.BACKEND_BASE_URL}/admin/sessionList?limit=10&page=${page}&status=${status}`,
       {
         headers: headerProvider(token),
       }
