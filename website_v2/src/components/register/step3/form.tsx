@@ -24,9 +24,13 @@ const Form = ({type, handleSubmit, inputValue, setInputValue}: Props) => {
               setInputValue(e.target.value)
             }
             disabled={!isEditable}
+            data-cy="register-step3-input"
           />
           {/* Example and Info */}
-          <label className="w-full flex items-center gap-2 text-xs opacity-80 p-2">
+          <label
+            className="w-full flex items-center gap-2 text-xs opacity-80 p-2"
+            data-cy="register-step3-info"
+          >
             {type === "skills" ? "e.g: Web Development" : "e.g: Startups"}
             <div
               className="tooltip"
@@ -47,6 +51,7 @@ const Form = ({type, handleSubmit, inputValue, setInputValue}: Props) => {
           type="submit"
           className="btn btn-square px-8 btn-primary"
           disabled={!isEditable}
+          data-cy="register-step3-add-button"
         >
           Add
         </button>

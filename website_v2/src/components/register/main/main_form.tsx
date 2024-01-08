@@ -56,6 +56,7 @@ const MainForm = ({
           disabled
           required
           value={firstName}
+          data-cy="register-main-first-name-field"
         />
         <input
           type="text"
@@ -64,6 +65,7 @@ const MainForm = ({
           disabled
           required
           value={lastName}
+          data-cy="register-main-last-name-field"
         />
       </div>
       {/* Email, LinkedInProfileURL, Headline & Bio */}
@@ -75,6 +77,7 @@ const MainForm = ({
           disabled
           required
           value={email}
+          data-cy="register-main-email-field"
         />
         {/* LinkedIn Profile URL */}
         <LinkedInProfileURL />
@@ -89,11 +92,17 @@ const MainForm = ({
             disabled={firstName === "" || lastName === ""}
             value={headline}
             onChange={handleHeadlineChange}
+            data-cy="register-main-headline-field"
           />
           {/* Headline Error */}
           {headlineError.length ? (
             <label className="label" htmlFor="headline">
-              <span className="label-text-alt text-error">{headlineError}</span>
+              <span
+                className="label-text-alt text-error"
+                data-cy="register-main-headline-error"
+              >
+                {headlineError}
+              </span>
             </label>
           ) : null}
         </div>
@@ -107,11 +116,17 @@ const MainForm = ({
             disabled={firstName === "" || lastName === ""}
             value={bio}
             onChange={handleBioChange}
+            data-cy="register-main-bio-field"
           ></textarea>
           {/* Bio Error & Word Count */}
           <label className="label" htmlFor="headline">
             {bioError.length ? (
-              <span className="label-text-alt text-error">{bioError}</span>
+              <span
+                className="label-text-alt text-error"
+                data-cy="register-main-bio-error"
+              >
+                {bioError}
+              </span>
             ) : null}
             <span className="label-text-alt text-right">{bio.length}/300</span>
           </label>

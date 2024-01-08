@@ -39,12 +39,20 @@ const Step1 = () => {
       <div className="w-full max-w-3xl mx-auto mt-8 px-4">
         {/* Heading */}
         {!isProfilePage ? (
-          <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
+          <h1
+            className="text-xl text-center sm:text-sub_heading sm:leading-normal"
+            data-cy="register-step1-heading"
+          >
             Tell us a little bit about yourself, it helps make the right
             connections
           </h1>
         ) : (
-          <h2 className="text-xl font-semibold mt-8 mb-4">More About You</h2>
+          <h2
+            className="text-xl font-semibold mt-8 mb-4"
+            data-cy="register-step1-sub-heading"
+          >
+            More About You
+          </h2>
         )}
         {/* Account Type */}
         <AccountType />
@@ -58,6 +66,7 @@ const Step1 = () => {
             <button
               className="w-48 btn btn-outline btn-accent rounded-full hover:text-white"
               onClick={handleContinue}
+              data-cy="register-step1-continue"
             >
               Continue
             </button>

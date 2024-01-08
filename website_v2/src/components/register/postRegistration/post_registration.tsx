@@ -31,7 +31,10 @@ const PostRegistration = () => {
   return (
     <div className={`w-full ${currentScreen === "step6" ? "" : "hidden"}`}>
       {/* Heading */}
-      <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal mt-8">
+      <h1
+        className="text-xl text-center sm:text-sub_heading sm:leading-normal mt-8"
+        data-cy="register-post-registration-heading"
+      >
         Registration complete, here are your next steps:
       </h1>
       <div className="w-full max-w-3xl mx-auto mt-8 px-4 flex justify-center">
@@ -57,6 +60,7 @@ const PostRegistration = () => {
           }`}
           onClick={handleClick}
           disabled={loading}
+          data-cy="register-post-registration-continue"
         >
           {loading ? "Redirecting..." : "Got it!"}
         </button>

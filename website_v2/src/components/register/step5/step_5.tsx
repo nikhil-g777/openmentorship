@@ -114,7 +114,10 @@ const Step5 = () => {
       <div className="w-full max-w-3xl mx-auto mt-8 px-4">
         {/* Heading */}
         {!isProfilePage ? (
-          <h1 className="text-xl text-center sm:text-sub_heading sm:leading-normal">
+          <h1
+            className="text-xl text-center sm:text-sub_heading sm:leading-normal"
+            data-cy="register-step5-heading"
+          >
             Add social links and showcase your work
           </h1>
         ) : (
@@ -134,6 +137,7 @@ const Step5 = () => {
               }`}
               onClick={handleContinue}
               disabled={loading}
+              data-cy="register-step5-continue"
             >
               {loading ? "Updating..." : "Continue"}
             </button>

@@ -46,6 +46,7 @@ const CommunicationPreferences = ({error}: Props) => {
                 checked={communicationPreferences.includes(preference)}
                 onChange={handleChange}
                 disabled={!isEditable}
+                data-cy="register-step4-preferences-checkbox"
               />
               <span className="label-text text-base capitalize">
                 {preference}
@@ -56,7 +57,12 @@ const CommunicationPreferences = ({error}: Props) => {
       {/* Error */}
       {error.preferences.length ? (
         <label className="label">
-          <span className="label-text-alt text-error">{error.preferences}</span>
+          <span
+            className="label-text-alt text-error"
+            data-cy="register-step4-preferences-error"
+          >
+            {error.preferences}
+          </span>
         </label>
       ) : null}
     </div>
