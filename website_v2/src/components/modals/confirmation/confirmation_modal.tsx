@@ -4,7 +4,7 @@ import {
   getConfirmationButtonText,
   performConfirmationAction,
 } from "@/helpers/profile/confirmation";
-import {useCommonStore, useProfileStore} from "@/zustand/store";
+import {useChatStore, useCommonStore, useProfileStore} from "@/zustand/store";
 import {useRouter} from "next/navigation";
 import {ViewRequest} from "./view_request";
 import {PAGES, TABS, USER_TYPE} from "@/constants/common";
@@ -21,8 +21,10 @@ const ConfirmationModal = () => {
     chatId,
     confirmationText,
     setConfirmationText,
+    setMentorReviewModal,
   } = useProfileStore();
   const {setSuccessAlert, setErrorAlert} = useCommonStore();
+  const {currentChatData} = useChatStore();
   const confirmationButtonText = getConfirmationButtonText(
     confirmationText,
     loading
@@ -45,6 +47,9 @@ const ConfirmationModal = () => {
       setConfirmationText,
       setSuccessAlert,
       setErrorAlert,
+      setMentorReviewModal,
+      sessionId: currentChatData?.matches?.latestSession?._id,
+      userType,
     });
   };
 

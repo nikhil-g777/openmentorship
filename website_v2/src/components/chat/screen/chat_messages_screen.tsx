@@ -43,6 +43,9 @@ const ChatMessagesScreen = () => {
       .then(() => {
         scrollToBottom(scrollElement);
       });
+
+    // Mark all messages as read
+    currentConversation?.setAllMessagesRead();
   }, [setConversations, currentConversation, scrollToBottom, setChatIndicator]);
 
   useEffect(() => {
@@ -58,6 +61,9 @@ const ChatMessagesScreen = () => {
           items: [...conversations.items, message],
         });
       }
+
+      // Mark all messages as read
+      currentConversation?.setAllMessagesRead();
     };
 
     currentConversation?.on("messageAdded", messageAddedHandler);
