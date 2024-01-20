@@ -17,6 +17,7 @@ export const authOptions: NextAuthOptions = {
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         authCode: {type: "text"},
+        provider: {type: "text"},
       },
       async authorize(credentials) {
         // Return cypress test user if available

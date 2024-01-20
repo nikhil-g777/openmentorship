@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "**.licdn.com",
       },
+      {
+        protocol: "https",
+        hostname: "**.googleusercontent.com",
+      },
     ],
   },
 };

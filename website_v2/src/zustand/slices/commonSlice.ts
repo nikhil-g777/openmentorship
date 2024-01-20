@@ -22,6 +22,8 @@ export type CommonSlice = {
   ) => void;
   authorizationCode: string;
   setAuthorizationCode: (authorizationCode: string) => void;
+  authProvider: string;
+  setAuthProvider: (authProvider: string) => void;
 };
 
 const initialState = {
@@ -31,6 +33,7 @@ const initialState = {
   routeActionLoading: false,
   userConfirmation: null,
   authorizationCode: "",
+  authProvider: "",
 };
 
 export const commonSlice: StateCreator<
@@ -86,6 +89,11 @@ export const commonSlice: StateCreator<
   setAuthorizationCode: (authorizationCode: string) => {
     set(() => ({
       authorizationCode: authorizationCode,
+    }));
+  },
+  setAuthProvider: (authProvider: string) => {
+    set(() => ({
+      authProvider: authProvider,
     }));
   },
 });

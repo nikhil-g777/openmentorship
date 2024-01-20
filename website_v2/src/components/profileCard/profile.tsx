@@ -139,6 +139,10 @@ const Profile = ({data, rootData}: Props) => {
         width={200}
         height={200}
         className="w-full min-w-[150px] max-w-[150px] h-auto rounded-md mx-auto object-cover"
+        // Temporary fix to load image from google
+        unoptimized={
+          data && data.default && data.default.includes("google") ? true : false
+        }
       />
       {buttonText && buttonText.length ? (
         <button
