@@ -48,5 +48,20 @@ module.exports = {
     grantType: 'authorization_code',
     profileUrl: '/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))',
     emailUrl: `/v2/emailAddress?q=members&projection=(elements*(handle~))`,
+  },
+  googleURL: {
+    auth: 'https://oauth2.googleapis.com/token',
+    profile: 'https://www.googleapis.com/oauth2/v3/userinfo'
+  },
+  googleAuthUrlConfig: {
+    grantType: 'authorization_code',
+    access_type: 'offline',
+  },
+  authProviders: {
+    google: 'google',
+    linkedin: 'linkedIn',
+  },
+  bodyType: {
+    registration: 'registration',
   }
 };
