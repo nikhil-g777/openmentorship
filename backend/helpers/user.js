@@ -10,11 +10,12 @@ const { sendMail } = require('../lib/mailer');
 const errorCodes = require('../lib/errorCodes');
 
 // Handle user registration
-const handleUserRegistration = async (req, res, linkedInProfile) => {
+const handleUserRegistration = async (req, res, currentProfile) => {
   const { body } = req;
+  const isGoogle = body.type == constants.authProviders.google;
 
   try {
-    if (body.type == 'linkedInSignup') {
+    if (body.type == constants.bodyType.registration) {
       if (!body.authCode) {
         return res
           .status(400)
@@ -22,20 +23,20 @@ const handleUserRegistration = async (req, res, linkedInProfile) => {
       }
 
       // Check if user already exists
-      const user = await User.findOne({
-        linkedInId: linkedInProfile.linkedInId,
-      });
+      const user = await User.findOne(
+        isGoogle ? { googleId: currentProfile.googleId } : { linkedInId: currentProfile.linkedInId },
+      );
 
       // If user exists, assign linkedInProfile to user or create new user
       let userObj = user;
       if (user) {
-        userObj = Object.assign(user, linkedInProfile);
+        userObj = Object.assign(user, currentProfile);
       } else {
-        userObj = await new User(linkedInProfile);
+        userObj = await new User(currentProfile);
       }
 
       // Add profile image urls and save user
-      userObj.profileImageUrls = linkedInProfile.profileImageUrls;
+      userObj.profileImageUrls = currentProfile.profileImageUrls;
       const updatedUser = await userObj.save();
 
       const token = await Token.findOne({ userId: updatedUser._id });
@@ -65,10 +66,10 @@ const handleUserRegistration = async (req, res, linkedInProfile) => {
             token: accessToken,
             user: {
               _id: updatedUser._id,
-              firstName: linkedInProfile.firstName,
-              lastName: linkedInProfile.lastName,
-              linkedInId: linkedInProfile.linkedInId,
-              email: linkedInProfile.email,
+              firstName: currentProfile.firstName,
+              lastName: currentProfile.lastName,
+              linkedInId: currentProfile.linkedInId,
+              email: currentProfile.email,
             },
           })
       );
@@ -222,9 +223,59 @@ const sendRegistrationMail = async (user) => {
   }
 };
 
+// Create Google profile template
+const createGoogleProfileTemplate = (userDetails) => {
+  const profileImageUrls = {
+    default: userDetails.picture,
+  };
+  return {
+    firstName: userDetails.given_name,
+    lastName: userDetails.family_name,
+    googleId: userDetails.sub,
+    email: userDetails.email,
+    profileImageUrls,
+  };
+};
+
+// Google URLs
+const googleAuth = constants.googleURL.auth;
+const googleProfile = constants.googleURL.profile;
+
+// Get Google Profile
+const getGoogleProfile = async (authCode, isLocal = false) => {
+  const code = decodeURIComponent(authCode);
+  const redirectUri = isLocal ? process.env.GOOGLE_REDIRECT_URI_LOCAL : process.env.GOOGLE_REDIRECT_URI;
+  const response = await axios.post(
+    googleAuth,
+    {
+      code,
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      access_type: constants.googleAuthUrlConfig.access_type,
+      redirect_uri: redirectUri,
+      grant_type: constants.googleAuthUrlConfig.grantType,
+    }
+  );
+  const accessToken = response.data.access_token;
+
+  // Fetch user details using the access token
+  const userResponse = await axios.get(
+    googleProfile,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+  );
+  const userDetails = userResponse.data;
+  const profile = createGoogleProfileTemplate(userDetails);
+  return profile;
+};
+
 module.exports = {
   handleUserRegistration,
   getLinkedInProfile,
   fetchUserToken,
   sendRegistrationMail,
+  getGoogleProfile,
 };

@@ -12,6 +12,7 @@ const {
   getLinkedInProfile,
   fetchUserToken,
   sendRegistrationMail,
+  getGoogleProfile,
 } = require('../helpers/user');
 
 const loginUser = async (req, res) => {
@@ -29,16 +30,29 @@ const loginUser = async (req, res) => {
       .json({ success: false, errorCode: errorCodes.missingInputs.code, message: 'authCode missing in the body' });
   }
 
+  if (!body.provider) {
+    return res
+      .status(400)
+      .json({ success: false, errorCode: errorCodes.missingInputs.code, message: 'provider missing in the body' });
+  }
+
   try {
     // Adding this flag to enable login from local env ( due to different redirect URI )
     const isLocal = body.isLocal == true;
 
-    const linkedInProfile = await getLinkedInProfile(body.authCode, isLocal);
+    // Current profile
+    let currentProfile = null;
+    const isGoogle = body.provider == constants.authProviders.google;
+    if (isGoogle) {
+      currentProfile = await getGoogleProfile(body.authCode, isLocal);
+    } else {
+      currentProfile = await getLinkedInProfile(body.authCode, isLocal);
+    }
 
     // Update LinkedIn profile image URLs for the user
     const updatedUser = await User.findOneAndUpdate(
-      { linkedInId: linkedInProfile.linkedInId },
-      { profileImageUrls: linkedInProfile.profileImageUrls },
+      isGoogle ? {googleId: currentProfile.googleId} : { linkedInId: currentProfile.linkedInId },
+      { profileImageUrls: currentProfile.profileImageUrls },
       {
         new: true,
         projection: {
@@ -58,8 +72,8 @@ const loginUser = async (req, res) => {
       updatedUser.registrationStatus === constants.registrationStatus.incomplete.name
     ) {
       const newRequest = req;
-      newRequest.body.type = 'linkedInSignup';
-      return await handleUserRegistration(newRequest, res, linkedInProfile);
+      newRequest.body.type = constants.bodyType.registration;
+      return await handleUserRegistration(newRequest, res, currentProfile);
     }
     
     // Successful login
