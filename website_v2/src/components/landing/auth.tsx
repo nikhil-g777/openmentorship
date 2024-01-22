@@ -1,7 +1,14 @@
 "use client";
 
 import {SUCCESS_ALERT} from "@/constants/common";
-import {authCodeRegex, linkedInRedirectUrl} from "@/constants/linkedin";
+import {
+  linkedInRedirectUrl,
+  googleRedirectUrl,
+  linkedInProvider,
+  googleProvider,
+  linkedInAuthCodeRegex,
+  googleAuthCodeRegex,
+} from "@/constants/auth";
 import {mainConstants} from "@/constants/main";
 import {
   handleLoginErrors,
@@ -15,7 +22,7 @@ import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
-const LinkedIn = () => {
+const Auth = () => {
   const router = useRouter();
   const {
     setAuthenticationError,
@@ -24,6 +31,8 @@ const LinkedIn = () => {
     setRouteActionLoading,
     setAuthorizationCode,
     authorizationCode,
+    authProvider,
+    setAuthProvider,
   } = useCommonStore();
   const {
     setToken,
@@ -36,7 +45,7 @@ const LinkedIn = () => {
   } = useRegisterStore();
 
   // Handle LinkedIn Login
-  const handleLinkedinLogin = () => {
+  const handleLogin = (provider: string) => {
     if (
       process.env.NEXT_PUBLIC_CYPRESS_ACCOUNT_TYPE &&
       process.env.NEXT_PUBLIC_CYPRESS_MENTEE_ID &&
@@ -50,13 +59,30 @@ const LinkedIn = () => {
       return;
     }
 
-    window.location.href = linkedInRedirectUrl;
+    // Redirect to provider
+    if (provider === linkedInProvider) {
+      window.location.href = linkedInRedirectUrl;
+    }
+    if (provider === googleProvider) {
+      window.location.href = googleRedirectUrl;
+    }
   };
 
   useEffect(() => {
     const windowUrl = window.location.href;
     if (windowUrl.includes("code=")) {
-      const codeMatch = windowUrl.match(authCodeRegex);
+      // Set auth provider
+      if (windowUrl.includes(googleProvider)) {
+        setAuthProvider(googleProvider);
+      } else {
+        setAuthProvider(linkedInProvider);
+      }
+      // Get authorization code
+      const codeMatch = windowUrl.match(
+        authProvider === googleProvider
+          ? googleAuthCodeRegex
+          : linkedInAuthCodeRegex
+      );
       if (!codeMatch) return;
 
       // Set authorization code
@@ -65,12 +91,22 @@ const LinkedIn = () => {
       setRouteActionLoading(true);
       router.replace("/");
     }
-  }, [setAuthorizationCode, router, setRouteActionLoading]);
+  }, [
+    setAuthorizationCode,
+    router,
+    setRouteActionLoading,
+    authProvider,
+    setAuthProvider,
+  ]);
 
   // Sign in with LinkedIn
   useEffect(() => {
-    if (authorizationCode) {
-      signIn("credentials", {authCode: authorizationCode, redirect: false})
+    if (authorizationCode && authorizationCode.length > 10) {
+      signIn("credentials", {
+        authCode: authorizationCode,
+        provider: authProvider,
+        redirect: false,
+      })
         .then(res => {
           // Reset authorization code
           setAuthorizationCode("");
@@ -149,26 +185,45 @@ const LinkedIn = () => {
     setUserId,
     setUserType,
     setRegistrationStatus,
+    authProvider,
   ]);
 
   return (
-    <button
-      onClick={handleLinkedinLogin}
-      className="flex flex-row items-center gap-2 bg-[#0A66C2] p-2 rounded-md hover:opacity-80 w-[180px] h-[36px]"
-      disabled={routeActionLoading}
-      data-cy="linkedin-button"
-    >
-      <Image
-        src="/assets/icons/linkedin.svg"
-        width={24}
-        height={24}
-        alt="LinkedIn Icon"
-      />
-      <span className="block w-full truncate text-xs text-white font-semibold text-center">
-        Sign in with LinkedIn
-      </span>
-    </button>
+    <div className="mt-4 w-full flex flex-col justify-center items-center gap-2 md:flex-row md:justify-start md:gap-4">
+      <button
+        onClick={() => handleLogin("linkedin")}
+        className="flex flex-row items-center gap-2 bg-[#0A66C2] p-2 rounded-md hover:opacity-80 w-[180px] h-[36px] shadow"
+        disabled={routeActionLoading}
+        data-cy="linkedin-button"
+      >
+        <Image
+          src="/assets/icons/linkedin.svg"
+          width={24}
+          height={24}
+          alt="LinkedIn Icon"
+        />
+        <span className="block w-full truncate text-xs text-white font-semibold text-center">
+          Sign in with LinkedIn
+        </span>
+      </button>
+      <button
+        onClick={() => handleLogin("google")}
+        className="flex flex-row items-center gap-2 bg-white p-2 rounded-md hover:opacity-80 w-[180px] h-[36px] shadow"
+        disabled={routeActionLoading}
+        data-cy="google-button"
+      >
+        <Image
+          src="/assets/icons/google.svg"
+          width={24}
+          height={24}
+          alt="Google Icon"
+        />
+        <span className="block w-full truncate text-xs text-[#1F1F1F] font-bold text-center">
+          Sign in with Google
+        </span>
+      </button>
+    </div>
   );
 };
 
-export {LinkedIn};
+export {Auth};

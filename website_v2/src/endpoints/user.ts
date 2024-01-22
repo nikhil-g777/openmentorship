@@ -18,7 +18,7 @@ const getUserInfo = async (authCode: string) => {
 
 // next-auth Authorization
 const nextAuthLogin = async (
-  credentials: Record<"authCode", string> | undefined
+  credentials: Record<"authCode" | "provider", string> | undefined
 ) => {
   try {
     const res = await fetch(`${process.env.BACKEND_BASE_URL}/users/login`, {
@@ -26,6 +26,7 @@ const nextAuthLogin = async (
       headers: headerProvider(),
       body: JSON.stringify({
         authCode: credentials?.authCode,
+        provider: credentials?.provider,
         isLocal: process.env.NEXT_APP_IS_LOCAL?.toLowerCase() === "true",
       }),
     });
